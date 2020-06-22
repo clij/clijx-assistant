@@ -1,5 +1,6 @@
 package net.haesleinhuepf;
 
+import ij.ImagePlus;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
 
@@ -48,5 +49,13 @@ public class IncubatorUtilities {
     }
     public static boolean checkStamp(ClearCLBuffer buffer, String stamp) {
         return buffer.getName().compareTo(stamp) == 0 && stamp.length() > 0;
+    }
+
+    public static void transferCalibration(ImagePlus source, ImagePlus target) {
+        target.getCalibration().pixelWidth = source.getCalibration().pixelWidth;
+        target.getCalibration().pixelHeight = source.getCalibration().pixelHeight;
+        target.getCalibration().pixelDepth = source.getCalibration().pixelDepth;
+
+        target.getCalibration().setUnit(source.getCalibration().getUnit());
     }
 }

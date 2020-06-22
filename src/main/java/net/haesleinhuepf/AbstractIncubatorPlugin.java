@@ -54,6 +54,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn {
         paused = false;
         invalidateTarget();
         imageUpdated(my_target);
+        IncubatorUtilities.transferCalibration(my_source, my_target);
         validateTarget();
     }
 

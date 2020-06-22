@@ -7,6 +7,7 @@ import ij.plugin.HyperStackConverter;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.spimcat.io.VirtualTifStack;
 import net.haesleinhuepf.spimcat.processing.BackgroundSubtraction;
+import net.haesleinhuepf.spimcat.processing.Median;
 import net.haesleinhuepf.spimcat.projections.CylinderProjection;
 import net.haesleinhuepf.spimcat.projections.MaximumZProjection;
 import net.haesleinhuepf.spimcat.transform.MakeIsotropic;
@@ -18,7 +19,7 @@ public class IncubatorPlayground {
 
     public static void main(String... args) throws FileNotFoundException {
         new ImageJ();
-        CLIJx.getInstance("HD");
+        CLIJx.getInstance("RTX");
 
         //ImagePlus imp1 = IJ.openImage("C:\\structure\\teaching\\lecture_applied_bioimage_analysis_2020\\12_Volumetric_image_data\\data\\000200.raw.tif");
 
@@ -33,6 +34,8 @@ public class IncubatorPlayground {
         imp1.setDisplayRange(0, 1000);
 
         //if (true) return;
+
+        new Median().run("");
 
         new MakeIsotropic().run("");
 
