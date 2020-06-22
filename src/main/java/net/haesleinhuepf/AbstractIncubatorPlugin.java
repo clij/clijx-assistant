@@ -47,10 +47,11 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn {
             my_target.setStack(output.getStack());
             my_target.setDisplayRange(min, max);
         }
-        System.out.println(my_target.getTitle() + " Pulling took " + (System.currentTimeMillis() - timeStamp) + " ms");
+        //System.out.println(my_target.getTitle() + " Pulling took " + (System.currentTimeMillis() - timeStamp) + " ms");
         paused = false;
         invalidateTarget();
         imageUpdated(my_target);
+        validateTarget();
     }
 
     @Override
@@ -72,7 +73,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn {
         }
         if (imp == my_source) {
             if (sourceWasChanged()) {
-                System.out.println("Updating " + imp.getTitle());
+                //System.out.println("Updating " + imp.getTitle());
                 refresh();
             }
 
@@ -83,11 +84,14 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn {
     String stamp = "";
     protected boolean sourceWasChanged() {
         if (my_source.getT() != former_t || my_source.getC() != former_c) {
+            //System.out.println(my_source.getTitle() + " t or c were changed");
             return true;
         }
         if (my_source.getStack() instanceof  CLIJxVirtualStack) {
             if (IncubatorUtilities.checkStamp(((CLIJxVirtualStack) my_source.getStack()).getBuffer(), stamp)) {
                 return false;
+            } else {
+                //System.out.println(my_source.getTitle() + " changed stamp " + stamp);
             }
         }
         return true;
@@ -97,7 +101,15 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn {
         former_c = my_source.getC();
         former_t = my_source.getT();
         if (my_source.getStack() instanceof  CLIJxVirtualStack) {
-            stamp = IncubatorUtilities.stamp(((CLIJxVirtualStack) my_source.getStack()).getBuffer());
+            stamp = ((CLIJxVirtualStack) my_source.getStack()).getBuffer().getName();
+        }
+    }
+
+    protected void validateTarget() {
+        if (my_target.getStack() instanceof CLIJxVirtualStack) {
+            IncubatorUtilities.stamp(((CLIJxVirtualStack) my_target.getStack()).getBuffer());
+        } else {
+            //System.out.println("Cannot mark " + my_target);
         }
     }
 

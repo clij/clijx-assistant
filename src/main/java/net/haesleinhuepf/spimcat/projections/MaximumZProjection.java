@@ -8,6 +8,7 @@ import net.haesleinhuepf.AbstractIncubatorPlugin;
 import net.haesleinhuepf.IncubatorUtilities;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import net.haesleinhuepf.spimcat.transform.MakeIsotropic;
 
 public class MaximumZProjection extends AbstractIncubatorPlugin {
@@ -31,7 +32,7 @@ public class MaximumZProjection extends AbstractIncubatorPlugin {
     protected synchronized void refresh()
     {
         CLIJx clijx = CLIJx.getInstance();
-        ClearCLBuffer pushed = clijx.pushCurrentZStack(my_source);
+        ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
         validateSource();
 
         if (result == null) {
@@ -40,7 +41,7 @@ public class MaximumZProjection extends AbstractIncubatorPlugin {
         clijx.maximumZProjection(pushed, result);
         pushed.close();
 
-        setTarget(clijx.pull(result));
+        setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle("Maximum Z projected " + my_source.getTitle());
     }
 

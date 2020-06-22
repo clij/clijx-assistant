@@ -9,10 +9,9 @@ import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 
 import java.awt.*;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
+import java.awt.event.*;
 
-public class RigidTransform3D extends AbstractIncubatorPlugin implements AdjustmentListener {
+public class RigidTransform3D extends AbstractIncubatorPlugin {
 
     Scrollbar registrationTranslationXSlider = null;
     Scrollbar registrationTranslationYSlider = null;
@@ -62,12 +61,32 @@ public class RigidTransform3D extends AbstractIncubatorPlugin implements Adjustm
         registrationRotationXSlider = (Scrollbar) gdp.getSliders().get(3);
         registrationRotationYSlider = (Scrollbar) gdp.getSliders().get(4);
         registrationRotationZSlider = (Scrollbar) gdp.getSliders().get(5);
-        registrationTranslationXSlider.addAdjustmentListener(this);
-        registrationTranslationYSlider.addAdjustmentListener(this);
-        registrationTranslationZSlider.addAdjustmentListener(this);
-        registrationRotationXSlider.addAdjustmentListener(this);
-        registrationRotationYSlider.addAdjustmentListener(this);
-        registrationRotationZSlider.addAdjustmentListener(this);
+
+        MouseAdapter mouseAdapter = new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                refresh();
+            }
+        };
+
+        KeyAdapter keyAdapter = new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                refresh();
+            }
+        };
+
+        for (Scrollbar item : new Scrollbar[]{
+            registrationTranslationXSlider,
+            registrationTranslationYSlider,
+            registrationTranslationZSlider,
+            registrationRotationXSlider,
+            registrationRotationYSlider,
+            registrationRotationZSlider
+        }) {
+            item.addKeyListener(keyAdapter);
+            item.addMouseListener(mouseAdapter);
+        }
 
         gdp.setModal(false);
         gdp.showDialog();
@@ -81,9 +100,27 @@ public class RigidTransform3D extends AbstractIncubatorPlugin implements Adjustm
     String former_transform = "";
     protected synchronized void refresh()
     {
+
+        String transform =
+                "-center" +
+                        " translateX=" + registrationTranslationXSlider.getValue() +
+                        " translateY=" + registrationTranslationYSlider.getValue() +
+                        " translateZ=" + registrationTranslationZSlider.getValue() +
+                        " rotateX=" + registrationRotationXSlider.getValue() +
+                        " rotateY=" + registrationRotationYSlider.getValue() +
+                        " rotateZ=" + registrationRotationZSlider.getValue() +
+                        " center";
+
+        if (former_transform.compareTo(transform) == 0 && !sourceWasChanged()) {
+            System.out.println("Cancel");
+            return;
+        }
+
         CLIJx clijx = CLIJx.getInstance();
         ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);//clijx.pushCurrentZStack(my_source);
         validateSource();
+
+        System.out.println(clijx.reportMemory());
 
         if (result == null) {
             result = clijx.create(pushed);
@@ -97,19 +134,7 @@ public class RigidTransform3D extends AbstractIncubatorPlugin implements Adjustm
         //double registrationRotationY = registrationRotationYSlider.getValue() * Math.PI / 180.0;
         //double registrationRotationZ = registrationRotationZSlider.getValue() * Math.PI / 180.0;
 
-        String transform =
-                "-center" +
-                " translateX=" + registrationTranslationXSlider.getValue() +
-                " translateY=" + registrationTranslationYSlider.getValue() +
-                " translateZ=" + registrationTranslationZSlider.getValue() +
-                " rotateX=" + registrationRotationXSlider.getValue() +
-                " rotateY=" + registrationRotationYSlider.getValue() +
-                " rotateZ=" + registrationRotationZSlider.getValue() +
-                " center";
 
-        if (former_transform == transform && !sourceWasChanged()) {
-            return;
-        }
         former_transform = transform;
 
         System.out.println(transform.replace("\n", " "));
@@ -128,9 +153,4 @@ public class RigidTransform3D extends AbstractIncubatorPlugin implements Adjustm
         my_target.setZ(my_source.getZ());
     }
 
-
-    @Override
-    public void adjustmentValueChanged(AdjustmentEvent e) {
-        refresh();
-    }
 }
