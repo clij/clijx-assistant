@@ -9,11 +9,13 @@ import ij.measure.Calibration;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import net.haesleinhuepf.AbstractIncubatorPlugin;
+import net.haesleinhuepf.IncubatorUtilities;
 import net.haesleinhuepf.clij.clearcl.ClearCL;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.clearcl.ClearCLImage;
 import net.haesleinhuepf.clij.clearcl.enums.ImageChannelDataType;
 import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import net.imglib2.realtransform.AffineTransform3D;
 
 public class MakeIsotropic extends AbstractIncubatorPlugin {
@@ -36,6 +38,7 @@ public class MakeIsotropic extends AbstractIncubatorPlugin {
         zoom = (float) gdp.getNextNumber();
     }
 
+    ClearCLBuffer result = null;
     protected synchronized void refresh()
     {
         CLIJx clijx = CLIJx.getInstance();
@@ -45,12 +48,15 @@ public class MakeIsotropic extends AbstractIncubatorPlugin {
         float scale1Y = (float) (calib.pixelHeight / zoom);
         float scale1Z = (float) (calib.pixelDepth / zoom);
 
-        ClearCLBuffer pushed = clijx.pushCurrentZStack(my_source);
+        ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
+        validateSource();
 
-        ClearCLBuffer result = clijx.create(new long[]{
-                (long) (my_source.getWidth() * scale1X),
-                (long) (my_source.getHeight() * scale1Y),
-                (long) (my_source.getNSlices() * scale1Z)}, clijx.Float);
+        if (result == null) {
+            result = clijx.create(new long[]{
+                    (long) (my_source.getWidth() * scale1X),
+                    (long) (my_source.getHeight() * scale1Y),
+                    (long) (my_source.getNSlices() * scale1Z)}, clijx.Float);
+        }
 
         ClearCLImage temp = clijx.create(pushed.getDimensions(), ImageChannelDataType.Float);
 
@@ -63,14 +69,12 @@ public class MakeIsotropic extends AbstractIncubatorPlugin {
 
         temp.close();
 
-        setTarget(clijx.pull(result));
+        setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle("Isotropic " + my_source.getTitle());
         my_target.getCalibration().pixelWidth = zoom;
         my_target.getCalibration().pixelHeight = zoom;
         my_target.getCalibration().pixelDepth = zoom;
         my_target.getCalibration().setUnit("micron");
-
-        result.close();
     }
 
     @Override

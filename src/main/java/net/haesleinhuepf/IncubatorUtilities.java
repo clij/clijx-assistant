@@ -40,4 +40,13 @@ public class IncubatorUtilities {
         clijx.copySlice(stack, image2D, slice);
         return image2D;
     }
+
+    public static String stamp(ClearCLBuffer buffer) {
+        String timestamp = "" + System.currentTimeMillis();
+        buffer.setName(timestamp);
+        return timestamp;
+    }
+    public static boolean checkStamp(ClearCLBuffer buffer, String stamp) {
+        return buffer.getName().compareTo(stamp) == 0 && stamp.length() > 0;
+    }
 }

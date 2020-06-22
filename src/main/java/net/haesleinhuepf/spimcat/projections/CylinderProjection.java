@@ -6,10 +6,12 @@ import ij.ImageJ;
 import ij.ImagePlus;
 import ij.measure.Calibration;
 import net.haesleinhuepf.AbstractIncubatorPlugin;
+import net.haesleinhuepf.IncubatorUtilities;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.clearcl.ClearCLImage;
 import net.haesleinhuepf.clij.clearcl.enums.ImageChannelDataType;
 import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import net.haesleinhuepf.spimcat.transform.MakeIsotropic;
 import net.imglib2.realtransform.AffineTransform3D;
 
@@ -37,10 +39,12 @@ public class CylinderProjection extends AbstractIncubatorPlugin {
 
     }
 
+    ClearCLBuffer result = null;
     protected synchronized void refresh()
     {
         CLIJx clijx = CLIJx.getInstance();
-        ClearCLBuffer pushed = clijx.pushCurrentZStack(my_source);
+        ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
+        validateSource();
 
         int center_x = (int) (pushed.getWidth() / 2);
         int center_y = (int) (pushed.getDepth() / 2);
@@ -53,17 +57,15 @@ public class CylinderProjection extends AbstractIncubatorPlugin {
 
         ClearCLBuffer radial_resliced = clijx.create(radius, pushed.getHeight(), number_of_angles);
         clijx.resliceRadial(resliced_from_top, radial_resliced, delta_angle_in_degrees, center_x, center_y);
-        //clijx.show(radial_resliced, "radial");
         resliced_from_top.close();
 
-        ClearCLBuffer result = clijx.create(radial_resliced.getHeight(), radial_resliced.getDepth(), radial_resliced.getWidth());
-        clijx.resliceLeft(radial_resliced, result);
+        if (result == null) {
+            result = clijx.create(radial_resliced.getDepth(), radial_resliced.getHeight(), radial_resliced.getWidth());
+        }
+        clijx.transposeXZ(radial_resliced, result);
         radial_resliced.close();
-
-        setTarget(clijx.pull(result));
-        my_target.setTitle("Cylinder projection " + my_source.getTitle());
-
-        result.close();
+        setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
+        my_target.setTitle("Cylinder projected " + my_source.getTitle());
     }
 
 

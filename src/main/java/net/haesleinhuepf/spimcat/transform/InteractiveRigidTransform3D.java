@@ -24,6 +24,7 @@ import java.awt.event.*;
  * Author: @haesleinhuepf
  * 11 2019
  */
+@Deprecated
 public class InteractiveRigidTransform3D implements PlugIn {
 
     private static String WINDOW_XY_TITLE = "XY";
