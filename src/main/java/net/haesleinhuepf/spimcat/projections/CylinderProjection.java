@@ -4,6 +4,7 @@ import fiji.util.gui.GenericDialogPlus;
 import ij.IJ;
 import ij.ImageJ;
 import ij.ImagePlus;
+import ij.gui.GenericDialog;
 import ij.measure.Calibration;
 import net.haesleinhuepf.AbstractIncubatorPlugin;
 import net.haesleinhuepf.IncubatorUtilities;
@@ -21,8 +22,8 @@ public class CylinderProjection extends AbstractIncubatorPlugin {
     float delta_angle_in_degrees = 1;
 
     protected void configure() {
-        GenericDialogPlus gdp = new GenericDialogPlus("Cylinder projection");
-        gdp.addImageChoice("Image", IJ.getImage().getTitle());
+        GenericDialog gdp = new GenericDialog("Cylinder projection");
+        //gdp.addImageChoice("Image", IJ.getImage().getTitle());
         gdp.addNumericField("Number of angles", number_of_angles);
         gdp.addNumericField("Angle step in degrees", delta_angle_in_degrees);
         gdp.showDialog();
@@ -33,7 +34,7 @@ public class CylinderProjection extends AbstractIncubatorPlugin {
             return;
         }
 
-        setSource(gdp.getNextImage());
+        setSource(IJ.getImage());
         number_of_angles = (int) gdp.getNextNumber();
         delta_angle_in_degrees = (float) gdp.getNextNumber();
 

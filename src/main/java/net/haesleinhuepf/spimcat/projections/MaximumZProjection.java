@@ -14,17 +14,17 @@ import net.haesleinhuepf.spimcat.transform.MakeIsotropic;
 public class MaximumZProjection extends AbstractIncubatorPlugin {
 
     protected void configure() {
-        GenericDialogPlus gdp = new GenericDialogPlus("Maximum Z projection");
-        gdp.addImageChoice("Image", IJ.getImage().getTitle());
-        gdp.showDialog();
+        //GenericDialogPlus gdp = new GenericDialogPlus("Maximum Z projection");
+        //gdp.addImageChoice("Image", IJ.getImage().getTitle());
+        //gdp.showDialog();
 
-        System.out.println("First dialog done");
-        if (gdp.wasCanceled()) {
-            System.out.println("First dialog cancelled");
-            return;
-        }
+        //System.out.println("First dialog done");
+        //if (gdp.wasCanceled()) {
+        //    System.out.println("First dialog cancelled");
+        //    return;
+        //}
 
-        setSource(gdp.getNextImage());
+        setSource(IJ.getImage());
 
     }
 

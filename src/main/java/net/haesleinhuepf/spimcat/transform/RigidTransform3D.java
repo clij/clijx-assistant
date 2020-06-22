@@ -2,6 +2,7 @@ package net.haesleinhuepf.spimcat.transform;
 
 import fiji.util.gui.GenericDialogPlus;
 import ij.IJ;
+import ij.gui.GenericDialog;
 import net.haesleinhuepf.AbstractIncubatorPlugin;
 import net.haesleinhuepf.IncubatorUtilities;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
@@ -23,19 +24,10 @@ public class RigidTransform3D extends AbstractIncubatorPlugin {
 
 
     protected void configure() {
-        GenericDialogPlus gdp = new GenericDialogPlus("Rigid transformation");
-        gdp.addImageChoice("Image", IJ.getImage().getTitle());
-        gdp.showDialog();
-
-        System.out.println("First dialog done");
-        if (gdp.wasCanceled()) {
-            System.out.println("First dialog cancelled");
-            return;
-        }
-        setSource(gdp.getNextImage());
+        setSource(IJ.getImage());
 
 
-        gdp = new GenericDialogPlus("Rigid Transform");
+        GenericDialog gdp = new GenericDialog("Rigid Transform");
         //gdp.addCheckbox("Do noise and background subtraction (Difference of Gaussian)", formerDoNoiseAndBackgroundRemoval);
         //gdp.addSlider("Sigma 1 (in 0.1 pixel)", 0, 100, formerSigma1);
         //gdp.addSlider("Sigma 2 (in 0.1 pixel)", 0, 100, formerSigma2);
@@ -89,6 +81,7 @@ public class RigidTransform3D extends AbstractIncubatorPlugin {
         }
 
         gdp.setModal(false);
+        gdp.setOKLabel("Done");
         gdp.showDialog();
 
         System.out.println("Dialog shown");
@@ -96,13 +89,9 @@ public class RigidTransform3D extends AbstractIncubatorPlugin {
 
     }
 
-    ClearCLBuffer result = null;
-    String former_transform = "";
-    protected synchronized void refresh()
-    {
-
-        String transform =
-                "-center" +
+    private String getTransform() {
+        return
+                        "-center" +
                         " translateX=" + registrationTranslationXSlider.getValue() +
                         " translateY=" + registrationTranslationYSlider.getValue() +
                         " translateZ=" + registrationTranslationZSlider.getValue() +
@@ -110,6 +99,18 @@ public class RigidTransform3D extends AbstractIncubatorPlugin {
                         " rotateY=" + registrationRotationYSlider.getValue() +
                         " rotateZ=" + registrationRotationZSlider.getValue() +
                         " center";
+    }
+
+    @Override
+    protected boolean parametersWereChanged() {
+        return former_transform.compareTo(getTransform()) != 0;
+    }
+
+    ClearCLBuffer result = null;
+    String former_transform = "";
+    protected synchronized void refresh()
+    {
+        String transform = getTransform();
 
         if (former_transform.compareTo(transform) == 0 && !sourceWasChanged()) {
             System.out.println("Cancel");

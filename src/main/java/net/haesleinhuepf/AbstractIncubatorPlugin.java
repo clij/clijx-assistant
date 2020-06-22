@@ -25,6 +25,9 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn {
     protected abstract void configure();
     protected abstract void refresh();
     protected void refreshView() {}
+    protected boolean parametersWereChanged() {
+        return false;
+    }
 
     protected void setSource(ImagePlus input) {
         my_source = input;
@@ -72,7 +75,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn {
             return;
         }
         if (imp == my_source) {
-            if (sourceWasChanged()) {
+            if (sourceWasChanged() || parametersWereChanged()) {
                 //System.out.println("Updating " + imp.getTitle());
                 refresh();
             }

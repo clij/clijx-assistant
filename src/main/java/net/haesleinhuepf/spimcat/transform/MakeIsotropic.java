@@ -5,6 +5,7 @@ import ij.IJ;
 import ij.ImageJ;
 import ij.ImageListener;
 import ij.ImagePlus;
+import ij.gui.GenericDialog;
 import ij.measure.Calibration;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
@@ -23,8 +24,8 @@ public class MakeIsotropic extends AbstractIncubatorPlugin {
     float zoom = 1;
 
     protected void configure() {
-        GenericDialogPlus gdp = new GenericDialogPlus("Make isotropic");
-        gdp.addImageChoice("Image", IJ.getImage().getTitle());
+        GenericDialog gdp = new GenericDialog("Make isotropic");
+        //gdp.addImageChoice("Image", IJ.getImage().getTitle());
         gdp.addNumericField("Future voxel size (in microns)", 1.0, 1);
         gdp.showDialog();
 
@@ -34,7 +35,7 @@ public class MakeIsotropic extends AbstractIncubatorPlugin {
             return;
         }
 
-        setSource(gdp.getNextImage());
+        setSource(IJ.getImage());
         zoom = (float) gdp.getNextNumber();
     }
 

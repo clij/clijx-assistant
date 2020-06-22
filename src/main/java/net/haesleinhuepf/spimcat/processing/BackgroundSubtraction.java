@@ -2,20 +2,30 @@ package net.haesleinhuepf.spimcat.processing;
 
 import fiji.util.gui.GenericDialogPlus;
 import ij.IJ;
+import ij.gui.GenericDialog;
 import net.haesleinhuepf.AbstractIncubatorPlugin;
 import net.haesleinhuepf.IncubatorUtilities;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 public class BackgroundSubtraction extends AbstractIncubatorPlugin {
 
-    int radius = 10;
+    int former_radius = 10;
+    Scrollbar radiusSlider = null;
 
     protected void configure() {
-        GenericDialogPlus gdp = new GenericDialogPlus("Background subtraction");
-        gdp.addImageChoice("Image", IJ.getImage().getTitle());
-        gdp.addNumericField("Radius", radius);
+        GenericDialog gdp = new GenericDialog("Background subtraction");
+        //gdp.addImageChoice("Image", IJ.getImage().getTitle());
+        gdp.addSlider("Radius", 0, 100, former_radius);
+        gdp.setModal(false);
+        gdp.setOKLabel("Done");
         gdp.showDialog();
 
         System.out.println("First dialog done");
@@ -24,8 +34,37 @@ public class BackgroundSubtraction extends AbstractIncubatorPlugin {
             return;
         }
 
-        setSource(gdp.getNextImage());
-        radius = (int) gdp.getNextNumber();
+        setSource(IJ.getImage());
+
+
+
+        radiusSlider = (Scrollbar) gdp.getSliders().get(0);
+
+        MouseAdapter mouseAdapter = new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                refresh();
+            }
+        };
+
+        KeyAdapter keyAdapter = new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                refresh();
+            }
+        };
+
+        radiusSlider.addMouseListener(mouseAdapter);
+        radiusSlider.addKeyListener(keyAdapter);
+
+
+
+        //radius = (int) gdp.getNextNumber();
+    }
+
+    @Override
+    protected boolean parametersWereChanged() {
+        return radiusSlider.getValue() != former_radius;
     }
 
     ClearCLBuffer result = null;
@@ -37,7 +76,8 @@ public class BackgroundSubtraction extends AbstractIncubatorPlugin {
         if (result == null) {
             result = clijx.create(pushed);
         }
-        clijx.topHatBox(pushed, result, radius, radius, radius);
+        former_radius = radiusSlider.getValue();
+        clijx.topHatBox(pushed, result, former_radius, former_radius, former_radius);
         pushed.close();
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
