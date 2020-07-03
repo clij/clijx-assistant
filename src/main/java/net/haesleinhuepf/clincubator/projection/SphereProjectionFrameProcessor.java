@@ -33,10 +33,9 @@ public class SphereProjectionFrameProcessor extends HalfStackSphereProjectionFra
         this.center_y_relative = 0.5f;
     }
 
-
     @Override
     public FrameProcessor duplicate() {
-        CylinderProjectionFrameProcessor frameProcessor = new CylinderProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles);
+        SphereProjectionFrameProcessor frameProcessor = new SphereProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles);
         frameProcessor.setCLIJ2(getCLIJ2());
         return frameProcessor;
     }
@@ -44,8 +43,10 @@ public class SphereProjectionFrameProcessor extends HalfStackSphereProjectionFra
     @Override
     public void run(ImageProcessor ip) {
         GenericDialog gd = new GenericDialog("Sphere-maximum-projection");
+        System.out.println("Dialog" + gd);
         gd.addNumericField("scale_in_microns", scale_in_microns);
         gd.addNumericField("background_subtraction_radius_in_microns", background_subtraction_radius_in_microns);
+        System.out.println("number_of_angles" + number_of_angles);
         gd.addNumericField("number_of_angles", number_of_angles);
         gd.showDialog();
         if (gd.wasCanceled()) {

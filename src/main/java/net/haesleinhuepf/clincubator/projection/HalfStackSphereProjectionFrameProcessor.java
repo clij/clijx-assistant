@@ -18,7 +18,7 @@ public class HalfStackSphereProjectionFrameProcessor extends AbstractFrameProces
 
     protected Float scale_in_microns = 1f;
     protected Float background_subtraction_radius_in_microns = 10f;
-    protected Integer number_of_angles;
+    protected Integer number_of_angles = 180;
 
     protected float start_angle1 = -90f;
     protected float start_angle2 = 0f;
@@ -118,8 +118,6 @@ public class HalfStackSphereProjectionFrameProcessor extends AbstractFrameProces
 
         maximum_projection.close();
         arg_maximum_projection.close();
-
-        //clij2.show(output, "output");
 
         // -------------------------------------------------------------------------------------------------------------
 
