@@ -14,10 +14,11 @@ public class CylinderProjectionFrameProcessor extends HalfStackCylinderProjectio
     public CylinderProjectionFrameProcessor() {
         init();
     }
-    public CylinderProjectionFrameProcessor(Float scale_in_microns, Float background_subtraction_radius_in_microns, Integer number_of_angles) {
+    public CylinderProjectionFrameProcessor(Float scale_in_microns, Float background_subtraction_radius_in_microns, Integer number_of_angles, Projection projection) {
         this.scale_in_microns = scale_in_microns;
         this.background_subtraction_radius_in_microns = background_subtraction_radius_in_microns;
         this.number_of_angles = number_of_angles;
+        this.projection = projection;
 
         init();
     }
@@ -31,7 +32,7 @@ public class CylinderProjectionFrameProcessor extends HalfStackCylinderProjectio
 
     @Override
     public FrameProcessor duplicate() {
-        CylinderProjectionFrameProcessor frameProcessor = new CylinderProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles);
+        CylinderProjectionFrameProcessor frameProcessor = new CylinderProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles, projection);
         frameProcessor.setCLIJ2(getCLIJ2());
         return frameProcessor;
     }
@@ -42,6 +43,7 @@ public class CylinderProjectionFrameProcessor extends HalfStackCylinderProjectio
         gd.addNumericField("scale_in_microns", scale_in_microns);
         gd.addNumericField("background_subtraction_radius_in_microns", background_subtraction_radius_in_microns);
         gd.addNumericField("number_of_angles", number_of_angles);
+        gd.addChoice("Projection", Projection.allToString(), projection.toString());
         gd.showDialog();
         if (gd.wasCanceled()) {
             return;
@@ -49,8 +51,9 @@ public class CylinderProjectionFrameProcessor extends HalfStackCylinderProjectio
         scale_in_microns = (float)gd.getNextNumber();
         background_subtraction_radius_in_microns = (float)gd.getNextNumber();
         number_of_angles = (int)gd.getNextNumber();
+        projection = Projection.all()[gd.getNextChoiceIndex()];
 
-        new Framor(IJ.getImage(), new CylinderProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles)).getResult().show();
+        new Framor(IJ.getImage(), new CylinderProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles, projection)).getResult().show();
     }
 
     public static void main(String[] args) {
@@ -61,8 +64,9 @@ public class CylinderProjectionFrameProcessor extends HalfStackCylinderProjectio
         float scale_in_microns = 1;
         float background_subtraction_radius_in_microns = 10;
         int number_of_angles = 720;
+        Projection projection = Projection.Maximum_Intensity;
 
-        new Framor(imp, new CylinderProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles)).getResult().show();
+        new Framor(imp, new CylinderProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles, projection)).getResult().show();
 
     }
 }

@@ -25,11 +25,14 @@ public class HalfStackCylinderProjectionFrameProcessor extends AbstractFrameProc
     protected float center_x_relative = 0.5f;
     protected float center_y_relative = 0f;
 
+    protected Projection projection = Projection.Maximum_Intensity;
+
     public HalfStackCylinderProjectionFrameProcessor() {}
-    public HalfStackCylinderProjectionFrameProcessor(Float scale_in_microns, Float background_subtraction_radius_in_microns, Integer number_of_angles) {
+    public HalfStackCylinderProjectionFrameProcessor(Float scale_in_microns, Float background_subtraction_radius_in_microns, Integer number_of_angles, Projection projection) {
         this.scale_in_microns = scale_in_microns;
         this.background_subtraction_radius_in_microns = background_subtraction_radius_in_microns;
         this.number_of_angles = number_of_angles;
+        this.projection = projection;
     }
 
     @Override
@@ -94,22 +97,11 @@ public class HalfStackCylinderProjectionFrameProcessor extends AbstractFrameProc
         //clij2.show(transposed, "transposed");
 
         // -------------------------------------------------------------------------------------------------------------
-        // argMaximumProjection
-        ClearCLBuffer maximum_projection = clij2.create(transposed.getWidth(), transposed.getHeight());
-        ClearCLBuffer arg_maximum_projection = clij2.create(maximum_projection);
+        // Projection
 
-        clij2.argMaximumZProjection(transposed, maximum_projection, arg_maximum_projection);
-
+        ClearCLBuffer output = Utilities.project(clij2, transposed, projection);
         transposed.close();
 
-        // -------------------------------------------------------------------------------------------------------------
-        // put results in a stack
-        ClearCLBuffer output = clij2.create(transposed.getWidth(), transposed.getHeight(), 2);
-        clij2.copySlice(maximum_projection, output, 0);
-        clij2.copySlice(arg_maximum_projection, output, 1);
-
-        maximum_projection.close();
-        arg_maximum_projection.close();
 
         //clij2.show(output, "output");
 
@@ -149,7 +141,7 @@ public class HalfStackCylinderProjectionFrameProcessor extends AbstractFrameProc
 
     @Override
     public FrameProcessor duplicate() {
-        HalfStackCylinderProjectionFrameProcessor frameProcessor = new HalfStackCylinderProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles);
+        HalfStackCylinderProjectionFrameProcessor frameProcessor = new HalfStackCylinderProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles, projection);
         frameProcessor.setCLIJ2(getCLIJ2());
         return frameProcessor;
     }
@@ -165,6 +157,7 @@ public class HalfStackCylinderProjectionFrameProcessor extends AbstractFrameProc
         gd.addNumericField("scale_in_microns", scale_in_microns);
         gd.addNumericField("background_subtraction_radius_in_microns", background_subtraction_radius_in_microns);
         gd.addNumericField("number_of_angles", number_of_angles);
+        gd.addChoice("Projection", Projection.allToString(), projection.toString());
         gd.showDialog();
         if (gd.wasCanceled()) {
             return;
@@ -172,8 +165,9 @@ public class HalfStackCylinderProjectionFrameProcessor extends AbstractFrameProc
         scale_in_microns = (float)gd.getNextNumber();
         background_subtraction_radius_in_microns = (float)gd.getNextNumber();
         number_of_angles = (int)gd.getNextNumber();
+        projection = Projection.all()[gd.getNextChoiceIndex()];
 
-        new Framor(IJ.getImage(), new HalfStackCylinderProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles)).getResult().show();
+        new Framor(IJ.getImage(), new HalfStackCylinderProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles, projection)).getResult().show();
     }
 
     public static void main(String[] args) {
@@ -184,8 +178,9 @@ public class HalfStackCylinderProjectionFrameProcessor extends AbstractFrameProc
         float scale_in_microns = 1;
         float background_subtraction_radius_in_microns = 10;
         int number_of_angles = 720;
+        Projection projection = Projection.Maximum_Intensity;
 
-        new Framor(imp, new HalfStackCylinderProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles)).getResult().show();
+        new Framor(imp, new HalfStackCylinderProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles, projection)).getResult().show();
 
     }
 }

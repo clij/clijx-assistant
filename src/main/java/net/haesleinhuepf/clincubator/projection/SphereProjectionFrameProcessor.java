@@ -19,10 +19,11 @@ public class SphereProjectionFrameProcessor extends HalfStackSphereProjectionFra
     public SphereProjectionFrameProcessor() {
         init();
     }
-    public SphereProjectionFrameProcessor(Float scale_in_microns, Float background_subtraction_radius_in_microns, Integer number_of_angles) {
+    public SphereProjectionFrameProcessor(Float scale_in_microns, Float background_subtraction_radius_in_microns, Integer number_of_angles, Projection projection) {
         this.scale_in_microns = scale_in_microns;
         this.background_subtraction_radius_in_microns = background_subtraction_radius_in_microns;
         this.number_of_angles = number_of_angles;
+        this.projection = projection;
 
         init();
     }
@@ -35,7 +36,7 @@ public class SphereProjectionFrameProcessor extends HalfStackSphereProjectionFra
 
     @Override
     public FrameProcessor duplicate() {
-        SphereProjectionFrameProcessor frameProcessor = new SphereProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles);
+        SphereProjectionFrameProcessor frameProcessor = new SphereProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles, projection);
         frameProcessor.setCLIJ2(getCLIJ2());
         return frameProcessor;
     }
@@ -48,6 +49,7 @@ public class SphereProjectionFrameProcessor extends HalfStackSphereProjectionFra
         gd.addNumericField("background_subtraction_radius_in_microns", background_subtraction_radius_in_microns);
         System.out.println("number_of_angles" + number_of_angles);
         gd.addNumericField("number_of_angles", number_of_angles);
+        gd.addChoice("Projection", Projection.allToString(), projection.toString());
         gd.showDialog();
         if (gd.wasCanceled()) {
             return;
@@ -55,8 +57,9 @@ public class SphereProjectionFrameProcessor extends HalfStackSphereProjectionFra
         scale_in_microns = (float)gd.getNextNumber();
         background_subtraction_radius_in_microns = (float)gd.getNextNumber();
         number_of_angles = (int)gd.getNextNumber();
+        projection = Projection.all()[gd.getNextChoiceIndex()];
 
-        new Framor(IJ.getImage(), new SphereProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles)).getResult().show();
+        new Framor(IJ.getImage(), new SphereProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles, projection)).getResult().show();
     }
 
     public static void main(String[] args) {
@@ -67,8 +70,9 @@ public class SphereProjectionFrameProcessor extends HalfStackSphereProjectionFra
         float scale_in_microns = 1;
         float background_subtraction_radius_in_microns = 10;
         int number_of_angles = 360;
+        Projection projection = Projection.Maximum_Intensity;
 
-        new Framor(imp, new SphereProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles)).getResult().show();
+        new Framor(imp, new SphereProjectionFrameProcessor(scale_in_microns, background_subtraction_radius_in_microns, number_of_angles, projection)).getResult().show();
 
     }
 }
