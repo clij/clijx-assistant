@@ -1,5 +1,7 @@
 * Pre-processing
   * Tenengrad fusion
+  * Drift correction
+  * Intensity correction
 * Projections
   * Cylinder and half-cylinder maximum projection
   * Sphere and half-sphere maximum projections
