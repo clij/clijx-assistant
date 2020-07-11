@@ -1,7 +1,9 @@
 package net.haesleinhuepf.clincubator.projection;
 
+import ij.measure.ResultsTable;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.clearcl.interfaces.ClearCLImageInterface;
+import net.haesleinhuepf.clij.coremem.enums.NativeTypeEnum;
 import net.haesleinhuepf.clij2.CLIJ2;
 
 public class Utilities {
@@ -77,4 +79,45 @@ public class Utilities {
         return true;
     }
 
+    public static ClearCLBuffer pushTableColumn(CLIJ2 clij2, ResultsTable table, String column) {
+        ClearCLBuffer buffer = clij2.create(new long[]{table.size(), 1, 1}, NativeTypeEnum.UnsignedByte);
+        clij2.pushResultsTableColumn(buffer, table, column);
+        return buffer;
+    }
+
+    public static ClearCLBuffer greaterOrEqualConstant(CLIJ2 clij2, ClearCLBuffer values, Float constant) {
+        ClearCLBuffer result = clij2.create(values.getDimensions(), NativeTypeEnum.UnsignedByte);
+        clij2.greaterOrEqualConstant(values, result, constant);
+        return result;
+    }
+
+    public static ClearCLBuffer smallerOrEqualConstant(CLIJ2 clij2, ClearCLBuffer values, Float constant) {
+        ClearCLBuffer result = clij2.create(values.getDimensions(), NativeTypeEnum.UnsignedByte);
+        clij2.smallerOrEqualConstant(values, result, constant);
+        return result;
+    }
+
+    public static ClearCLBuffer greaterConstant(CLIJ2 clij2, ClearCLBuffer values, Float constant) {
+        ClearCLBuffer result = clij2.create(values.getDimensions(), NativeTypeEnum.UnsignedByte);
+        clij2.greaterConstant(values, result, constant);
+        return result;
+    }
+
+    public static ClearCLBuffer smallerConstant(CLIJ2 clij2, ClearCLBuffer values, Float constant) {
+        ClearCLBuffer result = clij2.create(values.getDimensions(), NativeTypeEnum.UnsignedByte);
+        clij2.smallerConstant(values, result, constant);
+        return result;
+    }
+
+    public static ClearCLBuffer binaryAnd(CLIJ2 clij2, ClearCLBuffer values1, ClearCLBuffer values2) {
+        ClearCLBuffer result = clij2.create(values1.getDimensions(), NativeTypeEnum.UnsignedByte);
+        clij2.binaryAnd(values1, values2, result);
+        return result;
+    }
+
+    public static ClearCLBuffer binaryOr(CLIJ2 clij2, ClearCLBuffer values1, ClearCLBuffer values2) {
+        ClearCLBuffer result = clij2.create(values1.getDimensions(), NativeTypeEnum.UnsignedByte);
+        clij2.binaryOr(values1, values2, result);
+        return result;
+    }
 }

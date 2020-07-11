@@ -4,6 +4,7 @@ import ij.measure.ResultsTable;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.coremem.enums.NativeTypeEnum;
 import net.haesleinhuepf.clij2.CLIJ2;
+import net.haesleinhuepf.clij2.plugins.StatisticsOfLabelledPixels;
 import net.haesleinhuepf.spimcat.measurement.neighbors.NeighborProcessor;
 import net.haesleinhuepf.spimcat.measurement.neighbors.TakesPropertyTable;
 
@@ -40,7 +41,7 @@ public class ParametricImageProcessor implements NeighborProcessor, TakesPropert
 
     @Override
     public boolean getDefaultActivated() {
-        return false;
+        return column.compareTo(StatisticsOfLabelledPixels.STATISTICS_ENTRY.MEAN_INTENSITY.toString()) == 0;
     }
 
     @Override
