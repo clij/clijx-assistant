@@ -157,7 +157,7 @@ public class HalfStackSphereProjectionFrameProcessor extends AbstractFrameProces
 
     @Override
     public void run(ImageProcessor ip) {
-        GenericDialog gd = new GenericDialog("Half-stack-cylinder-maximum-projection");
+        GenericDialog gd = new GenericDialog("Half-stack cylinder projection");
         gd.addNumericField("scale_in_microns", scale_in_microns);
         gd.addNumericField("background_subtraction_radius_in_microns", background_subtraction_radius_in_microns);
         gd.addNumericField("number_of_angles", number_of_angles);

@@ -26,7 +26,7 @@ public class SpotDetectionProcessor implements NeighborProcessor {
 
     @Override
     public String getName() {
-        return "Spot detection";
+        return "Spot_detection__";
     }
 
     @Override

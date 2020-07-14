@@ -48,7 +48,7 @@ public class CylinderProjection extends AbstractIncubatorPlugin {
         validateSource();
 
         int center_x = (int) (pushed.getWidth() / 2);
-        int center_y = (int) (pushed.getDepth() / 2);
+        int center_y = 0; //(int) (pushed.getDepth() / 2);
 
         int radius = (int) Math.sqrt(Math.pow(center_x, 2) + Math.pow(center_y, 2));
 
@@ -57,7 +57,7 @@ public class CylinderProjection extends AbstractIncubatorPlugin {
         pushed.close();
 
         ClearCLBuffer radial_resliced = clijx.create(radius, pushed.getHeight(), number_of_angles);
-        clijx.resliceRadial(resliced_from_top, radial_resliced, delta_angle_in_degrees, center_x, center_y);
+        clijx.resliceRadial(resliced_from_top, radial_resliced, delta_angle_in_degrees + 180, center_x, center_y);
         resliced_from_top.close();
 
         if (result == null) {

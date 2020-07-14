@@ -46,7 +46,7 @@ public class SpotDensity implements NeighborProcessor, OffersDocumentation {
 
     @Override
     public String getName() {
-        return "Spot density locally (r = " + radius + ")";
+        return "Spot_density_locally_(radius_" + radius + ")";
     }
 
     @Override

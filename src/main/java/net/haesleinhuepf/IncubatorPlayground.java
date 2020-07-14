@@ -4,6 +4,8 @@ import ij.IJ;
 import ij.ImageJ;
 import ij.ImagePlus;
 import ij.plugin.HyperStackConverter;
+import ij.plugin.filter.PlugInFilter;
+import ij.process.ImageProcessor;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.spimcat.io.VirtualTifStack;
 import net.haesleinhuepf.spimcat.processing.BackgroundSubtraction;
@@ -15,7 +17,7 @@ import net.haesleinhuepf.spimcat.transform.RigidTransform3D;
 
 import java.io.FileNotFoundException;
 
-public class IncubatorPlayground {
+public class IncubatorPlayground implements PlugInFilter {
 
     public static void main(String... args) throws FileNotFoundException {
         new ImageJ();
@@ -34,7 +36,16 @@ public class IncubatorPlayground {
         imp1.setDisplayRange(0, 1000);
 
         //if (true) return;
+        new IncubatorPlayground();
+    }
 
+    @Override
+    public int setup(String arg, ImagePlus imp) {
+        return DOES_ALL;
+    }
+
+    @Override
+    public void run(ImageProcessor ip) {
         new Median().run("");
 
         new MakeIsotropic().run("");

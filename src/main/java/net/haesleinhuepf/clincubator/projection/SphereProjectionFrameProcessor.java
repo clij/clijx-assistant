@@ -43,7 +43,7 @@ public class SphereProjectionFrameProcessor extends HalfStackSphereProjectionFra
 
     @Override
     public void run(ImageProcessor ip) {
-        GenericDialog gd = new GenericDialog("Sphere-maximum-projection");
+        GenericDialog gd = new GenericDialog("Sphere projection");
         System.out.println("Dialog" + gd);
         gd.addNumericField("scale_in_microns", scale_in_microns);
         gd.addNumericField("background_subtraction_radius_in_microns", background_subtraction_radius_in_microns);
