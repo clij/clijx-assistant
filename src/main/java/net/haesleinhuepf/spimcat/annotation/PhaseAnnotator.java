@@ -20,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+@Deprecated
 public class PhaseAnnotator extends InteractivePanelPlugin implements PlugInFilter, ImageListener {
 
     CLIJx clijx;

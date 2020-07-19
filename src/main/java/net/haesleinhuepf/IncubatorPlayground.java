@@ -1,6 +1,5 @@
 package net.haesleinhuepf;
 
-import ij.IJ;
 import ij.ImageJ;
 import ij.ImagePlus;
 import ij.plugin.HyperStackConverter;
@@ -8,12 +7,12 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.spimcat.io.VirtualTifStack;
-import net.haesleinhuepf.spimcat.processing.BackgroundSubtraction;
-import net.haesleinhuepf.spimcat.processing.Median;
-import net.haesleinhuepf.spimcat.projections.CylinderProjection;
-import net.haesleinhuepf.spimcat.projections.MaximumZProjection;
-import net.haesleinhuepf.spimcat.transform.MakeIsotropic;
-import net.haesleinhuepf.spimcat.transform.RigidTransform3D;
+import net.haesleinhuepf.clincubator.interactive.processing.BackgroundSubtraction;
+import net.haesleinhuepf.clincubator.interactive.processing.Median;
+import net.haesleinhuepf.clincubator.interactive.transform.CylinderProjection;
+import net.haesleinhuepf.clincubator.interactive.projections.MaximumZProjection;
+import net.haesleinhuepf.clincubator.interactive.transform.MakeIsotropic;
+import net.haesleinhuepf.clincubator.interactive.transform.RigidTransform3D;
 
 import java.io.FileNotFoundException;
 
@@ -36,7 +35,7 @@ public class IncubatorPlayground implements PlugInFilter {
         imp1.setDisplayRange(0, 1000);
 
         //if (true) return;
-        new IncubatorPlayground();
+        new IncubatorPlayground().run(null);
     }
 
     @Override
@@ -49,6 +48,8 @@ public class IncubatorPlayground implements PlugInFilter {
         new Median().run("");
 
         new MakeIsotropic().run("");
+
+        if (true) return;
 
         new RigidTransform3D().run("");
 

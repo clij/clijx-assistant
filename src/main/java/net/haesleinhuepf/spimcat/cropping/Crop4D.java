@@ -18,6 +18,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+@Deprecated
 public class Crop4D implements PlugIn {
 
     static CLIJ clij = null;

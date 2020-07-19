@@ -1,24 +1,25 @@
-package net.haesleinhuepf.spimcat.transform;
+package net.haesleinhuepf.clincubator.interactive.transform;
 
-import fiji.util.gui.GenericDialogPlus;
 import ij.IJ;
-import ij.ImageJ;
-import ij.ImageListener;
-import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.measure.Calibration;
-import ij.plugin.filter.PlugInFilter;
-import ij.process.ImageProcessor;
-import net.haesleinhuepf.AbstractIncubatorPlugin;
-import net.haesleinhuepf.IncubatorUtilities;
-import net.haesleinhuepf.clij.clearcl.ClearCL;
+import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.clearcl.ClearCLImage;
 import net.haesleinhuepf.clij.clearcl.enums.ImageChannelDataType;
 import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
+import net.haesleinhuepf.clincubator.interactive.processing.BackgroundSubtraction;
+import net.haesleinhuepf.clincubator.interactive.processing.GaussianBlur;
+import net.haesleinhuepf.clincubator.interactive.processing.Mean;
+import net.haesleinhuepf.clincubator.interactive.processing.Median;
+import net.haesleinhuepf.clincubator.interactive.projections.MaximumZProjection;
+import net.haesleinhuepf.clincubator.interactive.projections.MeanZProjection;
 import net.imglib2.realtransform.AffineTransform3D;
+import org.scijava.plugin.Plugin;
 
+@Plugin(type = SuggestedPlugin.class)
 public class MakeIsotropic extends AbstractIncubatorPlugin {
 
     float zoom = 1;
@@ -83,4 +84,22 @@ public class MakeIsotropic extends AbstractIncubatorPlugin {
         my_target.setZ((int) (my_source.getZ() * my_source.getCalibration().pixelDepth / my_target.getCalibration().pixelDepth));
     }
 
+
+    @Override
+    public Class[] suggestedNextSteps() {
+        return new Class[] {
+                SphereProjection.class,
+                CylinderProjection.class
+        };
+    }
+
+    @Override
+    public Class[] suggestedPreviousSteps() {
+        return new Class[]{
+                GaussianBlur.class,
+                Mean.class,
+                Median.class,
+                BackgroundSubtraction.class,
+        };
+    }
 }

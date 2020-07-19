@@ -11,6 +11,7 @@ import net.haesleinhuepf.clijx.CLIJx;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.view.Views;
 
+@Deprecated
 public class SliceAnalyser implements Runnable {
     private ClearCLBuffer image;
     private FocusMeasures.FocusMeasure[] features;

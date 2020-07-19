@@ -13,6 +13,7 @@ import net.haesleinhuepf.clijx.utilities.CLIJUtilities;
 
 import java.awt.*;
 
+@Deprecated
 public class SpotDetection {
     static CLIJx clijx ;
     public static void main(String[] args) throws InterruptedException {

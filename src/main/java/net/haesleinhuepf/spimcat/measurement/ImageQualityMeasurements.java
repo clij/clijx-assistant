@@ -11,6 +11,7 @@ import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.coremem.enums.NativeTypeEnum;
 import net.haesleinhuepf.clijx.CLIJx;
 
+@Deprecated
 public class ImageQualityMeasurements implements PlugInFilter {
 
     @Override

@@ -1,21 +1,21 @@
-package net.haesleinhuepf.spimcat.projections;
+package net.haesleinhuepf.clincubator.interactive.transform;
 
-import fiji.util.gui.GenericDialogPlus;
 import ij.IJ;
-import ij.ImageJ;
-import ij.ImagePlus;
 import ij.gui.GenericDialog;
-import ij.measure.Calibration;
-import net.haesleinhuepf.AbstractIncubatorPlugin;
-import net.haesleinhuepf.IncubatorUtilities;
+import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
-import net.haesleinhuepf.clij.clearcl.ClearCLImage;
-import net.haesleinhuepf.clij.clearcl.enums.ImageChannelDataType;
 import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
-import net.haesleinhuepf.spimcat.transform.MakeIsotropic;
-import net.imglib2.realtransform.AffineTransform3D;
+import net.haesleinhuepf.clincubator.interactive.processing.BackgroundSubtraction;
+import net.haesleinhuepf.clincubator.interactive.processing.GaussianBlur;
+import net.haesleinhuepf.clincubator.interactive.processing.Mean;
+import net.haesleinhuepf.clincubator.interactive.processing.Median;
+import net.haesleinhuepf.clincubator.interactive.projections.MaximumZProjection;
+import net.haesleinhuepf.clincubator.interactive.projections.MeanZProjection;
+import org.scijava.plugin.Plugin;
 
+@Plugin(type = SuggestedPlugin.class)
 public class CylinderProjection extends AbstractIncubatorPlugin {
 
     int number_of_angles = 360;
@@ -71,4 +71,19 @@ public class CylinderProjection extends AbstractIncubatorPlugin {
 
 
 
+    @Override
+    public Class[] suggestedNextSteps() {
+        return new Class[] {
+                MaximumZProjection.class,
+                MeanZProjection.class
+        };
+    }
+
+    @Override
+    public Class[] suggestedPreviousSteps() {
+        return new Class[]{
+                MakeIsotropic.class,
+                RigidTransform3D.class
+        };
+    }
 }
