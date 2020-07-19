@@ -102,6 +102,7 @@ public class MakeIsotropic extends AbstractIncubatorPlugin {
                 Median.class,
                 DifferenceOfGaussian.class,
                 BackgroundSubtraction.class,
+                LaplacianOfGaussian.class
         };
     }
 }

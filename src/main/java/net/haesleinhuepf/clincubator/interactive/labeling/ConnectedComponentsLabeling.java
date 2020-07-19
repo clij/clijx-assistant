@@ -25,7 +25,7 @@ public class ConnectedComponentsLabeling extends AbstractIncubatorPlugin impleme
         pushed.close();
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle("Extended labels " + my_source.getTitle());
+        my_target.setTitle("Connected components labelled " + my_source.getTitle());
     }
 
 }

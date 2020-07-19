@@ -49,7 +49,7 @@ public class DistanceMeshNeighbors extends AbstractIncubatorPlugin {
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle("Distance meshes neighbors " + my_source.getTitle());
-        my_target.setDisplayRange(0, 10);
+        my_target.setDisplayRange(0, 50);
         IJ.run(my_target, "Fire", "");
     }
 

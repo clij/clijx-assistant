@@ -27,7 +27,7 @@ public class ShowLabelEdges extends AbstractIncubatorPlugin implements LabelAnal
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle("Label edges " + my_source.getTitle());
-        my_target.setDisplayRange(0, 10);
+        my_target.setDisplayRange(0, 1);
     }
 
 }

@@ -5,12 +5,9 @@ import ij.gui.GenericDialog;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.clincubator.interactive.processing.*;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
-import net.haesleinhuepf.clincubator.interactive.processing.BackgroundSubtraction;
-import net.haesleinhuepf.clincubator.interactive.processing.GaussianBlur;
-import net.haesleinhuepf.clincubator.interactive.processing.Mean;
-import net.haesleinhuepf.clincubator.interactive.processing.Median;
 import net.haesleinhuepf.clincubator.interactive.projections.MaximumZProjection;
 import net.haesleinhuepf.clincubator.interactive.projections.MeanZProjection;
 import org.scijava.plugin.Plugin;
@@ -34,8 +31,6 @@ public class RigidTransform3D extends AbstractIncubatorPlugin {
     protected GenericDialog buildNonModalDialog(Frame parent) {
 
         GenericDialog gdp = new GenericDialog("Rigid Transform");
-
-
         gdp.addSlider("Translation X (in pixel)", -100, 100, 0);
         gdp.addSlider("Translation Y (in pixel)", -100, 100, 0);
         gdp.addSlider("Translation Z (in pixel)", -100, 100, 0);
@@ -83,14 +78,14 @@ public class RigidTransform3D extends AbstractIncubatorPlugin {
     private String getTransform() {
         if (registrationRotationZSlider != null) {
             return
-                    "-center" +
-                            " translateX=" + registrationTranslationXSlider.getValue() +
-                            " translateY=" + registrationTranslationYSlider.getValue() +
-                            " translateZ=" + registrationTranslationZSlider.getValue() +
-                            " rotateX=" + registrationRotationXSlider.getValue() +
-                            " rotateY=" + registrationRotationYSlider.getValue() +
-                            " rotateZ=" + registrationRotationZSlider.getValue() +
-                            " center";
+                "-center" +
+                " translateX=" + registrationTranslationXSlider.getValue() +
+                " translateY=" + registrationTranslationYSlider.getValue() +
+                " translateZ=" + registrationTranslationZSlider.getValue() +
+                " rotateX=" + registrationRotationXSlider.getValue() +
+                " rotateY=" + registrationRotationYSlider.getValue() +
+                " rotateZ=" + registrationRotationZSlider.getValue() +
+                " center";
         } else {
             return "";
         }
@@ -108,12 +103,12 @@ public class RigidTransform3D extends AbstractIncubatorPlugin {
         String transform = getTransform();
 
         if (former_transform.compareTo(transform) == 0 && !sourceWasChanged()) {
-            System.out.println("Cancel");
+            System.out.println("Cancel " + this);
             return;
         }
 
         CLIJx clijx = CLIJx.getInstance();
-        ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);//clijx.pushCurrentZStack(my_source);
+        ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
         validateSource();
 
         System.out.println(clijx.reportMemory());
@@ -157,6 +152,8 @@ public class RigidTransform3D extends AbstractIncubatorPlugin {
                 Mean.class,
                 Median.class,
                 BackgroundSubtraction.class,
+                DifferenceOfGaussian.class,
+                LaplacianOfGaussian.class
         };
     }
 

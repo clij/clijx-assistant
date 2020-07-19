@@ -2,6 +2,7 @@ package net.haesleinhuepf.clincubator.interactive.processing;
 
 import ij.gui.GenericDialog;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij.coremem.enums.NativeTypeEnum;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clincubator.interactive.detection.FindAndLabeledMaxima;
@@ -72,7 +73,7 @@ public class DifferenceOfGaussian extends AbstractIncubatorPlugin {
         validateSource();
 
         if (result == null) {
-            result = clijx.create(pushed);
+            result = clijx.create(pushed.getDimensions(), NativeTypeEnum.Float);
         }
         if (sigma_slider1 != null && sigma_slider2 != null) {
             former_sigma1 = sigma_slider1.getValue();

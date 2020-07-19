@@ -6,12 +6,13 @@ import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clincubator.interactive.analysis.CountNeighbors;
 import net.haesleinhuepf.clincubator.interactive.detection.FindAndLabeledMaxima;
+import net.haesleinhuepf.clincubator.interactive.labeling.ConnectedComponentsLabeling;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = SuggestedPlugin.class)
-public class ThresholdOtsu extends AbstractIncubatorPlugin {
+public class ThresholdOtsu extends AbstractIncubatorPlugin implements Segmenter{
 
     ClearCLBuffer result = null;
     protected synchronized void refresh()
@@ -28,19 +29,5 @@ public class ThresholdOtsu extends AbstractIncubatorPlugin {
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle("Threshold Otsu " + my_source.getTitle());
-    }
-
-    @Override
-    public Class[] suggestedNextSteps() {
-        return new Class[] {
-                CountNeighbors.class
-        };
-    }
-
-    @Override
-    public Class[] suggestedPreviousSteps() {
-        return new Class[]{
-                FindAndLabeledMaxima.class
-        };
     }
 }

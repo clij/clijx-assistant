@@ -84,7 +84,7 @@ public class ExtendLabelsWithMaximumRadius extends AbstractIncubatorPlugin {
             if (i % 2 == 0) {
                 flip_kernel = clijx.onlyzeroOverwriteMaximumBox(temp, flag, result, flip_kernel);
             } else {
-                flop_kernel = clijx.onlyzeroOverwriteMaximumBox(result, flag, temp, flop_kernel);
+                flop_kernel = clijx.onlyzeroOverwriteMaximumDiamond(result, flag, temp, flop_kernel);
             }
         }
         if (former_radius % 2 == 0) {

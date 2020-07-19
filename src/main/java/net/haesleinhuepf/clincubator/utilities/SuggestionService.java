@@ -53,9 +53,9 @@ public class SuggestionService  extends AbstractPTService<SuggestedPlugin> imple
 
             ArrayList<Class> suggestions = new ArrayList<>();
 
-            System.out.println("Initial suggestions for " + name);
+            //System.out.println("Initial suggestions for " + name);
             for (Class suggestion : current.suggestedNextSteps()) {
-                System.out.println("  " + suggestion.getSimpleName());
+                //System.out.println("  " + suggestion.getSimpleName());
                 suggestions.add(suggestion);
             }
             suggestedNextSteps.put(current.getClass(), suggestions);

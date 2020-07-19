@@ -46,7 +46,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         ImagePlus.addImageListener(this);
         IJ.showStatus("Running " + IncubatorUtilities.niceName(this.getClass().getSimpleName()) + "...");
         refresh();
-        IJ.showStatus(null);
+        IJ.showStatus("");
 
         GenericDialog dialog = buildNonModalDialog(my_target.getWindow());
         if (dialog != null) {
@@ -62,7 +62,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
     }
 
     protected GenericDialog buildNonModalDialog(Frame parent) {
-        return null;
+        return new GenericDialog(IncubatorUtilities.niceName(this.getClass().getSimpleName()));
     }
 
     protected abstract void refresh();
@@ -211,20 +211,29 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
     Timer heartbeat = null;
     GenericDialog registered_dialog = null;
     protected void registerDialogAsNoneModal(GenericDialog dialog) {
-
         String doneText = "Done";
+        String refreshText = "Refresh";
 
         dialog.setModal(false);
-        dialog.setOKLabel(doneText);
+        dialog.setOKLabel(refreshText);
+
+        dialog.setCancelLabel(doneText);
         dialog.showDialog();
         registered_dialog = dialog;
 
         for (Button component : dialog.getButtons()) {
             if (component instanceof Button) {
-                if (((Button) component).getLabel().compareTo(doneText) == 0) {
+                if (component.getLabel().compareTo(doneText) == 0) {
                     //component.setOpaque(true);
-                    component.setBackground(new Color(50,205,50) );
-                    System.out.println("Set color");
+                    component.setBackground(new Color(128,205,128) );
+                }
+                if (component.getLabel().compareTo(refreshText) == 0) {
+                    for (ActionListener actionlistener : component.getActionListeners()) {
+                        component.removeActionListener(actionlistener);
+                    }
+                    component.addActionListener((a) -> {refresh();});
+                    //component.setOpaque(true);
+                    component.setBackground(new Color(205,205,128) );
                 }
             }
 

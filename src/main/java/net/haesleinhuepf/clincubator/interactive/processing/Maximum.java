@@ -23,7 +23,7 @@ public class Maximum extends AbstractIncubatorPlugin implements Denoiser{
 
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
-        GenericDialog gdp = new GenericDialog("Minimum filter");
+        GenericDialog gdp = new GenericDialog("Maximum filter");
         //gdp.addImageChoice("Image", IJ.getImage().getTitle());
         gdp.addSlider("Radius", 0, 100, former_radius);
 

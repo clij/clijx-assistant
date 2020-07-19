@@ -2,6 +2,7 @@ package net.haesleinhuepf.clincubator.interactive.processing;
 
 import ij.gui.GenericDialog;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij.coremem.enums.NativeTypeEnum;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.plugins.LaplacianOfGaussian3D;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
@@ -26,7 +27,7 @@ public class LaplacianOfGaussian extends AbstractIncubatorPlugin {
 
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
-        GenericDialog gdp = new GenericDialog("Difference of Gaussian");
+        GenericDialog gdp = new GenericDialog("Laplacian of Gaussian");
         //gdp.addImageChoice("Image", IJ.getImage().getTitle());
         gdp.addSlider("Sigma", 0, 100, former_sigma);
 
@@ -66,7 +67,7 @@ public class LaplacianOfGaussian extends AbstractIncubatorPlugin {
         validateSource();
 
         if (result == null) {
-            result = clijx.create(pushed);
+            result = clijx.create(pushed.getDimensions(), NativeTypeEnum.Float);
         }
         if (sigma_slider != null) {
             former_sigma = sigma_slider.getValue();
@@ -75,7 +76,7 @@ public class LaplacianOfGaussian extends AbstractIncubatorPlugin {
         pushed.close();
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle("DoG " + my_source.getTitle());
+        my_target.setTitle("LoG " + my_source.getTitle());
     }
 
     @Override

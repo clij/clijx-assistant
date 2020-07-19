@@ -43,8 +43,8 @@ public class AverageNeighborDistance extends AbstractIncubatorPlugin implements 
         pushed.close();
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle("Extended labels " + my_source.getTitle());
-        my_target.setDisplayRange(0, 10);
+        my_target.setTitle("Average neighbor distance " + my_source.getTitle());
+        my_target.setDisplayRange(0, 50);
         IJ.run(my_target, "Fire", "");
     }
 

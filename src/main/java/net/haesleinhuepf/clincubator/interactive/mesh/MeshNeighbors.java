@@ -25,8 +25,6 @@ public class MeshNeighbors extends AbstractIncubatorPlugin {
         ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
         validateSource();
 
-
-
         if (result == null) {
             result = clijx.create(pushed.getWidth(), pushed.getHeight());
         }

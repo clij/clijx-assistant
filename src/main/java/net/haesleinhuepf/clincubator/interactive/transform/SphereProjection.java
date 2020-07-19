@@ -68,7 +68,7 @@ public class SphereProjection extends AbstractIncubatorPlugin {
         pushed.close();
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle("Polar projected " + my_source.getTitle());
+        my_target.setTitle("Sphere projected " + my_source.getTitle());
     }
 
     @Override
