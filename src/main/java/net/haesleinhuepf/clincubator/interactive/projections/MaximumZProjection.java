@@ -3,13 +3,8 @@ package net.haesleinhuepf.clincubator.interactive.projections;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
-import net.haesleinhuepf.clincubator.interactive.detection.FindAndLabeledMaxima;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
-import net.haesleinhuepf.clincubator.interactive.processing.BackgroundSubtraction;
-import net.haesleinhuepf.clincubator.interactive.transform.CylinderProjection;
-import net.haesleinhuepf.clincubator.interactive.transform.RigidTransform3D;
-import net.haesleinhuepf.clincubator.interactive.transform.SphereProjection;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = SuggestedPlugin.class)

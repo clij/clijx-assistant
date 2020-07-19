@@ -3,6 +3,7 @@ package net.haesleinhuepf.clincubator.interactive.labeling;
 import ij.gui.GenericDialog;
 import ij.measure.ResultsTable;
 import jdk.nashorn.internal.runtime.RecompilableScriptFunctionData;
+import net.haesleinhuepf.IncubatorUtilities;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.clearcl.ClearCLKernel;
 import net.haesleinhuepf.clij.coremem.enums.NativeTypeEnum;
@@ -104,7 +105,15 @@ public class ExcludeLabelsOutsideSizeRange extends AbstractIncubatorPlugin {
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle("Labels with size within [" + former_min_pixel_count + "..." + former_max_pixel_count + "] " + my_source.getTitle());
+        IncubatorUtilities.glasbey(my_target);
     }
+
+
+    @Override
+    protected void refreshView() {
+        my_target.setZ(my_source.getZ());
+    }
+
 
     @Override
     public Class[] suggestedNextSteps() {

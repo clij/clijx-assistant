@@ -5,6 +5,7 @@ import ij.ImageListener;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.Toolbar;
+import ij.measure.Calibration;
 import ij.plugin.PlugIn;
 import net.haesleinhuepf.IncubatorUtilities;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
@@ -17,10 +18,7 @@ import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.ui.swing.script.SyntaxHighlighter;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -184,15 +182,18 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             System.out.println("huhu source");
             my_source.show();});
         addMenuAction(info, "Target: " + my_target.getTitle(), (a) -> {my_target.show();});
-        addMenuAction(info,"Operation: " + this.getClass().getSimpleName(), (a) -> {
-            if (registered_dialog != null) {
-                registered_dialog.show();
-            }
-        });
         menu.add(info);
 
         addMenuAction(menu, CLIJx.getInstance().getGPUName() + " " + MemoryDisplay.getStatus(), (a) -> {
             new MemoryDisplay().run("");
+        });
+
+        menu.add("-");
+
+        addMenuAction(menu,"Operation: " + this.getClass().getSimpleName(), (a) -> {
+            if (registered_dialog != null) {
+                registered_dialog.show();
+            }
         });
 
         menu.add("-");
@@ -219,6 +220,20 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
         dialog.setCancelLabel(doneText);
         dialog.showDialog();
+
+        for (KeyListener listener : dialog.getKeyListeners()) {
+            dialog.removeKeyListener(listener);
+        }
+        dialog.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (e.isActionKey()) {
+                    refresh();
+                    return;
+                }
+                super.keyTyped(e);
+            }
+        });
         registered_dialog = dialog;
 
         for (Button component : dialog.getButtons()) {
@@ -249,6 +264,12 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                 }
             }
         }, delay, delay);
+    }
+
+    private String calibrationToText(Calibration calibration) {
+        return "" + calibration.pixelWidth + " " + calibration.getXUnit() +
+                " " + calibration.pixelHeight + " " + calibration.getYUnit() +
+                " " + calibration.pixelDepth + " " + calibration.getZUnit();
     }
 
 

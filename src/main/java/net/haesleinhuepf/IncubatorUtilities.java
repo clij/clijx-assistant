@@ -1,5 +1,6 @@
 package net.haesleinhuepf;
 
+import ij.IJ;
 import ij.ImagePlus;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
@@ -77,6 +78,20 @@ public class IncubatorUtilities {
 
         result = result.substring(0, 1).toUpperCase() + result.substring(1);
         return result.trim();
+
+    }
+
+    public static void glasbey(ImagePlus imp) {
+        //System.out.println();
+        String dir = IJ.getDirectory("imagej");
+        if (!dir.contains("null")) {
+            IJ.run(imp, "glasbey_on_dark", "");
+            imp.resetDisplayRange();
+        }
+    }
+
+    public static void main(String[] args) {
+        glasbey(null);
 
     }
 

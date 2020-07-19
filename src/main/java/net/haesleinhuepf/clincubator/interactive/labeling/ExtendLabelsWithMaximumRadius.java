@@ -1,6 +1,7 @@
 package net.haesleinhuepf.clincubator.interactive.labeling;
 
 import ij.gui.GenericDialog;
+import net.haesleinhuepf.IncubatorUtilities;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.clearcl.ClearCLKernel;
 import net.haesleinhuepf.clijx.CLIJx;
@@ -102,6 +103,12 @@ public class ExtendLabelsWithMaximumRadius extends AbstractIncubatorPlugin {
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle("Extended labels (r = " + former_radius + ") " + my_source.getTitle());
+        IncubatorUtilities.glasbey(my_target);
+    }
+
+    @Override
+    protected void refreshView() {
+        my_target.setZ(my_source.getZ());
     }
 
     @Override

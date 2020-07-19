@@ -1,5 +1,6 @@
 package net.haesleinhuepf.clincubator.interactive.labeling;
 
+import net.haesleinhuepf.IncubatorUtilities;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
@@ -29,7 +30,14 @@ public class ExtendLabelsUntilTheyTouch extends AbstractIncubatorPlugin {
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle("Extended labels " + my_source.getTitle());
+        IncubatorUtilities.glasbey(my_target);
     }
+
+    @Override
+    protected void refreshView() {
+        my_target.setZ(my_source.getZ());
+    }
+
 
     @Override
     public Class[] suggestedNextSteps() {

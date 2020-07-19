@@ -1,5 +1,6 @@
 package net.haesleinhuepf.clincubator.interactive.labeling;
 
+import net.haesleinhuepf.IncubatorUtilities;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.coremem.enums.NativeTypeEnum;
 import net.haesleinhuepf.clijx.CLIJx;
@@ -26,6 +27,12 @@ public class ConnectedComponentsLabeling extends AbstractIncubatorPlugin impleme
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle("Connected components labelled " + my_source.getTitle());
+        IncubatorUtilities.glasbey(my_target);
+    }
+
+    @Override
+    protected void refreshView() {
+        my_target.setZ(my_source.getZ());
     }
 
 }

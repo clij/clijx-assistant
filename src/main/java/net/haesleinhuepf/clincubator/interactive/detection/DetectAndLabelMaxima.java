@@ -1,9 +1,11 @@
 package net.haesleinhuepf.clincubator.interactive.detection;
 
 import ij.gui.GenericDialog;
+import net.haesleinhuepf.IncubatorUtilities;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.coremem.enums.NativeTypeEnum;
 import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.clijx.plugins.FindMaximaPlateaus;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
@@ -16,23 +18,23 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @Plugin(type = SuggestedPlugin.class)
-public class FindAndLabeledMaxima extends AbstractIncubatorPlugin implements Detector {
+public class DetectAndLabelMaxima extends AbstractIncubatorPlugin implements Detector {
 
-    int former_tolerance = 1;
+    int former_sigma = 1;
     boolean invert = false;
 
-    Scrollbar tolerance_slider = null;
+    Scrollbar sigma_slider = null;
     Checkbox invert_checkbox = null;
 
 
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
-        GenericDialog gdp = new GenericDialog("Find and label maxima");
+        GenericDialog gdp = new GenericDialog("Detect and label maxima");
         //gdp.addImageChoice("Image", IJ.getImage().getTitle());
-        gdp.addSlider("Tolerance", 0, 100, former_tolerance);
+        gdp.addSlider("Sigma", 0, 100, former_sigma);
         gdp.addCheckbox("Invert", invert);
 
-        tolerance_slider = (Scrollbar) gdp.getSliders().get(0);
+        sigma_slider = (Scrollbar) gdp.getSliders().get(0);
 
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
@@ -48,8 +50,8 @@ public class FindAndLabeledMaxima extends AbstractIncubatorPlugin implements Det
             }
         };
 
-        tolerance_slider.addMouseListener(mouseAdapter);
-        tolerance_slider.addKeyListener(keyAdapter);
+        sigma_slider.addMouseListener(mouseAdapter);
+        sigma_slider.addKeyListener(keyAdapter);
 
         invert_checkbox = (Checkbox) gdp.getCheckboxes().get(0);
 
@@ -62,7 +64,7 @@ public class FindAndLabeledMaxima extends AbstractIncubatorPlugin implements Det
 
     @Override
     protected boolean parametersWereChanged() {
-        return tolerance_slider.getValue() != former_tolerance;
+        return sigma_slider.getValue() != former_sigma;
     }
 
     ClearCLBuffer result = null;
@@ -72,28 +74,36 @@ public class FindAndLabeledMaxima extends AbstractIncubatorPlugin implements Det
         validateSource();
 
         if (result == null) {
-            result = clijx.create(pushed);
+            result = clijx.create(pushed.getDimensions(), NativeTypeEnum.Float);
         }
-        if (tolerance_slider != null) {
-            former_tolerance = tolerance_slider.getValue();
+        if (sigma_slider != null) {
+            former_sigma = sigma_slider.getValue();
         }
         if (invert_checkbox != null) {
             invert = invert_checkbox.getState();
         }
 
+        ClearCLBuffer blurred = clijx.create(pushed.getDimensions(), NativeTypeEnum.Float);
+        clijx.gaussianBlur3D(pushed, blurred, former_sigma, former_sigma, former_sigma);
+        pushed.close();
+
         if (invert) {
-            ClearCLBuffer inverted = clijx.create(pushed.getDimensions(), NativeTypeEnum.Float);
-            clijx.invert(pushed, inverted);
-            pushed.close();
-            pushed = inverted;
+            ClearCLBuffer inverted = clijx.create(blurred);
+            clijx.invert(blurred, inverted);
+            blurred.close();
+            blurred = inverted;
         }
 
-        clijx.findMaxima(pushed, result, former_tolerance);
-        pushed.close();
+        ClearCLBuffer maxima = clijx.create(blurred.getDimensions(), NativeTypeEnum.UnsignedByte);
+        FindMaximaPlateaus.findMaximaPlateaus(clijx, blurred, maxima);
+        blurred.close();
+
+        clijx.connectedComponentsLabelingBox(maxima, result);
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle("Labeled maxima in " + my_source.getTitle());
         my_target.setDisplayRange(0, 1);
+        IncubatorUtilities.glasbey(my_target);
     }
 
     @Override

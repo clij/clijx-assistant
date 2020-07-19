@@ -1,7 +1,6 @@
 package net.haesleinhuepf.clincubator.interactive.labeling;
 
-import net.haesleinhuepf.clincubator.interactive.analysis.CountNeighbors;
-import net.haesleinhuepf.clincubator.interactive.detection.FindAndLabeledMaxima;
+import net.haesleinhuepf.clincubator.interactive.detection.FindAndLabelMaxima;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 
 public interface LabelingModifier extends SuggestedPlugin {
@@ -17,7 +16,7 @@ public interface LabelingModifier extends SuggestedPlugin {
     default Class[] suggestedPreviousSteps() {
         return new Class[]{
                 ConnectedComponentsLabeling.class,
-                FindAndLabeledMaxima.class
+                FindAndLabelMaxima.class
         };
     }
 }

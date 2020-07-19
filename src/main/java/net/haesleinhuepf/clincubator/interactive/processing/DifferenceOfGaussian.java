@@ -5,7 +5,7 @@ import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.coremem.enums.NativeTypeEnum;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
-import net.haesleinhuepf.clincubator.interactive.detection.FindAndLabeledMaxima;
+import net.haesleinhuepf.clincubator.interactive.detection.FindAndLabelMaxima;
 import net.haesleinhuepf.clincubator.interactive.transform.MakeIsotropic;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
@@ -94,7 +94,7 @@ public class DifferenceOfGaussian extends AbstractIncubatorPlugin {
     @Override
     public Class[] suggestedNextSteps() {
         return new Class[]{
-                FindAndLabeledMaxima.class
+                FindAndLabelMaxima.class
         };
     }
 
