@@ -1,16 +1,11 @@
 package net.haesleinhuepf.clincubator.interactive.processing;
 
-import ij.IJ;
 import ij.gui.GenericDialog;
-import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
-import net.haesleinhuepf.clincubator.interactive.transform.CylinderProjection;
-import net.haesleinhuepf.clincubator.interactive.transform.MakeIsotropic;
-import net.haesleinhuepf.clincubator.interactive.transform.RigidTransform3D;
-import net.haesleinhuepf.clincubator.interactive.transform.SphereProjection;
 import org.scijava.plugin.Plugin;
 
 import java.awt.*;
@@ -20,14 +15,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @Plugin(type = SuggestedPlugin.class)
-public class Median extends AbstractIncubatorPlugin implements Denoiser {
+public class Minimum extends AbstractIncubatorPlugin implements Denoiser{
 
     int former_radius = 1;
     Scrollbar radiusSlider = null;
 
+
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
-        GenericDialog gdp = new GenericDialog("Median filter");
+        GenericDialog gdp = new GenericDialog("Minimum filter");
         //gdp.addImageChoice("Image", IJ.getImage().getTitle());
         gdp.addSlider("Radius", 0, 100, former_radius);
 
@@ -51,6 +47,8 @@ public class Median extends AbstractIncubatorPlugin implements Denoiser {
         radiusSlider.addKeyListener(keyAdapter);
 
         return gdp;
+
+        //radius = (int) gdp.getNextNumber();
     }
 
     @Override
@@ -70,11 +68,11 @@ public class Median extends AbstractIncubatorPlugin implements Denoiser {
         if (radiusSlider != null) {
             former_radius = radiusSlider.getValue();
         }
-        clijx.median3DBox(pushed, result, former_radius, former_radius, former_radius);
+        clijx.minimum3DBox(pushed, result, former_radius, former_radius, former_radius);
         pushed.close();
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle("Median filtered " + my_source.getTitle());
+        my_target.setTitle("Minimum filtered " + my_source.getTitle());
     }
 
     @Override

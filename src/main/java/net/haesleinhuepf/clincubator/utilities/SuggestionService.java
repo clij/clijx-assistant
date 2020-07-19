@@ -37,13 +37,13 @@ public class SuggestionService  extends AbstractPTService<SuggestedPlugin> imple
         }
 
         for (final PluginInfo<SuggestedPlugin> info : getPlugins()) {
-            String name = info.getName();
+            /*String name = info.getName();
             if (name == null || name.isEmpty()) {
                 name = info.getClassName();
-            }
+            }*/
 
             SuggestedPlugin current = pluginService().createInstance(info);
-
+            String name = current.getClass().getSimpleName();
             String[] temp = current.getClass().getPackage().getName().split("\\.");
             String packageName = temp[temp.length - 1];
 
@@ -104,6 +104,7 @@ public class SuggestionService  extends AbstractPTService<SuggestedPlugin> imple
     }
 
     public ArrayList<String> getHierarchy() {
+        initializeService();
         Set set = categorizedNamedPlugins.keySet();
         ArrayList<String> list = new ArrayList<>(set);
         Collections.sort(list);
@@ -111,6 +112,7 @@ public class SuggestionService  extends AbstractPTService<SuggestedPlugin> imple
     }
 
     public SuggestedPlugin getPluginByName(String name) {
+        initializeService();
         try {
             return namedPlugins.get(name).createInstance();
         } catch (InstantiableException e) {
@@ -118,4 +120,5 @@ public class SuggestionService  extends AbstractPTService<SuggestedPlugin> imple
         }
         return null;
     }
+
 }

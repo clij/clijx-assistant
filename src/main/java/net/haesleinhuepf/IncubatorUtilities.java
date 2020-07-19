@@ -3,6 +3,7 @@ package net.haesleinhuepf;
 import ij.ImagePlus;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.clincubator.utilities.MenuSeparator;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -58,4 +59,25 @@ public class IncubatorUtilities {
 
         target.getCalibration().setUnit(source.getCalibration().getUnit());
     }
+
+    public static String niceName(String name) {
+        if (name.compareTo(MenuSeparator.class.getSimpleName()) == 0) {
+            name = "-";
+        }
+
+        String result = "";
+
+        for (int i = 0; i < name.length(); i++) {
+            String ch = name.substring(i,i+1);
+            if (!ch.toLowerCase().equals(ch)) {
+                result = result + " ";
+            }
+            result = result + ch;
+        }
+
+        result = result.substring(0, 1).toUpperCase() + result.substring(1);
+        return result.trim();
+
+    }
+
 }

@@ -1,11 +1,10 @@
-package net.haesleinhuepf.clincubator.interactive.processing;
+package net.haesleinhuepf.clincubator.interactive.detection;
 
 import ij.gui.GenericDialog;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij.coremem.enums.NativeTypeEnum;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
-import net.haesleinhuepf.clincubator.interactive.detection.FindAndLabeledMaxima;
-import net.haesleinhuepf.clincubator.interactive.transform.MakeIsotropic;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
@@ -17,23 +16,23 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @Plugin(type = SuggestedPlugin.class)
-public class DifferenceOfGaussian extends AbstractIncubatorPlugin {
+public class FindAndLabeledMaxima extends AbstractIncubatorPlugin implements Detector {
 
-    int former_sigma1 = 1;
-    int former_sigma2 = 5;
-    Scrollbar sigma_slider1 = null;
-    Scrollbar sigma_slider2 = null;
+    int former_tolerance = 1;
+    boolean invert = false;
+
+    Scrollbar tolerance_slider = null;
+    Checkbox invert_checkbox = null;
 
 
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
-        GenericDialog gdp = new GenericDialog("Difference of Gaussian");
+        GenericDialog gdp = new GenericDialog("Find and label maxima");
         //gdp.addImageChoice("Image", IJ.getImage().getTitle());
-        gdp.addSlider("Sigma 1", 0, 100, former_sigma1);
-        gdp.addSlider("Sigma 2", 0, 100, former_sigma2);
+        gdp.addSlider("Tolerance", 0, 100, former_tolerance);
+        gdp.addCheckbox("Invert", invert);
 
-        sigma_slider1 = (Scrollbar) gdp.getSliders().get(0);
-        sigma_slider2 = (Scrollbar) gdp.getSliders().get(1);
+        tolerance_slider = (Scrollbar) gdp.getSliders().get(0);
 
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
@@ -49,12 +48,13 @@ public class DifferenceOfGaussian extends AbstractIncubatorPlugin {
             }
         };
 
-        sigma_slider1.addMouseListener(mouseAdapter);
-        sigma_slider1.addKeyListener(keyAdapter);
+        tolerance_slider.addMouseListener(mouseAdapter);
+        tolerance_slider.addKeyListener(keyAdapter);
 
-        sigma_slider2.addMouseListener(mouseAdapter);
-        sigma_slider2.addKeyListener(keyAdapter);
+        invert_checkbox = (Checkbox) gdp.getCheckboxes().get(0);
 
+        invert_checkbox.addMouseListener(mouseAdapter);
+        invert_checkbox.addKeyListener(keyAdapter);
 
         //radius = (int) gdp.getNextNumber();
         return gdp;
@@ -62,7 +62,7 @@ public class DifferenceOfGaussian extends AbstractIncubatorPlugin {
 
     @Override
     protected boolean parametersWereChanged() {
-        return sigma_slider1.getValue() != former_sigma1 || sigma_slider2.getValue() != former_sigma2;
+        return tolerance_slider.getValue() != former_tolerance;
     }
 
     ClearCLBuffer result = null;
@@ -74,15 +74,26 @@ public class DifferenceOfGaussian extends AbstractIncubatorPlugin {
         if (result == null) {
             result = clijx.create(pushed);
         }
-        if (sigma_slider1 != null && sigma_slider2 != null) {
-            former_sigma1 = sigma_slider1.getValue();
-            former_sigma2 = sigma_slider2.getValue();
+        if (tolerance_slider != null) {
+            former_tolerance = tolerance_slider.getValue();
         }
-        clijx.differenceOfGaussian(pushed, result, former_sigma1, former_sigma1, former_sigma1, former_sigma2, former_sigma2, former_sigma2);
+        if (invert_checkbox != null) {
+            invert = invert_checkbox.getState();
+        }
+
+        if (invert) {
+            ClearCLBuffer inverted = clijx.create(pushed.getDimensions(), NativeTypeEnum.Float);
+            clijx.invert(pushed, inverted);
+            pushed.close();
+            pushed = inverted;
+        }
+
+        clijx.findMaxima(pushed, result, former_tolerance);
         pushed.close();
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle("DoG " + my_source.getTitle());
+        my_target.setTitle("Labeled maxima in " + my_source.getTitle());
+        my_target.setDisplayRange(0, 1);
     }
 
     @Override
@@ -90,17 +101,5 @@ public class DifferenceOfGaussian extends AbstractIncubatorPlugin {
         my_target.setZ(my_source.getZ());
     }
 
-    @Override
-    public Class[] suggestedNextSteps() {
-        return new Class[]{
-                FindAndLabeledMaxima.class
-        };
-    }
 
-    @Override
-    public Class[] suggestedPreviousSteps() {
-        return new Class[]{
-                MakeIsotropic.class
-        };
-    }
 }

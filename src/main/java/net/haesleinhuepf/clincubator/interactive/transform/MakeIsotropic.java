@@ -8,12 +8,10 @@ import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.clearcl.ClearCLImage;
 import net.haesleinhuepf.clij.clearcl.enums.ImageChannelDataType;
 import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.clincubator.interactive.processing.*;
+import net.haesleinhuepf.clincubator.utilities.MenuSeparator;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
-import net.haesleinhuepf.clincubator.interactive.processing.BackgroundSubtraction;
-import net.haesleinhuepf.clincubator.interactive.processing.GaussianBlur;
-import net.haesleinhuepf.clincubator.interactive.processing.Mean;
-import net.haesleinhuepf.clincubator.interactive.processing.Median;
 import net.haesleinhuepf.clincubator.interactive.projections.MaximumZProjection;
 import net.haesleinhuepf.clincubator.interactive.projections.MeanZProjection;
 import net.imglib2.realtransform.AffineTransform3D;
@@ -24,7 +22,7 @@ public class MakeIsotropic extends AbstractIncubatorPlugin {
 
     float zoom = 1;
 
-    protected void configure() {
+    protected boolean configure() {
         GenericDialog gdp = new GenericDialog("Make isotropic");
         //gdp.addImageChoice("Image", IJ.getImage().getTitle());
         gdp.addNumericField("Future voxel size (in microns)", 1.0, 1);
@@ -33,11 +31,12 @@ public class MakeIsotropic extends AbstractIncubatorPlugin {
         System.out.println("First dialog done");
         if (gdp.wasCanceled()) {
             System.out.println("First dialog cancelled");
-            return;
+            return false;
         }
 
         setSource(IJ.getImage());
         zoom = (float) gdp.getNextNumber();
+        return true;
     }
 
     ClearCLBuffer result = null;
@@ -88,6 +87,8 @@ public class MakeIsotropic extends AbstractIncubatorPlugin {
     @Override
     public Class[] suggestedNextSteps() {
         return new Class[] {
+                RigidTransform3D.class,
+                MenuSeparator.class,
                 SphereProjection.class,
                 CylinderProjection.class
         };
@@ -99,6 +100,7 @@ public class MakeIsotropic extends AbstractIncubatorPlugin {
                 GaussianBlur.class,
                 Mean.class,
                 Median.class,
+                DifferenceOfGaussian.class,
                 BackgroundSubtraction.class,
         };
     }

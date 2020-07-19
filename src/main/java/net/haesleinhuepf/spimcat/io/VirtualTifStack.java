@@ -74,7 +74,7 @@ public class VirtualTifStack extends ij.VirtualStack {
         int sliceNumber = n % (depth * channels);
         int channel = sliceNumber % channels;
 
-        System.out.println("c/s/f " + channel + "/" + sliceNumber + "/" + stackNumber );
+        //System.out.println("c/s/f " + channel + "/" + sliceNumber + "/" + stackNumber );
 
         ImagePlus imp = cachedStack(stackNumber, channel);
         if (sliceNumber <= imp.getNSlices()) {

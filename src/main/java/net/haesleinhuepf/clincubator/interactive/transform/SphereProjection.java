@@ -22,7 +22,7 @@ public class SphereProjection extends AbstractIncubatorPlugin {
     int number_of_angles = 360;
     float delta_angle_in_degrees = 1;
 
-    protected void configure() {
+    protected boolean configure() {
         GenericDialog gdp = new GenericDialog("Sphere projection");
         //gdp.addImageChoice("Image", IJ.getImage().getTitle());
         gdp.addNumericField("Number of angles", number_of_angles);
@@ -32,13 +32,14 @@ public class SphereProjection extends AbstractIncubatorPlugin {
         System.out.println("First dialog done");
         if (gdp.wasCanceled()) {
             System.out.println("First dialog cancelled");
-            return;
+            return false;
         }
 
         setSource(IJ.getImage());
         number_of_angles = (int) gdp.getNextNumber();
         delta_angle_in_degrees = (float) gdp.getNextNumber();
 
+        return true;
     }
 
     ClearCLBuffer result = null;
@@ -56,7 +57,7 @@ public class SphereProjection extends AbstractIncubatorPlugin {
 
 
         if (result == null) {
-            result = clijx.create(number_of_angles / 2, number_of_angles, radius);
+            result = clijx.create(number_of_angles, number_of_angles / 2, radius);
         }
         ReslicePolar.reslicePolar(clijx, pushed, result,
                 delta_angle_in_degrees, 0f, 0f,

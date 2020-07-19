@@ -20,7 +20,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @Plugin(type = SuggestedPlugin.class)
-public class GaussianBlur extends AbstractIncubatorPlugin {
+public class GaussianBlur extends AbstractIncubatorPlugin implements Denoiser{
 
     int former_sigma_xy = 1;
     int former_sigma_z = 0;
@@ -33,7 +33,6 @@ public class GaussianBlur extends AbstractIncubatorPlugin {
         //gdp.addImageChoice("Image", IJ.getImage().getTitle());
         gdp.addSlider("Sigma in XY (in pixels)", 0, 100, former_sigma_xy);
         gdp.addSlider("Sigma in Z (in pixels)", 0, 100, former_sigma_z);
-        registerDialogAsNoneModal(gdp);
 
         sigma_xy = (Scrollbar) gdp.getSliders().get(0);
         sigma_z = (Scrollbar) gdp.getSliders().get(0);
@@ -56,8 +55,6 @@ public class GaussianBlur extends AbstractIncubatorPlugin {
         sigma_z.addKeyListener(keyAdapter);
 
         return gdp;
-
-        //radius = (int) gdp.getNextNumber();
     }
 
     @Override
@@ -82,7 +79,7 @@ public class GaussianBlur extends AbstractIncubatorPlugin {
         pushed.close();
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle("Mean filtered " + my_source.getTitle());
+        my_target.setTitle("Gaussian blur filtered " + my_source.getTitle());
     }
 
     @Override

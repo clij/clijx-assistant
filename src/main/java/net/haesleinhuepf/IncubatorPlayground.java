@@ -6,6 +6,7 @@ import ij.plugin.HyperStackConverter;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.clijx.gui.MemoryDisplay;
 import net.haesleinhuepf.spimcat.io.VirtualTifStack;
 import net.haesleinhuepf.clincubator.interactive.processing.BackgroundSubtraction;
 import net.haesleinhuepf.clincubator.interactive.processing.Median;
@@ -21,6 +22,8 @@ public class IncubatorPlayground implements PlugInFilter {
     public static void main(String... args) throws FileNotFoundException {
         new ImageJ();
         CLIJx.getInstance("RTX");
+
+        new MemoryDisplay().run(null);
 
         //ImagePlus imp1 = IJ.openImage("C:\\structure\\teaching\\lecture_applied_bioimage_analysis_2020\\12_Volumetric_image_data\\data\\000200.raw.tif");
 
@@ -45,11 +48,13 @@ public class IncubatorPlayground implements PlugInFilter {
 
     @Override
     public void run(ImageProcessor ip) {
+
+
         new Median().run("");
 
         new MakeIsotropic().run("");
 
-        if (true) return;
+        //if (true) return;
 
         new RigidTransform3D().run("");
 

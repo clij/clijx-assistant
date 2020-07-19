@@ -20,7 +20,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @Plugin(type = SuggestedPlugin.class)
-public class Mean extends AbstractIncubatorPlugin {
+public class Mean extends AbstractIncubatorPlugin implements Denoiser{
 
     int former_radius = 1;
     Scrollbar radiusSlider = null;
@@ -86,16 +86,4 @@ public class Mean extends AbstractIncubatorPlugin {
     }
 
 
-    @Override
-    public Class[] suggestedNextSteps() {
-        return new Class[] {
-                BackgroundSubtraction.class,
-                MakeIsotropic.class
-        };
-    }
-
-    @Override
-    public Class[] suggestedPreviousSteps() {
-        return new Class[0];
-    }
 }

@@ -1,16 +1,12 @@
-package net.haesleinhuepf.clincubator.interactive.detection;
+package net.haesleinhuepf.clincubator.interactive.labeling;
 
-import ij.IJ;
 import ij.gui.GenericDialog;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij.clearcl.ClearCLKernel;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clincubator.interactive.processing.BackgroundSubtraction;
-import net.haesleinhuepf.clincubator.interactive.processing.GaussianBlur;
-import net.haesleinhuepf.clincubator.interactive.processing.Mean;
-import net.haesleinhuepf.clincubator.interactive.processing.Median;
 import net.haesleinhuepf.clincubator.interactive.transform.CylinderProjection;
-import net.haesleinhuepf.clincubator.interactive.transform.MakeIsotropic;
 import net.haesleinhuepf.clincubator.interactive.transform.RigidTransform3D;
 import net.haesleinhuepf.clincubator.interactive.transform.SphereProjection;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
@@ -24,21 +20,20 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @Plugin(type = SuggestedPlugin.class)
-public class SpotPlateauDetection extends AbstractIncubatorPlugin {
+public class ExtendLabelsWithMaximumRadius extends AbstractIncubatorPlugin {
 
-    int former_tolerance = 1;
-    Scrollbar tolerance_slider = null;
-    Checkbox invert_checkbox = null;
+    int former_radius = 1;
+
+    Scrollbar radius_slider = null;
 
 
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
-        GenericDialog gdp = new GenericDialog("Spot / plateau detection");
+        GenericDialog gdp = new GenericDialog("Extend labels with maximum radius");
         //gdp.addImageChoice("Image", IJ.getImage().getTitle());
-        gdp.addSlider("Tolerance", 0, 100, former_tolerance);
-        gdp.addCheckbox("Invert", false);
+        gdp.addSlider("Radius", 0, 100, former_radius);
 
-        tolerance_slider = (Scrollbar) gdp.getSliders().get(0);
+        radius_slider = (Scrollbar) gdp.getSliders().get(0);
 
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
@@ -54,22 +49,16 @@ public class SpotPlateauDetection extends AbstractIncubatorPlugin {
             }
         };
 
-        tolerance_slider.addMouseListener(mouseAdapter);
-        tolerance_slider.addKeyListener(keyAdapter);
-
-        invert_checkbox = (Checkbox) gdp.getCheckboxes().get(0);
+        radius_slider.addMouseListener(mouseAdapter);
+        radius_slider.addKeyListener(keyAdapter);
 
         //radius = (int) gdp.getNextNumber();
         return gdp;
     }
 
-    @Override
-    protected boolean parametersWereChanged() {
-        return tolerance_slider.getValue() != former_tolerance;
-    }
-
     ClearCLBuffer result = null;
-    protected synchronized void refresh() {
+    protected synchronized void refresh()
+    {
         CLIJx clijx = CLIJx.getInstance();
         ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
         validateSource();
@@ -77,37 +66,58 @@ public class SpotPlateauDetection extends AbstractIncubatorPlugin {
         if (result == null) {
             result = clijx.create(pushed);
         }
-        if (tolerance_slider != null) {
-            former_tolerance = tolerance_slider.getValue();
+
+        if (radius_slider != null) {
+            former_radius = radius_slider.getValue();
         }
-        clijx.findMaxima(pushed, result, former_tolerance);
+
+        ClearCLBuffer temp = clijx.create(result);
+        clijx.copy(pushed, temp);
         pushed.close();
 
+        ClearCLBuffer flag = clijx.create(1,1,1);
+
+        ClearCLKernel flip_kernel = null;
+        ClearCLKernel flop_kernel = null;
+
+        for (int i = 0; i < former_radius; i++) {
+            if (i % 2 == 0) {
+                flip_kernel = clijx.onlyzeroOverwriteMaximumBox(temp, flag, result, flip_kernel);
+            } else {
+                flop_kernel = clijx.onlyzeroOverwriteMaximumBox(result, flag, temp, flop_kernel);
+            }
+        }
+        if (former_radius % 2 == 0) {
+            clijx.copy(temp, result);
+        }
+
+        if (flip_kernel != null) {
+            flip_kernel.close();
+        }
+        if (flop_kernel != null) {
+            flop_kernel.close();
+        }
+        flag.close();
+        temp.close();
+
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle("Spots / plateaus in " + my_source.getTitle());
+        my_target.setTitle("Extended labels (r = " + former_radius + ") " + my_source.getTitle());
     }
-
-    @Override
-    protected void refreshView() {
-        my_target.setZ(my_source.getZ());
-    }
-
 
     @Override
     public Class[] suggestedNextSteps() {
         return new Class[] {
-                // label stuff
+               // trhesholding
+                // spot detection
         };
     }
 
     @Override
     public Class[] suggestedPreviousSteps() {
         return new Class[]{
-                GaussianBlur.class,
                 BackgroundSubtraction.class,
                 CylinderProjection.class,
                 SphereProjection.class,
-                MakeIsotropic.class,
                 RigidTransform3D.class
         };
     }

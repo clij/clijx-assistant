@@ -8,6 +8,9 @@ import ij.gui.Toolbar;
 import ij.plugin.PlugIn;
 import net.haesleinhuepf.IncubatorUtilities;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.clijx.gui.MemoryDisplay;
+import net.haesleinhuepf.clincubator.utilities.MenuSeparator;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.clincubator.utilities.SuggestionService;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
@@ -37,20 +40,25 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
     @Override
     public void run(String arg) {
-        configure();
+        if (!configure()) {
+            return;
+        }
         ImagePlus.addImageListener(this);
+        IJ.showStatus("Running " + IncubatorUtilities.niceName(this.getClass().getSimpleName()) + "...");
         refresh();
+        IJ.showStatus(null);
 
         GenericDialog dialog = buildNonModalDialog(my_target.getWindow());
         if (dialog != null) {
             registerDialogAsNoneModal(dialog);
-            dialog.showDialog();
+            //dialog.showDialog();
         }
     }
 
 
-    protected void configure() {
+    protected boolean configure() {
         setSource(IJ.getImage());
+        return true;
     }
 
     protected GenericDialog buildNonModalDialog(Frame parent) {
@@ -113,12 +121,14 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
     }
 
     private void addMenuAction(Menu menu, String label, ActionListener listener) {
+        label = IncubatorUtilities.niceName(label);
         MenuItem submenu = new MenuItem(label);
         if (listener != null) {
             submenu.addActionListener(listener);
         }
         menu.add(submenu);
     }
+
 
     protected PopupMenu buildPopup(MouseEvent e, ImagePlus my_source, ImagePlus my_target) {
         PopupMenu menu = new PopupMenu("CLIncubator");
@@ -155,7 +165,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                 if (moreOptions != null) {
                     menu.add(moreOptions);
                 }
-                moreOptions = new Menu(temp[0]);
+                moreOptions = new Menu(IncubatorUtilities.niceName(category));
                 former_category = category;
             }
             addMenuAction(moreOptions, name, (a) -> {
@@ -181,6 +191,11 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         });
         menu.add(info);
 
+        addMenuAction(menu, CLIJx.getInstance().getGPUName() + " " + MemoryDisplay.getStatus(), (a) -> {
+            new MemoryDisplay().run("");
+        });
+
+        menu.add("-");
         addMenuAction(menu,"CLIncubator online documentation", (a) -> {
             try {
                 Desktop.getDesktop().browse(new URI(online_help));
@@ -201,13 +216,14 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
         dialog.setModal(false);
         dialog.setOKLabel(doneText);
-        //dialog.showDialog();
+        dialog.showDialog();
         registered_dialog = dialog;
 
-        for (Component component : dialog.getComponents()) {
+        for (Button component : dialog.getButtons()) {
             if (component instanceof Button) {
                 if (((Button) component).getLabel().compareTo(doneText) == 0) {
-                    component.setBackground(Color.green);
+                    //component.setOpaque(true);
+                    component.setBackground(new Color(50,205,50) );
                     System.out.println("Set color");
                 }
             }

@@ -1,23 +1,18 @@
-package net.haesleinhuepf.clincubator.interactive.projections;
+package net.haesleinhuepf.clincubator.interactive.labeling;
 
-import ij.IJ;
-import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
-import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
-import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
+import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clincubator.interactive.processing.BackgroundSubtraction;
-import net.haesleinhuepf.clincubator.interactive.processing.GaussianBlur;
-import net.haesleinhuepf.clincubator.interactive.processing.Mean;
-import net.haesleinhuepf.clincubator.interactive.processing.Median;
 import net.haesleinhuepf.clincubator.interactive.transform.CylinderProjection;
-import net.haesleinhuepf.clincubator.interactive.transform.MakeIsotropic;
 import net.haesleinhuepf.clincubator.interactive.transform.RigidTransform3D;
 import net.haesleinhuepf.clincubator.interactive.transform.SphereProjection;
+import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
+import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = SuggestedPlugin.class)
-public class MeanZProjection extends AbstractIncubatorPlugin implements PopularIntensityProjection{
+public class ExtendLabelsUntilTheyTouch extends AbstractIncubatorPlugin {
 
     ClearCLBuffer result = null;
     protected synchronized void refresh()
@@ -27,15 +22,27 @@ public class MeanZProjection extends AbstractIncubatorPlugin implements PopularI
         validateSource();
 
         if (result == null) {
-            result = clijx.create(pushed.getWidth(), pushed.getHeight());
+            result = clijx.create(pushed);
         }
-        clijx.meanZProjection(pushed, result);
+        clijx.extendLabelingViaVoronoi(pushed, result);
         pushed.close();
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle("Mean Z projected " + my_source.getTitle());
+        my_target.setTitle("Extended labels " + my_source.getTitle());
     }
 
+    @Override
+    public Class[] suggestedNextSteps() {
+        return new Class[] {
+               // trhesholding
+                // spot detection
+        };
+    }
 
+    @Override
+    public Class[] suggestedPreviousSteps() {
+        return new Class[]{
 
+        };
+    }
 }

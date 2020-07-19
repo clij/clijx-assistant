@@ -1,16 +1,14 @@
 package net.haesleinhuepf.clincubator.interactive.processing;
 
-import ij.IJ;
 import ij.gui.GenericDialog;
-import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.clijx.plugins.LaplacianOfGaussian3D;
+import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
+import net.haesleinhuepf.clincubator.interactive.detection.FindAndLabeledMaxima;
+import net.haesleinhuepf.clincubator.interactive.transform.MakeIsotropic;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
-import net.haesleinhuepf.clincubator.interactive.transform.CylinderProjection;
-import net.haesleinhuepf.clincubator.interactive.transform.MakeIsotropic;
-import net.haesleinhuepf.clincubator.interactive.transform.RigidTransform3D;
-import net.haesleinhuepf.clincubator.interactive.transform.SphereProjection;
 import org.scijava.plugin.Plugin;
 
 import java.awt.*;
@@ -20,18 +18,19 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @Plugin(type = SuggestedPlugin.class)
-public class Median extends AbstractIncubatorPlugin implements Denoiser {
+public class LaplacianOfGaussian extends AbstractIncubatorPlugin {
 
-    int former_radius = 1;
-    Scrollbar radiusSlider = null;
+    float former_sigma = 5;
+    Scrollbar sigma_slider = null;
+
 
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
-        GenericDialog gdp = new GenericDialog("Median filter");
+        GenericDialog gdp = new GenericDialog("Difference of Gaussian");
         //gdp.addImageChoice("Image", IJ.getImage().getTitle());
-        gdp.addSlider("Radius", 0, 100, former_radius);
+        gdp.addSlider("Sigma", 0, 100, former_sigma);
 
-        radiusSlider = (Scrollbar) gdp.getSliders().get(0);
+        sigma_slider = (Scrollbar) gdp.getSliders().get(1);
 
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
@@ -47,15 +46,17 @@ public class Median extends AbstractIncubatorPlugin implements Denoiser {
             }
         };
 
-        radiusSlider.addMouseListener(mouseAdapter);
-        radiusSlider.addKeyListener(keyAdapter);
+        sigma_slider.addMouseListener(mouseAdapter);
+        sigma_slider.addKeyListener(keyAdapter);
 
+
+        //radius = (int) gdp.getNextNumber();
         return gdp;
     }
 
     @Override
     protected boolean parametersWereChanged() {
-        return radiusSlider.getValue() != former_radius;
+        return sigma_slider.getValue() != former_sigma;
     }
 
     ClearCLBuffer result = null;
@@ -67,14 +68,14 @@ public class Median extends AbstractIncubatorPlugin implements Denoiser {
         if (result == null) {
             result = clijx.create(pushed);
         }
-        if (radiusSlider != null) {
-            former_radius = radiusSlider.getValue();
+        if (sigma_slider != null) {
+            former_sigma = sigma_slider.getValue();
         }
-        clijx.median3DBox(pushed, result, former_radius, former_radius, former_radius);
+        LaplacianOfGaussian3D.differenceOfGaussianInplace3D(clijx, pushed, result, former_sigma, former_sigma, former_sigma);
         pushed.close();
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle("Median filtered " + my_source.getTitle());
+        my_target.setTitle("DoG " + my_source.getTitle());
     }
 
     @Override
@@ -82,5 +83,17 @@ public class Median extends AbstractIncubatorPlugin implements Denoiser {
         my_target.setZ(my_source.getZ());
     }
 
+    @Override
+    public Class[] suggestedNextSteps() {
+        return new Class[]{
+                FindAndLabeledMaxima.class
+        };
+    }
 
+    @Override
+    public Class[] suggestedPreviousSteps() {
+        return new Class[]{
+                MakeIsotropic.class
+        };
+    }
 }
