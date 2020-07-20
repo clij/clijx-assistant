@@ -12,7 +12,7 @@ import org.scijava.plugin.Plugin;
 public class ThresholdOtsu extends AbstractIncubatorPlugin implements Segmenter{
 
     ClearCLBuffer result = null;
-    protected synchronized void refresh()
+    public synchronized void refresh()
     {
         CLIJx clijx = CLIJx.getInstance();
         ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
@@ -26,5 +26,10 @@ public class ThresholdOtsu extends AbstractIncubatorPlugin implements Segmenter{
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle("Threshold Otsu " + my_source.getTitle());
+    }
+
+    @Override
+    protected void refreshView() {
+        my_target.setZ(my_source.getZ());
     }
 }

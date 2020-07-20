@@ -57,7 +57,7 @@ public class Maximum extends AbstractIncubatorPlugin implements Denoiser{
     }
 
     ClearCLBuffer result = null;
-    protected synchronized void refresh() {
+    public synchronized void refresh() {
         CLIJx clijx = CLIJx.getInstance();
         ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
         validateSource();

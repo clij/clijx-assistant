@@ -98,14 +98,14 @@ public class RigidTransform3D extends AbstractIncubatorPlugin {
 
     ClearCLBuffer result = null;
     String former_transform = "";
-    protected synchronized void refresh()
+    public synchronized void refresh()
     {
         String transform = getTransform();
 
-        if (former_transform.compareTo(transform) == 0 && !sourceWasChanged()) {
-            System.out.println("Cancel " + this);
-            return;
-        }
+        //if (former_transform.compareTo(transform) == 0 && !sourceWasChanged()) {
+        //   System.out.println("Cancel " + this);
+        //    return;
+        //}
 
         CLIJx clijx = CLIJx.getInstance();
         ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);

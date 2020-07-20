@@ -2,7 +2,6 @@ package net.haesleinhuepf.clincubator.interactive.transform;
 
 import ij.IJ;
 import ij.gui.GenericDialog;
-import javafx.scene.control.Slider;
 import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
@@ -89,7 +88,7 @@ public class CylinderProjection extends AbstractIncubatorPlugin {
 
 
     ClearCLBuffer result = null;
-    protected synchronized void refresh()
+    public synchronized void refresh()
     {
         if (center_y_slider != null) {
             relative_center_x = Float.parseFloat(center_x_slider.getText());

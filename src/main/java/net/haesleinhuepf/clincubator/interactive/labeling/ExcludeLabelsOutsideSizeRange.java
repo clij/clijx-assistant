@@ -2,7 +2,6 @@ package net.haesleinhuepf.clincubator.interactive.labeling;
 
 import ij.gui.GenericDialog;
 import ij.measure.ResultsTable;
-import jdk.nashorn.internal.runtime.RecompilableScriptFunctionData;
 import net.haesleinhuepf.IncubatorUtilities;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.clearcl.ClearCLKernel;
@@ -66,7 +65,7 @@ public class ExcludeLabelsOutsideSizeRange extends AbstractIncubatorPlugin {
     }
 
     ClearCLBuffer result = null;
-    protected synchronized void refresh()
+    public synchronized void refresh()
     {
         CLIJx clijx = CLIJx.getInstance();
         ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);

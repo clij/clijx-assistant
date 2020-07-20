@@ -1,5 +1,6 @@
 package net.haesleinhuepf;
 
+import ij.IJ;
 import ij.ImageJ;
 import ij.ImagePlus;
 import ij.plugin.HyperStackConverter;
@@ -25,8 +26,11 @@ public class IncubatorPlayground implements PlugInFilter {
 
         new MemoryDisplay().run(null);
 
-        //ImagePlus imp1 = IJ.openImage("C:\\structure\\teaching\\lecture_applied_bioimage_analysis_2020\\12_Volumetric_image_data\\data\\000200.raw.tif");
+        ImagePlus imp = IJ.openImage("C:/structure/data/spim_TL18_Angle0-1.tif");
+        imp.show();
 
+        //ImagePlus imp1 = IJ.openImage("C:\\structure\\teaching\\lecture_applied_bioimage_analysis_2020\\12_Volumetric_image_data\\data\\000200.raw.tif");
+/*
         VirtualTifStack vts = VirtualTifStack.open("C:\\structure\\data\\2018-05-23-16-18-13-89-Florence_multisample\\processed\\tif\\");
         ImagePlus imp1 = new ImagePlus("Florence", vts);
         HyperStackConverter.toHyperStack(imp1, 1, vts.getDepth(), vts.getSize() / vts.getDepth());
@@ -36,7 +40,7 @@ public class IncubatorPlayground implements PlugInFilter {
         imp1.getCalibration().pixelDepth = 1.98;
         imp1.setZ(imp1.getNSlices() / 2);
         imp1.setDisplayRange(0, 1000);
-
+*/
         //if (true) return;
         new IncubatorPlayground().run(null);
     }

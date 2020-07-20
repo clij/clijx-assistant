@@ -4,7 +4,7 @@ import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 
 public class MenuSeparator extends AbstractIncubatorPlugin {
     @Override
-    protected void refresh() {
+    public void refresh() {
         // will never get executed
     }
 

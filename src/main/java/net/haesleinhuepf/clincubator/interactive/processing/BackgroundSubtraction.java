@@ -60,7 +60,7 @@ public class BackgroundSubtraction extends AbstractIncubatorPlugin {
     }
 
     ClearCLBuffer result = null;
-    protected synchronized void refresh() {
+    public synchronized void refresh() {
         CLIJx clijx = CLIJx.getInstance();
         ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
         validateSource();

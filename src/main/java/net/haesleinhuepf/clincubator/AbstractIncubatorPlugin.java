@@ -11,6 +11,7 @@ import net.haesleinhuepf.IncubatorUtilities;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.MemoryDisplay;
+import net.haesleinhuepf.clincubator.utilities.IncubatorPlugin;
 import net.haesleinhuepf.clincubator.utilities.MenuSeparator;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.clincubator.utilities.SuggestionService;
@@ -26,7 +27,7 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, SuggestedPlugin {
+public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, SuggestedPlugin, IncubatorPlugin {
 
     private final static String online_help = "https://github.com/haesleinhuepf/clincubator/";
 
@@ -36,11 +37,14 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
     protected ImagePlus my_target = null;
 
 
+
+
     @Override
     public void run(String arg) {
         if (!configure()) {
             return;
         }
+        IncubatorPluginRegistry.getInstance().register(this);
         ImagePlus.addImageListener(this);
         IJ.showStatus("Running " + IncubatorUtilities.niceName(this.getClass().getSimpleName()) + "...");
         refresh();
@@ -63,15 +67,24 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         return new GenericDialog(IncubatorUtilities.niceName(this.getClass().getSimpleName()));
     }
 
-    protected abstract void refresh();
+    public abstract void refresh();
     protected void refreshView() {}
     protected boolean parametersWereChanged() {
         return false;
     }
 
+
+    public ImagePlus getSource() {
+        return my_source;
+    }
+
     protected void setSource(ImagePlus input) {
         my_source = input;
         my_target = null;
+    }
+
+    public ImagePlus getTarget() {
+        return my_target;
     }
 
     private boolean paused = false;
@@ -280,14 +293,9 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
     @Override
     public void imageClosed(ImagePlus imp) {
-        if (imp != null && (imp == my_source || imp != my_target)) {
+        if (imp != null && (imp == my_source || imp == my_target)) {
             ImagePlus.removeImageListener(this);
-            if (heartbeat != null) {
-                heartbeat.cancel();
-                heartbeat = null;
-            }
-        }
-        if (imp == my_target) {
+            IncubatorPluginRegistry.getInstance().unregister(this);
             if (heartbeat != null) {
                 heartbeat.cancel();
                 heartbeat = null;
@@ -305,10 +313,10 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             return;
         }
         if (imp == my_source) {
-            if (sourceWasChanged() || parametersWereChanged()) {
-                //System.out.println("Updating " + imp.getTitle());
-                refresh();
-            }
+            //if (sourceWasChanged() || parametersWereChanged()) {
+            //    //System.out.println("Updating " + imp.getTitle());
+            //    refresh();
+            //}
 
             refreshView();
         }
@@ -346,9 +354,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         }
     }
 
-    protected void invalidateTarget() {
-        if (my_target.getStack() instanceof CLIJxVirtualStack) {
-            ((CLIJxVirtualStack) my_target.getStack()).getBuffer().setName("");
-        }
+    public void invalidateTarget() {
+        IncubatorPluginRegistry.getInstance().invalidate(my_target);
     }
 }

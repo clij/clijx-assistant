@@ -19,7 +19,7 @@ import org.scijava.plugin.Plugin;
 public class TransposeXY extends AbstractIncubatorPlugin {
 
     ClearCLBuffer result = null;
-    protected synchronized void refresh()
+    public synchronized void refresh()
     {
         CLIJx clijx = CLIJx.getInstance();
 
@@ -39,7 +39,7 @@ public class TransposeXY extends AbstractIncubatorPlugin {
             }
         }
 
-        clijx.transposeXZ(pushed, result);
+        clijx.transposeXY(pushed, result);
         pushed.close();
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
