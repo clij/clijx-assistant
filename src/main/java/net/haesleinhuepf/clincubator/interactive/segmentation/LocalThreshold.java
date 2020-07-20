@@ -42,33 +42,7 @@ public class LocalThreshold extends AbstractIncubatorPlugin  implements Segmente
         sigma_slider1 = (Scrollbar) gdp.getSliders().get(0);
         sigma_slider2 = (Scrollbar) gdp.getSliders().get(1);
         threshold_slider = (Scrollbar) gdp.getSliders().get(2);
-
-        MouseAdapter mouseAdapter = new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                refresh();
-            }
-        };
-
-        KeyAdapter keyAdapter = new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                refresh();
-            }
-        };
-
-        sigma_slider1.addMouseListener(mouseAdapter);
-        sigma_slider1.addKeyListener(keyAdapter);
-
-        sigma_slider2.addMouseListener(mouseAdapter);
-        sigma_slider2.addKeyListener(keyAdapter);
-
-        threshold_slider.addMouseListener(mouseAdapter);
-        threshold_slider.addKeyListener(keyAdapter);
-
         above_threshold_checkbox = (Checkbox) gdp.getCheckboxes().get(0);
-        above_threshold_checkbox.addMouseListener(mouseAdapter);
-        above_threshold_checkbox.addKeyListener(keyAdapter);
 
         //radius = (int) gdp.getNextNumber();
         return gdp;

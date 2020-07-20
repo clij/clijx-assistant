@@ -36,24 +36,6 @@ public class ExtendLabelsWithMaximumRadius extends AbstractIncubatorPlugin {
 
         radius_slider = (Scrollbar) gdp.getSliders().get(0);
 
-        MouseAdapter mouseAdapter = new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                refresh();
-            }
-        };
-
-        KeyAdapter keyAdapter = new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                refresh();
-            }
-        };
-
-        radius_slider.addMouseListener(mouseAdapter);
-        radius_slider.addKeyListener(keyAdapter);
-
-        //radius = (int) gdp.getNextNumber();
         return gdp;
     }
 

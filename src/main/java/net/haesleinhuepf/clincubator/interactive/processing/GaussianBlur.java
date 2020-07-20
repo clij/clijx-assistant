@@ -37,23 +37,6 @@ public class GaussianBlur extends AbstractIncubatorPlugin implements Denoiser{
         sigma_xy = (Scrollbar) gdp.getSliders().get(0);
         sigma_z = (Scrollbar) gdp.getSliders().get(0);
 
-        MouseAdapter mouseAdapter = new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                refresh();
-            }
-        };
-
-        KeyAdapter keyAdapter = new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                refresh();
-            }
-        };
-
-        sigma_xy.addMouseListener(mouseAdapter);
-        sigma_z.addKeyListener(keyAdapter);
-
         return gdp;
     }
 

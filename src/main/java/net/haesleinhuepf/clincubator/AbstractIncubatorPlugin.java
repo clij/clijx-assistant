@@ -23,6 +23,7 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -277,7 +278,34 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                     });
                 }
             }
+        }
 
+        MouseAdapter mouseAdapter = new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                setTargetInvalid();
+            }
+        };
+        KeyAdapter keyAdapter = new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                setTargetInvalid();
+            }
+        };
+
+        ArrayList<Component> gui_components = new ArrayList<>();
+        if (dialog.getCheckboxes() != null) {
+            gui_components.addAll(dialog.getCheckboxes());
+        }
+        if (dialog.getSliders() != null) {
+            gui_components.addAll(dialog.getSliders());
+        }
+        if (dialog.getNumericFields() != null) {
+            gui_components.addAll(dialog.getNumericFields());
+        }
+        for (Component item : gui_components) {
+            item.addKeyListener(keyAdapter);
+            item.addMouseListener(mouseAdapter);
         }
 
         int delay = 500; //milliseconds

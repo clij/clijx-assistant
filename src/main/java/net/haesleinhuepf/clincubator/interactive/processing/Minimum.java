@@ -29,23 +29,6 @@ public class Minimum extends AbstractIncubatorPlugin implements Denoiser{
 
         radiusSlider = (Scrollbar) gdp.getSliders().get(0);
 
-        MouseAdapter mouseAdapter = new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                refresh();
-            }
-        };
-
-        KeyAdapter keyAdapter = new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                refresh();
-            }
-        };
-
-        radiusSlider.addMouseListener(mouseAdapter);
-        radiusSlider.addKeyListener(keyAdapter);
-
         return gdp;
 
         //radius = (int) gdp.getNextNumber();

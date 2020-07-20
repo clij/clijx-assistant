@@ -46,31 +46,6 @@ public class RigidTransform3D extends AbstractIncubatorPlugin {
         registrationRotationYSlider = (Scrollbar) gdp.getSliders().get(4);
         registrationRotationZSlider = (Scrollbar) gdp.getSliders().get(5);
 
-        MouseAdapter mouseAdapter = new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                refresh();
-            }
-        };
-
-        KeyAdapter keyAdapter = new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                refresh();
-            }
-        };
-
-        for (Scrollbar item : new Scrollbar[]{
-            registrationTranslationXSlider,
-            registrationTranslationYSlider,
-            registrationTranslationZSlider,
-            registrationRotationXSlider,
-            registrationRotationYSlider,
-            registrationRotationZSlider
-        }) {
-            item.addKeyListener(keyAdapter);
-            item.addMouseListener(mouseAdapter);
-        }
 
         return gdp;
     }

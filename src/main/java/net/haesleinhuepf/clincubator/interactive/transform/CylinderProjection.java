@@ -60,27 +60,9 @@ public class CylinderProjection extends AbstractIncubatorPlugin {
         gdp.addNumericField("Center_x (0...1)", relative_center_x);
         gdp.addNumericField("Center_z (0...1)", relative_center_z);
 
-        MouseAdapter mouseAdapter = new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                refresh();
-            }
-        };
-        KeyAdapter keyAdapter = new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                refresh();
-            }
-        };
-
         center_x_slider = (TextField) gdp.getNumericFields().get(0);
         center_y_slider = (TextField) gdp.getNumericFields().get(1);
 
-        center_x_slider.addMouseListener(mouseAdapter);
-        center_x_slider.addKeyListener(keyAdapter);
-
-        center_y_slider.addMouseListener(mouseAdapter);
-        center_y_slider.addKeyListener(keyAdapter);
 
         return gdp;
     }

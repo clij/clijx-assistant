@@ -43,24 +43,6 @@ public class ExcludeLabelsOutsideSizeRange extends AbstractIncubatorPlugin {
         min_pixel_count_slider = (Scrollbar) gdp.getSliders().get(0);
         max_pixel_count_slider = (Scrollbar) gdp.getSliders().get(1);
 
-        MouseAdapter mouseAdapter = new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                refresh();
-            }
-        };
-
-        KeyAdapter keyAdapter = new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                refresh();
-            }
-        };
-
-        min_pixel_count_slider.addMouseListener(mouseAdapter);
-        min_pixel_count_slider.addKeyListener(keyAdapter);
-
-        //radius = (int) gdp.getNextNumber();
         return gdp;
     }
 

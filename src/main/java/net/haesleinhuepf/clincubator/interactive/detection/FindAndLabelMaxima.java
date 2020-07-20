@@ -35,29 +35,8 @@ public class FindAndLabelMaxima extends AbstractIncubatorPlugin implements Detec
 
         tolerance_slider = (Scrollbar) gdp.getSliders().get(0);
 
-        MouseAdapter mouseAdapter = new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                refresh();
-            }
-        };
-
-        KeyAdapter keyAdapter = new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                refresh();
-            }
-        };
-
-        tolerance_slider.addMouseListener(mouseAdapter);
-        tolerance_slider.addKeyListener(keyAdapter);
-
         invert_checkbox = (Checkbox) gdp.getCheckboxes().get(0);
 
-        invert_checkbox.addMouseListener(mouseAdapter);
-        invert_checkbox.addKeyListener(keyAdapter);
-
-        //radius = (int) gdp.getNextNumber();
         return gdp;
     }
 
