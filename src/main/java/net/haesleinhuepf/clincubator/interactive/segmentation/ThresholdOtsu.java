@@ -27,9 +27,4 @@ public class ThresholdOtsu extends AbstractIncubatorPlugin implements Segmenter{
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle("Threshold Otsu " + my_source.getTitle());
     }
-
-    @Override
-    protected void refreshView() {
-        my_target.setZ(my_source.getZ());
-    }
 }

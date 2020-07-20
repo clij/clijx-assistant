@@ -80,10 +80,4 @@ public class Mean extends AbstractIncubatorPlugin implements Denoiser{
         my_target.setTitle("Mean filtered " + my_source.getTitle());
     }
 
-    @Override
-    protected void refreshView() {
-        my_target.setZ(my_source.getZ());
-    }
-
-
 }

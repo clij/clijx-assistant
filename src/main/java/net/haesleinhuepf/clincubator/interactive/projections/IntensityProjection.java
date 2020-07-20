@@ -16,4 +16,7 @@ public interface IntensityProjection extends SuggestedPlugin {
         return new Class[]{
         };
     }
+
+    default void refreshView() {}
+
 }

@@ -97,11 +97,4 @@ public class FindAndLabelMaxima extends AbstractIncubatorPlugin implements Detec
         my_target.setDisplayRange(0, 1);
         IncubatorUtilities.glasbey(my_target);
     }
-
-    @Override
-    protected void refreshView() {
-        my_target.setZ(my_source.getZ());
-    }
-
-
 }

@@ -129,12 +129,6 @@ public class RigidTransform3D extends AbstractIncubatorPlugin {
         my_target.setTitle("Rigid transformed " + my_source.getTitle());
     }
 
-
-    @Override
-    protected void refreshView() {
-        my_target.setZ(my_source.getZ());
-    }
-
     @Override
     public Class[] suggestedNextSteps() {
         return new Class[] {

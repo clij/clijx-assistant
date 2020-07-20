@@ -7,8 +7,11 @@ import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 class IncubatorPluginRegistry {
+    Timer heartbeat = null;
     private IncubatorPluginRegistry() { }
 
     // singleton
@@ -23,59 +26,74 @@ class IncubatorPluginRegistry {
     // register and unregister
     ArrayList<IncubatorPlugin> registeredPlugins = new ArrayList<>();
     public void register(IncubatorPlugin plugin) {
+        if (registeredPlugins.size() == 0) {
+            int delay = 100;
+            heartbeat = new Timer();
+            heartbeat.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    regenerate();
+                }
+            }, delay, delay);
+        }
+
         if (!registeredPlugins.contains(plugin)) {
             registeredPlugins.add(plugin);
         }
     }
     public void unregister(IncubatorPlugin plugin) {
         registeredPlugins.remove(plugin);
+        if (registeredPlugins.size() == 0) {
+            heartbeat.cancel();
+            heartbeat = null;
+        }
     }
 
     // execute actions
-    int level = 0;
-    boolean regenerating = false;
     public void invalidate(ImagePlus imp) {
+
+        IJ.log("Invalidate " + imp.getTitle());
+        if (imp.getStack() instanceof  CLIJxVirtualStack) {
+            ((CLIJxVirtualStack) imp.getStack()).getBuffer().setName("");
+        }
+        // search for plugins which have it as source and invalidate their targets
+        for (IncubatorPlugin plugin : registeredPlugins) {
+            if (plugin.getSource() == imp) {
+                plugin.setTargetInvalid();
+            }
+        }
+    }
+
+    boolean regenerating = false;
+    private void regenerate() {
         if (regenerating) {
             return;
         }
 
-        IJ.log("Invalidate " + imp.getTitle());
-        if (imp.getStack() instanceof CLIJxVirtualStack) {
-            ((CLIJxVirtualStack) imp.getStack()).getBuffer().setName("");
-        }
-
-        level ++;
-        // search for plugins which have it as source and invalidate their targets
-        for (IncubatorPlugin plugin : registeredPlugins) {
-            if (plugin.getSource() == imp) {
-                plugin.invalidateTarget();
-            }
-        }
-        level--;
-        if (level == 0) { // the whole tree has been marked
-            IJ.log("--- Starting to regenerate tree");
-            Panel panel = new Panel();
-            panel.setSize(20, 20);
-            panel.setBackground(new Color(255, 255, 128));
-            IJ.getInstance().add(panel);
-            panel.setLocation(0, 0);
-            regenerate();
-            IJ.getInstance().remove(panel);
-        }
-    }
-
-    private void regenerate() {
         regenerating = true;
+
+        //System.out.println("Regen");
 
         boolean found_something_to_regenerate = true;
         while(found_something_to_regenerate) {
             found_something_to_regenerate = false;
 
             for (IncubatorPlugin plugin : registeredPlugins) {
-                if (isValid(plugin.getSource()) && !isValid(plugin.getTarget())) {
-                    IJ.log("Regenerating " + plugin.getTarget().getTitle());
+                ImagePlus source = plugin.getSource();
+                ImagePlus target = plugin.getTarget();
+                if (source != null && target != null && isValid(source) && !isValid(target)) {
+                    IJ.log("Regenerating " + target.getTitle());
+
+                    plugin.setTargetIsProcessing();
                     plugin.refresh();
                     found_something_to_regenerate = true;
+
+                    if (isValid(target)) {
+                        plugin.setTargetValid();
+                    } else {
+                        plugin.setTargetInvalid();
+                    }
+
                     break;
                 }
             }

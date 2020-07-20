@@ -29,10 +29,4 @@ public class ConnectedComponentsLabeling extends AbstractIncubatorPlugin impleme
         my_target.setTitle("Connected components labelled " + my_source.getTitle());
         IncubatorUtilities.glasbey(my_target);
     }
-
-    @Override
-    protected void refreshView() {
-        my_target.setZ(my_source.getZ());
-    }
-
 }

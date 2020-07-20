@@ -51,9 +51,7 @@ public class TransposeXY extends AbstractIncubatorPlugin {
     }
 
     @Override
-    protected void refreshView() {
-        my_target.setZ((int) (my_source.getZ() * my_source.getCalibration().pixelDepth / my_target.getCalibration().pixelDepth));
-    }
+    public void refreshView() {}
 
 
     @Override

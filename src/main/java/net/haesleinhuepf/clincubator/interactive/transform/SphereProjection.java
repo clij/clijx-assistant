@@ -71,6 +71,10 @@ public class SphereProjection extends AbstractIncubatorPlugin {
         my_target.setTitle("Sphere projected " + my_source.getTitle());
     }
 
+
+    @Override
+    public void refreshView() {}
+
     @Override
     public Class[] suggestedNextSteps() {
         return new Class[] {

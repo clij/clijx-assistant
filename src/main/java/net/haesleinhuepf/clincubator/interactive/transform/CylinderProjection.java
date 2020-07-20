@@ -86,6 +86,9 @@ public class CylinderProjection extends AbstractIncubatorPlugin {
     }
 
 
+    @Override
+    public void refreshView() {}
+
 
     ClearCLBuffer result = null;
     public synchronized void refresh()

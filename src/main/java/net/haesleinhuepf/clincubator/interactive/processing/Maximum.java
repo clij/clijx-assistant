@@ -75,10 +75,4 @@ public class Maximum extends AbstractIncubatorPlugin implements Denoiser{
         my_target.setTitle("Maximum filtered " + my_source.getTitle());
     }
 
-    @Override
-    protected void refreshView() {
-        my_target.setZ(my_source.getZ());
-    }
-
-
 }

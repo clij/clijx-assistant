@@ -34,12 +34,6 @@ public class ExtendLabelsUntilTheyTouch extends AbstractIncubatorPlugin {
     }
 
     @Override
-    protected void refreshView() {
-        my_target.setZ(my_source.getZ());
-    }
-
-
-    @Override
     public Class[] suggestedNextSteps() {
         return new Class[] {
                // trhesholding

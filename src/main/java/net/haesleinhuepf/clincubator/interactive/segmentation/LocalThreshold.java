@@ -114,12 +114,6 @@ public class LocalThreshold extends AbstractIncubatorPlugin  implements Segmente
         my_target.setDisplayRange(0, 1);
     }
 
-    @Override
-    protected void refreshView() {
-        my_target.setZ(my_source.getZ());
-    }
-
-
     public static void main(String[] args) {
         new ImageJ();
         IJ.open("C:\\structure\\data\\clincubator_data\\Sphere_ISB200714_well5_1pos_ON_t000000.tif");

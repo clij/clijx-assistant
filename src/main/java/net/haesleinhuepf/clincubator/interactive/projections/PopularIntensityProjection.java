@@ -20,4 +20,6 @@ public interface PopularIntensityProjection extends SuggestedPlugin {
                 RigidTransform3D.class
         };
     }
+
+    default void refreshView() {}
 }

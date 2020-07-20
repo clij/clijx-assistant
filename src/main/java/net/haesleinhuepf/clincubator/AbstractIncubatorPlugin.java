@@ -30,10 +30,19 @@ import java.util.TimerTask;
 public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, SuggestedPlugin, IncubatorPlugin {
 
     private final static String online_help = "https://github.com/haesleinhuepf/clincubator/";
+    private final String doneText = "Done";
+    private final String refreshText = "Refresh";
+
+    private final Color refreshing_color = new Color(205, 205, 128);
+    private final Color invalid_color = new Color(205, 128, 128);
+    private final Color valid_color = new Color(128, 205, 128);
+
 
     protected ImagePlus my_source = null;
+    /*
     int former_t = -1;
     int former_c = -1;
+     */
     protected ImagePlus my_target = null;
 
 
@@ -68,7 +77,14 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
     }
 
     public abstract void refresh();
-    protected void refreshView() {}
+    public void refreshView() {
+        if (my_target == null || my_source == null) {
+            return;
+        }
+        if (my_source.getNSlices() == my_target.getNSlices()) {
+            my_target.setZ(my_source.getZ());
+        }
+    }
     protected boolean parametersWereChanged() {
         return false;
     }
@@ -118,11 +134,11 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         }
         //System.out.println(my_target.getTitle() + " Pulling took " + (System.currentTimeMillis() - timeStamp) + " ms");
         paused = false;
-        invalidateTarget();
-        imageUpdated(my_target);
+        //invalidateTarget();
+        //imageUpdated(my_target);
         IncubatorUtilities.transferCalibration(my_source, my_target);
 
-        validateTarget();
+        //validateTarget();
     }
 
     protected void handlePopupMenu(MouseEvent e) {
@@ -225,8 +241,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
     Timer heartbeat = null;
     GenericDialog registered_dialog = null;
     protected void registerDialogAsNoneModal(GenericDialog dialog) {
-        String doneText = "Done";
-        String refreshText = "Refresh";
+
 
         dialog.setModal(false);
         dialog.setOKLabel(refreshText);
@@ -241,7 +256,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             @Override
             public void keyTyped(KeyEvent e) {
                 if (e.isActionKey()) {
-                    refresh();
+                    //IncubatorPluginRegistry.getInstance().invalidate(getTarget());
                     return;
                 }
                 super.keyTyped(e);
@@ -249,19 +264,17 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         });
         registered_dialog = dialog;
 
+        setButtonColor(doneText, valid_color);
+        setButtonColor(refreshText, valid_color);
         for (Button component : dialog.getButtons()) {
             if (component instanceof Button) {
-                if (component.getLabel().compareTo(doneText) == 0) {
-                    //component.setOpaque(true);
-                    component.setBackground(new Color(128,205,128) );
-                }
                 if (component.getLabel().compareTo(refreshText) == 0) {
                     for (ActionListener actionlistener : component.getActionListeners()) {
                         component.removeActionListener(actionlistener);
                     }
-                    component.addActionListener((a) -> {refresh();});
-                    //component.setOpaque(true);
-                    component.setBackground(new Color(205,205,128) );
+                    component.addActionListener((a) -> {
+                        setTargetInvalid();
+                    });
                 }
             }
 
@@ -321,7 +334,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             refreshView();
         }
     }
-
+/*
     String stamp = "";
     protected boolean sourceWasChanged() {
         if (my_source.getT() != former_t || my_source.getC() != former_c) {
@@ -337,24 +350,41 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         }
         return true;
     }
-
+*/
     protected void validateSource() {
-        former_c = my_source.getC();
+        /*former_c = my_source.getC();
         former_t = my_source.getT();
         if (my_source.getStack() instanceof  CLIJxVirtualStack) {
             stamp = ((CLIJxVirtualStack) my_source.getStack()).getBuffer().getName();
-        }
+        }*/
     }
 
-    protected void validateTarget() {
+    public void setTargetInvalid() {
+        IncubatorPluginRegistry.getInstance().invalidate(my_target);
+        setButtonColor(refreshText, invalid_color);
+    }
+
+    public void setTargetIsProcessing() {
         if (my_target.getStack() instanceof CLIJxVirtualStack) {
             IncubatorUtilities.stamp(((CLIJxVirtualStack) my_target.getStack()).getBuffer());
-        } else {
-            //System.out.println("Cannot mark " + my_target);
         }
+        setButtonColor(refreshText, refreshing_color);
     }
 
-    public void invalidateTarget() {
-        IncubatorPluginRegistry.getInstance().invalidate(my_target);
+    @Override
+    public void setTargetValid() {
+        setButtonColor(refreshText, valid_color);
+    }
+
+    private void setButtonColor(String button, Color color) {
+        if (registered_dialog != null) {
+            for (Button component : registered_dialog.getButtons()) {
+                if (component != null) {
+                    if (component.getLabel().compareTo(button) == 0) {
+                        component.setBackground(color);
+                    }
+                }
+            }
+        }
     }
 }

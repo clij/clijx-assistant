@@ -7,5 +7,7 @@ public interface IncubatorPlugin {
     ImagePlus getSource();
     ImagePlus getTarget();
 
-    void invalidateTarget();
+    void setTargetInvalid();
+    void setTargetIsProcessing();
+    void setTargetValid();
 }

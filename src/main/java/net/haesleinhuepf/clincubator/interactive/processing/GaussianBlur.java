@@ -83,11 +83,6 @@ public class GaussianBlur extends AbstractIncubatorPlugin implements Denoiser{
     }
 
     @Override
-    protected void refreshView() {
-        my_target.setZ(my_source.getZ());
-    }
-
-    @Override
     public Class[] suggestedNextSteps() {
         return new Class[] {
                 BackgroundSubtraction.class,

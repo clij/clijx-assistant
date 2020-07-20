@@ -27,6 +27,4 @@ public class MedianZProjection extends AbstractIncubatorPlugin implements Intens
         my_target.setTitle("Median Z projected " + my_source.getTitle());
     }
 
-
-
 }

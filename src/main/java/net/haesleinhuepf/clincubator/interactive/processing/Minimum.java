@@ -75,10 +75,5 @@ public class Minimum extends AbstractIncubatorPlugin implements Denoiser{
         my_target.setTitle("Minimum filtered " + my_source.getTitle());
     }
 
-    @Override
-    protected void refreshView() {
-        my_target.setZ(my_source.getZ());
-    }
-
 
 }

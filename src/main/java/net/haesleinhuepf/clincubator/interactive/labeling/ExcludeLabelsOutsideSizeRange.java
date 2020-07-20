@@ -107,13 +107,6 @@ public class ExcludeLabelsOutsideSizeRange extends AbstractIncubatorPlugin {
         IncubatorUtilities.glasbey(my_target);
     }
 
-
-    @Override
-    protected void refreshView() {
-        my_target.setZ(my_source.getZ());
-    }
-
-
     @Override
     public Class[] suggestedNextSteps() {
         return new Class[] {
