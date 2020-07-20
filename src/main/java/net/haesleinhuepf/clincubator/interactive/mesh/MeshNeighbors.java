@@ -38,6 +38,7 @@ public class MeshNeighbors extends AbstractIncubatorPlugin {
         clijx.centroidsOfLabels(pushed, pointlist);
         pushed.close();
 
+        clijx.set(result, 0);
         clijx.touchMatrixToMesh(pointlist, touch_matrix, result);
         touch_matrix.close();
         pointlist.close();

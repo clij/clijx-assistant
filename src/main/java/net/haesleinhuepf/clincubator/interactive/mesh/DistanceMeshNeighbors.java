@@ -41,6 +41,7 @@ public class DistanceMeshNeighbors extends AbstractIncubatorPlugin {
         touch_matrix.close();
         distance_matrix.close();
 
+        clijx.set(result, 0);
         clijx.touchMatrixToMesh(pointlist, distance_touch_matrix, result);
 
         pointlist.close();
