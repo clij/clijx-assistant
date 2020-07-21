@@ -14,7 +14,7 @@ public class MaximumZProjection extends AbstractIncubatorPlugin implements Sugge
 
     public Class[] suggestedNextSteps() {
         return new Class[] {
-            
+            net.haesleinhuepf.clincubator.interactive.generated.DetectAndLabelMaxima.class
         };
     }
 

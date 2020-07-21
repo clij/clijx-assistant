@@ -6,21 +6,21 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = SuggestedPlugin.class)
 // this is generated code. See src/test/java/net/haesleinhuepf/clincubator/PluginGenerator.java for details.
-public class MaximumImageAndScalar extends AbstractIncubatorPlugin implements SuggestedPlugin {
+public class Minimum extends AbstractIncubatorPlugin implements SuggestedPlugin {
 
-    public MaximumImageAndScalar() {
-        super(new net.haesleinhuepf.clij2.plugins.MaximumImageAndScalar());
+    public Minimum() {
+        super(new net.haesleinhuepf.clij2.plugins.Minimum3DBox());
     }
 
     public Class[] suggestedNextSteps() {
         return new Class[] {
-            
+            net.haesleinhuepf.clincubator.interactive.generated.Maximum.class
         };
     }
 
     public Class[] suggestedPreviousSteps() {
         return new Class[]{
-            net.haesleinhuepf.clincubator.interactive.generated.DifferenceOfGaussian.class
+            
         };
     }
 }

@@ -20,7 +20,7 @@ public class ExtendLabelingViaVoronoi extends AbstractIncubatorPlugin implements
 
     public Class[] suggestedPreviousSteps() {
         return new Class[]{
-            
+            net.haesleinhuepf.clincubator.interactive.generated.DetectAndLabelMaxima.class
         };
     }
 }
