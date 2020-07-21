@@ -22,24 +22,7 @@ public class AverageNeighborDistance extends AbstractIncubatorPlugin implements 
             result = clijx.create(pushed.getWidth(), pushed.getHeight());
         }
 
-        int number_of_labels = (int)clijx.maximumOfAllPixels(pushed);
-        ClearCLBuffer touch_matrix = clijx.create(number_of_labels + 1, number_of_labels + 1);
-        clijx.generateTouchMatrix(pushed, touch_matrix);
-
-        ClearCLBuffer pointlist = clijx.create(number_of_labels, pushed.getDimension());
-        clijx.centroidsOfLabels(pushed, pointlist);
-
-        ClearCLBuffer distance_matrix = clijx.create(number_of_labels + 1, number_of_labels + 1);
-        clijx.generateDistanceMatrix(pointlist, pointlist, distance_matrix);
-
-        ClearCLBuffer distance_vector = clijx.create(number_of_labels + 1, 1, 1);
-        clijx.averageDistanceOfTouchingNeighbors(distance_matrix, touch_matrix, distance_vector);
-        touch_matrix.close();
-        distance_matrix.close();
-        pointlist.close();
-
-        clijx.replaceIntensities(pushed, distance_vector, result);
-        distance_vector.close();
+        net.haesleinhuepf.clijx.plugins.AverageNeighborDistance.averageNeighborDistance(clijx, pushed, result);
         pushed.close();
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));

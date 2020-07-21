@@ -9,6 +9,9 @@ import ij.measure.Calibration;
 import ij.plugin.PlugIn;
 import net.haesleinhuepf.IncubatorUtilities;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij.macro.CLIJHandler;
+import net.haesleinhuepf.clij2.AbstractCLIJ2Plugin;
+import net.haesleinhuepf.clij2.plugins.MeanZProjection;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.MemoryDisplay;
 import net.haesleinhuepf.clincubator.utilities.IncubatorPlugin;
@@ -46,8 +49,14 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
      */
     protected ImagePlus my_target = null;
 
+    private AbstractCLIJ2Plugin plugin = null;
 
+    public AbstractIncubatorPlugin(){}
 
+    public AbstractIncubatorPlugin(AbstractCLIJ2Plugin plugin) {
+        this.plugin = plugin;
+        plugin.setCLIJ2(CLIJx.getInstance());
+    }
 
     @Override
     public void run(String arg) {
@@ -67,17 +76,111 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         }
     }
 
+    protected GenericDialog buildNonModalDialog(Frame parent) {
+        GenericDialog gd = new GenericDialog(IncubatorUtilities.niceName(this.getClass().getSimpleName()));
+        if (plugin == null) {
+            return gd;
+        }
+        Object[] default_values = null; // todo make getDefaultValues() in AbstractCLIJPlugin public
+        Object[] args = null;
+
+        String[] parameters = plugin.getParameterHelpText().split(",");
+        if (parameters.length > 0 && parameters[0].length() > 0) {
+            args = new Object[parameters.length];
+            for (int i = 0; i < parameters.length; i++) {
+                String[] parameterParts = parameters[i].trim().split(" ");
+                String parameterType = parameterParts[0];
+                String parameterName = parameterParts[1];
+                boolean byRef = false;
+                if (parameterType.compareTo("ByRef") == 0) {
+                    parameterType = parameterParts[1];
+                    parameterName = parameterParts[2];
+                    byRef = true;
+                }
+                if (parameterType.compareTo("Image") == 0) {
+                    // no choice
+                } else if (parameterType.compareTo("String") == 0) {
+                    if (default_values != null) {
+                        gd.addStringField(parameterName, (String) default_values[i], 2);
+                    } else {
+                        gd.addStringField(parameterName, "");
+                    }
+                } else if (parameterType.compareTo("Boolean") == 0) {
+                    if (default_values != null) {
+                        gd.addCheckbox(parameterName, Boolean.valueOf("" + default_values[i]));
+                    } else {
+                        gd.addCheckbox(parameterName, true);
+                    }
+                } else { // Number
+                    if (default_values != null) {
+                        gd.addNumericField(parameterName, Double.valueOf("" + default_values[i]), 2);
+                    } else {
+                        gd.addNumericField(parameterName, 2, 2);
+                    }
+                }
+            }
+        }
+        return gd;
+    }
+
+    ClearCLBuffer result = null;
+    public synchronized void refresh()
+    {
+        if (plugin == null) {
+            return;
+        }
+
+        CLIJx clijx = CLIJx.getInstance();
+
+        ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
+        validateSource();
+
+        String[] parameters = plugin.getParameterHelpText().split(",");
+
+        Object[] args = new Object[parameters.length];
+
+        if (parameters.length > 0 && parameters[0].length() > 0) {
+            // skip first two parameters because they are images
+            for (int i = 2; i < parameters.length; i++) {
+                String[] parameterParts = parameters[i].trim().split(" ");
+                String parameterType = parameterParts[0];
+                String parameterName = parameterParts[1];
+                boolean byRef = false;
+                if (parameterType.compareTo("ByRef") == 0) {
+                    parameterType = parameterParts[1];
+                    parameterName = parameterParts[2];
+                    byRef = true;
+                }
+
+                if (parameterType.compareTo("Image") == 0) {
+                    // no choice
+                } else if (parameterType.compareTo("String") == 0) {
+                    args[i] = registered_dialog.getNextString();
+                } else if (parameterType.compareTo("Boolean") == 0) {
+                    boolean value = registered_dialog.getNextBoolean();
+                    args[i] = value ? 1.0 : 0.0;
+                } else { // Number
+                    args[i] = registered_dialog.getNextNumber();
+                }
+            }
+        }
+
+        args[0] = pushed;
+        plugin.setArgs(args);
+        args[1] = plugin.createOutputBufferFromSource(pushed);
+        plugin.setArgs(args); // might not be necessary
+
+        pushed.close();
+
+        setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
+        my_target.setTitle(IncubatorUtilities.niceName(plugin.getName()) + " of " + my_source.getTitle());
+    }
 
     protected boolean configure() {
         setSource(IJ.getImage());
         return true;
     }
 
-    protected GenericDialog buildNonModalDialog(Frame parent) {
-        return new GenericDialog(IncubatorUtilities.niceName(this.getClass().getSimpleName()));
-    }
-
-    public abstract void refresh();
     public void refreshView() {
         if (my_target == null || my_source == null) {
             return;

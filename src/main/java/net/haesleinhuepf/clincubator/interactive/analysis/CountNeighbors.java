@@ -29,16 +29,6 @@ public class CountNeighbors extends AbstractIncubatorPlugin implements LabelAnal
             result = clijx.create(pushed.getWidth(), pushed.getHeight());
         }
 
-        int number_of_labels = (int)clijx.maximumOfAllPixels(pushed);
-        ClearCLBuffer touch_matrix = clijx.create(number_of_labels + 1, number_of_labels + 1);
-        clijx.generateTouchMatrix(pushed, touch_matrix);
-
-        ClearCLBuffer touch_count_vector = clijx.create(number_of_labels + 1, 1, 1);
-        clijx.countTouchingNeighbors(touch_matrix, touch_count_vector);
-        touch_matrix.close();
-
-        clijx.replaceIntensities(pushed, touch_count_vector, result);
-        touch_count_vector.close();
         pushed.close();
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
