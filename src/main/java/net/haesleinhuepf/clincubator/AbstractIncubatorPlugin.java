@@ -9,13 +9,17 @@ import ij.measure.Calibration;
 import ij.plugin.PlugIn;
 import net.haesleinhuepf.IncubatorUtilities;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij.clearcl.exceptions.OpenCLException;
 import net.haesleinhuepf.clij.macro.AbstractCLIJPlugin;
 import net.haesleinhuepf.clij.macro.CLIJHandler;
+import net.haesleinhuepf.clij.macro.CLIJOpenCLProcessor;
 import net.haesleinhuepf.clij2.AbstractCLIJ2Plugin;
 import net.haesleinhuepf.clij2.plugins.MeanZProjection;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.MemoryDisplay;
 import net.haesleinhuepf.clijx.utilities.AbstractCLIJxPlugin;
+import net.haesleinhuepf.clincubator.scriptgenerator.MacroGenerator;
+import net.haesleinhuepf.clincubator.scriptgenerator.ScriptGenerator;
 import net.haesleinhuepf.clincubator.utilities.IncubatorPlugin;
 import net.haesleinhuepf.clincubator.utilities.MenuSeparator;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
@@ -25,6 +29,8 @@ import org.scijava.ui.swing.script.SyntaxHighlighter;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -52,6 +58,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
     protected ImagePlus my_target = null;
 
     private AbstractCLIJPlugin plugin = null;
+    private Object[] args = null;
 
     public AbstractIncubatorPlugin(){}
 
@@ -92,11 +99,9 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             return gd;
         }
         Object[] default_values = plugin.getDefaultValues();
-        Object[] args = null;
 
         String[] parameters = plugin.getParameterHelpText().split(",");
         if (parameters.length > 0 && parameters[0].length() > 0) {
-            args = new Object[parameters.length];
             for (int i = 0; i < parameters.length; i++) {
                 String[] parameterParts = parameters[i].trim().split(" ");
                 String parameterType = parameterParts[0];
@@ -149,7 +154,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
 
         Object[] default_values = plugin.getDefaultValues();
-        Object[] args = new Object[parameters.length];
+        args = new Object[parameters.length];
 
         int boolean_count = 0;
         int number_count = 0;
@@ -216,10 +221,14 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         args[1] = result;
         plugin.setArgs(args); // might not be necessary
 
+        if (plugin instanceof CLIJOpenCLProcessor) {
+            ((CLIJOpenCLProcessor) plugin).executeCL();
+        }
+
         pushed.close();
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle(IncubatorUtilities.niceName(plugin.getName()) + " of " + my_source.getTitle());
+        my_target.setTitle(IncubatorUtilities.niceName(this.getClass().getSimpleName()) + " of " + my_source.getTitle());
     }
 
     protected boolean configure() {
@@ -356,6 +365,15 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
         // -------------------------------------------------------------------------------------------------------------
 
+        Menu script = new Menu("Generate script");
+
+        addMenuAction(script, "ImageJ Macro", (a) -> {generateScript(new MacroGenerator());});
+
+        menu.add(script);
+
+
+        // -------------------------------------------------------------------------------------------------------------
+
         Menu info = new Menu("Info");
         addMenuAction(info, "Source: " + my_source.getTitle(), (a) -> {
             System.out.println("huhu source");
@@ -386,6 +404,23 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             }
         });
         return menu;
+    }
+
+    protected void generateScript(ScriptGenerator generator) {
+        String script = generator.header() +
+
+                IncubatorPluginRegistry.getInstance().generateScript(generator);
+
+        File outputTarget = new File(System.getProperty("java.io.tmpdir") + "new" + generator.fileEnding());
+
+        try {
+            FileWriter writer = new FileWriter(outputTarget);
+            writer.write(script);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        IJ.open(outputTarget.getAbsolutePath());
     }
 
     Timer heartbeat = null;
@@ -563,5 +598,13 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                 }
             }
         }
+    }
+
+    public AbstractCLIJPlugin getCLIJMacroPlugin() {
+        return plugin;
+    }
+
+    public Object[] getArgs() {
+        return args;
     }
 }

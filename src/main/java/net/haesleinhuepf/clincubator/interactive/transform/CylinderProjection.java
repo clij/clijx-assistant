@@ -3,17 +3,14 @@ package net.haesleinhuepf.clincubator.interactive.transform;
 import ij.IJ;
 import ij.gui.GenericDialog;
 import net.haesleinhuepf.clij2.CLIJ2;
+import net.haesleinhuepf.clijx.plugins.RigidTransform;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.clincubator.interactive.generated.MaximumZProjection;
+import net.haesleinhuepf.clincubator.interactive.generated.MeanZProjection;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
-import net.haesleinhuepf.clincubator.interactive.processing.BackgroundSubtraction;
-import net.haesleinhuepf.clincubator.interactive.processing.GaussianBlur;
-import net.haesleinhuepf.clincubator.interactive.processing.Mean;
-import net.haesleinhuepf.clincubator.interactive.processing.Median;
-import net.haesleinhuepf.clincubator.interactive.projections.MaximumZProjection;
-import net.haesleinhuepf.clincubator.interactive.projections.MeanZProjection;
 import org.scijava.plugin.Plugin;
 
 import java.awt.*;
@@ -129,7 +126,7 @@ public class CylinderProjection extends AbstractIncubatorPlugin {
     public Class[] suggestedPreviousSteps() {
         return new Class[]{
                 MakeIsotropic.class,
-                RigidTransform3D.class
+                RigidTransform.class
         };
     }
 }

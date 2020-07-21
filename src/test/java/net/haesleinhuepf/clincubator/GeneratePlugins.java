@@ -41,7 +41,7 @@ public class GeneratePlugins {
                 template = template.replace("Template", betterClassName);
 
                 {
-                    HashMap<String, Integer> following = combinedUsageStats.getFollowersOf(methodName.replace("CLIJ2_", "").replace("CLIJ_", "").replace("CLIJz_", ""));
+                    HashMap<String, Integer> following = combinedUsageStats.getFollowersOf(methodName.replace("CLIJ2_", "").replace("CLIJ_", "").replace("CLIJx_", ""));
                     String suggestedNextSteps = "";
                     for (String method : following.keySet()) {
                         String nextName = classFromMethodName(service, method);
@@ -57,7 +57,7 @@ public class GeneratePlugins {
                 }
 
                 {
-                    HashMap<String, Integer> previous = combinedUsageStats.getFollowing(methodName.replace("CLIJ2_", "").replace("CLIJ_", "").replace("CLIJz_", ""));
+                    HashMap<String, Integer> previous = combinedUsageStats.getFollowing(methodName.replace("CLIJ2_", "").replace("CLIJ_", "").replace("CLIJx_", ""));
                     String suggestedNextSteps = "";
                     for (String method : previous.keySet()) {
                         String nextName = classFromMethodName(service, method);
@@ -118,6 +118,11 @@ public class GeneratePlugins {
 
     private static boolean isIncubatablePlugin(CLIJMacroPlugin clijMacroPlugin) {
         String parameters = clijMacroPlugin.getParameterHelpText();
+
+        //if (!clijMacroPlugin.getName().contains("detectAnd")) {
+        //    return false;
+        //}
+
         while (parameters.contains(", ")) {
             parameters = parameters.replace(", ", ",");
         }
@@ -204,7 +209,7 @@ public class GeneratePlugins {
         blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumZProjectionThresholdedBounded.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.Scale2D.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumZProjection
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Maximum3DBox.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.Maximum3DBox.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.Scale3D.class);
         //blocklist.add(net.haesleinhuepf.clijx.plugins.LaplacianOfGaussian3D
         blocklist.add(net.haesleinhuepf.clij2.plugins.ErodeBox.class);
@@ -347,7 +352,7 @@ public class GeneratePlugins {
         blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdIntermodes.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.CopySlice.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumSliceBySliceSphere.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Minimum3DBox.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.Minimum3DBox.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.CentroidsOfLabels.class);
         blocklist.add(net.haesleinhuepf.clijx.tilor.implementations.Mean3DBox.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMinimaSliceBySliceBox.class);
@@ -376,7 +381,7 @@ public class GeneratePlugins {
         //blocklist.add(net.haesleinhuepf.clij2.plugins.LaplaceBox
         blocklist.add(net.haesleinhuepf.clij2.plugins.DifferenceOfGaussian2D.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.CountNonZeroVoxels3DSphere
-        blocklist.add(net.haesleinhuepf.clij2.plugins.DifferenceOfGaussian3D.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.DifferenceOfGaussian3D.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.TransposeXZ
         //blocklist.add(net.haesleinhuepf.clij2.plugins.TransposeXY
         blocklist.add(net.haesleinhuepf.clij2.plugins.ConvertUInt16.class);
@@ -394,10 +399,6 @@ public class GeneratePlugins {
         if (blocklist.contains(clijMacroPlugin.getClass())) {
             return false;
         }
-
-        //if (!clijMacroPlugin.getName().contains("Otsu")) {
-        //    return false;
-        //}
 
         //System.out.println("Z");
 

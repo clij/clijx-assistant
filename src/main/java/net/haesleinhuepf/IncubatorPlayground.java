@@ -8,13 +8,12 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.MemoryDisplay;
+import net.haesleinhuepf.clincubator.interactive.generated.MaximumZProjection;
+import net.haesleinhuepf.clincubator.interactive.generated.Median;
+import net.haesleinhuepf.clincubator.interactive.generated.TopHat;
 import net.haesleinhuepf.spimcat.io.VirtualTifStack;
-import net.haesleinhuepf.clincubator.interactive.processing.BackgroundSubtraction;
-import net.haesleinhuepf.clincubator.interactive.processing.Median;
 import net.haesleinhuepf.clincubator.interactive.transform.CylinderProjection;
-import net.haesleinhuepf.clincubator.interactive.projections.MaximumZProjection;
 import net.haesleinhuepf.clincubator.interactive.transform.MakeIsotropic;
-import net.haesleinhuepf.clincubator.interactive.transform.RigidTransform3D;
 
 import java.io.FileNotFoundException;
 
@@ -60,9 +59,9 @@ public class IncubatorPlayground implements PlugInFilter {
 
         //if (true) return;
 
-        new RigidTransform3D().run("");
+        //new RigidTransform().run("");
 
-        new BackgroundSubtraction().run("");
+        new TopHat().run("");
 
         new CylinderProjection().run("");
 

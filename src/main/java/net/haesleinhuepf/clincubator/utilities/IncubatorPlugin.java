@@ -1,6 +1,7 @@
 package net.haesleinhuepf.clincubator.utilities;
 
 import ij.ImagePlus;
+import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 
 public interface IncubatorPlugin {
     void refresh();
@@ -10,4 +11,9 @@ public interface IncubatorPlugin {
     void setTargetInvalid();
     void setTargetIsProcessing();
     void setTargetValid();
+
+    CLIJMacroPlugin getCLIJMacroPlugin();
+
+    Object[] getArgs();
+
 }

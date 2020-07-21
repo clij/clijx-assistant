@@ -25,7 +25,6 @@ public class DetectAndLabelMaxima extends AbstractCLIJ2Plugin implements CLIJMac
     public static boolean detectAndLabelMaxima(CLIJ2 clijx, ClearCLBuffer pushed, ClearCLBuffer result, Float sigma_x, Float sigma_y, Float sigma_z, Boolean invert) {
         ClearCLBuffer blurred = clijx.create(pushed.getDimensions(), NativeTypeEnum.Float);
         clijx.gaussianBlur3D(pushed, blurred, sigma_x, sigma_y, sigma_z);
-        pushed.close();
 
         if (invert) {
             ClearCLBuffer inverted = clijx.create(blurred);

@@ -44,14 +44,21 @@ public class CombinedUsageStats {
         HashMap<String, String> producers = new HashMap<>();
         HashMap<String, String> consumers = new HashMap<>();
         for (String line : lines) {
+            line = line.replace("CLIJx_", "CLIJ2_");
             if (line.contains("Ext.CLIJ2_")) {
                 String[] temp = line.split("Ext.CLIJ2_")[1].split("\\(");
                 String method = temp[0];
                 String[] parameters = temp[1].replace(");","").split(",");
 
 
-                //System.out.println("Method: " + method);
+                System.out.println("Method: " + method);
                 CLIJMacroPlugin plugin = service.getCLIJMacroPlugin("CLIJ2_" + method);
+                if (plugin == null) {
+                    plugin = service.getCLIJMacroPlugin("CLIJx_" + method);
+                }
+                if (plugin == null) {
+                    continue;
+                }
                 //System.out.println(plugin);
                 String[] parameterDefinitions = plugin.getParameterHelpText().replace(",", ", ").replace("  ", " ").replace("  ", " ").split(",");
 

@@ -3,17 +3,19 @@ package net.haesleinhuepf.clincubator.interactive.transform;
 import ij.IJ;
 import ij.gui.GenericDialog;
 import ij.measure.Calibration;
+import net.haesleinhuepf.clijx.plugins.RigidTransform;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.clearcl.ClearCLImage;
 import net.haesleinhuepf.clij.clearcl.enums.ImageChannelDataType;
 import net.haesleinhuepf.clijx.CLIJx;
-import net.haesleinhuepf.clincubator.interactive.processing.*;
+import net.haesleinhuepf.clincubator.interactive.generated.GaussianBlur;
+import net.haesleinhuepf.clincubator.interactive.generated.LaplacianOfGaussian;
+import net.haesleinhuepf.clincubator.interactive.generated.Mean;
+import net.haesleinhuepf.clincubator.interactive.generated.Median;
 import net.haesleinhuepf.clincubator.utilities.MenuSeparator;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
-import net.haesleinhuepf.clincubator.interactive.projections.MaximumZProjection;
-import net.haesleinhuepf.clincubator.interactive.projections.MeanZProjection;
 import net.imglib2.realtransform.AffineTransform3D;
 import org.scijava.plugin.Plugin;
 
@@ -90,7 +92,7 @@ public class MakeIsotropic extends AbstractIncubatorPlugin {
     @Override
     public Class[] suggestedNextSteps() {
         return new Class[] {
-                RigidTransform3D.class,
+                RigidTransform.class,
                 MenuSeparator.class,
                 SphereProjection.class,
                 CylinderProjection.class
@@ -103,8 +105,8 @@ public class MakeIsotropic extends AbstractIncubatorPlugin {
                 GaussianBlur.class,
                 Mean.class,
                 Median.class,
-                DifferenceOfGaussian.class,
-                BackgroundSubtraction.class,
+                //DifferenceOfGaussian.class,
+                //BackgroundSubtraction.class,
                 LaplacianOfGaussian.class
         };
     }
