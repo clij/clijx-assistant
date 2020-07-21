@@ -2,7 +2,9 @@ package net.haesleinhuepf.clincubator;
 
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.CLIJMacroPluginService;
+import net.haesleinhuepf.clij2.plugins.Mean3DBox;
 import net.haesleinhuepf.clij2.plugins.Watershed;
+import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import org.scijava.Context;
 
 import java.io.File;
@@ -20,17 +22,27 @@ public class GeneratePlugins {
             CLIJMacroPlugin plugin = service.getCLIJMacroPlugin(pluginName);
             if (isIncubatablePlugin(plugin)) {
                 System.out.println(plugin.getClass().getName());
-                /*
+
                 String methodName = pluginName.replace("CLIJ2", "CLIJx");
                 String className = pluginName.replace("CLIJ2_", "");
                 className = className.substring(0,1).toUpperCase() + className.substring(1);
 
                 String template = new String(Files.readAllBytes(Paths.get("src/main/java/net/haesleinhuepf/clincubator/interactive/generated/Template.java")));
 
+                String betterClassName = className.replace("3D", "").replace("Box","");
+
+                template = template.replace("//@Plugin(type = SuggestedPlugin.class)", "@Plugin(type = SuggestedPlugin.class)\n// this is generated code. See src/test/java/net/haesleinhuepf/clincubator/PluginGenerator.java for details.");
+                template = template.replace("net.haesleinhuepf.clij2.plugins.Mean3DBox", plugin.getClass().getName());
+                template = template.replace("Mean3DBox", className);
+                template = template.replace("Template", betterClassName);
 
 
 
-                File outputTarget = new File("../clijx/src/main/java/net/haesleinhuepf/clijx/clij2wrappers/" + className + ".java");
+                /*SUGGESTED_NEXT_STEPS*/
+                /*SUGGESTED_PREVIOUS_STEPS*/
+
+
+                File outputTarget = new File("../src/main/java/net/haesleinhuepf/clincubator/interactive/generated/" + betterClassName + ".java");
 
                 try {
                     FileWriter writer = new FileWriter(outputTarget);
@@ -39,7 +51,6 @@ public class GeneratePlugins {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                */
             }
         }
     }
