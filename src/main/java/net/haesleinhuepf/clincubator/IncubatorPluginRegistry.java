@@ -51,7 +51,9 @@ class IncubatorPluginRegistry {
 
     // execute actions
     public void invalidate(ImagePlus imp) {
-
+        if (imp == null) {
+            return;
+        }
         IJ.log("Invalidate " + imp.getTitle());
         if (imp.getStack() instanceof  CLIJxVirtualStack) {
             ((CLIJxVirtualStack) imp.getStack()).getBuffer().setName("");

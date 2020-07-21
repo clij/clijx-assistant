@@ -80,6 +80,9 @@ public class MakeIsotropic extends AbstractIncubatorPlugin {
 
     @Override
     public void refreshView() {
+        if (my_source == null || my_target == null) {
+            return;
+        }
         my_target.setZ((int) (my_source.getZ() * my_source.getCalibration().pixelDepth / my_target.getCalibration().pixelDepth));
     }
 

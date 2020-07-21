@@ -9,11 +9,13 @@ import ij.measure.Calibration;
 import ij.plugin.PlugIn;
 import net.haesleinhuepf.IncubatorUtilities;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij.macro.AbstractCLIJPlugin;
 import net.haesleinhuepf.clij.macro.CLIJHandler;
 import net.haesleinhuepf.clij2.AbstractCLIJ2Plugin;
 import net.haesleinhuepf.clij2.plugins.MeanZProjection;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.MemoryDisplay;
+import net.haesleinhuepf.clijx.utilities.AbstractCLIJxPlugin;
 import net.haesleinhuepf.clincubator.utilities.IncubatorPlugin;
 import net.haesleinhuepf.clincubator.utilities.MenuSeparator;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
@@ -49,13 +51,21 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
      */
     protected ImagePlus my_target = null;
 
-    private AbstractCLIJ2Plugin plugin = null;
+    private AbstractCLIJPlugin plugin = null;
 
     public AbstractIncubatorPlugin(){}
 
-    public AbstractIncubatorPlugin(AbstractCLIJ2Plugin plugin) {
+    public AbstractIncubatorPlugin(AbstractCLIJPlugin plugin) {
         this.plugin = plugin;
-        plugin.setCLIJ2(CLIJx.getInstance());
+        if (plugin instanceof AbstractCLIJPlugin) {
+            ((AbstractCLIJPlugin) plugin).setClij(CLIJx.getInstance().getCLIJ());
+        }
+
+        if (plugin instanceof AbstractCLIJ2Plugin) {
+            ((AbstractCLIJ2Plugin) plugin).setCLIJ2(CLIJx.getInstance());
+        } else if (plugin instanceof AbstractCLIJxPlugin) {
+            //((AbstractCLIJxPlugin) plugin).setCLIJx(CLIJx.getInstance());
+        }
     }
 
     @Override
@@ -81,7 +91,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         if (plugin == null) {
             return gd;
         }
-        Object[] default_values = null; // todo make getDefaultValues() in AbstractCLIJPlugin public
+        Object[] default_values = plugin.getDefaultValues();
         Object[] args = null;
 
         String[] parameters = plugin.getParameterHelpText().split(",");
@@ -137,7 +147,13 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
         String[] parameters = plugin.getParameterHelpText().split(",");
 
+
+        Object[] default_values = plugin.getDefaultValues();
         Object[] args = new Object[parameters.length];
+
+        int boolean_count = 0;
+        int number_count = 0;
+        int string_count = 0;
 
         if (parameters.length > 0 && parameters[0].length() > 0) {
             // skip first two parameters because they are images
@@ -155,19 +171,49 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                 if (parameterType.compareTo("Image") == 0) {
                     // no choice
                 } else if (parameterType.compareTo("String") == 0) {
-                    args[i] = registered_dialog.getNextString();
+                    if (registered_dialog == null) {
+                        if (default_values != null) {
+                            args[i] = default_values[i];
+                        } else {
+                            args[i] = "";
+                        }
+                    } else {
+                        args[i] = ((TextField)registered_dialog.getStringFields().get(string_count)).getText();
+                        string_count++;
+                    }
                 } else if (parameterType.compareTo("Boolean") == 0) {
-                    boolean value = registered_dialog.getNextBoolean();
-                    args[i] = value ? 1.0 : 0.0;
+                    if (registered_dialog == null) {
+                        if (default_values != null) {
+                            args[i] = (boolean) default_values[i] ? 1 : 0;
+                        } else {
+                            args[i] = 0;
+                        }
+                    } else {
+                        boolean value = ((Checkbox)registered_dialog.getCheckboxes().get(boolean_count)).getState();
+                        boolean_count ++;
+                        args[i] = value ? 1.0 : 0.0;
+                    }
                 } else { // Number
-                    args[i] = registered_dialog.getNextNumber();
+                    if (registered_dialog == null) {
+                        if (default_values != null) {
+                            args[i] = default_values[i];
+                        } else {
+                            args[i] = 2;
+                        }
+                    } else {
+                        args[i] = Double.parseDouble(((TextField)registered_dialog.getNumericFields().get(number_count)).getText());
+                        number_count++;
+                    }
                 }
             }
         }
 
         args[0] = pushed;
         plugin.setArgs(args);
-        args[1] = plugin.createOutputBufferFromSource(pushed);
+        if (result == null) {
+            result = plugin.createOutputBufferFromSource(pushed);
+        }
+        args[1] = result;
         plugin.setArgs(args); // might not be necessary
 
         pushed.close();

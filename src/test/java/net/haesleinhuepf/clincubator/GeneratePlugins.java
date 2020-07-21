@@ -13,9 +13,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GeneratePlugins {
     public static void main(String[] args) throws IOException {
+        CombinedUsageStats combinedUsageStats = new CombinedUsageStats("../clij2-docs/src/main/macro/", "../scripts_hidden/", "../scripts/");
+
         CLIJMacroPluginService service = new Context(CLIJMacroPluginService.class).getService(CLIJMacroPluginService.class);
         for (String pluginName : service.getCLIJMethodNames()) {
             //System.out.println("Check " + pluginName);
@@ -23,8 +26,9 @@ public class GeneratePlugins {
             if (isIncubatablePlugin(plugin)) {
                 System.out.println(plugin.getClass().getName());
 
-                String methodName = pluginName.replace("CLIJ2", "CLIJx");
+                String methodName = pluginName;//.replace("CLIJ2", "CLIJx");
                 String className = pluginName.replace("CLIJ2_", "");
+                className = className.replace("CLIJx_", "");
                 className = className.substring(0,1).toUpperCase() + className.substring(1);
 
                 String template = new String(Files.readAllBytes(Paths.get("src/main/java/net/haesleinhuepf/clincubator/interactive/generated/Template.java")));
@@ -33,16 +37,44 @@ public class GeneratePlugins {
 
                 template = template.replace("//@Plugin(type = SuggestedPlugin.class)", "@Plugin(type = SuggestedPlugin.class)\n// this is generated code. See src/test/java/net/haesleinhuepf/clincubator/PluginGenerator.java for details.");
                 template = template.replace("net.haesleinhuepf.clij2.plugins.Mean3DBox", plugin.getClass().getName());
-                template = template.replace("Mean3DBox", className);
+                // template = template.replace("Mean3DBox", plugin.getClass().getName());
                 template = template.replace("Template", betterClassName);
 
+                {
+                    HashMap<String, Integer> following = combinedUsageStats.getFollowersOf(methodName.replace("CLIJ2_", "").replace("CLIJ_", "").replace("CLIJz_", ""));
+                    String suggestedNextSteps = "";
+                    for (String method : following.keySet()) {
+                        String nextName = classFromMethodName(service, method);
+                        if (nextName.length() > 0 && !suggestedNextSteps.contains(nextName)) {
+                            if (suggestedNextSteps.length() > 0 && !suggestedNextSteps.endsWith(",\n")) {
+                                suggestedNextSteps = suggestedNextSteps + ",\n";
+                            }
+                            suggestedNextSteps = suggestedNextSteps + nextName;
+                        }
+                    }
+
+                    template = template.replace("/*SUGGESTED_NEXT_STEPS*/", suggestedNextSteps);
+                }
+
+                {
+                    HashMap<String, Integer> previous = combinedUsageStats.getFollowing(methodName.replace("CLIJ2_", "").replace("CLIJ_", "").replace("CLIJz_", ""));
+                    String suggestedNextSteps = "";
+                    for (String method : previous.keySet()) {
+                        String nextName = classFromMethodName(service, method);
+                        if (nextName.length() > 0 && !suggestedNextSteps.contains(nextName)) {
+
+                            if (suggestedNextSteps.length() > 0 && !suggestedNextSteps.endsWith(",\n")) {
+                                suggestedNextSteps = suggestedNextSteps + ",\n";
+                            }
+                            suggestedNextSteps = suggestedNextSteps + nextName;
+                        }
+                    }
+
+                    template = template.replace("/*SUGGESTED_PREVIOUS_STEPS*/", suggestedNextSteps);
+                }
 
 
-                /*SUGGESTED_NEXT_STEPS*/
-                /*SUGGESTED_PREVIOUS_STEPS*/
-
-
-                File outputTarget = new File("../src/main/java/net/haesleinhuepf/clincubator/interactive/generated/" + betterClassName + ".java");
+                File outputTarget = new File("src/main/java/net/haesleinhuepf/clincubator/interactive/generated/" + betterClassName + ".java");
 
                 try {
                     FileWriter writer = new FileWriter(outputTarget);
@@ -53,6 +85,35 @@ public class GeneratePlugins {
                 }
             }
         }
+    }
+
+    private static String classFromMethodName(CLIJMacroPluginService service, String method) {
+        CLIJMacroPlugin plugin = service.getCLIJMacroPlugin(method);
+        if (plugin == null) {
+            plugin = service.getCLIJMacroPlugin("CLIJ2_" + method + "3DBox");
+        }
+        if (plugin == null) {
+            plugin = service.getCLIJMacroPlugin("CLIJ2_" + method + "3D");
+        }
+        if (plugin == null) {
+            plugin = service.getCLIJMacroPlugin("CLIJ2_" + method);
+        }
+        if (plugin == null) {
+            plugin = service.getCLIJMacroPlugin("CLIJx_" + method);
+        }
+        if (plugin == null) {
+            return "";
+        }
+
+        String name = plugin.getClass().getName();
+        name = name.replace("clij2.plugins", "clincubator.interactive.generated");
+        name = name.replace("clijx.plugins", "clincubator.interactive.generated");
+        name = name.replace("3D", "").replace("Box","");
+
+        if (new File("src/main/java/" + name.replace(".", "/") + ".java").exists()) {
+            return name + ".class";
+        }
+        return "";
     }
 
     private static boolean isIncubatablePlugin(CLIJMacroPlugin clijMacroPlugin) {
@@ -333,6 +394,10 @@ public class GeneratePlugins {
         if (blocklist.contains(clijMacroPlugin.getClass())) {
             return false;
         }
+
+        //if (!clijMacroPlugin.getName().contains("Otsu")) {
+        //    return false;
+        //}
 
         //System.out.println("Z");
 
