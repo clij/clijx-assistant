@@ -1,9 +1,13 @@
-package net.haesleinhuepf;
+package net.haesleinhuepf.clincubator.utilities;
 
+import com.sun.jna.Memory;
 import ij.IJ;
 import ij.ImagePlus;
+import ij.gui.Toolbar;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.clijx.gui.*;
+import net.haesleinhuepf.clincubator.utilities.IncubatorStartingPoint;
 import net.haesleinhuepf.clincubator.utilities.MenuSeparator;
 
 import java.text.SimpleDateFormat;
@@ -98,9 +102,22 @@ public class IncubatorUtilities {
         }
     }
 
-    public static void main(String[] args) {
-        glasbey(null);
 
+    public static boolean ignoreEvent = false;
+
+    public static void installTools() {
+        String tool = IJ.getToolName();
+        ignoreEvent = true;
+        //Toolbar.removeMacroTools();
+
+
+        Toolbar.addPlugInTool(new IncubatorStartingPointTool());
+
+        ignoreEvent = false;
+
+        IJ.setTool(tool);
+
+        new MemoryDisplay().run("");
     }
 
 }

@@ -64,6 +64,7 @@ class IncubatorPluginRegistry {
         if (imp.getStack() instanceof CLIJxVirtualStack) {
             ((CLIJxVirtualStack) imp.getStack()).getBuffer().setName("");
         }
+
         // search for plugins which have it as source and invalidate their targets
         for (IncubatorPlugin plugin : registeredPlugins) {
             if (plugin.getSource() == imp) {

@@ -1,7 +1,7 @@
 package net.haesleinhuepf.clincubator.scriptgenerator;
 
 import ij.ImagePlus;
-import net.haesleinhuepf.IncubatorUtilities;
+import net.haesleinhuepf.clincubator.utilities.IncubatorUtilities;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clincubator.utilities.IncubatorPlugin;
 

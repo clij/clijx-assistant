@@ -7,25 +7,20 @@ import ij.gui.GenericDialog;
 import ij.gui.Toolbar;
 import ij.measure.Calibration;
 import ij.plugin.PlugIn;
-import net.haesleinhuepf.IncubatorUtilities;
+import net.haesleinhuepf.clincubator.utilities.IncubatorUtilities;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
-import net.haesleinhuepf.clij.clearcl.exceptions.OpenCLException;
 import net.haesleinhuepf.clij.macro.AbstractCLIJPlugin;
-import net.haesleinhuepf.clij.macro.CLIJHandler;
 import net.haesleinhuepf.clij.macro.CLIJOpenCLProcessor;
 import net.haesleinhuepf.clij2.AbstractCLIJ2Plugin;
-import net.haesleinhuepf.clij2.plugins.MeanZProjection;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.MemoryDisplay;
 import net.haesleinhuepf.clijx.utilities.AbstractCLIJxPlugin;
 import net.haesleinhuepf.clincubator.scriptgenerator.MacroGenerator;
 import net.haesleinhuepf.clincubator.scriptgenerator.ScriptGenerator;
 import net.haesleinhuepf.clincubator.utilities.IncubatorPlugin;
-import net.haesleinhuepf.clincubator.utilities.MenuSeparator;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.clincubator.utilities.SuggestionService;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
-import org.scijava.ui.swing.script.SyntaxHighlighter;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -35,7 +30,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -51,10 +45,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
 
     protected ImagePlus my_source = null;
-    /*
-    int former_t = -1;
-    int former_c = -1;
-     */
+
     protected ImagePlus my_target = null;
 
     private AbstractCLIJPlugin plugin = null;

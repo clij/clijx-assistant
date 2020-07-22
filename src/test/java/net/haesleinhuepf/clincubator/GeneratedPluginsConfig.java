@@ -1,7 +1,6 @@
 package net.haesleinhuepf.clincubator;
 
-import ij.ImageJ;
-import net.haesleinhuepf.IncubatorUtilities;
+import net.haesleinhuepf.clincubator.utilities.IncubatorUtilities;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.clincubator.utilities.SuggestionService;
 
