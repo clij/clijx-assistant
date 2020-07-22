@@ -1,7 +1,8 @@
-package net.haesleinhuepf.clincubator.interactive.transform;
+package net.haesleinhuepf.clincubator.interactive.handcrafted;
 
 import ij.IJ;
 import ij.gui.GenericDialog;
+import net.haesleinhuepf.clij.macro.CLIJOpenCLProcessor;
 import net.haesleinhuepf.clijx.plugins.RigidTransform;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
@@ -13,14 +14,28 @@ import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
 
+import java.awt.*;
+
 @Plugin(type = SuggestedPlugin.class)
-public class SphereProjection extends AbstractIncubatorPlugin {
+public class SphereTransform extends AbstractIncubatorPlugin {
 
     int number_of_angles = 360;
     float delta_angle_in_degrees = 1;
+    float relative_center_x = 0.5f;
+    float relative_center_y = 0.5f;
+    float relative_center_z = 0.5f;
+
+
+    private TextField center_x_slider;
+    private TextField center_y_slider;
+    private TextField center_z_slider;
+
+    public SphereTransform() {
+        super(new net.haesleinhuepf.clijx.plugins.SphereTransform());
+    }
 
     protected boolean configure() {
-        GenericDialog gdp = new GenericDialog("Sphere projection");
+        GenericDialog gdp = new GenericDialog("Sphere transform");
         //gdp.addImageChoice("Image", IJ.getImage().getTitle());
         gdp.addNumericField("Number of angles", number_of_angles);
         gdp.addNumericField("Angle step in degrees", delta_angle_in_degrees);
@@ -39,6 +54,21 @@ public class SphereProjection extends AbstractIncubatorPlugin {
         return true;
     }
 
+
+    @Override
+    protected GenericDialog buildNonModalDialog(Frame parent) {
+        GenericDialog gdp = new GenericDialog("Cylinder projection");
+        gdp.addNumericField("Center_x (0...1)", relative_center_x);
+        gdp.addNumericField("Center_y (0...1)", relative_center_y);
+        gdp.addNumericField("Center_z (0...1)", relative_center_z);
+
+        center_x_slider = (TextField) gdp.getNumericFields().get(0);
+        center_y_slider = (TextField) gdp.getNumericFields().get(1);
+        center_z_slider = (TextField) gdp.getNumericFields().get(2);
+
+        return gdp;
+    }
+
     ClearCLBuffer result = null;
     public synchronized void refresh()
     {
@@ -46,22 +76,27 @@ public class SphereProjection extends AbstractIncubatorPlugin {
         ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
         validateSource();
 
+
+        if (center_y_slider != null) {
+            relative_center_x = Float.parseFloat(center_x_slider.getText());
+            relative_center_y = Float.parseFloat(center_y_slider.getText());
+            relative_center_z = Float.parseFloat(center_z_slider.getText());
+        }
+
         float center_x = (float) (pushed.getWidth() / 2);
         float center_y = (float) (pushed.getHeight() / 2);
         float center_z = (float) (pushed.getDepth() / 2);
 
-        int radius = (int) Math.sqrt(Math.pow(center_x, 2) + Math.pow(center_y, 2));
-
-
+        args = new Object[]{pushed, null, number_of_angles, delta_angle_in_degrees, relative_center_x, relative_center_z};
+        net.haesleinhuepf.clijx.plugins.SphereTransform plugin = (net.haesleinhuepf.clijx.plugins.SphereTransform) getCLIJMacroPlugin();
         if (result == null) {
-            result = clijx.create(number_of_angles, number_of_angles / 2, radius);
+            result = plugin.createOutputBufferFromSource(pushed);
         }
-        ReslicePolar.reslicePolar(clijx, pushed, result,
-                delta_angle_in_degrees, 0f, 0f,
-                center_x, center_y, center_z,
-                1f, 1f, 1f,
-                0f, 0f, 0f,
-                0f, 0f, 0f);
+        args[1] = result;
+        if (plugin instanceof CLIJOpenCLProcessor) {
+            plugin.executeCL();
+        }
+
         pushed.close();
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));

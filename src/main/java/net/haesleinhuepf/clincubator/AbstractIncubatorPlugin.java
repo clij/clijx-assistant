@@ -58,7 +58,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
     protected ImagePlus my_target = null;
 
     private AbstractCLIJPlugin plugin = null;
-    private Object[] args = null;
+    protected Object[] args = null;
 
     public AbstractIncubatorPlugin(){}
 

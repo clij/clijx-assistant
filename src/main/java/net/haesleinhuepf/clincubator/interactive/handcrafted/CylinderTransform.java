@@ -1,12 +1,11 @@
-package net.haesleinhuepf.clincubator.interactive.transform;
+package net.haesleinhuepf.clincubator.interactive.handcrafted;
 
 import ij.IJ;
 import ij.gui.GenericDialog;
-import net.haesleinhuepf.clij2.CLIJ2;
+import net.haesleinhuepf.clij.macro.CLIJOpenCLProcessor;
 import net.haesleinhuepf.clijx.plugins.RigidTransform;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
-import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clincubator.interactive.generated.MaximumZProjection;
 import net.haesleinhuepf.clincubator.interactive.generated.MeanZProjection;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
@@ -14,13 +13,9 @@ import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
 
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 @Plugin(type = SuggestedPlugin.class)
-public class CylinderProjection extends AbstractIncubatorPlugin {
+public class CylinderTransform extends AbstractIncubatorPlugin {
 
     int number_of_angles = 360;
     float delta_angle_in_degrees = 1;
@@ -28,8 +23,11 @@ public class CylinderProjection extends AbstractIncubatorPlugin {
     float relative_center_z = 0.5f;
 
     private TextField center_x_slider;
-    private TextField center_y_slider;
+    private TextField center_z_slider;
 
+    public CylinderTransform() {
+        super(new net.haesleinhuepf.clijx.plugins.CylinderTransform());
+    }
 
     protected boolean configure() {
         GenericDialog gdp = new GenericDialog("Cylinder projection");
@@ -53,13 +51,12 @@ public class CylinderProjection extends AbstractIncubatorPlugin {
 
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
-        GenericDialog gdp = new GenericDialog("Cylinder projection");
+        GenericDialog gdp = new GenericDialog("Cylinder transform");
         gdp.addNumericField("Center_x (0...1)", relative_center_x);
         gdp.addNumericField("Center_z (0...1)", relative_center_z);
 
         center_x_slider = (TextField) gdp.getNumericFields().get(0);
-        center_y_slider = (TextField) gdp.getNumericFields().get(1);
-
+        center_z_slider = (TextField) gdp.getNumericFields().get(1);
 
         return gdp;
     }
@@ -72,44 +69,25 @@ public class CylinderProjection extends AbstractIncubatorPlugin {
     ClearCLBuffer result = null;
     public synchronized void refresh()
     {
-        if (center_y_slider != null) {
+        if (center_z_slider != null) {
             relative_center_x = Float.parseFloat(center_x_slider.getText());
-            relative_center_z = Float.parseFloat(center_y_slider.getText());
+            relative_center_z = Float.parseFloat(center_z_slider.getText());
         }
-        System.out.println("number_of_angles = " + number_of_angles);
-        System.out.println("delta_angle_in_degrees = " + delta_angle_in_degrees);
-        System.out.println("relative_center_x = " + relative_center_x);
-        System.out.println("relative_center_z = " + relative_center_z);
 
-        CLIJx clijx = CLIJx.getInstance();
         ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
-        validateSource();
 
-        int center_x = (int) (pushed.getWidth() * relative_center_x);
-        int center_y = (int) (pushed.getDepth() * relative_center_z);
-
-        int radius = (int) Math.sqrt(Math.pow(pushed.getWidth() / 2, 2) + Math.pow(pushed.getDepth() / 2, 2));
-
-        ClearCLBuffer resliced_from_top = clijx.create(pushed.getWidth(), pushed.getDepth(), pushed.getHeight());
-        clijx.resliceTop(pushed, resliced_from_top);
-        pushed.close();
-
-        ClearCLBuffer radial_resliced = clijx.create(radius, pushed.getHeight(), number_of_angles);
-
-        float start_angle = 0;
-        float scale_x = 1f;
-        float scale_z = 1f;
-
-        clijx.resliceRadial(resliced_from_top, radial_resliced, delta_angle_in_degrees, start_angle, center_x, center_y, scale_x, scale_z);
-        resliced_from_top.close();
-
+        args = new Object[]{pushed, null, number_of_angles, delta_angle_in_degrees, relative_center_x, relative_center_z};
+        net.haesleinhuepf.clijx.plugins.CylinderTransform plugin = (net.haesleinhuepf.clijx.plugins.CylinderTransform) getCLIJMacroPlugin();
         if (result == null) {
-            result = clijx.create(radial_resliced.getDepth(), radial_resliced.getHeight(), radial_resliced.getWidth());
+            result = plugin.createOutputBufferFromSource(pushed);
         }
-        clijx.transposeXZ(radial_resliced, result);
-        radial_resliced.close();
+        args[1] = result;
+        if (plugin instanceof CLIJOpenCLProcessor) {
+            plugin.executeCL();
+        }
+
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle("Cylinder projected " + my_source.getTitle());
+        my_target.setTitle("Cylinder transformed " + my_source.getTitle());
     }
 
 

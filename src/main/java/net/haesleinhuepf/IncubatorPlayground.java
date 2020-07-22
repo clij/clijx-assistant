@@ -3,7 +3,6 @@ package net.haesleinhuepf;
 import ij.IJ;
 import ij.ImageJ;
 import ij.ImagePlus;
-import ij.plugin.HyperStackConverter;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import net.haesleinhuepf.clijx.CLIJx;
@@ -11,9 +10,8 @@ import net.haesleinhuepf.clijx.gui.MemoryDisplay;
 import net.haesleinhuepf.clincubator.interactive.generated.MaximumZProjection;
 import net.haesleinhuepf.clincubator.interactive.generated.Median;
 import net.haesleinhuepf.clincubator.interactive.generated.TopHat;
-import net.haesleinhuepf.spimcat.io.VirtualTifStack;
-import net.haesleinhuepf.clincubator.interactive.transform.CylinderProjection;
-import net.haesleinhuepf.clincubator.interactive.transform.MakeIsotropic;
+import net.haesleinhuepf.clincubator.interactive.handcrafted.CylinderTransform;
+import net.haesleinhuepf.clincubator.interactive.handcrafted.MakeIsotropic;
 
 import java.io.FileNotFoundException;
 
@@ -63,7 +61,7 @@ public class IncubatorPlayground implements PlugInFilter {
 
         new TopHat().run("");
 
-        new CylinderProjection().run("");
+        new CylinderTransform().run("");
 
         new MaximumZProjection().run("");
     }

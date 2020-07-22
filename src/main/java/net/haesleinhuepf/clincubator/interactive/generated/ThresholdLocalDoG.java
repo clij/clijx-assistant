@@ -6,10 +6,10 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = SuggestedPlugin.class)
 // this is generated code. See src/test/java/net/haesleinhuepf/clincubator/PluginGenerator.java for details.
-public class CountNeighbors extends AbstractIncubatorPlugin implements SuggestedPlugin {
+public class ThresholdLocalDoG extends AbstractIncubatorPlugin implements SuggestedPlugin {
 
-    public CountNeighbors() {
-        super(new net.haesleinhuepf.clijx.plugins.CountNeighbors());
+    public ThresholdLocalDoG() {
+        super(new net.haesleinhuepf.clijx.plugins.RigidTransform());
     }
 
     public Class[] suggestedNextSteps() {
