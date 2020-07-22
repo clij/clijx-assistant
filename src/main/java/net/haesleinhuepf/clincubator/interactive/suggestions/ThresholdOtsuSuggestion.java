@@ -13,7 +13,7 @@ net.haesleinhuepf.clincubator.interactive.generated.BinaryEdgeDetection.class
 
     default Class[] suggestedPreviousSteps() {
         return new Class[]{
-                
+                net.haesleinhuepf.clincubator.interactive.generated.SubtractImageFromScalar.class
         };
     }
 }

@@ -11,7 +11,7 @@ public interface TransposeXYSuggestion extends SuggestedPlugin {
 
     default Class[] suggestedPreviousSteps() {
         return new Class[]{
-                
+                net.haesleinhuepf.clincubator.interactive.generated.MultiplyImageAndScalar.class
         };
     }
 }

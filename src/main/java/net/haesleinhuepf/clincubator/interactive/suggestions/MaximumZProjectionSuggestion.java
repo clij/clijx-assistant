@@ -11,7 +11,8 @@ public interface MaximumZProjectionSuggestion extends SuggestedPlugin {
 
     default Class[] suggestedPreviousSteps() {
         return new Class[]{
-                net.haesleinhuepf.clincubator.interactive.generated.ResliceLeft.class
+                net.haesleinhuepf.clincubator.interactive.generated.Rotate.class,
+net.haesleinhuepf.clincubator.interactive.generated.ResliceLeft.class
         };
     }
 }

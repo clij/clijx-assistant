@@ -2,7 +2,7 @@ package net.haesleinhuepf.clincubator.interactive.suggestions;
 
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 
-public interface LocalDoGThresholdSuggestion extends SuggestedPlugin {
+public interface DrawDistanceMeshBetweenNeighboringLabelsSuggestion extends SuggestedPlugin {
     default Class[] suggestedNextSteps() {
         return new Class[] {
                 

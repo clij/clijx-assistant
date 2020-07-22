@@ -2,7 +2,7 @@ package net.haesleinhuepf.clincubator.interactive.suggestions;
 
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 
-public interface MeshNeighboringLabelsSuggestion extends SuggestedPlugin {
+public interface OpeningSuggestion extends SuggestedPlugin {
     default Class[] suggestedNextSteps() {
         return new Class[] {
                 

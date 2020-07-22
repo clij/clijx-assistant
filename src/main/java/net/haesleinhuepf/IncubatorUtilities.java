@@ -77,6 +77,14 @@ public class IncubatorUtilities {
         }
 
         result = result.substring(0, 1).toUpperCase() + result.substring(1);
+
+        result = result.replace("C L", "CL");
+        result = result.replace("X Y", "XY");
+        result = result.replace("X Z", "XZ");
+        result = result.replace("Y Z", "YZ");
+        result = result.replace("_ ", " ");
+        result = result.replace("I J", "IJ");
+
         return result.trim();
 
     }

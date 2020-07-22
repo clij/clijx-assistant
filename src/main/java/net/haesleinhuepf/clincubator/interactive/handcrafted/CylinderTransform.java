@@ -6,8 +6,7 @@ import net.haesleinhuepf.clij.macro.CLIJOpenCLProcessor;
 import net.haesleinhuepf.clijx.plugins.RigidTransform;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
-import net.haesleinhuepf.clincubator.interactive.generated.MaximumZProjection;
-import net.haesleinhuepf.clincubator.interactive.generated.MeanZProjection;
+import net.haesleinhuepf.clincubator.interactive.suggestions.CylinderTransformSuggestion;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
@@ -15,7 +14,7 @@ import org.scijava.plugin.Plugin;
 import java.awt.*;
 
 @Plugin(type = SuggestedPlugin.class)
-public class CylinderTransform extends AbstractIncubatorPlugin {
+public class CylinderTransform extends AbstractIncubatorPlugin implements CylinderTransformSuggestion {
 
     int number_of_angles = 360;
     float delta_angle_in_degrees = 1;
@@ -93,19 +92,5 @@ public class CylinderTransform extends AbstractIncubatorPlugin {
 
 
 
-    @Override
-    public Class[] suggestedNextSteps() {
-        return new Class[] {
-                MaximumZProjection.class,
-                MeanZProjection.class
-        };
-    }
 
-    @Override
-    public Class[] suggestedPreviousSteps() {
-        return new Class[]{
-                MakeIsotropic.class,
-                RigidTransform.class
-        };
-    }
 }

@@ -8,17 +8,14 @@ import net.haesleinhuepf.clijx.plugins.RigidTransform;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
-import net.haesleinhuepf.clincubator.interactive.generated.GaussianBlur;
-import net.haesleinhuepf.clincubator.interactive.generated.LaplacianOfGaussian;
-import net.haesleinhuepf.clincubator.interactive.generated.Mean;
-import net.haesleinhuepf.clincubator.interactive.generated.Median;
+import net.haesleinhuepf.clincubator.interactive.suggestions.MakeIsotropicSuggestion;
 import net.haesleinhuepf.clincubator.utilities.MenuSeparator;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = SuggestedPlugin.class)
-public class MakeIsotropic extends AbstractIncubatorPlugin {
+public class MakeIsotropic extends AbstractIncubatorPlugin implements MakeIsotropicSuggestion {
 
     float new_voxel_size_in_microns = 1;
 
@@ -91,25 +88,5 @@ public class MakeIsotropic extends AbstractIncubatorPlugin {
     }
 
 
-    @Override
-    public Class[] suggestedNextSteps() {
-        return new Class[] {
-                RigidTransform.class,
-                MenuSeparator.class,
-                SphereTransform.class,
-                CylinderTransform.class
-        };
-    }
 
-    @Override
-    public Class[] suggestedPreviousSteps() {
-        return new Class[]{
-                GaussianBlur.class,
-                Mean.class,
-                Median.class,
-                //DifferenceOfGaussian.class,
-                //BackgroundSubtraction.class,
-                LaplacianOfGaussian.class
-        };
-    }
 }

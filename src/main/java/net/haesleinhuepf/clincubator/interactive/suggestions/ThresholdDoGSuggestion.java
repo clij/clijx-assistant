@@ -2,7 +2,7 @@ package net.haesleinhuepf.clincubator.interactive.suggestions;
 
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 
-public interface CountNeighborsSuggestion extends SuggestedPlugin {
+public interface ThresholdDoGSuggestion extends SuggestedPlugin {
     default Class[] suggestedNextSteps() {
         return new Class[] {
                 

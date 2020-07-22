@@ -8,8 +8,7 @@ import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.plugins.ReslicePolar;
-import net.haesleinhuepf.clincubator.interactive.generated.MaximumZProjection;
-import net.haesleinhuepf.clincubator.interactive.generated.MeanZProjection;
+import net.haesleinhuepf.clincubator.interactive.suggestions.SphereTransformSuggestion;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
@@ -17,7 +16,7 @@ import org.scijava.plugin.Plugin;
 import java.awt.*;
 
 @Plugin(type = SuggestedPlugin.class)
-public class SphereTransform extends AbstractIncubatorPlugin {
+public class SphereTransform extends AbstractIncubatorPlugin implements SphereTransformSuggestion {
 
     int number_of_angles = 360;
     float delta_angle_in_degrees = 1;
@@ -108,20 +107,6 @@ public class SphereTransform extends AbstractIncubatorPlugin {
     @Override
     public void refreshView() {}
 
-    @Override
-    public Class[] suggestedNextSteps() {
-        return new Class[] {
-                MaximumZProjection.class,
-                MeanZProjection.class
-        };
-    }
 
-    @Override
-    public Class[] suggestedPreviousSteps() {
-        return new Class[]{
-                MakeIsotropic.class,
-                RigidTransform.class
-        };
-    }
 
 }

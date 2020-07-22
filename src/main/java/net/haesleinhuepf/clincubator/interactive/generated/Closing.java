@@ -1,16 +1,16 @@
 package net.haesleinhuepf.clincubator.interactive.generated;
 
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
-import net.haesleinhuepf.clincubator.interactive.suggestions.NeighborCountMapSuggestion;
+import net.haesleinhuepf.clincubator.interactive.suggestions.ClosingSuggestion;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = SuggestedPlugin.class)
 // this is generated code. See src/test/java/net/haesleinhuepf/clincubator/PluginGenerator.java for details.
-public class NeighborCountMap extends AbstractIncubatorPlugin implements NeighborCountMapSuggestion {
+public class Closing extends AbstractIncubatorPlugin implements ClosingSuggestion {
 
-    public NeighborCountMap() {
-        super(new net.haesleinhuepf.clijx.plugins.NeighborCountMap());
+    public Closing() {
+        super(new net.haesleinhuepf.clij2.plugins.ClosingBox());
     }
 
 }

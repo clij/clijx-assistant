@@ -1,16 +1,16 @@
 package net.haesleinhuepf.clincubator.interactive.generated;
 
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
-import net.haesleinhuepf.clincubator.interactive.suggestions.NeighborCountMapSuggestion;
+import net.haesleinhuepf.clincubator.interactive.suggestions.LogarithmSuggestion;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = SuggestedPlugin.class)
 // this is generated code. See src/test/java/net/haesleinhuepf/clincubator/PluginGenerator.java for details.
-public class NeighborCountMap extends AbstractIncubatorPlugin implements NeighborCountMapSuggestion {
+public class Logarithm extends AbstractIncubatorPlugin implements LogarithmSuggestion {
 
-    public NeighborCountMap() {
-        super(new net.haesleinhuepf.clijx.plugins.NeighborCountMap());
+    public Logarithm() {
+        super(new net.haesleinhuepf.clij2.plugins.Logarithm());
     }
 
 }

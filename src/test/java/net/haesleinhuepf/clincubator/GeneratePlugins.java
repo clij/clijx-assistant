@@ -197,7 +197,7 @@ public class GeneratePlugins {
         blocklist.add(net.haesleinhuepf.clij2.plugins.Rotate2D.class);
         blocklist.add(net.haesleinhuepf.clijx.plugins.SubtractBackground3D.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdShanbhag
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Rotate3D.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.Rotate3D.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.Minimum3DSphere.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumZProjectionBounded.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.Blur3DSliceBySlice.class);
@@ -217,8 +217,8 @@ public class GeneratePlugins {
         blocklist.add(net.haesleinhuepf.clij2.plugins.NonzeroMinimumBox.class);
         //blocklist.add(net.haesleinhuepf.clijx.plugins.NonLocalMeans
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdHuang
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Logarithm.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.MultiplyImageAndScalar.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.Logarithm.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.MultiplyImageAndScalar.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.CountTouchingNeighbors.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.ImageToStack.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.TopHatSphere.class);
@@ -246,7 +246,7 @@ public class GeneratePlugins {
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceRight
         blocklist.add(net.haesleinhuepf.clij2.plugins.Maximum2DBox.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumOctagon.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.ClosingBox.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.ClosingBox.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.LabelledSpotsToPointList.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.Sobel
         blocklist.add(net.haesleinhuepf.clij2.plugins.AdjacencyMatrixToTouchMatrix.class);
@@ -286,7 +286,7 @@ public class GeneratePlugins {
         blocklist.add(net.haesleinhuepf.clij2.plugins.PointlistToLabelledSpots.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdMinimum
         blocklist.add(net.haesleinhuepf.clijx.plugins.ConvertRGBStackToGraySlice.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.DistanceMap.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.DistanceMap.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceRadial.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.MeanSliceBySliceSphere.class);
         blocklist.add(net.haesleinhuepf.clijx.tilor.implementations.GaussianBlur3D.class);
@@ -314,7 +314,7 @@ public class GeneratePlugins {
         blocklist.add(net.haesleinhuepf.clijx.plugins.BlurBuffers3D.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdOtsu
         //blocklist.add(net.haesleinhuepf.clij2.plugins.EqualizeMeanIntensitiesOfSlices
-        blocklist.add(net.haesleinhuepf.clij2.plugins.OpeningBox.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.OpeningBox.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.NonzeroMaximumBox.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.FloodFillDiamond.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.MedianZProjection
@@ -333,10 +333,10 @@ public class GeneratePlugins {
         blocklist.add(net.haesleinhuepf.clij2.plugins.Maximum2DSphere.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.AverageDistanceOfNClosestPoints.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.CountNonZeroPixelsSliceBySliceSphere.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.BottomHatBox.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.BottomHatBox.class);
         blocklist.add(net.haesleinhuepf.clijx.tilor.implementations.TopHatBox.class);
         blocklist.add(net.haesleinhuepf.clijx.plugins.BlurImages3D.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Exponential.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.Exponential.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdDefault
         blocklist.add(net.haesleinhuepf.clij2.plugins.NClosestPoints.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.Minimum2DSphere.class);
@@ -354,7 +354,7 @@ public class GeneratePlugins {
         blocklist.add(net.haesleinhuepf.clij2.plugins.ConvertFloat.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumXProjection.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumSliceBySliceSphere.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.SubtractImageFromScalar.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.SubtractImageFromScalar.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.Threshold.class);
         blocklist.add(net.haesleinhuepf.clijx.plugins.TopHatOctagon.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.Mean2DSphere.class);
@@ -367,7 +367,7 @@ public class GeneratePlugins {
         blocklist.add(net.haesleinhuepf.clij2.plugins.Minimum2DBox.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.DownsampleSliceBySliceHalfMedian.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.ErodeSphere.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryFillHoles.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryFillHoles.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdIntermodes.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.CopySlice.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumSliceBySliceSphere.class);
@@ -407,7 +407,7 @@ public class GeneratePlugins {
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdRenyiEntropy
         blocklist.add(net.haesleinhuepf.clij2.plugins.CountNonZeroPixels2DSphere.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceLeft
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Absolute.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.Absolute.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.Blur3D.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.ConnectedComponentsLabeling.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMinima3DBox.class);

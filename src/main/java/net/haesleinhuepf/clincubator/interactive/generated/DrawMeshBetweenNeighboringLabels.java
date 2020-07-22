@@ -1,16 +1,16 @@
 package net.haesleinhuepf.clincubator.interactive.generated;
 
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
-import net.haesleinhuepf.clincubator.interactive.suggestions.NeighborCountMapSuggestion;
+import net.haesleinhuepf.clincubator.interactive.suggestions.DrawMeshBetweenNeighboringLabelsSuggestion;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = SuggestedPlugin.class)
 // this is generated code. See src/test/java/net/haesleinhuepf/clincubator/PluginGenerator.java for details.
-public class NeighborCountMap extends AbstractIncubatorPlugin implements NeighborCountMapSuggestion {
+public class DrawMeshBetweenNeighboringLabels extends AbstractIncubatorPlugin implements DrawMeshBetweenNeighboringLabelsSuggestion {
 
-    public NeighborCountMap() {
-        super(new net.haesleinhuepf.clijx.plugins.NeighborCountMap());
+    public DrawMeshBetweenNeighboringLabels() {
+        super(new net.haesleinhuepf.clijx.plugins.DrawMeshBetweenNeighboringLabels());
     }
 
 }
