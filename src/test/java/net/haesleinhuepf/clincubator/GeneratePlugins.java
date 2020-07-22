@@ -40,6 +40,20 @@ public class GeneratePlugins {
                 // template = template.replace("Mean3DBox", plugin.getClass().getName());
                 template = template.replace("Template", betterClassName);
 
+                if (!new File("src/main/java/net/haesleinhuepf/clincubator/interactive/handcrafted/" + betterClassName + ".java").exists()) {
+                    File outputTarget = new File("src/main/java/net/haesleinhuepf/clincubator/interactive/generated/" + betterClassName + ".java");
+                    try {
+                        FileWriter writer = new FileWriter(outputTarget);
+                        writer.write(template);
+                        writer.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                template = new String(Files.readAllBytes(Paths.get("src/main/java/net/haesleinhuepf/clincubator/interactive/suggestions/TemplateSuggestion.java")));
+                template = template.replace("Template", betterClassName);
+
                 {
                     HashMap<String, Integer> following = combinedUsageStats.getFollowersOf(methodName.replace("CLIJ2_", "").replace("CLIJ_", "").replace("CLIJx_", ""));
                     String suggestedNextSteps = "";
@@ -73,16 +87,18 @@ public class GeneratePlugins {
                     template = template.replace("/*SUGGESTED_PREVIOUS_STEPS*/", suggestedNextSteps);
                 }
 
-
-                File outputTarget = new File("src/main/java/net/haesleinhuepf/clincubator/interactive/generated/" + betterClassName + ".java");
-
-                try {
-                    FileWriter writer = new FileWriter(outputTarget);
-                    writer.write(template);
-                    writer.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                {
+                    File outputTarget = new File("src/main/java/net/haesleinhuepf/clincubator/interactive/suggestions/" + betterClassName + "Suggestion.java");
+                    try {
+                        FileWriter writer = new FileWriter(outputTarget);
+                        writer.write(template);
+                        writer.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+
+
             }
         }
     }
@@ -117,6 +133,9 @@ public class GeneratePlugins {
     }
 
     private static boolean isIncubatablePlugin(CLIJMacroPlugin clijMacroPlugin) {
+        if (clijMacroPlugin == null) {
+            return false;
+        }
         String parameters = clijMacroPlugin.getParameterHelpText();
 
         //if (!clijMacroPlugin.getName().contains("detectAnd")) {
@@ -176,7 +195,7 @@ public class GeneratePlugins {
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ExtendLabelingViaVoronoi
         blocklist.add(net.haesleinhuepf.clij2.plugins.Crop2D.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.Rotate2D.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.SubtractBackground3D
+        blocklist.add(net.haesleinhuepf.clijx.plugins.SubtractBackground3D.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdShanbhag
         blocklist.add(net.haesleinhuepf.clij2.plugins.Rotate3D.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.Minimum3DSphere.class);

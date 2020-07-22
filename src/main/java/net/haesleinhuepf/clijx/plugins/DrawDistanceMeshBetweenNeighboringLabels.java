@@ -8,7 +8,7 @@ import net.haesleinhuepf.clij2.AbstractCLIJ2Plugin;
 import net.haesleinhuepf.clij2.CLIJ2;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = CLIJMacroPlugin.class, name = "CLIJx_meshNeighboringLabels")
+@Plugin(type = CLIJMacroPlugin.class, name = "CLIJx_drawDistanceMeshBetweenNeighboringLabels")
 public class DrawDistanceMeshBetweenNeighboringLabels extends AbstractCLIJ2Plugin implements CLIJMacroPlugin, CLIJOpenCLProcessor, OffersDocumentation {
 
     @Override

@@ -6,10 +6,11 @@ import net.haesleinhuepf.clij.macro.CLIJOpenCLProcessor;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
 import net.haesleinhuepf.clij2.AbstractCLIJ2Plugin;
 import net.haesleinhuepf.clij2.CLIJ2;
+import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = CLIJMacroPlugin.class, name = "CLIJx_sphereTransform")
-public class SphereTransform extends AbstractCLIJ2Plugin implements CLIJMacroPlugin, CLIJOpenCLProcessor, OffersDocumentation {
+public class SphereTransform extends AbstractCLIJ2Plugin implements CLIJMacroPlugin, CLIJOpenCLProcessor, OffersDocumentation, IsCategorized {
 
     @Override
     public String getParameterHelpText() {
@@ -65,5 +66,10 @@ public class SphereTransform extends AbstractCLIJ2Plugin implements CLIJMacroPlu
     @Override
     public String getAvailableForDimensions() {
         return "2D, 3D";
+    }
+
+    @Override
+    public String getCategories() {
+        return "Transform";
     }
 }

@@ -89,6 +89,7 @@ public class SphereTransform extends AbstractIncubatorPlugin {
 
         args = new Object[]{pushed, null, number_of_angles, delta_angle_in_degrees, relative_center_x, relative_center_z};
         net.haesleinhuepf.clijx.plugins.SphereTransform plugin = (net.haesleinhuepf.clijx.plugins.SphereTransform) getCLIJMacroPlugin();
+        plugin.setArgs(args);
         if (result == null) {
             result = plugin.createOutputBufferFromSource(pushed);
         }

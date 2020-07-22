@@ -1,6 +1,5 @@
 package net.haesleinhuepf.clincubator.interactive.generated;
 
-import net.haesleinhuepf.clijx.plugins.AverageNeighborDistanceMap;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import org.scijava.plugin.Plugin;

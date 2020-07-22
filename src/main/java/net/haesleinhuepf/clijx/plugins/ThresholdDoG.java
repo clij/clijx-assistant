@@ -9,7 +9,7 @@ import net.haesleinhuepf.clij2.AbstractCLIJ2Plugin;
 import net.haesleinhuepf.clij2.CLIJ2;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = CLIJMacroPlugin.class, name = "CLIJx_localDoGThreshold")
+@Plugin(type = CLIJMacroPlugin.class, name = "CLIJx_thresholdDoG")
 public class ThresholdDoG extends AbstractCLIJ2Plugin implements CLIJMacroPlugin, CLIJOpenCLProcessor, OffersDocumentation {
 
     @Override
