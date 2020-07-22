@@ -8,6 +8,7 @@ import ij.gui.Toolbar;
 import ij.measure.Calibration;
 import ij.plugin.PlugIn;
 import net.haesleinhuepf.clij.utilities.CLInfo;
+import net.haesleinhuepf.clincubator.scriptgenerator.PyclesperantoGenerator;
 import net.haesleinhuepf.clincubator.utilities.*;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.AbstractCLIJPlugin;
@@ -351,6 +352,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         Menu script = new Menu("Generate script");
 
         addMenuAction(script, "ImageJ Macro", (a) -> {generateScript(new MacroGenerator());});
+        addMenuAction(script, "clEsperanto Python", (a) -> {generateScript(new PyclesperantoGenerator());});
 
         menu.add(script);
 
