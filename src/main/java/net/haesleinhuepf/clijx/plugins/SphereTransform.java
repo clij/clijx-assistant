@@ -55,7 +55,7 @@ public class SphereTransform extends AbstractCLIJ2Plugin implements CLIJMacroPlu
         int radius = (int) Math.sqrt(Math.pow(pushed.getWidth() / 2, 2) + Math.pow(pushed.getHeight() / 2, 2)  + Math.pow(pushed.getDepth() / 2, 2) );
         int number_of_angles = asInteger(args[2]);
 
-        return getCLIJ2().create(radius, pushed.getHeight(), number_of_angles);
+        return getCLIJ2().create(number_of_angles, number_of_angles / 2, radius);
     }
 
     @Override
