@@ -12,8 +12,8 @@ public class MacroGenerator implements ScriptGenerator {
     @Override
     public String push(ImagePlus source) {
         return ""+
-                "input = \"" + source.getTitle() + "\";\n" +
-                "Ext.CLIJ2_push(input);\n";
+                "image1 = \"" + source.getTitle() + "\";\n" +
+                "Ext.CLIJ2_push(image1);\n";
     }
 
     @Override
@@ -42,8 +42,8 @@ public class MacroGenerator implements ScriptGenerator {
         String image1 = makeImageID(plugin.getSource());
         String image2 = makeImageID(plugin.getTarget());
         String program = "// " + IncubatorUtilities.niceName(plugin.getClass().getSimpleName()) + "\n" +
-                image1 + " = \"" + plugin.getSource().getTitle() + "\";\n" +
-                image2 + " = \"" + plugin.getTarget().getTitle() + "\";\n";
+                "// " + image1 + " = \"" + plugin.getSource().getTitle() + "\";\n" +
+                "// " + image2 + " = \"" + plugin.getTarget().getTitle() + "\";\n";
 
         String call = "";
 

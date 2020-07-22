@@ -12,13 +12,13 @@ public class PyclesperantoGenerator implements ScriptGenerator {
     @Override
     public String push(ImagePlus source) {
         return ""+
-                "input = ... #" + source.getTitle() + "\n" +
-                "cle.push(input)\n";
+                "# Push " + source.getTitle() + " to GPU memory\n" +
+                "image1 = cle.push(<enter initial image variable name>)\n";
     }
 
     @Override
     public String comment(String name) {
-        return "// " + name + "\n";
+        return "# " + name + "\n";
     }
 
     @Override
@@ -26,7 +26,7 @@ public class PyclesperantoGenerator implements ScriptGenerator {
 
         CLIJMacroPlugin clijMacroPlugin = plugin.getCLIJMacroPlugin();
         if (clijMacroPlugin == null) {
-            return "// " + IncubatorUtilities.niceName(plugin.getClass().getSimpleName());
+            return "# " + IncubatorUtilities.niceName(plugin.getClass().getSimpleName());
         }
         String methodName = clijMacroPlugin.getClass().getSimpleName();
         methodName = methodName.substring(0,1).toLowerCase() + methodName.substring(1);
@@ -48,9 +48,9 @@ public class PyclesperantoGenerator implements ScriptGenerator {
             String temp[] = parameters[i].trim().split(" ");
             String name = temp[temp.length - 1];
             call = call + ", " + name + "=" + name;
-            program = program + name + " = " + plugin.getArgs()[i] + ";\n";
+            program = program + name + " = " + plugin.getArgs()[i] + "\n";
         }
-        program = program + image2 + " = " + methodName + "(" + image1 + ", " + call + ");\n";
+        program = program + image2 + " = " + methodName + "(" + image1 + ", " + call + ")\n";
 
         return program;
     }
@@ -75,8 +75,8 @@ public class PyclesperantoGenerator implements ScriptGenerator {
 
     @Override
     public String header() {
-        return  "This is experimental script output which is not supposed to be executable yet.\n" +
-                "Stay tuned and check out http://clesperanto.net to learn more." +
+        return  "# This is experimental script output which is not supposed to be executable yet.\n" +
+                "# Stay tuned and check out http://clesperanto.net to learn more." +
                 "\n\n" +
                 "import pyclesperanto_prototype as cle";
     }
