@@ -60,7 +60,7 @@ class IncubatorPluginRegistry {
         if (imp == null) {
             return;
         }
-        IJ.log("Invalidate " + imp.getTitle());
+        //IJ.log("Invalidate " + imp.getTitle());
         if (imp.getStack() instanceof CLIJxVirtualStack) {
             ((CLIJxVirtualStack) imp.getStack()).getBuffer().setName("");
         }
@@ -92,7 +92,7 @@ class IncubatorPluginRegistry {
                 ImagePlus source = plugin.getSource();
                 ImagePlus target = plugin.getTarget();
                 if (source != null && target != null && isValid(source) && !isValid(target)) {
-                    IJ.log("Regenerating " + target.getTitle());
+                    //IJ.log("Regenerating " + target.getTitle());
 
                     plugin.setTargetIsProcessing();
                     plugin.refresh();

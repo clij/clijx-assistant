@@ -40,8 +40,8 @@ public class SuggestionService  extends AbstractPTService<SuggestedPlugin> imple
                 name = info.getClassName();
             }*/
 
-            System.out.println(info);
-            System.out.println(info.getName());
+            //System.out.println(info);
+            //System.out.println(info.getName());
 
             SuggestedPlugin current = pluginService().createInstance(info);
             if (current != null) {
