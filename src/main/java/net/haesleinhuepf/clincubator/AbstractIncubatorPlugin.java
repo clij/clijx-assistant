@@ -80,7 +80,6 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         GenericDialog dialog = buildNonModalDialog(my_target.getWindow());
         if (dialog != null) {
             registerDialogAsNoneModal(dialog);
-            //dialog.showDialog();
         }
     }
 
@@ -136,10 +135,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             return;
         }
 
-        CLIJx clijx = CLIJx.getInstance();
-
         ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
-        validateSource();
 
         String[] parameters = plugin.getParameterHelpText().split(",");
 
@@ -235,10 +231,6 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             my_target.setZ(my_source.getZ());
         }
     }
-    protected boolean parametersWereChanged() {
-        return false;
-    }
-
 
     public ImagePlus getSource() {
         return my_source;
@@ -282,13 +274,8 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             my_target.setStack(output.getStack());
             my_target.setDisplayRange(min, max);
         }
-        //System.out.println(my_target.getTitle() + " Pulling took " + (System.currentTimeMillis() - timeStamp) + " ms");
         paused = false;
-        //invalidateTarget();
-        //imageUpdated(my_target);
         IncubatorUtilities.transferCalibration(my_source, my_target);
-
-        //validateTarget();
     }
 
     protected void handlePopupMenu(MouseEvent e) {
@@ -399,7 +386,6 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
     protected void generateScript(ScriptGenerator generator) {
         String script = generator.header() +
-
                 IncubatorPluginRegistry.getInstance().generateScript(generator);
 
         File outputTarget = new File(System.getProperty("java.io.tmpdir") + "new" + generator.fileEnding());
@@ -417,8 +403,6 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
     Timer heartbeat = null;
     GenericDialog registered_dialog = null;
     protected void registerDialogAsNoneModal(GenericDialog dialog) {
-
-
         dialog.setModal(false);
         dialog.setOKLabel(refreshText);
 
@@ -432,7 +416,8 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             @Override
             public void keyTyped(KeyEvent e) {
                 if (e.isActionKey()) {
-                    //IncubatorPluginRegistry.getInstance().invalidate(getTarget());
+                    // this is to prevent the dialog from closing
+                    // todo: check if this is necessary
                     return;
                 }
                 super.keyTyped(e);
@@ -529,37 +514,8 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             return;
         }
         if (imp == my_source) {
-            //if (sourceWasChanged() || parametersWereChanged()) {
-            //    //System.out.println("Updating " + imp.getTitle());
-            //    refresh();
-            //}
-
             refreshView();
         }
-    }
-/*
-    String stamp = "";
-    protected boolean sourceWasChanged() {
-        if (my_source.getT() != former_t || my_source.getC() != former_c) {
-            //System.out.println(my_source.getTitle() + " t or c were changed");
-            return true;
-        }
-        if (my_source.getStack() instanceof  CLIJxVirtualStack) {
-            if (IncubatorUtilities.checkStamp(((CLIJxVirtualStack) my_source.getStack()).getBuffer(), stamp)) {
-                return false;
-            } else {
-                //System.out.println(my_source.getTitle() + " changed stamp " + stamp);
-            }
-        }
-        return true;
-    }
-*/
-    protected void validateSource() {
-        /*former_c = my_source.getC();
-        former_t = my_source.getT();
-        if (my_source.getStack() instanceof  CLIJxVirtualStack) {
-            stamp = ((CLIJxVirtualStack) my_source.getStack()).getBuffer().getName();
-        }*/
     }
 
     public void setTargetInvalid() {

@@ -25,7 +25,6 @@ public class MakeIsotropic extends AbstractIncubatorPlugin implements MakeIsotro
 
     protected boolean configure() {
         GenericDialog gdp = new GenericDialog("Make isotropic");
-        //gdp.addImageChoice("Image", IJ.getImage().getTitle());
         gdp.addNumericField("Future voxel size (in microns)", 1.0, 1);
         gdp.showDialog();
 
@@ -43,8 +42,6 @@ public class MakeIsotropic extends AbstractIncubatorPlugin implements MakeIsotro
     ClearCLBuffer result = null;
     public synchronized void refresh()
     {
-        CLIJx clijx = CLIJx.getInstance();
-
         Calibration calib = my_source.getCalibration();
         float original_voxel_size_x = (float) calib.pixelWidth;
         float original_voxel_size_y = (float) calib.pixelHeight;

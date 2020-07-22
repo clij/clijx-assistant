@@ -71,20 +71,13 @@ public class SphereTransform extends AbstractIncubatorPlugin implements SphereTr
     ClearCLBuffer result = null;
     public synchronized void refresh()
     {
-        CLIJx clijx = CLIJx.getInstance();
         ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
-        validateSource();
-
 
         if (center_y_slider != null) {
             relative_center_x = Float.parseFloat(center_x_slider.getText());
             relative_center_y = Float.parseFloat(center_y_slider.getText());
             relative_center_z = Float.parseFloat(center_z_slider.getText());
         }
-
-        float center_x = (float) (pushed.getWidth() / 2);
-        float center_y = (float) (pushed.getHeight() / 2);
-        float center_z = (float) (pushed.getDepth() / 2);
 
         args = new Object[]{pushed, null, number_of_angles, delta_angle_in_degrees, relative_center_x, relative_center_z};
         net.haesleinhuepf.clijx.plugins.SphereTransform plugin = (net.haesleinhuepf.clijx.plugins.SphereTransform) getCLIJMacroPlugin();
@@ -100,7 +93,7 @@ public class SphereTransform extends AbstractIncubatorPlugin implements SphereTr
         pushed.close();
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle("Sphere projected " + my_source.getTitle());
+        my_target.setTitle("Sphere transformed " + my_source.getTitle());
     }
 
 
