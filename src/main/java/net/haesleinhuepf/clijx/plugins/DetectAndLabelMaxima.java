@@ -44,7 +44,9 @@ public class DetectAndLabelMaxima extends AbstractCLIJ2Plugin implements CLIJMac
 
     @Override
     public String getDescription() {
-        return "";
+        return "Determines maximum regions in a Gaussian blurred version of the oriignal image.\n\n" +
+                "The regions do not not necessarily have to be single pixels. \n" +
+                "It is also possible to invert the image before determining the maxima.";
     }
 
     @Override

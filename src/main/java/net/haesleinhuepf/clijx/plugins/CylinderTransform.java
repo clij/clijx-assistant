@@ -72,7 +72,13 @@ public class CylinderTransform extends AbstractCLIJ2Plugin implements CLIJMacroP
 
     @Override
     public String getDescription() {
-        return "";
+        return "Applies a cylinder transform to an image stack assuming the center line goes in Y direction in the center of the stack.\n\n" +
+                "This transforms an image stack from an XYZ coordinate system to a AYD coordinate system with \n" +
+                "A the angle around the center line, \n" +
+                "Y the original Y coordinate and \n" +
+                "D, the distance from the center.\n\n" +
+                "Thus, going in virtual Z direction (actually D) in the resulting stack, you go from the center to the" +
+                "periphery.";
     }
 
     @Override

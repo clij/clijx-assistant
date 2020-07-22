@@ -60,7 +60,12 @@ public class SphereTransform extends AbstractCLIJ2Plugin implements CLIJMacroPlu
 
     @Override
     public String getDescription() {
-        return "";
+        return "Turns an image stack in XYZ cartesian coordinate system to an AID polar coordinate system.\n\n" +
+                "A corresponds to azimut," +
+                "I to inclination and " +
+                "D to the distance from the center." +
+                "Thus, going in virtual Z direction (actually D) in the resulting stack, you go from the center to the" +
+                "periphery.";
     }
 
     @Override

@@ -39,7 +39,7 @@ public class NeighborCountMap extends AbstractCLIJ2Plugin implements CLIJMacroPl
 
     @Override
     public String getDescription() {
-        return "";
+        return "Takes a label map, determines which labels touch and replaces every label with the number of touching neighboring labels.\n\n";
     }
 
     @Override

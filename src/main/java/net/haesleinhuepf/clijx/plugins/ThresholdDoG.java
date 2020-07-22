@@ -12,6 +12,12 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = CLIJMacroPlugin.class, name = "CLIJx_thresholdDoG")
 public class ThresholdDoG extends AbstractCLIJ2Plugin implements CLIJMacroPlugin, CLIJOpenCLProcessor, OffersDocumentation {
 
+
+    @Override
+    public Object[] getDefaultValues() {
+        return new Object[]{null, null, 2, 10, 100, true};
+    }
+
     @Override
     public String getParameterHelpText() {
         return "Image input, ByRef Image destination, Number sigma1, Number sigma2, Number threshold, Boolean above_threshold";
@@ -38,7 +44,7 @@ public class ThresholdDoG extends AbstractCLIJ2Plugin implements CLIJMacroPlugin
 
     @Override
     public String getDescription() {
-        return "";
+        return "Applies a Difference-of-Gaussian filter to an image and thresholds it with given sigma and threshold values.";
     }
 
     @Override

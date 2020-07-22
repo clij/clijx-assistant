@@ -14,6 +14,12 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = CLIJMacroPlugin.class, name = "CLIJx_findAndLabelMaxima")
 public class FindAndLabelMaxima extends AbstractCLIJxPlugin implements CLIJMacroPlugin, CLIJOpenCLProcessor, OffersDocumentation {
 
+
+    @Override
+    public Object[] getDefaultValues() {
+        return new Object[]{null, null, 10, true};
+    }
+
     @Override
     public String getParameterHelpText() {
         return "Image input, ByRef Image destination, Number tolerance, Boolean invert";
@@ -39,7 +45,7 @@ public class FindAndLabelMaxima extends AbstractCLIJxPlugin implements CLIJMacro
 
     @Override
     public String getDescription() {
-        return "";
+        return "Determine maxima with a given tolerance to surrounding maxima and background and label them.";
     }
 
     @Override

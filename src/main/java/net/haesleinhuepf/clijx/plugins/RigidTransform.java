@@ -13,6 +13,12 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = CLIJMacroPlugin.class, name = "CLIJx_rigidTransform")
 public class RigidTransform extends AbstractCLIJ2Plugin implements CLIJMacroPlugin, CLIJOpenCLProcessor, OffersDocumentation, IsCategorized {
 
+
+    @Override
+    public Object[] getDefaultValues() {
+        return new Object[]{null, null, 0, 0, 0, 0,0,0};
+    }
+
     @Override
     public String getParameterHelpText() {
         return "Image input, ByRef Image destination, Number translation_x, Number translation_y, Number translation_z, Number rotation_angle_x, Number rotation_angle_y, Number rotation_angle_z";
@@ -47,7 +53,7 @@ public class RigidTransform extends AbstractCLIJ2Plugin implements CLIJMacroPlug
 
     @Override
     public String getDescription() {
-        return "";
+        return "Applies a rigid transform using linear interpolation to an image stack.";
     }
 
     @Override

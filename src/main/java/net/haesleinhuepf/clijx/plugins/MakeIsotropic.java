@@ -15,6 +15,11 @@ import org.scijava.plugin.Plugin;
 public class MakeIsotropic extends AbstractCLIJ2Plugin implements CLIJMacroPlugin, CLIJOpenCLProcessor, OffersDocumentation {
 
     @Override
+    public Object[] getDefaultValues() {
+        return new Object[]{null, null, 1, 1, 1, 1};
+    }
+
+    @Override
     public String getParameterHelpText() {
         return "Image input, ByRef Image destination, Number original_voxel_size_x, Number original_voxel_size_y, Number original_voxel_size_z, Number new_voxel_size";
     }
@@ -62,7 +67,7 @@ public class MakeIsotropic extends AbstractCLIJ2Plugin implements CLIJMacroPlugi
 
     @Override
     public String getDescription() {
-        return "";
+        return "Applies a scaling operation using linear interpolation to generate an image stack with a given isotropic voxel size.";
     }
 
     @Override

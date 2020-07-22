@@ -41,7 +41,8 @@ public class DrawMeshBetweenNeighboringLabels extends AbstractCLIJ2Plugin implem
 
     @Override
     public String getDescription() {
-        return "";
+        return "Starting from a label map, draw lines between touching neighbors resulting in a mesh.\n\n" +
+                "The end points of the lines correspond to the centroids of the labels. ";
     }
 
     @Override

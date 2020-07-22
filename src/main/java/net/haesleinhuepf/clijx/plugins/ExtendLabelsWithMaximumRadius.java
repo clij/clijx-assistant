@@ -60,7 +60,8 @@ public class ExtendLabelsWithMaximumRadius extends AbstractCLIJ2Plugin implement
 
     @Override
     public String getDescription() {
-        return "";
+        return "Extend labels with a given radius.\n\n" +
+                "This is actually a local maximum filter applied to a label map which does not overwrite labels.";
     }
 
     @Override

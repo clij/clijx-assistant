@@ -48,7 +48,8 @@ public class AverageNeighborDistanceMap extends AbstractCLIJ2Plugin implements C
 
     @Override
     public String getDescription() {
-        return "";
+        return "Takes a label map, determines which labels touch and replaces every label with the average distance to their neighboring labels.\n\n" +
+                "To determine the distances, the centroid of the labels is determined internally.";
     }
 
     @Override

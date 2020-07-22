@@ -17,6 +17,11 @@ import org.scijava.plugin.Plugin;
 public class ExcludeLabelsOutsideSizeRange extends AbstractCLIJ2Plugin implements CLIJMacroPlugin, CLIJOpenCLProcessor, OffersDocumentation {
 
     @Override
+    public Object[] getDefaultValues() {
+        return new Object[]{null, null, 100, 1000};
+    }
+
+    @Override
     public String getParameterHelpText() {
         return "Image input, ByRef Image destination, Number minimum_size, Number maximum_size";
     }
@@ -53,7 +58,8 @@ public class ExcludeLabelsOutsideSizeRange extends AbstractCLIJ2Plugin implement
 
     @Override
     public String getDescription() {
-        return "";
+        return "Removes labels from a label map which are not within a certain size range.\n\n" +
+                "Size of the labels is given as the number of pixel or voxels per label.";
     }
 
     @Override
