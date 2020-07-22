@@ -7,6 +7,7 @@ import ij.gui.GenericDialog;
 import ij.gui.Toolbar;
 import ij.measure.Calibration;
 import ij.plugin.PlugIn;
+import net.haesleinhuepf.clij.utilities.CLInfo;
 import net.haesleinhuepf.clincubator.utilities.*;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.AbstractCLIJPlugin;
@@ -363,7 +364,11 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         addMenuAction(info, "Target: " + my_target.getTitle(), (a) -> {my_target.show();});
         menu.add(info);
 
-        addMenuAction(info, CLIJx.getInstance().getGPUName() + " " + MemoryDisplay.getStatus(), (a) -> {
+        addMenuAction(info,"GPU: " + CLIJx.getInstance().getGPUName(), (a) -> {
+            IJ.log(CLIJx.clinfo());
+        });
+
+        addMenuAction(info,"Memory usage " + MemoryDisplay.getStatus(), (a) -> {
             new MemoryDisplay().run("");
         });
 
