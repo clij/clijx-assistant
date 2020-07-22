@@ -3,18 +3,17 @@ package net.haesleinhuepf;
 import ij.IJ;
 import ij.ImageJ;
 import ij.ImagePlus;
-import ij.plugin.HyperStackConverter;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.MemoryDisplay;
-import net.haesleinhuepf.spimcat.io.VirtualTifStack;
-import net.haesleinhuepf.clincubator.interactive.processing.BackgroundSubtraction;
-import net.haesleinhuepf.clincubator.interactive.processing.Median;
-import net.haesleinhuepf.clincubator.interactive.transform.CylinderProjection;
-import net.haesleinhuepf.clincubator.interactive.projections.MaximumZProjection;
-import net.haesleinhuepf.clincubator.interactive.transform.MakeIsotropic;
-import net.haesleinhuepf.clincubator.interactive.transform.RigidTransform3D;
+import net.haesleinhuepf.clincubator.interactive.generated.MaximumZProjection;
+import net.haesleinhuepf.clincubator.interactive.generated.Median;
+import net.haesleinhuepf.clincubator.interactive.generated.RigidTransform;
+import net.haesleinhuepf.clincubator.interactive.generated.TopHat;
+import net.haesleinhuepf.clincubator.interactive.handcrafted.CylinderTransform;
+import net.haesleinhuepf.clincubator.interactive.handcrafted.MakeIsotropic;
+import net.haesleinhuepf.clincubator.utilities.IncubatorStartingPoint;
 
 import java.io.FileNotFoundException;
 
@@ -42,7 +41,8 @@ public class IncubatorPlayground implements PlugInFilter {
         imp1.setDisplayRange(0, 1000);
 */
         //if (true) return;
-        new IncubatorPlayground().run(null);
+        new IncubatorStartingPoint().run("");
+        //new IncubatorPlayground().run(null);
     }
 
     @Override
@@ -60,11 +60,11 @@ public class IncubatorPlayground implements PlugInFilter {
 
         //if (true) return;
 
-        new RigidTransform3D().run("");
+        new RigidTransform().run("");
 
-        new BackgroundSubtraction().run("");
+        new TopHat().run("");
 
-        new CylinderProjection().run("");
+        new CylinderTransform().run("");
 
         new MaximumZProjection().run("");
     }

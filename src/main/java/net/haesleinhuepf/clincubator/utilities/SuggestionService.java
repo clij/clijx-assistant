@@ -23,8 +23,6 @@ public class SuggestionService  extends AbstractPTService<SuggestedPlugin> imple
     private HashMap<String, PluginInfo<SuggestedPlugin>> namedPlugins = new HashMap<>();
     private HashMap<Class, ArrayList<Class>> suggestedNextSteps = new HashMap<>();
 
-    private HashMap<String, PluginInfo<SuggestedPlugin>> categorizedNamedPlugins = new HashMap<>();
-
     @Override
     public void initialize() {
         //initializeService();
@@ -42,23 +40,27 @@ public class SuggestionService  extends AbstractPTService<SuggestedPlugin> imple
                 name = info.getClassName();
             }*/
 
+            //System.out.println(info);
+            //System.out.println(info.getName());
+
             SuggestedPlugin current = pluginService().createInstance(info);
-            String name = current.getClass().getSimpleName();
-            String[] temp = current.getClass().getPackage().getName().split("\\.");
-            String packageName = temp[temp.length - 1];
+            if (current != null) {
+                String name = current.getClass().getSimpleName();
+                String[] temp = current.getClass().getPackage().getName().split("\\.");
+                String packageName = temp[temp.length - 1];
 
-            suggestedPlugins.add(info);
-            namedPlugins.put(name, info);
-            categorizedNamedPlugins.put(packageName + "/" + name, info);
+                suggestedPlugins.add(info);
+                namedPlugins.put(name, info);
 
-            ArrayList<Class> suggestions = new ArrayList<>();
+                ArrayList<Class> suggestions = new ArrayList<>();
 
-            //System.out.println("Initial suggestions for " + name);
-            for (Class suggestion : current.suggestedNextSteps()) {
-                //System.out.println("  " + suggestion.getSimpleName());
-                suggestions.add(suggestion);
+                //System.out.println("Initial suggestions for " + name);
+                for (Class suggestion : current.suggestedNextSteps()) {
+                    //System.out.println("  " + suggestion.getSimpleName());
+                    suggestions.add(suggestion);
+                }
+                suggestedNextSteps.put(current.getClass(), suggestions);
             }
-            suggestedNextSteps.put(current.getClass(), suggestions);
         }
 
         for (PluginInfo<SuggestedPlugin> info : suggestedPlugins) {
@@ -103,9 +105,9 @@ public class SuggestionService  extends AbstractPTService<SuggestedPlugin> imple
         return instance;
     }
 
-    public ArrayList<String> getHierarchy() {
+    public ArrayList<String> getNames() {
         initializeService();
-        Set set = categorizedNamedPlugins.keySet();
+        Set set = namedPlugins.keySet();
         ArrayList<String> list = new ArrayList<>(set);
         Collections.sort(list);
         return list;

@@ -1,26 +1,27 @@
 package net.haesleinhuepf.clincubator;
 
-import ij.ImageJ;
-import net.haesleinhuepf.IncubatorUtilities;
-import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
-import net.haesleinhuepf.clincubator.utilities.SuggestionService;
+import net.haesleinhuepf.clincubator.utilities.*;
+import scala.collection.$colon$plus;
+
+import java.awt.*;
 
 public class GeneratedPluginsConfig {
     public static void main(String[] args) {
         SuggestionService service = SuggestionService.getInstance();
 
-        for (String entry : service.getHierarchy()) {
-            String[] temp = entry.split("/");
-            String category = IncubatorUtilities.niceName(temp[0]);
-            String name = temp[1];
-            String niceName = IncubatorUtilities.niceName(temp[1]);
+        int category_count = 0;
+        for (String category : MenuOrganiser.getCategories()) {
 
-            SuggestedPlugin plugin = service.getPluginByName(name);
+            category_count ++;
+            for (IncubatorPlugin plugin : MenuOrganiser.getPluginsInCategory(category)) {
 
-            System.out.println(
-                    "Plugins>CLIncubator>" + category + ", " +
-                    "\"" + niceName + " (CLIncubator, experimental)\", " + plugin.getClass().getName()
-            );
+                String niceName = IncubatorUtilities.niceName(plugin.getClass().getSimpleName());
+
+                System.out.println(
+                        "Plugins>CLIncubator>" + category_count + " " + category + ", " +
+                                "\"" + niceName + " (CLIncubator, experimental)\", " + plugin.getClass().getName()
+                );
+            }
         }
 
     }
