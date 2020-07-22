@@ -50,7 +50,7 @@ public class PyclesperantoGenerator implements ScriptGenerator {
             call = call + ", " + name + "=" + name;
             program = program + name + " = " + plugin.getArgs()[i] + "\n";
         }
-        program = program + image2 + " = " + methodName + "(" + image1 + ", " + call + ")\n";
+        program = program + image2 + " = " + methodName + "(" + image1 + call + ")\n";
 
         return program;
     }
@@ -78,6 +78,6 @@ public class PyclesperantoGenerator implements ScriptGenerator {
         return  "# This is experimental script output which is not supposed to be executable yet.\n" +
                 "# Stay tuned and check out http://clesperanto.net to learn more." +
                 "\n\n" +
-                "import pyclesperanto_prototype as cle";
+                "import pyclesperanto_prototype as cle\n\n";
     }
 }
