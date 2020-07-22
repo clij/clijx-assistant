@@ -1,9 +1,10 @@
 package net.haesleinhuepf.clincubator.utilities;
 
 import ij.ImagePlus;
+import ij.plugin.PlugIn;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 
-public interface IncubatorPlugin {
+public interface IncubatorPlugin extends PlugIn {
     void refresh();
     ImagePlus getSource();
     ImagePlus getTarget();

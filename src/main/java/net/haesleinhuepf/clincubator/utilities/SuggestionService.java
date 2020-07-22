@@ -23,8 +23,6 @@ public class SuggestionService  extends AbstractPTService<SuggestedPlugin> imple
     private HashMap<String, PluginInfo<SuggestedPlugin>> namedPlugins = new HashMap<>();
     private HashMap<Class, ArrayList<Class>> suggestedNextSteps = new HashMap<>();
 
-    private HashMap<String, PluginInfo<SuggestedPlugin>> categorizedNamedPlugins = new HashMap<>();
-
     @Override
     public void initialize() {
         //initializeService();
@@ -53,7 +51,6 @@ public class SuggestionService  extends AbstractPTService<SuggestedPlugin> imple
 
                 suggestedPlugins.add(info);
                 namedPlugins.put(name, info);
-                categorizedNamedPlugins.put(packageName + "/" + name, info);
 
                 ArrayList<Class> suggestions = new ArrayList<>();
 
@@ -108,9 +105,9 @@ public class SuggestionService  extends AbstractPTService<SuggestedPlugin> imple
         return instance;
     }
 
-    public ArrayList<String> getHierarchy() {
+    public ArrayList<String> getNames() {
         initializeService();
-        Set set = categorizedNamedPlugins.keySet();
+        Set set = namedPlugins.keySet();
         ArrayList<String> list = new ArrayList<>(set);
         Collections.sort(list);
         return list;

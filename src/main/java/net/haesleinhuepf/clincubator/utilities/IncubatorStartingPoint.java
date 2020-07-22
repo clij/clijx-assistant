@@ -12,9 +12,11 @@ import net.haesleinhuepf.clincubator.interactive.generated.Mean;
 import net.haesleinhuepf.clincubator.interactive.generated.TopHat;
 import net.haesleinhuepf.clincubator.interactive.handcrafted.MakeIsotropic;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
+import org.scijava.plugin.Plugin;
 
 import static net.haesleinhuepf.clijx.gui.Utilities.ignoreEvent;
 
+@Plugin(type = SuggestedPlugin.class)
 public class IncubatorStartingPoint extends AbstractIncubatorPlugin {
 
     int former_t = -1;

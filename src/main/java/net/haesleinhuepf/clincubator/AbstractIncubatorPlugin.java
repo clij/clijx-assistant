@@ -7,7 +7,7 @@ import ij.gui.GenericDialog;
 import ij.gui.Toolbar;
 import ij.measure.Calibration;
 import ij.plugin.PlugIn;
-import net.haesleinhuepf.clincubator.utilities.IncubatorUtilities;
+import net.haesleinhuepf.clincubator.utilities.*;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.AbstractCLIJPlugin;
 import net.haesleinhuepf.clij.macro.CLIJOpenCLProcessor;
@@ -17,9 +17,6 @@ import net.haesleinhuepf.clijx.gui.MemoryDisplay;
 import net.haesleinhuepf.clijx.utilities.AbstractCLIJxPlugin;
 import net.haesleinhuepf.clincubator.scriptgenerator.MacroGenerator;
 import net.haesleinhuepf.clincubator.scriptgenerator.ScriptGenerator;
-import net.haesleinhuepf.clincubator.utilities.IncubatorPlugin;
-import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
-import net.haesleinhuepf.clincubator.utilities.SuggestionService;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 
 import java.awt.*;
@@ -35,7 +32,7 @@ import java.util.TimerTask;
 
 public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, SuggestedPlugin, IncubatorPlugin {
 
-    private final static String online_help = "https://github.com/haesleinhuepf/clincubator/";
+    private final static String online_documentation_link = "https://clij.github.io/clij2-docs/reference";
     private final String doneText = "Done";
     private final String refreshText = "Refresh";
 
@@ -193,7 +190,11 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                             args[i] = 2;
                         }
                     } else {
-                        args[i] = Double.parseDouble(((TextField)registered_dialog.getNumericFields().get(number_count)).getText());
+                        try {
+                            args[i] = Double.parseDouble(((TextField)registered_dialog.getNumericFields().get(number_count)).getText());
+                        } catch (NumberFormatException e) {
+                            return;
+                        }
                         number_count++;
                     }
                 }
@@ -297,9 +298,16 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
     protected PopupMenu buildPopup(MouseEvent e, ImagePlus my_source, ImagePlus my_target) {
         PopupMenu menu = new PopupMenu("CLIncubator");
 
+        addMenuAction(menu, this.getClass().getSimpleName(), (a) -> {
+            if (registered_dialog != null) {
+                registered_dialog.show();
+            }
+        });
+        menu.add("-");
+
         // -------------------------------------------------------------------------------------------------------------
 
-        Menu suggestedFollowers = new Menu("Suggestions");
+        Menu suggestedFollowers = new Menu("Suggested next steps");
         for (Class klass : SuggestionService.getInstance().getSuggestedNextStepsFor(this)) {
             addMenuAction(suggestedFollowers, klass.getSimpleName(), (a) -> {
                 my_target.show();
@@ -319,25 +327,21 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
         // -------------------------------------------------------------------------------------------------------------
 
-        String former_category = "";
-        Menu moreOptions = null;
-        for (String entry : SuggestionService.getInstance().getHierarchy()) {
-            String[] temp = entry.split("/");
-            String category = temp[0];
-            String name = temp[1];
-            if (category.compareTo(former_category) != 0) {
-                if (moreOptions != null) {
-                    menu.add(moreOptions);
-                }
-                moreOptions = new Menu(IncubatorUtilities.niceName(category));
-                former_category = category;
+        int category_count = 0;
+        for (String category : MenuOrganiser.getCategories()) {
+            category_count ++;
+
+            int menu_count = 0;
+            Menu moreOptions = new Menu(category_count + " " + IncubatorUtilities.niceName(category));
+            for (IncubatorPlugin plugin : MenuOrganiser.getPluginsInCategory(category)) {
+                addMenuAction(moreOptions, IncubatorUtilities.niceName(plugin.getClass().getSimpleName()), (a) -> {
+                    plugin.run("");
+                });
+                menu_count ++;
             }
-            addMenuAction(moreOptions, name, (a) -> {
-                SuggestionService.getInstance().getPluginByName(name).run("");
-            });
-        }
-        if (moreOptions != null) {
-            menu.add(moreOptions);
+            if (menu_count > 0) {
+                menu.add(moreOptions);
+            }
         }
         menu.add("-");
 
@@ -359,22 +363,21 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         addMenuAction(info, "Target: " + my_target.getTitle(), (a) -> {my_target.show();});
         menu.add(info);
 
-        addMenuAction(menu, CLIJx.getInstance().getGPUName() + " " + MemoryDisplay.getStatus(), (a) -> {
+        addMenuAction(info, CLIJx.getInstance().getGPUName() + " " + MemoryDisplay.getStatus(), (a) -> {
             new MemoryDisplay().run("");
         });
 
         menu.add("-");
 
-        addMenuAction(menu,"Operation: " + this.getClass().getSimpleName(), (a) -> {
-            if (registered_dialog != null) {
-                registered_dialog.show();
-            }
-        });
 
-        menu.add("-");
-        addMenuAction(menu,"CLIncubator online documentation", (a) -> {
+
+
+        String documentation_link = online_documentation_link +
+                ((plugin != null) ?"_" + plugin.getName().replace("CLIJ2_", "").replace("CLIJx_", ""):"");
+
+        addMenuAction(menu,"Online documentation", (a) -> {
             try {
-                Desktop.getDesktop().browse(new URI(online_help));
+                Desktop.getDesktop().browse(new URI(documentation_link));
             } catch (IOException e1) {
                 e1.printStackTrace();
             } catch (URISyntaxException e2) {

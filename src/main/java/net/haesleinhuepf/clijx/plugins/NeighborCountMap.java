@@ -50,6 +50,6 @@ public class NeighborCountMap extends AbstractCLIJ2Plugin implements CLIJMacroPl
 
     @Override
     public String getCategories() {
-        return "Analysis";
+        return "Measurements";
     }
 }
