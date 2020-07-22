@@ -5,13 +5,13 @@ import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 public interface DetectAndLabelMaximaSuggestion extends SuggestedPlugin {
     default Class[] suggestedNextSteps() {
         return new Class[] {
-                net.haesleinhuepf.clincubator.interactive.generated.ExtendLabelingViaVoronoi.class
+                
         };
     }
 
     default Class[] suggestedPreviousSteps() {
         return new Class[]{
-                net.haesleinhuepf.clincubator.interactive.generated.MaximumZProjection.class
+                
         };
     }
 }

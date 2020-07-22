@@ -2,7 +2,7 @@ package net.haesleinhuepf.clincubator.interactive.suggestions;
 
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 
-public interface DrawMeshBetweenNeighboringLabelsSuggestion extends SuggestedPlugin {
+public interface DrawDistanceMeshBetweenTouchingLabelsSuggestion extends SuggestedPlugin {
     default Class[] suggestedNextSteps() {
         return new Class[] {
                 
@@ -11,7 +11,7 @@ public interface DrawMeshBetweenNeighboringLabelsSuggestion extends SuggestedPlu
 
     default Class[] suggestedPreviousSteps() {
         return new Class[]{
-                net.haesleinhuepf.clincubator.interactive.generated.ExtendLabelingViaVoronoi.class
+                
         };
     }
 }

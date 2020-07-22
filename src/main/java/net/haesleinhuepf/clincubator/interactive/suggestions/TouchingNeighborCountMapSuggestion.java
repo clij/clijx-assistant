@@ -2,7 +2,7 @@ package net.haesleinhuepf.clincubator.interactive.suggestions;
 
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 
-public interface MaximumZProjectionSuggestion extends SuggestedPlugin {
+public interface TouchingNeighborCountMapSuggestion extends SuggestedPlugin {
     default Class[] suggestedNextSteps() {
         return new Class[] {
                 
@@ -11,8 +11,7 @@ public interface MaximumZProjectionSuggestion extends SuggestedPlugin {
 
     default Class[] suggestedPreviousSteps() {
         return new Class[]{
-                net.haesleinhuepf.clincubator.interactive.generated.Rotate.class,
-net.haesleinhuepf.clincubator.interactive.generated.ResliceLeft.class
+                
         };
     }
 }

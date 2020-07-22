@@ -19,7 +19,7 @@ public class GeneratedPluginsConfig {
 
                 System.out.println(
                         "Plugins>CLIncubator>" + category_count + " " + category + ", " +
-                                "\"" + niceName + " (CLIncubator, experimental)\", " + plugin.getClass().getName()
+                                "\"" + niceName + " (CLIncubator, experimental)_" + category_count + "\", " + plugin.getClass().getName()
                 );
             }
         }

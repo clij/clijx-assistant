@@ -1,16 +1,16 @@
 package net.haesleinhuepf.clincubator.interactive.generated;
 
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
-import net.haesleinhuepf.clincubator.interactive.suggestions.DrawMeshBetweenNeighboringLabelsSuggestion;
+import net.haesleinhuepf.clincubator.interactive.suggestions.DrawMeshBetweenTouchingLabelsSuggestion;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = SuggestedPlugin.class)
 // this is generated code. See src/test/java/net/haesleinhuepf/clincubator/PluginGenerator.java for details.
-public class DrawMeshBetweenNeighboringLabels extends AbstractIncubatorPlugin implements DrawMeshBetweenNeighboringLabelsSuggestion {
+public class DrawMeshBetweenTouchingLabels extends AbstractIncubatorPlugin implements DrawMeshBetweenTouchingLabelsSuggestion {
 
-    public DrawMeshBetweenNeighboringLabels() {
-        super(new net.haesleinhuepf.clijx.plugins.DrawMeshBetweenNeighboringLabels());
+    public DrawMeshBetweenTouchingLabels() {
+        super(new net.haesleinhuepf.clijx.plugins.DrawMeshBetweenTouchingLabels());
     }
 
 }
