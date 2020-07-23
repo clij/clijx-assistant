@@ -216,7 +216,6 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         if (plugin instanceof CLIJOpenCLProcessor) {
             ((CLIJOpenCLProcessor) plugin).executeCL();
         }
-
         pushed.close();
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
@@ -226,7 +225,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             my_target.setDisplayRange(0, CLIJx.getInstance().maximumOfAllPixels(result));
         } else if (this.getClass().getSimpleName().toLowerCase().contains("binary") ||
                 this.getClass().getSimpleName().toLowerCase().contains("threshold") ||
-                (plugin instanceof IsCategorized && ((IsCategorized)plugin).getCategories().toLowerCase().contains("segmentation") || ((IsCategorized)plugin).getCategories().toLowerCase().contains("binary"))
+                (plugin instanceof IsCategorized && (((IsCategorized)plugin).getCategories().toLowerCase().contains("segmentation") || ((IsCategorized)plugin).getCategories().toLowerCase().contains("binary")))
         ) {
             my_target.setDisplayRange(0, 1);
         }
