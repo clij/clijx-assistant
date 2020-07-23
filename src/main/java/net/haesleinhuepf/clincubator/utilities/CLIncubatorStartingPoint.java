@@ -19,7 +19,7 @@ import org.scijava.plugin.Plugin;
 import static net.haesleinhuepf.clijx.gui.Utilities.ignoreEvent;
 
 @Plugin(type = SuggestedPlugin.class)
-public class IncubatorStartingPoint extends AbstractIncubatorPlugin {
+public class CLIncubatorStartingPoint extends AbstractIncubatorPlugin {
 
     int former_t = -1;
     int former_c = -1;
