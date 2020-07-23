@@ -14,6 +14,7 @@ net.haesleinhuepf.clincubator.interactive.generated.ThresholdDoG.class
         return new Class[]{
                 net.haesleinhuepf.clincubator.interactive.generated.Rotate.class,
 net.haesleinhuepf.clincubator.interactive.handcrafted.SphereTransform.class,
+net.haesleinhuepf.clincubator.interactive.handcrafted.MakeIsotropic.class,
 net.haesleinhuepf.clincubator.interactive.generated.ResliceLeft.class,
 net.haesleinhuepf.clincubator.interactive.handcrafted.CylinderTransform.class
         };
