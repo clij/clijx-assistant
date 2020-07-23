@@ -13,7 +13,7 @@ import net.haesleinhuepf.clincubator.interactive.generated.RigidTransform;
 import net.haesleinhuepf.clincubator.interactive.generated.TopHat;
 import net.haesleinhuepf.clincubator.interactive.handcrafted.CylinderTransform;
 import net.haesleinhuepf.clincubator.interactive.handcrafted.MakeIsotropic;
-import net.haesleinhuepf.clincubator.utilities.IncubatorStartingPoint;
+import net.haesleinhuepf.clincubator.utilities.CLIncubatorStartingPoint;
 
 import java.io.FileNotFoundException;
 
@@ -41,7 +41,7 @@ public class IncubatorPlayground implements PlugInFilter {
         imp1.setDisplayRange(0, 1000);
 */
         //if (true) return;
-        new IncubatorStartingPoint().run("");
+        new CLIncubatorStartingPoint().run("");
         //new IncubatorPlayground().run(null);
     }
 
