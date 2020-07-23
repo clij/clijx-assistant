@@ -5,7 +5,7 @@ import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 public interface ThresholdHuangSuggestion extends SuggestedPlugin {
     default Class[] suggestedNextSteps() {
         return new Class[] {
-                
+                net.haesleinhuepf.clincubator.interactive.generated.BinaryNot.class
         };
     }
 

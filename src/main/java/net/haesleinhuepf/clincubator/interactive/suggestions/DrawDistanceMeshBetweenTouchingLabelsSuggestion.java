@@ -11,7 +11,7 @@ public interface DrawDistanceMeshBetweenTouchingLabelsSuggestion extends Suggest
 
     default Class[] suggestedPreviousSteps() {
         return new Class[]{
-                
+                net.haesleinhuepf.clincubator.interactive.generated.ExtendLabelingViaVoronoi.class
         };
     }
 }
