@@ -3,7 +3,6 @@ package net.haesleinhuepf.clincubator.utilities;
 import ij.IJ;
 import ij.IJEventListener;
 import ij.ImageJ;
-import ij.ImagePlus;
 import ij.gui.Toolbar;
 import ij.plugin.tool.PlugInTool;
 
@@ -22,7 +21,7 @@ public class IncubatorStartingPointTool extends PlugInTool {
                 if (eventID == IJEventListener.TOOL_CHANGED) {
                     if (IJ.getToolName().compareTo(getToolName()) == 0 ) {
                         System.out.println("Start acquisition");
-                        new IncubatorStartingPoint().run("");
+                        new CLIncubatorStartingPoint().run("");
                     }
                 }
             }
