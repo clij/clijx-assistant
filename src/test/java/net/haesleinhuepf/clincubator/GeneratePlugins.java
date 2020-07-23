@@ -67,7 +67,7 @@ public class GeneratePlugins {
                             if (suggestedNextSteps.length() > 0 && !suggestedNextSteps.endsWith(",\n")) {
                                 suggestedNextSteps = suggestedNextSteps + ",\n";
                             }
-                            suggestedNextSteps = suggestedNextSteps + nextName;
+                            suggestedNextSteps = suggestedNextSteps + nextName + ".class";
                         }
                     }
 
@@ -84,7 +84,7 @@ public class GeneratePlugins {
                             if (suggestedNextSteps.length() > 0 && !suggestedNextSteps.endsWith(",\n")) {
                                 suggestedNextSteps = suggestedNextSteps + ",\n";
                             }
-                            suggestedNextSteps = suggestedNextSteps + nextName;
+                            suggestedNextSteps = suggestedNextSteps + nextName + ".class";
                         }
                     }
 
@@ -122,6 +122,7 @@ public class GeneratePlugins {
             plugin = service.getCLIJMacroPlugin("CLIJx_" + method);
         }
         if (plugin == null) {
+            System.out.println("ERROR: Can't find plugin for " + method);
             return "";
         }
 
@@ -131,8 +132,19 @@ public class GeneratePlugins {
         name = name.replace("3D", "").replace("Box","");
 
         if (new File("src/main/java/" + name.replace(".", "/") + ".java").exists()) {
-            return name + ".class";
+            return name;
         }
+
+        name = plugin.getClass().getName();
+        name = name.replace("clij2.plugins", "clincubator.interactive.handcrafted");
+        name = name.replace("clijx.plugins", "clincubator.interactive.handcrafted");
+        name = name.replace("3D", "").replace("Box","");
+
+        if (new File("src/main/java/" + name.replace(".", "/") + ".java").exists()) {
+            return name;
+        }
+
+
         return "";
     }
 
@@ -142,7 +154,7 @@ public class GeneratePlugins {
         }
         String parameters = clijMacroPlugin.getParameterHelpText();
 
-        //if (!clijMacroPlugin.getName().contains("detectAnd")) {
+        //if (!clijMacroPlugin.getName().contains("makeIso")) {
         //    return false;
         //}
 
