@@ -6,6 +6,7 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.Toolbar;
 import ij.measure.Calibration;
+import ij.plugin.Duplicator;
 import ij.plugin.PlugIn;
 import net.haesleinhuepf.clij.utilities.CLInfo;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
@@ -222,13 +223,13 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         my_target.setTitle(IncubatorUtilities.niceName(this.getClass().getSimpleName()) + " of " + my_source.getTitle());
         if (this.getClass().getSimpleName().toLowerCase().contains("label")) {
             IncubatorUtilities.glasbey(my_target);
-        } /*else if (this.getClass().getSimpleName().toLowerCase().contains("binary") ||
+            my_target.setDisplayRange(0, CLIJx.getInstance().maximumOfAllPixels(result));
+        } else if (this.getClass().getSimpleName().toLowerCase().contains("binary") ||
                 this.getClass().getSimpleName().toLowerCase().contains("threshold") ||
                 (plugin instanceof IsCategorized && (((IsCategorized)plugin).getCategories().toLowerCase().contains("segmentation") || ((IsCategorized)plugin).getCategories().toLowerCase().contains("binary")))
         ) {
             my_target.setDisplayRange(0, 1);
-        }*/
-        my_target.setDisplayRange(0, CLIJx.getInstance().maximumOfAllPixels(result));
+        }
     }
 
     protected boolean configure() {
@@ -278,14 +279,19 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
                 }
             });
+
+
+            IJ.run(my_target, "Enhance Contrast", "saturated=0.35");
+
+
             System.out.println("added menu " + this);
 
         } else {
             ImagePlus output = result;
-            //double min = my_target.getDisplayRangeMin();
-            //double max = my_target.getDisplayRangeMax();
+            double min = my_target.getDisplayRangeMin();
+            double max = my_target.getDisplayRangeMax();
             my_target.setStack(output.getStack());
-            //my_target.setDisplayRange(min, max);
+            my_target.setDisplayRange(min, max);
         }
         paused = false;
         IncubatorUtilities.transferCalibration(my_source, my_target);
@@ -387,8 +393,14 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
         menu.add("-");
 
+        addMenuAction(menu, "Auto Brightness & Contrast", (a) -> {
+            IJ.run(my_target, "Enhance Contrast", "saturated=0.35");
+        });
+        addMenuAction(menu, "Duplicate and go ahead with ImageJ", (a) -> {
+            new Duplicator().run(my_target, 1, my_target.getNSlices()).show();
+        });
 
-
+        menu.add("-");
 
         String documentation_link = online_documentation_link +
                 ((plugin != null) ?"_" + plugin.getName().replace("CLIJ2_", "").replace("CLIJx_", ""):"");
