@@ -51,7 +51,7 @@ public class CombinedUsageStats {
                 String[] parameters = temp[1].replace(");","").split(",");
 
 
-                System.out.println("Method: " + method);
+                //System.out.println("Method: " + method);
                 CLIJMacroPlugin plugin = service.getCLIJMacroPlugin("CLIJ2_" + method);
                 if (plugin == null) {
                     plugin = service.getCLIJMacroPlugin("CLIJx_" + method);
