@@ -44,8 +44,11 @@ public class IncubatorStartingPoint extends AbstractIncubatorPlugin {
             IJ.error("This image is managed by CLIncubator already.");
             return;
         }
-        setSource(new ImagePlus("pixel", new ByteProcessor(1,1)));
+        ImagePlus voidSource = new ImagePlus("pixel", new ByteProcessor(1,1));
         ImagePlus imp = IJ.getImage();
+
+        IncubatorUtilities.transferCalibration(imp, voidSource);
+        setSource(voidSource);
         former_t = imp.getT();
         former_c = imp.getC();
         setTarget(imp);

@@ -62,7 +62,9 @@ public class IncubatorUtilities {
         target.getCalibration().pixelHeight = source.getCalibration().pixelHeight;
         target.getCalibration().pixelDepth = source.getCalibration().pixelDepth;
 
-        target.getCalibration().setUnit(source.getCalibration().getUnit());
+        target.getCalibration().setXUnit(source.getCalibration().getXUnit());
+        target.getCalibration().setYUnit(source.getCalibration().getYUnit());
+        target.getCalibration().setZUnit(source.getCalibration().getZUnit());
     }
 
     public static String niceName(String name) {
