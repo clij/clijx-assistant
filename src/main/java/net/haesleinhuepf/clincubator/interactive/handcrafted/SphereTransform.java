@@ -79,7 +79,7 @@ public class SphereTransform extends AbstractIncubatorPlugin implements SphereTr
             relative_center_z = Float.parseFloat(center_z_slider.getText());
         }
 
-        args = new Object[]{pushed, null, number_of_angles, delta_angle_in_degrees, relative_center_x, relative_center_y, relative_center_z};
+        args = new Object[]{pushed, null, number_of_angles, delta_angle_in_degrees, relative_center_x * pushed.getWidth(), relative_center_y * pushed.getHeight(), relative_center_z * pushed.getDepth()};
         net.haesleinhuepf.clijx.plugins.SphereTransform plugin = (net.haesleinhuepf.clijx.plugins.SphereTransform) getCLIJMacroPlugin();
         plugin.setArgs(args);
         if (result == null) {
