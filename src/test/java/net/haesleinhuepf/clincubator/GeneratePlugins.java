@@ -17,7 +17,11 @@ import java.util.HashMap;
 
 public class GeneratePlugins {
     public static void main(String[] args) throws IOException {
-        CombinedUsageStats combinedUsageStats = new CombinedUsageStats("../clij2-docs/src/main/macro/", "../scripts_hidden/", "../scripts/");
+        CombinedUsageStats combinedUsageStats = new CombinedUsageStats(
+                "../clij2-docs/src/main/macro/",
+                "../clijx/src/main/macro/",
+                "../scripts_hidden/",
+                "../scripts/");
 
         CLIJMacroPluginService service = new Context(CLIJMacroPluginService.class).getService(CLIJMacroPluginService.class);
         for (String pluginName : service.getCLIJMethodNames()) {
