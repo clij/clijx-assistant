@@ -6,6 +6,8 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.tool.PlugInTool;
 import ij.process.ByteProcessor;
+import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij2.utilities.CLIJUtilities;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clincubator.interactive.generated.MaximumZProjection;
 import net.haesleinhuepf.clincubator.interactive.generated.Mean;
@@ -52,6 +54,8 @@ public class IncubatorStartingPoint extends AbstractIncubatorPlugin {
         former_t = imp.getT();
         former_c = imp.getC();
         setTarget(imp);
+
+        IncubatorUtilities.stamp(CLIJxVirtualStack.imagePlusToBuffer(my_target));
 
         GenericDialog dialog = buildNonModalDialog(my_target.getWindow());
         if (dialog != null) {
