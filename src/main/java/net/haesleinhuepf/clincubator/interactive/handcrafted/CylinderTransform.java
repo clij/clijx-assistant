@@ -85,6 +85,7 @@ public class CylinderTransform extends AbstractIncubatorPlugin implements Cylind
         if (plugin instanceof CLIJOpenCLProcessor) {
             plugin.executeCL();
         }
+        pushed.close();
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle("Cylinder transformed " + my_source.getTitle());

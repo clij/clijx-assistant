@@ -8,6 +8,7 @@ import ij.gui.Toolbar;
 import ij.measure.Calibration;
 import ij.plugin.PlugIn;
 import net.haesleinhuepf.clij.utilities.CLInfo;
+import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clincubator.scriptgenerator.PyclesperantoGenerator;
 import net.haesleinhuepf.clincubator.utilities.*;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
@@ -207,6 +208,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         plugin.setArgs(args);
         if (result == null) {
             result = plugin.createOutputBufferFromSource(pushed);
+
         }
         args[1] = result;
         plugin.setArgs(args); // might not be necessary
@@ -219,6 +221,15 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle(IncubatorUtilities.niceName(this.getClass().getSimpleName()) + " of " + my_source.getTitle());
+        if (this.getClass().getSimpleName().toLowerCase().contains("label")) {
+            IncubatorUtilities.glasbey(my_target);
+            my_target.setDisplayRange(0, CLIJx.getInstance().maximumOfAllPixels(result));
+        } else if (this.getClass().getSimpleName().toLowerCase().contains("binary") ||
+                this.getClass().getSimpleName().toLowerCase().contains("threshold") ||
+                (plugin instanceof IsCategorized && ((IsCategorized)plugin).getCategories().toLowerCase().contains("segmentation") || ((IsCategorized)plugin).getCategories().toLowerCase().contains("binary"))
+        ) {
+            my_target.setDisplayRange(0, 1);
+        }
     }
 
     protected boolean configure() {
@@ -372,6 +383,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
         addMenuAction(info,"Memory usage " + MemoryDisplay.getStatus(), (a) -> {
             new MemoryDisplay().run("");
+            IJ.log(CLIJx.getInstance().reportMemory());
         });
 
         menu.add("-");
@@ -535,7 +547,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
     public void setTargetIsProcessing() {
         if (my_target.getStack() instanceof CLIJxVirtualStack) {
-            IncubatorUtilities.stamp(((CLIJxVirtualStack) my_target.getStack()).getBuffer());
+            ((CLIJxVirtualStack) my_target.getStack()).getBuffer().setName(this.getClass().getName());
         }
         setButtonColor(refreshText, refreshing_color);
     }

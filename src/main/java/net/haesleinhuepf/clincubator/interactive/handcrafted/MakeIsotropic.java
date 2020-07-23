@@ -46,6 +46,9 @@ public class MakeIsotropic extends AbstractIncubatorPlugin implements MakeIsotro
         float original_voxel_size_x = (float) calib.pixelWidth;
         float original_voxel_size_y = (float) calib.pixelHeight;
         float original_voxel_size_z = (float) calib.pixelDepth;
+        System.out.println("voxel size x: " + original_voxel_size_x);
+        System.out.println("voxel size y: " + original_voxel_size_y);
+        System.out.println("voxel size z: " + original_voxel_size_z);
 
         ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
 
@@ -67,6 +70,7 @@ public class MakeIsotropic extends AbstractIncubatorPlugin implements MakeIsotro
         if (plugin instanceof CLIJOpenCLProcessor) {
             plugin.executeCL();
         }
+        pushed.close();
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle("Isotropic " + my_source.getTitle());
