@@ -9,10 +9,13 @@ import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clincubator.interactive.suggestions.MakeIsotropicSuggestion;
+import net.haesleinhuepf.clincubator.utilities.IncubatorUtilities;
 import net.haesleinhuepf.clincubator.utilities.MenuSeparator;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
+
+import java.awt.*;
 
 @Plugin(type = SuggestedPlugin.class)
 public class MakeIsotropic extends AbstractIncubatorPlugin implements MakeIsotropicSuggestion {
@@ -37,6 +40,12 @@ public class MakeIsotropic extends AbstractIncubatorPlugin implements MakeIsotro
         setSource(IJ.getImage());
         new_voxel_size_in_microns = (float) gdp.getNextNumber();
         return true;
+    }
+
+    @Override
+    protected GenericDialog buildNonModalDialog(Frame parent) {
+        GenericDialog gd = new GenericDialog(IncubatorUtilities.niceName(this.getClass().getSimpleName()));
+        return gd;
     }
 
     ClearCLBuffer result = null;
@@ -78,6 +87,8 @@ public class MakeIsotropic extends AbstractIncubatorPlugin implements MakeIsotro
         my_target.getCalibration().pixelHeight = new_voxel_size_in_microns;
         my_target.getCalibration().pixelDepth = new_voxel_size_in_microns;
         my_target.getCalibration().setUnit("micron");
+        //my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
+        my_target.updateAndDraw();
     }
 
     @Override
