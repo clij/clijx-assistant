@@ -1,14 +1,11 @@
 package net.haesleinhuepf.clincubator.utilities;
 
-import com.sun.jna.Memory;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.Toolbar;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.*;
-import net.haesleinhuepf.clincubator.utilities.IncubatorStartingPoint;
-import net.haesleinhuepf.clincubator.utilities.MenuSeparator;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -119,7 +116,15 @@ public class IncubatorUtilities {
 
         IJ.setTool(tool);
 
-        new MemoryDisplay().run("");
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        new MemoryDisplay().run("");
+                    }
+                },
+                1000
+        );
     }
 
 }
