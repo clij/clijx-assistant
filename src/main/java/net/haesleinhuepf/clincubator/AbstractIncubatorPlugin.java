@@ -222,13 +222,13 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         my_target.setTitle(IncubatorUtilities.niceName(this.getClass().getSimpleName()) + " of " + my_source.getTitle());
         if (this.getClass().getSimpleName().toLowerCase().contains("label")) {
             IncubatorUtilities.glasbey(my_target);
-            my_target.setDisplayRange(0, CLIJx.getInstance().maximumOfAllPixels(result));
-        } else if (this.getClass().getSimpleName().toLowerCase().contains("binary") ||
+        } /*else if (this.getClass().getSimpleName().toLowerCase().contains("binary") ||
                 this.getClass().getSimpleName().toLowerCase().contains("threshold") ||
                 (plugin instanceof IsCategorized && (((IsCategorized)plugin).getCategories().toLowerCase().contains("segmentation") || ((IsCategorized)plugin).getCategories().toLowerCase().contains("binary")))
         ) {
             my_target.setDisplayRange(0, 1);
-        }
+        }*/
+        my_target.setDisplayRange(0, CLIJx.getInstance().maximumOfAllPixels(result));
     }
 
     protected boolean configure() {
@@ -263,7 +263,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         paused = true;
         if (my_target == null) {
             my_target = result;
-            my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
+            //my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
             my_target.show();
             my_target.getWindow().getCanvas().disablePopupMenu(true);
             my_target.getWindow().getCanvas().addMouseListener(new MouseAdapter() {
@@ -282,10 +282,10 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
         } else {
             ImagePlus output = result;
-            double min = my_target.getDisplayRangeMin();
-            double max = my_target.getDisplayRangeMax();
+            //double min = my_target.getDisplayRangeMin();
+            //double max = my_target.getDisplayRangeMax();
             my_target.setStack(output.getStack());
-            my_target.setDisplayRange(min, max);
+            //my_target.setDisplayRange(min, max);
         }
         paused = false;
         IncubatorUtilities.transferCalibration(my_source, my_target);
