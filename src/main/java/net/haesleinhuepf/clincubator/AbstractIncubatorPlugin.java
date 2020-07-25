@@ -334,7 +334,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             if (this.getClass().getSimpleName().toLowerCase().contains("label")) {
                 IncubatorUtilities.glasbey(my_target);
             } else {
-                my_target.setLut(my_source.getProcessor().getLut());
+                //my_target.setLut(my_source.getProcessor().getLut());
             }
 
             System.out.println("added menu " + this);
