@@ -84,6 +84,6 @@ public class HumanReadibleProtocolGenerator implements ScriptGenerator {
     @Override
     public String header() {
         return  "This protocol documents and image processing workflow using CLIncubator.\n" +
-                "Read more about it online: https://clij.github.io/clincubator/";
+                "Read more about it online: https://clij.github.io/clincubator/ \n\n";
     }
 }
