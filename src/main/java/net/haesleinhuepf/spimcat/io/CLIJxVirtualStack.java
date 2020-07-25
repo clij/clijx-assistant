@@ -28,8 +28,12 @@ public class CLIJxVirtualStack extends VirtualStack {
                 @Override
                 public void imageClosed(ImagePlus imp) {
                     if (imp.getStack() instanceof CLIJxVirtualStack) {
-                        CLIJx clijx = CLIJx.getInstance();
-                        clijx.release(((CLIJxVirtualStack) imp.getStack()).getBuffer());
+                        //CLIJx clijx = CLIJx.getInstance();
+                        //
+                        ImageStack stack = imp.getStack();
+                        ClearCLBuffer buffer = ((CLIJxVirtualStack) stack).getBuffer();
+                        imp.setStack(CLIJx.getInstance().pull(buffer).getStack());
+                        buffer.close();
                     }
                 }
 
