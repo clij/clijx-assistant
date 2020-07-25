@@ -47,7 +47,6 @@ public class MenuOrganiser {
                 "Filter",
                 "Transform",
                 "Projection",
-                "Segmentation",
                 "Binary",
                 "Label",
                 "Measurement",
