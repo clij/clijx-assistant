@@ -5,6 +5,7 @@ import ij.IJEventListener;
 import ij.ImageJ;
 import ij.gui.Toolbar;
 import ij.plugin.tool.PlugInTool;
+import net.haesleinhuepf.clincubator.CLIncubatorStartingPoint;
 
 import static net.haesleinhuepf.clincubator.utilities.IncubatorUtilities.ignoreEvent;
 
@@ -46,5 +47,6 @@ public class IncubatorStartingPointTool extends PlugInTool {
 
         ignoreEvent = true;
         Toolbar.addPlugInTool(new IncubatorStartingPointTool());
+
     }
 }
