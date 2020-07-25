@@ -5,6 +5,7 @@ import net.haesleinhuepf.clij.macro.CLIJMacroPluginService;
 import net.haesleinhuepf.clij2.plugins.Mean3DBox;
 import net.haesleinhuepf.clij2.plugins.Watershed;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
+import org.jruby.ext.ffi.StructLayout$ArrayProxy$INVOKER$i$1$0$get;
 import org.scijava.Context;
 
 import java.io.File;
@@ -13,7 +14,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+
+import static net.haesleinhuepf.clincubator.AbstractIncubatorPlugin.online_documentation_link;
+import static net.haesleinhuepf.clincubator.utilities.IncubatorUtilities.niceName;
 
 public class GeneratePlugins {
     public static void main(String[] args) throws IOException {
@@ -23,12 +28,15 @@ public class GeneratePlugins {
                 "../scripts_hidden/",
                 "../scripts/");
 
+        ArrayList<CLIJMacroPlugin> supported_plugins = new ArrayList<>();
+
         CLIJMacroPluginService service = new Context(CLIJMacroPluginService.class).getService(CLIJMacroPluginService.class);
         for (String pluginName : service.getCLIJMethodNames()) {
             //System.out.println("Check " + pluginName);
             CLIJMacroPlugin plugin = service.getCLIJMacroPlugin(pluginName);
             if (isIncubatablePlugin(plugin)) {
                 System.out.println(plugin.getClass().getName());
+                supported_plugins.add(plugin);
 
                 String methodName = pluginName;//.replace("CLIJ2", "CLIJx");
                 String className = pluginName.replace("CLIJ2_", "");
@@ -89,6 +97,8 @@ public class GeneratePlugins {
                     }
 
                     template = template.replace("/*SUGGESTED_PREVIOUS_STEPS*/", suggestedNextSteps);
+                    template = template.replace("\nclass", "\n" +
+                            "// this is generated code. See src/test/java/net/haesleinhuepf/clincubator/PluginGenerator.java for details.\nclass");
                 }
 
                 {
@@ -105,6 +115,40 @@ public class GeneratePlugins {
 
             }
         }
+
+
+        ArrayList<String> link_to_docs = new ArrayList<>();
+        for (CLIJMacroPlugin plugin : supported_plugins) {
+            String methodName = plugin.getName().replace("CLIJ2_", "").replace("CLIJx_", "");
+            System.out.println(methodName);
+
+            String link = online_documentation_link + "_" + methodName;
+
+            link_to_docs.add("* [" + niceName(methodName) + "](" + link + ")\n");
+        }
+
+        Collections.sort(link_to_docs);
+
+        File outputTarget = new File("../clij.github.io/clincubator/reference.md");
+        try {
+            FileWriter writer = new FileWriter(outputTarget);
+            writer.append("## CLIncubator operations\n" +
+                    "This is the list of currently supported [CLIJ2](https://clij.github.io/) and [CLIJx](https://clij.github.io/clijx) operations.\n\n" +
+                    "Please note: CLIncubator is under development. Hence, this list is subject to change.\n\n");
+
+            int count = 0;
+            for (String entry : link_to_docs) {
+                writer.write(entry);
+                count ++;
+            }
+            writer.append("\n\n" + count + " operations listed.\n\n\n" +
+                    "Back to [CLIncubator](https://clij.github.io/clincubator)\n");
+
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private static String classFromMethodName(CLIJMacroPluginService service, String method) {
@@ -256,7 +300,7 @@ public class GeneratePlugins {
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdMinError
         blocklist.add(net.haesleinhuepf.clij2.plugins.LaplaceDiamond.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceTop
-        blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumZProjectionBounded.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumZProjectionBounded.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.OnlyzeroOverwriteMaximumBox.class);
         blocklist.add(net.haesleinhuepf.clijx.plugins.Skeletonize.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceRight
@@ -338,14 +382,14 @@ public class GeneratePlugins {
         blocklist.add(net.haesleinhuepf.clij2.plugins.ClosingDiamond.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.Translate3D
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ConnectedComponentsLabelingBox
-        blocklist.add(net.haesleinhuepf.clij2.plugins.LabelVoronoiOctagon.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.LabelVoronoiOctagon.class);
         blocklist.add(net.haesleinhuepf.clijx.plugins.ReslicePolar.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.Translate2D.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumImageAndScalar.class);
         //blocklist.add(net.haesleinhuepf.clijx.plugins.Bilateral
         blocklist.add(net.haesleinhuepf.clij2.plugins.SumYProjection.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.StandardDeviationZProjection
-        blocklist.add(net.haesleinhuepf.clij2.plugins.VoronoiLabeling.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.VoronoiLabeling.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.Maximum2DSphere.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.AverageDistanceOfNClosestPoints.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.CountNonZeroPixelsSliceBySliceSphere.class);
@@ -377,15 +421,15 @@ public class GeneratePlugins {
         //blocklist.add(net.haesleinhuepf.clij2.plugins.RotateCounterClockwise
         blocklist.add(net.haesleinhuepf.clij2.plugins.DilateBox.class);
         //blocklist.add(net.haesleinhuepf.clijx.plugins.LaplaceSphere
-        blocklist.add(net.haesleinhuepf.clij2.plugins.VoronoiOctagon.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.VoronoiOctagon.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.UndefinedToZero.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.Blur2D.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.Minimum2DBox.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.DownsampleSliceBySliceHalfMedian.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.ErodeSphere.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryFillHoles.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdIntermodes.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.CopySlice.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdIntermodes.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.CopySlice.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumSliceBySliceSphere.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.Minimum3DBox.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.CentroidsOfLabels.class);

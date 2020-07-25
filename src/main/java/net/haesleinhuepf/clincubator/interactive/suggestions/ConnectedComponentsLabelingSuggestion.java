@@ -14,6 +14,7 @@ net.haesleinhuepf.clincubator.interactive.generated.ExtendLabelsWithMaximumRadiu
         return new Class[]{
                 net.haesleinhuepf.clincubator.interactive.generated.BinaryNot.class,
 net.haesleinhuepf.clincubator.interactive.generated.ThresholdDoG.class,
+net.haesleinhuepf.clincubator.interactive.generated.ParametricWatershed.class,
 net.haesleinhuepf.clincubator.interactive.generated.ThresholdOtsu.class
         };
     }

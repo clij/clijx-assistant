@@ -8,9 +8,10 @@ import ij.gui.Toolbar;
 import ij.measure.Calibration;
 import ij.plugin.Duplicator;
 import ij.plugin.PlugIn;
+import ij.process.LUT;
 import net.haesleinhuepf.clij.utilities.CLInfo;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
-import net.haesleinhuepf.clincubator.scriptgenerator.PyclesperantoGenerator;
+import net.haesleinhuepf.clincubator.scriptgenerator.*;
 import net.haesleinhuepf.clincubator.utilities.*;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.AbstractCLIJPlugin;
@@ -19,8 +20,6 @@ import net.haesleinhuepf.clij2.AbstractCLIJ2Plugin;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.MemoryDisplay;
 import net.haesleinhuepf.clijx.utilities.AbstractCLIJxPlugin;
-import net.haesleinhuepf.clincubator.scriptgenerator.MacroGenerator;
-import net.haesleinhuepf.clincubator.scriptgenerator.ScriptGenerator;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 
 import java.awt.*;
@@ -36,7 +35,8 @@ import java.util.TimerTask;
 
 public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, SuggestedPlugin, IncubatorPlugin {
 
-    private final static String online_documentation_link = "https://clij.github.io/clij2-docs/reference";
+    public final static String online_documentation_link = "https://clij.github.io/clij2-docs/reference";
+    private final static String online_website_link = "https://clij.github.io/clincubator";
     private final String doneText = "Done";
     private final String refreshText = "Refresh";
 
@@ -123,10 +123,58 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                     } else {
                         gd.addNumericField(parameterName, 2, 2);
                     }
+                    addPlusMinusPanel(gd, parameterName);
                 }
             }
         }
         return gd;
+    }
+
+    protected void addPlusMinusPanel(GenericDialog gd, String parameterName) {
+        int element = gd.getNumericFields().size() - 1;
+        double small_delta = parmeterNameToStepSizeSuggestion(parameterName, true);
+        double large_delta = parmeterNameToStepSizeSuggestion(parameterName, false);
+
+        Panel panel = new Panel();
+        addPlusMinusButton(panel, gd, element, -large_delta, "<<");
+        addPlusMinusButton(panel, gd, element, -small_delta, "<");
+        addPlusMinusButton(panel, gd, element, small_delta, ">");
+        addPlusMinusButton(panel, gd, element, large_delta, ">>");
+
+        gd.addToSameRow();
+        gd.addPanel(panel);
+    }
+
+    private double parmeterNameToStepSizeSuggestion(String parameterName, boolean small_step) {
+        if (parameterName.toLowerCase().contains("sigma")) {
+            return small_step ? 0.5 : 2;
+        }
+        if (parameterName.toLowerCase().contains("relative")) {
+            return small_step ? 0.05 : 0.2;
+        }
+        if (parameterName.toLowerCase().contains("micron")) {
+            return small_step ? 0.1 : 5;
+        }
+        if (parameterName.toLowerCase().contains("degree")) {
+            return small_step ? 15 : 90;
+        }
+        return small_step ? 1 : 10;
+    }
+
+    private void addPlusMinusButton(Panel panel,GenericDialog gd, int element, double delta, String label) {
+
+        Button button = new Button(label);
+        button.addActionListener((a) -> {
+            TextField t = ((TextField) gd.getNumericFields().get(element));
+            try {
+                double new_value = Double.parseDouble(t.getText()) + delta;
+                t.setText("" + new_value);
+                setTargetInvalid();
+            } catch (Exception e) {
+            }
+        });
+        panel.add(button);
+
     }
 
     ClearCLBuffer result = null;
@@ -222,7 +270,6 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle(IncubatorUtilities.niceName(this.getClass().getSimpleName()) + " of " + my_source.getTitle());
         if (this.getClass().getSimpleName().toLowerCase().contains("label")) {
-            IncubatorUtilities.glasbey(my_target);
             my_target.setDisplayRange(0, CLIJx.getInstance().maximumOfAllPixels(result));
         } else if (this.getClass().getSimpleName().toLowerCase().contains("binary") ||
                 this.getClass().getSimpleName().toLowerCase().contains("threshold") ||
@@ -266,6 +313,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             my_target = result;
             //my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
             my_target.show();
+            refreshView();
             my_target.getWindow().getCanvas().disablePopupMenu(true);
             my_target.getWindow().getCanvas().addMouseListener(new MouseAdapter() {
                 @Override
@@ -283,6 +331,11 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
             IJ.run(my_target, "Enhance Contrast", "saturated=0.35");
 
+            if (this.getClass().getSimpleName().toLowerCase().contains("label")) {
+                IncubatorUtilities.glasbey(my_target);
+            } else {
+                my_target.setLut(my_source.getProcessor().getLut());
+            }
 
             System.out.println("added menu " + this);
 
@@ -290,7 +343,9 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             ImagePlus output = result;
             double min = my_target.getDisplayRangeMin();
             double max = my_target.getDisplayRangeMax();
+            //LUT[] lut = my_target.getLuts();
             my_target.setStack(output.getStack());
+            //my_target.setLut(lut[0]);
             my_target.setDisplayRange(min, max);
         }
         paused = false;
@@ -316,7 +371,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
     protected PopupMenu buildPopup(MouseEvent e, ImagePlus my_source, ImagePlus my_target) {
         PopupMenu menu = new PopupMenu("CLIncubator");
 
-        addMenuAction(menu, this.getClass().getSimpleName(), (a) -> {
+        addMenuAction(menu, this.getClass().getSimpleName() + " (experimental)", (a) -> {
             if (registered_dialog != null) {
                 registered_dialog.show();
             }
@@ -368,8 +423,15 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         Menu script = new Menu("Generate script");
 
         addMenuAction(script, "ImageJ Macro", (a) -> {generateScript(new MacroGenerator());});
+        script.add("-");
+        addMenuAction(script, "Icy Javascript", (a) -> {generateScript(new IcyJavaScriptGenerator());});
+        addMenuAction(script, "Matlab", (a) -> {generateScript(new MatlabGenerator());});
+        addMenuAction(script, "ImageJ Groovy", (a) -> {generateScript(new GroovyGenerator());});
+        addMenuAction(script, "ImageJ JavaScript", (a) -> {generateScript(new JavaScriptGenerator());});
+        addMenuAction(script, "ImageJ Jython", (a) -> {generateScript(new JythonGenerator());});
+        script.add("-");
+        addMenuAction(script, "Human readible protocol", (a) -> {generateScript(new HumanReadibleProtocolGenerator());});
         addMenuAction(script, "clEsperanto Python", (a) -> {generateScript(new PyclesperantoGenerator());});
-
         menu.add(script);
 
 
@@ -402,8 +464,8 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
         menu.add("-");
 
-        String documentation_link = online_documentation_link +
-                ((plugin != null) ?"_" + plugin.getName().replace("CLIJ2_", "").replace("CLIJx_", ""):"");
+        String documentation_link =
+                ((plugin != null) ?online_documentation_link + "_" + plugin.getName().replace("CLIJ2_", "").replace("CLIJx_", ""):online_website_link);
 
         addMenuAction(menu,"Online documentation", (a) -> {
             try {

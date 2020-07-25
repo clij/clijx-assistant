@@ -4,17 +4,21 @@ import ij.IJ;
 import ij.IJEventListener;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
+import ij.gui.Toolbar;
 import ij.plugin.tool.PlugInTool;
 import ij.process.ByteProcessor;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij2.utilities.CLIJUtilities;
 import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.clijx.gui.InteractiveWindowPosition;
 import net.haesleinhuepf.clincubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clincubator.IncubatorPluginRegistry;
+import net.haesleinhuepf.clincubator.interactive.generated.GaussianBlur;
 import net.haesleinhuepf.clincubator.interactive.generated.MaximumZProjection;
 import net.haesleinhuepf.clincubator.interactive.generated.Mean;
 import net.haesleinhuepf.clincubator.interactive.generated.TopHat;
 import net.haesleinhuepf.clincubator.interactive.handcrafted.MakeIsotropic;
+import net.haesleinhuepf.clincubator.utilities.IncubatorStartingPointTool;
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
@@ -32,7 +36,7 @@ public class CLIncubatorStartingPoint extends AbstractIncubatorPlugin {
     @Override
     public <T extends SuggestedPlugin> Class<T>[] suggestedNextSteps() {
         return new Class[] {
-                Mean.class,
+                GaussianBlur.class,
                 TopHat.class,
                 MakeIsotropic.class,
                 MaximumZProjection.class
@@ -46,6 +50,8 @@ public class CLIncubatorStartingPoint extends AbstractIncubatorPlugin {
 
     @Override
     public void run(String arg) {
+        Toolbar.addPlugInTool(new InteractiveWindowPosition());
+
         if (IJ.getImage().getStack() instanceof CLIJxVirtualStack) {
             IJ.error("This image is managed by CLIncubator already.");
             return;
