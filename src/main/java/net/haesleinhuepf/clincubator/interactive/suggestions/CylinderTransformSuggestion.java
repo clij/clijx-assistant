@@ -15,6 +15,7 @@ net.haesleinhuepf.clincubator.interactive.generated.MeanZProjectionAboveThreshol
         return new Class[]{
                 net.haesleinhuepf.clincubator.interactive.generated.Rotate.class,
 net.haesleinhuepf.clincubator.interactive.handcrafted.MakeIsotropic.class,
+net.haesleinhuepf.clincubator.interactive.generated.RigidTransform.class,
 net.haesleinhuepf.clincubator.interactive.generated.TopHat.class
         };
     }

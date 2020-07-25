@@ -5,7 +5,8 @@ import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 public interface RigidTransformSuggestion extends SuggestedPlugin {
     default Class[] suggestedNextSteps() {
         return new Class[] {
-                net.haesleinhuepf.clincubator.interactive.handcrafted.SphereTransform.class
+                net.haesleinhuepf.clincubator.interactive.handcrafted.SphereTransform.class,
+net.haesleinhuepf.clincubator.interactive.handcrafted.CylinderTransform.class
         };
     }
 

@@ -52,7 +52,11 @@ public class CylinderTransform extends AbstractIncubatorPlugin implements Cylind
     protected GenericDialog buildNonModalDialog(Frame parent) {
         GenericDialog gdp = new GenericDialog("Cylinder transform");
         gdp.addNumericField("Center_x (0...1)", relative_center_x);
+        addPlusMinusPanel(gdp, "relative_center_x");
+
         gdp.addNumericField("Center_z (0...1)", relative_center_z);
+        addPlusMinusPanel(gdp, "relative_center_z");
+
 
         center_x_slider = (TextField) gdp.getNumericFields().get(0);
         center_z_slider = (TextField) gdp.getNumericFields().get(1);
@@ -69,8 +73,12 @@ public class CylinderTransform extends AbstractIncubatorPlugin implements Cylind
     public synchronized void refresh()
     {
         if (center_z_slider != null) {
-            relative_center_x = Float.parseFloat(center_x_slider.getText());
-            relative_center_z = Float.parseFloat(center_z_slider.getText());
+            try {
+                relative_center_x = Float.parseFloat(center_x_slider.getText());
+                relative_center_z = Float.parseFloat(center_z_slider.getText());
+            } catch (Exception e) {
+                return;
+            }
         }
 
         ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);

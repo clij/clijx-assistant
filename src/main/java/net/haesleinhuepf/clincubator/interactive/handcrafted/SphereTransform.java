@@ -58,8 +58,11 @@ public class SphereTransform extends AbstractIncubatorPlugin implements SphereTr
     protected GenericDialog buildNonModalDialog(Frame parent) {
         GenericDialog gdp = new GenericDialog("Cylinder projection");
         gdp.addNumericField("Center_x (0...1)", relative_center_x);
+        addPlusMinusPanel(gdp, "relative_center_x");
         gdp.addNumericField("Center_y (0...1)", relative_center_y);
+        addPlusMinusPanel(gdp, "relative_center_y");
         gdp.addNumericField("Center_z (0...1)", relative_center_z);
+        addPlusMinusPanel(gdp, "relative_center_z");
 
         center_x_slider = (TextField) gdp.getNumericFields().get(0);
         center_y_slider = (TextField) gdp.getNumericFields().get(1);

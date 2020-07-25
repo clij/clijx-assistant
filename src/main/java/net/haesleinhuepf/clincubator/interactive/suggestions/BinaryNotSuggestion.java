@@ -12,7 +12,8 @@ net.haesleinhuepf.clincubator.interactive.generated.DistanceMap.class
 
     default Class[] suggestedPreviousSteps() {
         return new Class[]{
-                net.haesleinhuepf.clincubator.interactive.generated.ThresholdHuang.class,
+                net.haesleinhuepf.clincubator.interactive.generated.VoronoiOctagon.class,
+net.haesleinhuepf.clincubator.interactive.generated.ThresholdHuang.class,
 net.haesleinhuepf.clincubator.interactive.generated.ThresholdDefault.class,
 net.haesleinhuepf.clincubator.interactive.generated.ThresholdOtsu.class
         };

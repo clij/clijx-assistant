@@ -6,7 +6,8 @@ public interface MaximumZProjectionSuggestion extends SuggestedPlugin {
     default Class[] suggestedNextSteps() {
         return new Class[] {
                 net.haesleinhuepf.clincubator.interactive.generated.DetectAndLabelMaxima.class,
-net.haesleinhuepf.clincubator.interactive.generated.ThresholdDoG.class
+net.haesleinhuepf.clincubator.interactive.generated.ThresholdDoG.class,
+net.haesleinhuepf.clincubator.interactive.generated.CopySlice.class
         };
     }
 
@@ -16,7 +17,8 @@ net.haesleinhuepf.clincubator.interactive.generated.ThresholdDoG.class
 net.haesleinhuepf.clincubator.interactive.handcrafted.SphereTransform.class,
 net.haesleinhuepf.clincubator.interactive.handcrafted.MakeIsotropic.class,
 net.haesleinhuepf.clincubator.interactive.generated.ResliceLeft.class,
-net.haesleinhuepf.clincubator.interactive.handcrafted.CylinderTransform.class
+net.haesleinhuepf.clincubator.interactive.handcrafted.CylinderTransform.class,
+net.haesleinhuepf.clincubator.interactive.generated.DrawDistanceMeshBetweenTouchingLabels.class
         };
     }
 }

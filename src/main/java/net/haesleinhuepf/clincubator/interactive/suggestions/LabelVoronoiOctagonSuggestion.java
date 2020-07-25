@@ -2,16 +2,16 @@ package net.haesleinhuepf.clincubator.interactive.suggestions;
 
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 
-public interface SobelSuggestion extends SuggestedPlugin {
+public interface LabelVoronoiOctagonSuggestion extends SuggestedPlugin {
     default Class[] suggestedNextSteps() {
         return new Class[] {
-                net.haesleinhuepf.clincubator.interactive.generated.CopySlice.class
+                
         };
     }
 
     default Class[] suggestedPreviousSteps() {
         return new Class[]{
-                
+                net.haesleinhuepf.clincubator.interactive.generated.LabelSpots.class
         };
     }
 }

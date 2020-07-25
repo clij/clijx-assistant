@@ -2,10 +2,10 @@ package net.haesleinhuepf.clincubator.interactive.suggestions;
 
 import net.haesleinhuepf.clincubator.utilities.SuggestedPlugin;
 
-public interface SobelSuggestion extends SuggestedPlugin {
+public interface LabelStandardDeviationIntensityMapSuggestion extends SuggestedPlugin {
     default Class[] suggestedNextSteps() {
         return new Class[] {
-                net.haesleinhuepf.clincubator.interactive.generated.CopySlice.class
+                
         };
     }
 
