@@ -55,17 +55,9 @@ public class MacroGenerator implements ScriptGenerator {
             program = program + name + " = " + plugin.getArgs()[i] + ";\n";
         }
         program = program + methodName + "(" + image1 + ", " + image2 + call + ");\n";
+        program = program + "Ext.CLIJ2_pull(" + image2 + "); // consider removing this line if you don't need to see that image\n";
 
         return program;
-    }
-
-    HashMap<ImagePlus, String> image_map = new HashMap<>();
-    private String makeImageID(ImagePlus target) {
-        if (!image_map.keySet().contains(target)) {
-            image_map.put(target, "image" + (image_map.size() + 1));
-        }
-
-        return image_map.get(target);
     }
 
     @Override

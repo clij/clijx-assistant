@@ -1,19 +1,22 @@
 package net.haesleinhuepf.clincubator.scriptgenerator;
 
 import ij.ImagePlus;
+import ij.WindowManager;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clincubator.utilities.IncubatorPlugin;
 import net.haesleinhuepf.clincubator.utilities.IncubatorUtilities;
 
 import java.util.HashMap;
 
-public class PyclesperantoGenerator implements ScriptGenerator {
+public class JythonGenerator implements ScriptGenerator {
 
     @Override
     public String push(ImagePlus source) {
+        String image1 = makeImageID(source);
+
         return ""+
                 "# Push " + source.getTitle() + " to GPU memory\n" +
-                "image1 = cle.push(<enter initial image variable name>)\n";
+                image1 + " = clijx.push(WindowManager.getImage(\"" + source.getTitle() + "\"))\n";
     }
 
     @Override
@@ -32,15 +35,21 @@ public class PyclesperantoGenerator implements ScriptGenerator {
         methodName = methodName.substring(0,1).toLowerCase() + methodName.substring(1);
         String pakage = clijMacroPlugin.getClass().getPackage().getName();
 
-        methodName = "cle." + pythonize(methodName);
+        methodName = "clijx." + pythonize(methodName);
 
 
         String image1 = makeImageID(plugin.getSource());
         String image2 = makeImageID(plugin.getTarget());
         String program = "# " + IncubatorUtilities.niceName(plugin.getClass().getSimpleName()) + "\n";
-                //image1 + " = \"" + plugin.getSource().getTitle() + "\";\n" +
-                //image2 + " = \"" + plugin.getTarget().getTitle() + "\";\n";
 
+        ImagePlus imp = plugin.getTarget();
+        if (imp.getNSlices() > 1) {
+            program = program +
+                image2 + " = clijx.create([" + imp.getWidth() + ", " + imp.getHeight() + ", "  + imp.getNSlices() + "], clijx." + bitDepthToType(imp.getBitDepth()) + ")\n";
+        } else {
+            program = program +
+                    image2 + " = clijx.create([" + imp.getWidth() + ", " + imp.getHeight() + "], clijx." + bitDepthToType(imp.getBitDepth()) + ")\n";
+        }
         String call = "";
 
         String[] parameters = clijMacroPlugin.getParameterHelpText().split(",");
@@ -48,17 +57,25 @@ public class PyclesperantoGenerator implements ScriptGenerator {
             String temp[] = parameters[i].trim().split(" ");
             String name = temp[temp.length - 1];
             call = call + ", " + name + "=" + name;
-            program = program + name + " = " + plugin.getArgs()[i] + "\n";
+            program = program + name + " = " + plugin.getArgs()[i] + "  \n";
         }
-        program = program + image2 + " = " + methodName + "(" + image1 + call + ")\n";
+        program = program + methodName + "(" + image1 + ", " + image2 + call + ")\n";
 
         return program;
     }
 
-    private String pythonize(String methodName) {
-        return IncubatorUtilities.niceName(methodName).trim().replace(" ", "_").toLowerCase();
+    private String bitDepthToType(int bitDepth) {
+        if (bitDepth == 8) {
+            return "UnsignedByte";
+        } else if (bitDepth == 16) {
+            return "UnsignedShort";
+        } else
+            return "Float";
     }
 
+    private String pythonize(String methodName) {
+        return methodName; // IncubatorUtilities.niceName(methodName).trim().replace(" ", "_").toLowerCase();
+    }
 
     @Override
     public String fileEnding() {
@@ -67,9 +84,14 @@ public class PyclesperantoGenerator implements ScriptGenerator {
 
     @Override
     public String header() {
-        return  "# This is experimental script output which is not supposed to be executable yet.\n" +
-                "# Stay tuned and check out http://clesperanto.net to learn more." +
+        return  "# To make this script run in Fiji, please activate \n" +
+                "# the clij and clij2 update sites in your Fiji \n" +
+                "# installation. Read more: https://clij.github.io\n\n" +
                 "\n\n" +
-                "import pyclesperanto_prototype as cle\n\n";
+                "from ij import IJ\n" +
+                "from ij import WindowManager\n" +
+                "from net.haesleinhuepf.clijx import CLIJx\n\n" +
+                "# Init GPU\n" +
+                "clijx = CLIJx.getInstance()\n";
     }
 }

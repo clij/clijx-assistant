@@ -3,6 +3,8 @@ package net.haesleinhuepf.clincubator.scriptgenerator;
 import ij.ImagePlus;
 import net.haesleinhuepf.clincubator.utilities.IncubatorPlugin;
 
+import java.util.HashMap;
+
 public interface ScriptGenerator {
 
     String push(ImagePlus source);
@@ -14,4 +16,14 @@ public interface ScriptGenerator {
     String fileEnding();
 
     String header();
+
+    HashMap<ImagePlus, String> image_map = new HashMap<>();
+    default String makeImageID(ImagePlus target) {
+        if (!image_map.keySet().contains(target)) {
+            image_map.put(target, "image" + (image_map.size() + 1));
+        }
+
+        return image_map.get(target);
+    }
+
 }
