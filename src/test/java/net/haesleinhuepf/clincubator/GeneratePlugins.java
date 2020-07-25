@@ -97,8 +97,8 @@ public class GeneratePlugins {
                     }
 
                     template = template.replace("/*SUGGESTED_PREVIOUS_STEPS*/", suggestedNextSteps);
-                    template = template.replace("\nclass", "\n" +
-                            "// this is generated code. See src/test/java/net/haesleinhuepf/clincubator/PluginGenerator.java for details.\nclass");
+                    template = template.replace("\npublic interface", "\n" +
+                            "// this is generated code. See src/test/java/net/haesleinhuepf/clincubator/PluginGenerator.java for details.\npublic interface");
                 }
 
                 {
