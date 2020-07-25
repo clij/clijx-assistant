@@ -13,7 +13,7 @@ import net.haesleinhuepf.clincubator.interactive.generated.RigidTransform;
 import net.haesleinhuepf.clincubator.interactive.generated.TopHat;
 import net.haesleinhuepf.clincubator.interactive.handcrafted.CylinderTransform;
 import net.haesleinhuepf.clincubator.interactive.handcrafted.MakeIsotropic;
-import net.haesleinhuepf.clincubator.utilities.CLIncubatorStartingPoint;
+import net.haesleinhuepf.clincubator.CLIncubatorStartingPoint;
 
 import java.io.FileNotFoundException;
 
@@ -25,7 +25,8 @@ public class IncubatorPlayground implements PlugInFilter {
 
         new MemoryDisplay().run(null);
 
-        ImagePlus imp = IJ.openImage("C:/structure/data/spim_TL18_Angle0-1.tif");
+        //ImagePlus imp = IJ.openImage("C:/structure/data/spim_TL18_Angle0-1.tif");
+        ImagePlus imp = IJ.openImage("D:/structure/data/Irene/ISB200714_well5_1pos_3h_MyosinGFP-small.tif");
         imp.show();
 
         //ImagePlus imp1 = IJ.openImage("C:\\structure\\teaching\\lecture_applied_bioimage_analysis_2020\\12_Volumetric_image_data\\data\\000200.raw.tif");
