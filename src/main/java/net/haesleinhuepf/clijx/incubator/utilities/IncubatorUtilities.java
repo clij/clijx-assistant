@@ -99,8 +99,18 @@ public class IncubatorUtilities {
         //System.out.println();
         String dir = IJ.getDirectory("imagej");
         if (!dir.contains("null")) {
-            IJ.run(imp, "glasbey_on_dark", "");
-            imp.resetDisplayRange();
+
+            new java.util.Timer().schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            IJ.run(imp, "glasbey_on_dark", "");
+                            imp.resetDisplayRange();
+                        }
+                    },
+                    300
+            );
+
         }
     }
 

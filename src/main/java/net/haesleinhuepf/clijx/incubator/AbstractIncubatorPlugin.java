@@ -337,8 +337,6 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                 //my_target.setLut(my_source.getProcessor().getLut());
             }
 
-            System.out.println("added menu " + this);
-
         } else {
             ImagePlus output = result;
             double min = my_target.getDisplayRangeMin();
