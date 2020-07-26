@@ -7,13 +7,13 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.MemoryDisplay;
-import net.haesleinhuepf.clincubator.interactive.generated.MaximumZProjection;
-import net.haesleinhuepf.clincubator.interactive.generated.Median;
-import net.haesleinhuepf.clincubator.interactive.generated.RigidTransform;
-import net.haesleinhuepf.clincubator.interactive.generated.TopHat;
-import net.haesleinhuepf.clincubator.interactive.handcrafted.CylinderTransform;
-import net.haesleinhuepf.clincubator.interactive.handcrafted.MakeIsotropic;
-import net.haesleinhuepf.clincubator.CLIncubatorStartingPoint;
+import net.haesleinhuepf.clijx.incubator.IncubatorStartingPoint;
+import net.haesleinhuepf.clijx.incubator.interactive.generated.MaximumZProjection;
+import net.haesleinhuepf.clijx.incubator.interactive.generated.Median;
+import net.haesleinhuepf.clijx.incubator.interactive.generated.RigidTransform;
+import net.haesleinhuepf.clijx.incubator.interactive.generated.TopHat;
+import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.CylinderTransform;
+import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.MakeIsotropic;
 
 import java.io.FileNotFoundException;
 
@@ -42,7 +42,7 @@ public class IncubatorPlayground implements PlugInFilter {
         imp1.setDisplayRange(0, 1000);
 */
         //if (true) return;
-        new CLIncubatorStartingPoint().run("");
+        new IncubatorStartingPoint().run("");
         //new IncubatorPlayground().run(null);
     }
 
