@@ -4,7 +4,7 @@ import net.haesleinhuepf.clijx.incubator.utilities.IncubatorPlugin;
 import net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities;
 import net.haesleinhuepf.clijx.incubator.utilities.MenuOrganiser;
 import net.haesleinhuepf.clijx.incubator.utilities.SuggestionService;
-import net.haesleinhuepf.clincubator.utilities.*;
+import net.haesleinhuepf.clijx.incubator.utilities.*;
 
 public class GeneratedPluginsConfig {
     public static void main(String[] args) {
@@ -19,8 +19,8 @@ public class GeneratedPluginsConfig {
                 String niceName = IncubatorUtilities.niceName(plugin.getClass().getSimpleName());
 
                 System.out.println(
-                        "Plugins>CLIncubator>" + category_count + " " + category + ", " +
-                                "\"" + niceName + " (CLIncubator, experimental)_" + category_count + "\", " + plugin.getClass().getName()
+                        "Plugins>ImageJ on GPU (CLIJx-Incubator)>" + category_count + " " + category + ", " +
+                                "\"" + niceName + " (experimental)_" + category_count + "\", " + plugin.getClass().getName()
                 );
             }
         }

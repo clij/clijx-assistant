@@ -39,7 +39,7 @@ public class GeneratePlugins {
                 className = className.replace("CLIJx_", "");
                 className = className.substring(0,1).toUpperCase() + className.substring(1);
 
-                String template = new String(Files.readAllBytes(Paths.get("src/main/java/net/haesleinhuepf/clincubator/interactive/generated/Template.java")));
+                String template = new String(Files.readAllBytes(Paths.get("src/main/java/net/haesleinhuepf/clijx/incubator/interactive/generated/Template.java")));
 
                 String betterClassName = className.replace("3D", "").replace("Box","");
 
@@ -48,7 +48,7 @@ public class GeneratePlugins {
                 // template = template.replace("Mean3DBox", plugin.getClass().getName());
                 template = template.replace("Template", betterClassName);
 
-                if (!new File("src/main/java/net/haesleinhuepf/clincubator/interactive/handcrafted/" + betterClassName + ".java").exists()) {
+                if (!new File("src/main/java/net/haesleinhuepf/clijx/incubator/interactive/handcrafted/" + betterClassName + ".java").exists()) {
                     File outputTarget = new File("src/main/java/net/haesleinhuepf/clincubator/interactive/generated/" + betterClassName + ".java");
                     try {
                         FileWriter writer = new FileWriter(outputTarget);
@@ -59,7 +59,7 @@ public class GeneratePlugins {
                     }
                 }
 
-                template = new String(Files.readAllBytes(Paths.get("src/main/java/net/haesleinhuepf/clincubator/interactive/suggestions/TemplateSuggestion.java")));
+                template = new String(Files.readAllBytes(Paths.get("src/main/java/net/haesleinhuepf/clijx/incubator/interactive/suggestions/TemplateSuggestion.java")));
                 template = template.replace("Template", betterClassName);
 
                 {
@@ -94,11 +94,11 @@ public class GeneratePlugins {
 
                     template = template.replace("/*SUGGESTED_PREVIOUS_STEPS*/", suggestedNextSteps);
                     template = template.replace("\npublic interface", "\n" +
-                            "// this is generated code. See src/test/java/net/haesleinhuepf/clincubator/PluginGenerator.java for details.\npublic interface");
+                            "// this is generated code. See src/test/java/net/haesleinhuepf/clijx/incubator/PluginGenerator.java for details.\npublic interface");
                 }
 
                 {
-                    File outputTarget = new File("src/main/java/net/haesleinhuepf/clincubator/interactive/suggestions/" + betterClassName + "Suggestion.java");
+                    File outputTarget = new File("src/main/java/net/haesleinhuepf/clijx/incubator/interactive/suggestions/" + betterClassName + "Suggestion.java");
                     try {
                         FileWriter writer = new FileWriter(outputTarget);
                         writer.write(template);
@@ -125,12 +125,12 @@ public class GeneratePlugins {
 
         Collections.sort(link_to_docs);
 
-        File outputTarget = new File("../clij.github.io/clincubator/reference.md");
+        File outputTarget = new File("../clij.github.io/incubator/reference.md");
         try {
             FileWriter writer = new FileWriter(outputTarget);
             writer.append("## CLIncubator operations\n" +
                     "This is the list of currently supported [CLIJ2](https://clij.github.io/) and [CLIJx](https://clij.github.io/clijx) operations.\n\n" +
-                    "Please note: CLIncubator is under development. Hence, this list is subject to change.\n\n");
+                    "Please note: CLIJx-Incubator is under development. Hence, this list is subject to change.\n\n");
 
             int count = 0;
             for (String entry : link_to_docs) {
