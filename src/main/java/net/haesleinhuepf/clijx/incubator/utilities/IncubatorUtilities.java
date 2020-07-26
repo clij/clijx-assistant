@@ -114,6 +114,24 @@ public class IncubatorUtilities {
         }
     }
 
+    public static void fire(ImagePlus imp) {
+        //System.out.println();
+        String dir = IJ.getDirectory("imagej");
+        if (!dir.contains("null")) {
+
+            new java.util.Timer().schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            IJ.run(imp, "Green Fire Blue", "");
+                            imp.resetDisplayRange();
+                        }
+                    },
+                    300
+            );
+
+        }
+    }
 
     public static boolean ignoreEvent = false;
 

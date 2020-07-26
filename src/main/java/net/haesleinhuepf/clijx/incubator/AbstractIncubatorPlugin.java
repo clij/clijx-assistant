@@ -330,13 +330,6 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
 
             IJ.run(my_target, "Enhance Contrast", "saturated=0.35");
-
-            if (this.getClass().getSimpleName().toLowerCase().contains("label")) {
-                IncubatorUtilities.glasbey(my_target);
-            } else {
-                //my_target.setLut(my_source.getProcessor().getLut());
-            }
-
         } else {
             ImagePlus output = result;
             double min = my_target.getDisplayRangeMin();
@@ -346,8 +339,17 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             //my_target.setLut(lut[0]);
             my_target.setDisplayRange(min, max);
         }
-        paused = false;
         IncubatorUtilities.transferCalibration(my_source, my_target);
+        String name_to_consider = (my_source.getTitle() + " " + my_target.getTitle()).toLowerCase();
+
+        if (name_to_consider.contains("map") || name_to_consider.contains("mesh") ) {
+            IncubatorUtilities.fire(my_target);
+        } else if (name_to_consider.contains("label")) {
+            IncubatorUtilities.glasbey(my_target);
+        } else {
+            //my_target.setLut(my_source.getProcessor().getLut());
+        }
+        paused = false;
     }
 
     protected void handlePopupMenu(MouseEvent e) {
