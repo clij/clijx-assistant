@@ -36,7 +36,7 @@ import java.util.TimerTask;
 public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, SuggestedPlugin, IncubatorPlugin {
 
     public final static String online_documentation_link = "https://clij.github.io/clij2-docs/reference";
-    private final static String online_website_link = "https://clij.github.io/clincubator";
+    private final static String online_website_link = "https://clij.github.io/incubator";
     private final String doneText = "Done";
     private final String refreshText = "Refresh";
 
