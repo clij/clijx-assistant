@@ -1,9 +1,8 @@
 package net.haesleinhuepf.clijx.incubator.interactive.suggestions;
 
-import net.haesleinhuepf.clijx.incubator.interactive.generated.ConnectedComponentsLabeling;
 import net.haesleinhuepf.clijx.incubator.utilities.SuggestedPlugin;
 
-// this is generated code. See src/test/java/net/haesleinhuepf/clincubator/PluginGenerator.java for details.
+// this is generated code. See src/test/java/net/haesleinhuepf/clijx/incubator/PluginGenerator.java for details.
 public interface ExcludeLabelsOnEdgesSuggestion extends SuggestedPlugin {
     default Class[] suggestedNextSteps() {
         return new Class[] {
@@ -13,7 +12,7 @@ public interface ExcludeLabelsOnEdgesSuggestion extends SuggestedPlugin {
 
     default Class[] suggestedPreviousSteps() {
         return new Class[]{
-                ConnectedComponentsLabeling.class
+                net.haesleinhuepf.clijx.incubator.interactive.generated.ConnectedComponentsLabeling.class
         };
     }
 }

@@ -128,7 +128,7 @@ public class GeneratePlugins {
         File outputTarget = new File("../clij.github.io/incubator/reference.md");
         try {
             FileWriter writer = new FileWriter(outputTarget);
-            writer.append("## CLIncubator operations\n" +
+            writer.append("## CLIIJx-ncubator operations\n" +
                     "This is the list of currently supported [CLIJ2](https://clij.github.io/) and [CLIJx](https://clij.github.io/clijx) operations.\n\n" +
                     "Please note: CLIJx-Incubator is under development. Hence, this list is subject to change.\n\n");
 

@@ -28,7 +28,7 @@ public class CylinderTransform extends AbstractIncubatorPlugin implements Cylind
     }
 
     protected boolean configure() {
-        GenericDialog gdp = new GenericDialog("Cylinder projection");
+        GenericDialog gdp = new GenericDialog("Cylinder transform");
         gdp.addNumericField("Number_of_angles", number_of_angles);
         gdp.addNumericField("Angle_step_in_degrees",  delta_angle_in_degrees);
         gdp.showDialog();

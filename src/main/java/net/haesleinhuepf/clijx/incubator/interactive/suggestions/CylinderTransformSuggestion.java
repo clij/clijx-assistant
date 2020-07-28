@@ -1,25 +1,23 @@
 package net.haesleinhuepf.clijx.incubator.interactive.suggestions;
 
-import net.haesleinhuepf.clijx.incubator.interactive.generated.*;
-import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.MakeIsotropic;
 import net.haesleinhuepf.clijx.incubator.utilities.SuggestedPlugin;
 
-// this is generated code. See src/test/java/net/haesleinhuepf/clincubator/PluginGenerator.java for details.
+// this is generated code. See src/test/java/net/haesleinhuepf/clijx/incubator/PluginGenerator.java for details.
 public interface CylinderTransformSuggestion extends SuggestedPlugin {
     default Class[] suggestedNextSteps() {
         return new Class[] {
-                MeanZProjection.class,
-MaximumZProjection.class,
-MeanZProjectionAboveThreshold.class
+                net.haesleinhuepf.clijx.incubator.interactive.generated.MeanZProjection.class,
+net.haesleinhuepf.clijx.incubator.interactive.generated.MaximumZProjection.class,
+net.haesleinhuepf.clijx.incubator.interactive.generated.MeanZProjectionAboveThreshold.class
         };
     }
 
     default Class[] suggestedPreviousSteps() {
         return new Class[]{
-                Rotate.class,
-MakeIsotropic.class,
-RigidTransform.class,
-TopHat.class
+                net.haesleinhuepf.clijx.incubator.interactive.generated.Rotate.class,
+net.haesleinhuepf.clijx.incubator.interactive.handcrafted.MakeIsotropic.class,
+net.haesleinhuepf.clijx.incubator.interactive.generated.RigidTransform.class,
+net.haesleinhuepf.clijx.incubator.interactive.generated.TopHat.class
         };
     }
 }

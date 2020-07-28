@@ -1,24 +1,20 @@
 package net.haesleinhuepf.clijx.incubator.interactive.suggestions;
 
-import net.haesleinhuepf.clijx.incubator.interactive.generated.DetectAndLabelMaxima;
-import net.haesleinhuepf.clijx.incubator.interactive.generated.DetectLabelEdges;
-import net.haesleinhuepf.clijx.incubator.interactive.generated.DrawDistanceMeshBetweenTouchingLabels;
-import net.haesleinhuepf.clijx.incubator.interactive.generated.ExcludeLabelsOutsideSizeRange;
 import net.haesleinhuepf.clijx.incubator.utilities.SuggestedPlugin;
 
-// this is generated code. See src/test/java/net/haesleinhuepf/clincubator/PluginGenerator.java for details.
+// this is generated code. See src/test/java/net/haesleinhuepf/clijx/incubator/PluginGenerator.java for details.
 public interface ExtendLabelingViaVoronoiSuggestion extends SuggestedPlugin {
     default Class[] suggestedNextSteps() {
         return new Class[] {
-                DrawDistanceMeshBetweenTouchingLabels.class,
-DetectLabelEdges.class
+                net.haesleinhuepf.clijx.incubator.interactive.generated.DrawDistanceMeshBetweenTouchingLabels.class,
+net.haesleinhuepf.clijx.incubator.interactive.generated.DetectLabelEdges.class
         };
     }
 
     default Class[] suggestedPreviousSteps() {
         return new Class[]{
-                DetectAndLabelMaxima.class,
-ExcludeLabelsOutsideSizeRange.class
+                net.haesleinhuepf.clijx.incubator.interactive.generated.DetectAndLabelMaxima.class,
+net.haesleinhuepf.clijx.incubator.interactive.generated.ExcludeLabelsOutsideSizeRange.class
         };
     }
 }

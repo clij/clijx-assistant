@@ -1,26 +1,21 @@
 package net.haesleinhuepf.clijx.incubator.interactive.suggestions;
 
-import net.haesleinhuepf.clijx.incubator.interactive.generated.MaximumZProjection;
-import net.haesleinhuepf.clijx.incubator.interactive.generated.MeanZProjectionAboveThreshold;
-import net.haesleinhuepf.clijx.incubator.interactive.generated.RigidTransform;
-import net.haesleinhuepf.clijx.incubator.interactive.generated.TransposeXY;
-import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.MakeIsotropic;
 import net.haesleinhuepf.clijx.incubator.utilities.SuggestedPlugin;
 
-// this is generated code. See src/test/java/net/haesleinhuepf/clincubator/PluginGenerator.java for details.
+// this is generated code. See src/test/java/net/haesleinhuepf/clijx/incubator/PluginGenerator.java for details.
 public interface SphereTransformSuggestion extends SuggestedPlugin {
     default Class[] suggestedNextSteps() {
         return new Class[] {
-                MaximumZProjection.class,
-MeanZProjectionAboveThreshold.class
+                net.haesleinhuepf.clijx.incubator.interactive.generated.MaximumZProjection.class,
+net.haesleinhuepf.clijx.incubator.interactive.generated.MeanZProjectionAboveThreshold.class
         };
     }
 
     default Class[] suggestedPreviousSteps() {
         return new Class[]{
-                MakeIsotropic.class,
-RigidTransform.class,
-TransposeXY.class
+                net.haesleinhuepf.clijx.incubator.interactive.handcrafted.MakeIsotropic.class,
+net.haesleinhuepf.clijx.incubator.interactive.generated.RigidTransform.class,
+net.haesleinhuepf.clijx.incubator.interactive.generated.TransposeXY.class
         };
     }
 }
