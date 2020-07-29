@@ -3,7 +3,9 @@ package net.haesleinhuepf.clijx.incubator.interactive.handcrafted;
 import ij.IJ;
 import ij.gui.GenericDialog;
 import net.haesleinhuepf.clij.macro.CLIJOpenCLProcessor;
+import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.incubator.interactive.suggestions.CylinderTransformSuggestion;
+import net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities;
 import net.haesleinhuepf.clijx.incubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.clijx.incubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
@@ -86,18 +88,16 @@ public class CylinderTransform extends AbstractIncubatorPlugin implements Cylind
         net.haesleinhuepf.clijx.plugins.CylinderTransform plugin = (net.haesleinhuepf.clijx.plugins.CylinderTransform) getCLIJMacroPlugin();
         plugin.setArgs(args);
         if (result == null) {
-            result = plugin.createOutputBufferFromSource(pushed);
+            result = createOutputBufferFromSource(pushed);
         }
         args[1] = result;
-        if (plugin instanceof CLIJOpenCLProcessor) {
-            plugin.executeCL();
-        }
+        executeCL();
+
         pushed.close();
 
-        setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
+        setTarget(CLIJxVirtualStack.bufferToImagePlus(result, my_source.getNChannels()));
         my_target.setTitle("Cylinder transformed " + my_source.getTitle());
     }
-
 
 
 

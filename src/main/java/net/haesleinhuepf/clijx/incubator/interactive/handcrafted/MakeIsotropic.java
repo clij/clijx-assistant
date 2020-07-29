@@ -70,15 +70,14 @@ public class MakeIsotropic extends AbstractIncubatorPlugin implements MakeIsotro
         plugin.setArgs(args);
 
         if (result == null) {
-            result = plugin.createOutputBufferFromSource(pushed);
+            result = createOutputBufferFromSource(pushed);
         }
         args[1] = result;
-        if (plugin instanceof CLIJOpenCLProcessor) {
-            plugin.executeCL();
-        }
+        executeCL();
+
         pushed.close();
 
-        setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
+        setTarget(CLIJxVirtualStack.bufferToImagePlus(result, my_source.getNChannels()));
         my_target.setTitle("Isotropic " + my_source.getTitle());
         my_target.getCalibration().pixelWidth = new_voxel_size_in_microns;
         my_target.getCalibration().pixelHeight = new_voxel_size_in_microns;

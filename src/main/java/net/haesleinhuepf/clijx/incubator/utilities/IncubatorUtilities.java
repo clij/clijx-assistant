@@ -90,6 +90,7 @@ public class IncubatorUtilities {
         result = result.replace("Do G", "DoG");
         result = result.replace("Lo G", "LoG");
         result = result.replace("Cl Esperanto", "ClEsperanto");
+        result = result.replace("CL IJ", "CLIJ");
 
         return result.trim();
 
@@ -158,4 +159,7 @@ public class IncubatorUtilities {
         );
     }
 
+    public static ClearCLBuffer increaseStackSizeWithChannels(CLIJx clijx, ClearCLBuffer first, int nChannels) {
+        return clijx.create(new long[]{first.getWidth(), first.getHeight(), first.getDepth() * nChannels}, first.getNativeType());
+    }
 }

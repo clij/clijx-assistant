@@ -11,6 +11,7 @@ import net.haesleinhuepf.clijx.incubator.interactive.generated.GaussianBlur;
 import net.haesleinhuepf.clijx.incubator.interactive.generated.MaximumZProjection;
 import net.haesleinhuepf.clijx.incubator.interactive.generated.TopHat;
 import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.MakeIsotropic;
+import net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities;
 import net.haesleinhuepf.clijx.incubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
@@ -70,32 +71,42 @@ public class IncubatorStartingPoint extends AbstractIncubatorPlugin {
     ClearCLBuffer result = null;
 
     public synchronized void refresh() {
+        paused = true;
         if (result == null) {
-            result = CLIJx.getInstance().pushCurrentZStack(my_source);
+            result = CLIJxVirtualStack.imagePlusToBuffer(my_source);
+        //CLIJx.getInstance().pushCurrentZStack(my_source);
         } else {
-            ClearCLBuffer temp = CLIJx.getInstance().pushCurrentZStack(my_source);
+            ClearCLBuffer temp = CLIJxVirtualStack.imagePlusToBuffer(my_source);
             temp.copyTo(result, true);
             temp.close();
         }
-        setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
+        setTarget(CLIJxVirtualStack.bufferToImagePlus(result, my_source.getNChannels()));
+        my_target.setTitle("CLIJx Image of " + my_source.getTitle());
+        paused = false;
+        refreshView();
     }
 
     @Override
     public void imageUpdated(ImagePlus imp) {
+        if (paused) {
+            System.out.println("IncubatorStartPoint blocked");
+            return;
+        }
         if (imp == my_source) {
+            paused = true;
             System.out.println("Source updated");
-            if (imp.getT() != former_t || imp.getC() != former_c) {
+            if (imp.getT() != former_t) {
                 System.out.println("Target invalidated");
                 setTargetInvalid();
 
-                former_t = imp.getT();
-                former_c = imp.getC();
-            }
+                former_t = imp.getT(); }
 
-            if (imp.getZ() != former_z) {
+            if (imp.getZ() != former_z || imp.getC() != former_c) {
                 refreshView();
                 former_z = imp.getZ();
+                former_c = imp.getC();
             }
+            paused = false;
         }
     }
 }

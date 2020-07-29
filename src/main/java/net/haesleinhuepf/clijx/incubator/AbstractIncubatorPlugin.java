@@ -8,6 +8,8 @@ import ij.gui.Toolbar;
 import ij.measure.Calibration;
 import ij.plugin.Duplicator;
 import ij.plugin.PlugIn;
+import net.haesleinhuepf.clij.clearcl.ClearCL;
+import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.incubator.scriptgenerator.*;
 import net.haesleinhuepf.clijx.incubator.utilities.*;
@@ -256,18 +258,15 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         args[0] = pushed;
         plugin.setArgs(args);
         if (result == null) {
-            result = plugin.createOutputBufferFromSource(pushed);
+            result = createOutputBufferFromSource(pushed);
 
         }
         args[1] = result;
         plugin.setArgs(args); // might not be necessary
-
-        if (plugin instanceof CLIJOpenCLProcessor) {
-            ((CLIJOpenCLProcessor) plugin).executeCL();
-        }
+        executeCL();
         pushed.close();
 
-        setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
+        setTarget(CLIJxVirtualStack.bufferToImagePlus(result, my_source.getNChannels()));
         my_target.setTitle(IncubatorUtilities.niceName(this.getClass().getSimpleName()) + " of " + my_source.getTitle());
         if (this.getClass().getSimpleName().toLowerCase().contains("label")) {
             my_target.setDisplayRange(0, CLIJx.getInstance().maximumOfAllPixels(result));
@@ -279,19 +278,90 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         }
     }
 
+    protected void executeCL() {
+        if (plugin instanceof CLIJOpenCLProcessor) {
+            if (my_source.getNChannels() > 1) {
+                CLIJ2 clij2 = CLIJx.getInstance();
+                int number_of_channels = my_source.getNChannels();
+
+                ClearCLBuffer whole_input = (ClearCLBuffer) args[0];
+                ClearCLBuffer whole_output = (ClearCLBuffer) args[1];
+
+                ClearCLBuffer input = clij2.create(new long[]{whole_input.getWidth(), whole_input.getHeight(), whole_input.getDepth() / number_of_channels}, whole_input.getNativeType());
+                ClearCLBuffer output = clij2.create(new long[]{whole_output.getWidth(), whole_output.getHeight(), whole_output.getDepth() / number_of_channels}, whole_output.getNativeType());
+                args[0] = input;
+                args[1] = output;
+
+                for (int c = 0; c < number_of_channels; c++) {
+                    clij2.crop3D(whole_input, input, 0, 0, c * input.getDepth());
+                    if (plugin instanceof CLIJOpenCLProcessor) {
+                        ((CLIJOpenCLProcessor) plugin).executeCL();
+                    }
+                    clij2.paste(output, whole_output, 0,0, c * output.getDepth());
+                }
+                input.close();
+                output.close();
+
+                args[0] = whole_input;
+                args[1] = whole_output;
+
+
+            } else {
+                ((CLIJOpenCLProcessor) plugin).executeCL();
+            }
+        }
+    }
+
+    protected ClearCLBuffer createOutputBufferFromSource(ClearCLBuffer pushed) {
+        ClearCLBuffer result = plugin.createOutputBufferFromSource(pushed);
+        if (my_source.getNChannels() > 1) {
+            ClearCLBuffer multichannel = IncubatorUtilities.increaseStackSizeWithChannels(CLIJx.getInstance(), result, my_source.getNChannels());
+            result.close();
+            result = multichannel;
+        }
+        return result;
+    }
+
     protected boolean configure() {
         setSource(IJ.getImage());
         return true;
     }
 
     public void refreshView() {
+        if (paused)
+        {
+            return;
+        }
+        if (sync_view != null && sync_view.getState() == false) {
+            return;
+        }
+
         if (my_target == null || my_source == null) {
             return;
         }
         if (my_source.getNSlices() == my_target.getNSlices()) {
             my_target.setZ(my_source.getZ());
         }
+        if (my_source.getNChannels() == my_target.getNChannels()) {
+            int source_c = my_source.getC();
+            int target_c = my_target.getC();
+
+            for (int c = 0; c < my_source.getNChannels(); c++) {
+                my_source.setC(c + 1);
+                my_target.setC(c + 1);
+
+                my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
+                my_target.getProcessor().setLut(my_source.getProcessor().getLut());
+                my_target.setProcessor(my_target.getProcessor());
+
+                System.out.println("source lut " + my_source.getProcessor().getLut());
+                System.out.println("target lut " + my_target.getProcessor().getLut());
+            }
+            my_source.setC(source_c);
+            my_target.setC(target_c);
+        }
     }
+
 
     public ImagePlus getSource() {
         return my_source;
@@ -306,7 +376,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         return my_target;
     }
 
-    private boolean paused = false;
+    protected boolean paused = false;
     protected void setTarget(ImagePlus result) {
         paused = true;
         if (my_target == null) {
@@ -328,8 +398,8 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                 }
             });
 
-
-            IJ.run(my_target, "Enhance Contrast", "saturated=0.35");
+            //transferView(my_source, my_target);
+            //IJ.run(my_target, "Enhance Contrast", "saturated=0.35");
         } else {
             ImagePlus output = result;
             double min = my_target.getDisplayRangeMin();
@@ -367,7 +437,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         menu.add(submenu);
     }
 
-
+    Checkbox sync_view = null;
     protected PopupMenu buildPopup(MouseEvent e, ImagePlus my_source, ImagePlus my_target) {
         PopupMenu menu = new PopupMenu("CLIncubator");
 
@@ -502,6 +572,9 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         dialog.setOKLabel(refreshText);
 
         dialog.setCancelLabel(doneText);
+        dialog.addCheckbox("Sync with source", true);
+        sync_view = (Checkbox) dialog.getCheckboxes().lastElement();
+        dialog.addToSameRow();
         dialog.showDialog();
 
         for (KeyListener listener : dialog.getKeyListeners()) {
