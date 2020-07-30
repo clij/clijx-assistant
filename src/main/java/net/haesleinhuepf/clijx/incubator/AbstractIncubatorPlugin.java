@@ -5,6 +5,7 @@ import ij.IJ;
 import ij.ImageListener;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
+import ij.gui.ImageCanvas;
 import ij.gui.Toolbar;
 import ij.measure.Calibration;
 import ij.plugin.Duplicator;
@@ -190,6 +191,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         if (plugin == null) {
             return;
         }
+        System.out.println("Updating " + my_source);
 
         ClearCLBuffer[] pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
 
@@ -382,20 +384,9 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             } else {
                 my_target = result;
             }
-            my_target.show();
-            my_target.getWindow().getCanvas().disablePopupMenu(true);
-            my_target.getWindow().getCanvas().addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    int toolID = Toolbar.getToolId();
-                    int flags = e.getModifiers();
-                    if (toolID != Toolbar.MAGNIFIER && (e.isPopupTrigger() || (!IJ.isMacintosh() && (flags & Event.META_MASK) != 0))) {
-                        handlePopupMenu(e);
-                        return;
-                    }
 
-                }
-            });
+            my_target.show();
+            attachMenu(my_target);
             enhanceContrast();
         } else {
             ImagePlus output = result;
@@ -414,6 +405,39 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         paused = false;
 
         refreshView();
+    }
+
+    private void attachMenu(ImagePlus imp) {
+        System.out.println("Attach menu");
+        ImageCanvas canvas = imp.getWindow().getCanvas();
+        canvas.disablePopupMenu(true);
+        for (MouseListener listener : canvas.getMouseListeners()) {
+            if (listener instanceof MyMouseAdapter) {
+                canvas.removeMouseListener(listener);
+            }
+        }
+        canvas.addMouseListener(new MyMouseAdapter(imp));
+        System.out.println("Menu attached");
+    }
+
+    class MyMouseAdapter extends MouseAdapter {
+
+        private ImagePlus imp;
+
+        MyMouseAdapter(ImagePlus imp) {
+            this.imp = imp;
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            int toolID = Toolbar.getToolId();
+            int flags = e.getModifiers();
+            if (toolID != Toolbar.MAGNIFIER && (e.isPopupTrigger() || (!IJ.isMacintosh() && (flags & Event.META_MASK) != 0))) {
+                ((AbstractIncubatorPlugin)IncubatorPluginRegistry.getInstance().getPlugin(imp)).handlePopupMenu(e);
+                return;
+            }
+
+        }
     }
 
     protected void handlePopupMenu(MouseEvent e) {
@@ -438,6 +462,9 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             if (registered_dialog != null) {
                 registered_dialog.show();
             }
+        });
+        addMenuAction(menu, "Hide", (a) -> {
+            my_target.getWindow().setVisible(false);
         });
         menu.add("-");
 
@@ -494,7 +521,9 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         Menu predecessor = new Menu("Predecessor");
         addMenuAction(predecessor, my_source.getTitle(), (a) -> {
             my_source.show();
-            my_source.getWindow().toFront();});
+            my_source.getWindow().toFront();
+            attachMenu(my_source);
+        });
         menu.add(predecessor);
 
         // -------------------------------------------------------------------------------------------------------------
@@ -503,6 +532,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             addMenuAction(followers, follower.getTitle(), (a) -> {
                 follower.show();
                 follower.getWindow().toFront();
+                attachMenu(follower);
             });
         }
         menu.add(followers);
@@ -557,7 +587,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         String documentation_link =
                 ((plugin != null) ?online_documentation_link + "_" + plugin.getName().replace("CLIJ2_", "").replace("CLIJx_", ""):online_website_link);
 
-        addMenuAction(menu,"Online documentation", (a) -> {
+        addMenuAction(menu,"Documentation for " + IncubatorUtilities.niceName(getClass().getSimpleName()), (a) -> {
             try {
                 Desktop.getDesktop().browse(new URI(documentation_link));
             } catch (IOException e1) {
@@ -718,7 +748,8 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             return;
         }
         if (imp == my_source) {
-            enhanceContrast();
+            //IJ.log("Updating " + my_source);
+            //enhanceContrast();
             refreshView();
         }
     }

@@ -181,4 +181,14 @@ class IncubatorPluginRegistry {
 
         return followers;
     }
+
+    public IncubatorPlugin getPlugin(ImagePlus target) {
+        for (IncubatorPlugin plugin : registeredPlugins) {
+            if (plugin.getTarget() == target) {
+                return plugin;
+            }
+        }
+
+        return null;
+    }
 }
