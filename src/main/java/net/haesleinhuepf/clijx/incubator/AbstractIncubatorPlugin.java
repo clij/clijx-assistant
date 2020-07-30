@@ -356,7 +356,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         if (my_source.getNChannels() == my_target.getNChannels()) {
             //int source_c = my_source.getC();
             //int target_c = my_target.getC();
-
+            /*
             for (int c = 0; c < my_source.getNChannels(); c++) {
                 int source_t = my_source.getT() - 1;
                 int source_z = my_source.getZ() - 1;
@@ -376,7 +376,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                 ImageProcessor target_processor = my_target.getStack().getProcessor(target_n);
 
                 target_processor.setMinAndMax(source_processor.getMin(), source_processor.getMax());
-                System.out.println("Setting min max [" + c + "] " + source_processor.getMin() + " " + source_processor.getMax());
+                System.out.println("Setting min max [" + my_target.getTitle() + " " + c + "] " + source_processor.getMin() + " " + source_processor.getMax());
 
                 //my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
                 //my_target.getProcessor().setLut(my_source.getProcessor().getLut());
@@ -385,13 +385,18 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                 //System.out.println("source lut " + my_source.getProcessor().getLut());
                 //System.out.println("target lut " + my_target.getProcessor().getLut());
             }
+            System.out.println("View max bef " + my_target.getTitle() + " " + my_target.getProcessor().getMax());
             my_target.updateAndRepaintWindow();//setProcessor(my_target.getProcessor());
-
+            System.out.println("View max aft " + my_target.getTitle() + " " + my_target.getProcessor().getMax());
+            */
             //System.out.println("composite mode s" + my_source.getCompositeMode());
             //System.out.println("composite mode t" + my_target.getCompositeMode());
 
             //my_source.setC(source_c);
             //my_target.setC(target_c);
+            //paused = true;
+            enhanceContrast();
+            //paused = false;
         }
     }
 
@@ -460,9 +465,13 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             //my_target.setLut(my_source.getProcessor().getLut());
         }
         paused = false;
-        if (do_refresh_view_afterwards){
+        //if (do_refresh_view_afterwards){
+        //    System.out.println("Do refresh " + my_target.getTitle());
             refreshView();
-        }
+        //} else {
+        //    System.out.println("Do NOT refresh " + my_target.getTitle());
+        //}
+
     }
 
     protected void handlePopupMenu(MouseEvent e) {
@@ -577,7 +586,8 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         menu.add("-");
 
         addMenuAction(menu, "Auto Brightness & Contrast", (a) -> {
-            IJ.run(my_target, "Enhance Contrast", "saturated=0.35");
+            enhanceContrast();
+            //IJ.run(my_target, "Enhance Contrast", "saturated=0.35");
         });
         addMenuAction(menu, "Duplicate and go ahead with ImageJ", (a) -> {
             new Duplicator().run(my_target, 1, my_target.getNSlices()).show();
@@ -598,6 +608,17 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             }
         });
         return menu;
+    }
+
+    private synchronized void enhanceContrast() {
+        paused = true;
+        int c_before = my_target.getC();
+        for (int c = 0; c < my_target.getNChannels(); c++) {
+            my_target.setC(c);
+            IJ.run(my_target, "Enhance Contrast", "saturated=0.35");
+        }
+        my_target.setC(c_before);
+        paused = false;
     }
 
     protected void generateScript(ScriptGenerator generator) {

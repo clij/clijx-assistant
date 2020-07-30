@@ -103,7 +103,7 @@ public class CLIJxVirtualStack extends VirtualStack {
         //for (int c = 0; c < buffer.length; c++) {
         //    System.out.println("wtf [" + c + "]" + new ImagePlus("",formerSliceProcessors[c] ).getStatistics().mean);
         //}
-        //System.out.println("Processor returned: " + formerSliceProcessors[channel]);
+        System.out.println("Processor returned: " + formerSliceProcessors[channel]);
         //System.out.println("Mean [" + channel + "]: " + new ImagePlus("",formerSliceProcessors[channel] ).getStatistics().mean);
         return (ImageProcessor) formerSliceProcessors[channel].clone();
     }
