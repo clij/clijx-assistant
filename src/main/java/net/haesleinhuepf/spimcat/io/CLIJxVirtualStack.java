@@ -1,6 +1,7 @@
 package net.haesleinhuepf.spimcat.io;
 
 import ij.*;
+import ij.plugin.Duplicator;
 import ij.plugin.HyperStackConverter;
 import ij.process.ImageProcessor;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
@@ -31,32 +32,22 @@ public class CLIJxVirtualStack extends VirtualStack {
                 @Override
                 public synchronized void imageClosed(ImagePlus imp) {
                     if (imp.getStack() instanceof CLIJxVirtualStack) {
-                        IJ.log("closing " + imp);
-                        CLIJx clijx = CLIJx.getInstance();
-                        //
                         ImageStack stack = imp.getStack();
                         if (imp.getNChannels() == 1) {
                             ClearCLBuffer buffer = ((CLIJxVirtualStack) stack).getBuffer(0);
                             imp.setStack(CLIJx.getInstance().pull(buffer).getStack());
                             buffer.close();
                         } else {
-                            ClearCLBuffer collection = null;
+
+                            ImagePlus imp2 = new Duplicator().run(imp, 1, imp.getNChannels(), 1, imp.getNSlices(), 1, imp.getNFrames());
+                            imp.setStack(imp2.getStack());
+
                             for (int c = 0; c < imp.getNChannels(); c++) {
                                 ClearCLBuffer buffer = ((CLIJxVirtualStack) stack).getBuffer(c);
-                                if (collection == null) {
-                                    collection = clijx.create(new long[]{buffer.getWidth(), buffer.getHeight(), buffer.getDepth() * imp.getNChannels()}, buffer.getNativeType());
-
-                                    // TODO: make c1c2c3 c1c2c3 c1c2c3 instead of c1c1c1 c2c2c2c c3c3c3
-                                    clijx.paste(buffer, collection, 0, 0, buffer.getDepth() * c);
-
-                                }
                                 buffer.close();
                             }
-                            imp.setStack(CLIJx.getInstance().pull(collection).getStack());
-                            collection.close();
-                        }
-                        IJ.log("closed " + imp);
 
+                        }
                     }
                 }
 
@@ -74,12 +65,9 @@ public class CLIJxVirtualStack extends VirtualStack {
 
     @Override
     public synchronized ImageProcessor getProcessor(int n) {
-        //System.out.println("Requested processor " + n);
         int index = n - 1;
         int zplane = index / buffer.length;
         int channel = index % buffer.length;
-        //int depth = (int) (buffer.getDepth() / number_of_channels);
-        //System.out.println("z/c " + zplane + " / " + channel );
 
         if (zplane != former_z || formerSliceProcessors == null) {
 
@@ -90,7 +78,6 @@ public class CLIJxVirtualStack extends VirtualStack {
 
             for (int c = 0; c < buffer.length; c++) {
                 clijx.copySlice(buffer[c], slice, zplane);
-                //System.out.println("Mean slice[" + c + "] " + clijx.meanOfAllPixels(slice));
                 ImagePlus imp = clijx.pull(slice);
                 formerSliceProcessors[c] = imp.getProcessor();
             }
@@ -99,11 +86,6 @@ public class CLIJxVirtualStack extends VirtualStack {
 
             former_z = zplane;
         }
-        //for (int c = 0; c < buffer.length; c++) {
-        //    System.out.println("wtf [" + c + "]" + new ImagePlus("",formerSliceProcessors[c] ).getStatistics().mean);
-        //}
-        System.out.println("Processor returned: " + formerSliceProcessors[channel]);
-        //System.out.println("Mean [" + channel + "]: " + new ImagePlus("",formerSliceProcessors[channel] ).getStatistics().mean);
         return (ImageProcessor) formerSliceProcessors[channel].clone();
     }
 

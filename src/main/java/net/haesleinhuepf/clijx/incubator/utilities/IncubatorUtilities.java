@@ -97,9 +97,7 @@ public class IncubatorUtilities {
     }
 
     public static void glasbey(ImagePlus imp) {
-        //System.out.println();
         String dir = IJ.getDirectory("imagej");
-        System.out.println(dir);
         if (!dir.contains("null") && dir.toLowerCase().contains("fiji")) {
 
 

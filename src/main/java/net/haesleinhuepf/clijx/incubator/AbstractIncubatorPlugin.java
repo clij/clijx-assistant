@@ -274,16 +274,14 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle(IncubatorUtilities.niceName(this.getClass().getSimpleName()) + " of " + my_source.getTitle());
         if (this.getClass().getSimpleName().toLowerCase().contains("label")) {
-            IJ.log("Set to labeling range");
             my_target.setDisplayRange(0, CLIJx.getInstance().maximumOfAllPixels(result[0]));
         } else if (this.getClass().getSimpleName().toLowerCase().contains("binary") ||
                 this.getClass().getSimpleName().toLowerCase().contains("threshold") ||
                 (plugin instanceof IsCategorized && (((IsCategorized)plugin).getCategories().toLowerCase().contains("segmentation") || ((IsCategorized)plugin).getCategories().toLowerCase().contains("binary")))
         ) {
-            IJ.log("Set to binary range");
             my_target.setDisplayRange(0, 1);
         } else {
-            IJ.log("Could set range");
+
             enhanceContrast();
         }
     }
@@ -347,9 +345,6 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             System.out.println("Paused");
             return;
         }
-        //if (sync_view != null && sync_view.getState() == false) {
-        //    return;
-        //}
 
         if (my_target == null || my_source == null) {
             return;
@@ -378,7 +373,6 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
     protected boolean paused = false;
     protected void setTarget(ImagePlus result) {
-        boolean do_refresh_view_afterwards = false;
         paused = true;
         if (my_target == null) {
             if (my_source != null && my_source.isComposite() && result.getNChannels() > 1) {
@@ -388,9 +382,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             } else {
                 my_target = result;
             }
-            //my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
             my_target.show();
-            do_refresh_view_afterwards = true;
             my_target.getWindow().getCanvas().disablePopupMenu(true);
             my_target.getWindow().getCanvas().addMouseListener(new MouseAdapter() {
                 @Override
@@ -405,17 +397,9 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                 }
             });
             enhanceContrast();
-
-            //transferView(my_source, my_target);
-            //IJ.run(my_target, "Enhance Contrast", "saturated=0.35");
         } else {
             ImagePlus output = result;
-            //double min = my_target.getDisplayRangeMin();
-            //double max = my_target.getDisplayRangeMax();
-            //LUT[] lut = my_target.getLuts();
             my_target.setStack(output.getStack());
-            //my_target.setLut(lut[0]);
-           // my_target.setDisplayRange(min, max);
         }
         IncubatorUtilities.transferCalibration(my_source, my_target);
         String name_to_consider = (my_source.getTitle() + " " + my_target.getTitle()).toLowerCase();
@@ -428,13 +412,8 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             //my_target.setLut(my_source.getProcessor().getLut());
         }
         paused = false;
-        //if (do_refresh_view_afterwards){
-        //    System.out.println("Do refresh " + my_target.getTitle());
-            refreshView();
-        //} else {
-        //    System.out.println("Do NOT refresh " + my_target.getTitle());
-        //}
 
+        refreshView();
     }
 
     protected void handlePopupMenu(MouseEvent e) {
@@ -514,7 +493,6 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
         Menu predecessor = new Menu("Predecessor");
         addMenuAction(predecessor, my_source.getTitle(), (a) -> {
-            IJ.log("Show source " + my_source.getTitle());
             my_source.show();
             my_source.getWindow().toFront();});
         menu.add(predecessor);
@@ -523,7 +501,6 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         Menu followers = new Menu("Followers");
         for (ImagePlus follower : IncubatorPluginRegistry.getInstance().getFollowers(my_target)) {
             addMenuAction(followers, follower.getTitle(), (a) -> {
-                IJ.log("show follower " + follower);
                 follower.show();
                 follower.getWindow().toFront();
             });
@@ -596,7 +573,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         if (!auto_contrast) {
             return;
         }
-        IJ.log("enhanceContrast");
+
         paused = true;
         int c_before = my_target.getC();
         for (int c = 0; c < my_target.getNChannels(); c++) {
@@ -631,10 +608,10 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         dialog.setOKLabel(refreshText);
 
         dialog.setCancelLabel(doneText);
-        //dialog.addCheckbox("Sync with source", true);
-        //sync_view = (Checkbox) dialog.getCheckboxes().lastElement();
-        //dialog.addToSameRow();
         dialog.showDialog();
+        if (dialog.getNumericFields() == null && dialog.getCheckboxes() == null) {
+            dialog.setVisible(false);
+        }
 
         for (KeyListener listener : dialog.getKeyListeners()) {
             dialog.removeKeyListener(listener);
