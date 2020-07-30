@@ -68,32 +68,29 @@ public class IncubatorStartingPoint extends AbstractIncubatorPlugin {
         }
     }
 
-    ClearCLBuffer result = null;
+    ClearCLBuffer[] result = null;
 
+    int former_refreshed_t = -1;
     public synchronized void refresh() {
-        paused = true;
-        if (result == null) {
-            result = CLIJxVirtualStack.imagePlusToBuffer(my_source);
-        //CLIJx.getInstance().pushCurrentZStack(my_source);
-        } else {
-            ClearCLBuffer temp = CLIJxVirtualStack.imagePlusToBuffer(my_source);
-            temp.copyTo(result, true);
-            temp.close();
+        if (my_source.getT() == former_refreshed_t) {
+            return;
         }
-        setTarget(CLIJxVirtualStack.bufferToImagePlus(result, my_source.getNChannels()));
+        former_refreshed_t = my_source.getT();
+
+        if (result != null) {
+            for (int i = 0; i < result.length; i++) {
+                result[i].close();
+            }
+        }
+        result = CLIJxVirtualStack.imagePlusToBuffer(my_source);
+        setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle("CLIJx Image of " + my_source.getTitle());
-        paused = false;
         refreshView();
     }
 
     @Override
     public void imageUpdated(ImagePlus imp) {
-        if (paused) {
-            System.out.println("IncubatorStartPoint blocked");
-            return;
-        }
         if (imp == my_source) {
-            paused = true;
             System.out.println("Source updated");
             if (imp.getT() != former_t) {
                 System.out.println("Target invalidated");
@@ -102,11 +99,11 @@ public class IncubatorStartingPoint extends AbstractIncubatorPlugin {
                 former_t = imp.getT(); }
 
             if (imp.getZ() != former_z || imp.getC() != former_c) {
+                System.out.println("Calling refresh view");
                 refreshView();
                 former_z = imp.getZ();
                 former_c = imp.getC();
             }
-            paused = false;
         }
     }
 }

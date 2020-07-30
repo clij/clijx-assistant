@@ -158,8 +158,4 @@ public class IncubatorUtilities {
                 1000
         );
     }
-
-    public static ClearCLBuffer increaseStackSizeWithChannels(CLIJx clijx, ClearCLBuffer first, int nChannels) {
-        return clijx.create(new long[]{first.getWidth(), first.getHeight(), first.getDepth() * nChannels}, first.getNativeType());
-    }
 }

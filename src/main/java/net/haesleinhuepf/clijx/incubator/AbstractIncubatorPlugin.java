@@ -1,5 +1,6 @@
 package net.haesleinhuepf.clijx.incubator;
 
+import ij.CompositeImage;
 import ij.IJ;
 import ij.ImageListener;
 import ij.ImagePlus;
@@ -8,6 +9,7 @@ import ij.gui.Toolbar;
 import ij.measure.Calibration;
 import ij.plugin.Duplicator;
 import ij.plugin.PlugIn;
+import ij.process.ImageProcessor;
 import net.haesleinhuepf.clij.clearcl.ClearCL;
 import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
@@ -179,14 +181,14 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
     }
 
-    ClearCLBuffer result = null;
+    ClearCLBuffer[] result = null;
     public synchronized void refresh()
     {
         if (plugin == null) {
             return;
         }
 
-        ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
+        ClearCLBuffer[] pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
 
         String[] parameters = plugin.getParameterHelpText().split(",");
 
@@ -255,21 +257,21 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             }
         }
 
-        args[0] = pushed;
+        args[0] = pushed[0]; // todo: potentially store the whole array here
         plugin.setArgs(args);
         if (result == null) {
             result = createOutputBufferFromSource(pushed);
 
         }
-        args[1] = result;
-        plugin.setArgs(args); // might not be necessary
-        executeCL();
-        pushed.close();
+        args[1] = result[0]; // todo: potentially store the whole array here
 
-        setTarget(CLIJxVirtualStack.bufferToImagePlus(result, my_source.getNChannels()));
+        executeCL(pushed, result);
+        cleanup(my_source, pushed);
+
+        setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle(IncubatorUtilities.niceName(this.getClass().getSimpleName()) + " of " + my_source.getTitle());
         if (this.getClass().getSimpleName().toLowerCase().contains("label")) {
-            my_target.setDisplayRange(0, CLIJx.getInstance().maximumOfAllPixels(result));
+            my_target.setDisplayRange(0, CLIJx.getInstance().maximumOfAllPixels(result[0]));
         } else if (this.getClass().getSimpleName().toLowerCase().contains("binary") ||
                 this.getClass().getSimpleName().toLowerCase().contains("threshold") ||
                 (plugin instanceof IsCategorized && (((IsCategorized)plugin).getCategories().toLowerCase().contains("segmentation") || ((IsCategorized)plugin).getCategories().toLowerCase().contains("binary")))
@@ -278,33 +280,32 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         }
     }
 
-    protected void executeCL() {
+    protected void cleanup(ImagePlus my_source, ClearCLBuffer[] pushed) {
+        if (!(my_source.getStack() instanceof CLIJxVirtualStack)) {
+            for (int i = 0; i < pushed.length; i++) {
+                pushed[i].close();
+            }
+        }
+    }
+
+    protected void executeCL(ClearCLBuffer[] whole_input, ClearCLBuffer[] whole_output) {
         if (plugin instanceof CLIJOpenCLProcessor) {
             if (my_source.getNChannels() > 1) {
-                CLIJ2 clij2 = CLIJx.getInstance();
                 int number_of_channels = my_source.getNChannels();
-
-                ClearCLBuffer whole_input = (ClearCLBuffer) args[0];
-                ClearCLBuffer whole_output = (ClearCLBuffer) args[1];
-
-                ClearCLBuffer input = clij2.create(new long[]{whole_input.getWidth(), whole_input.getHeight(), whole_input.getDepth() / number_of_channels}, whole_input.getNativeType());
-                ClearCLBuffer output = clij2.create(new long[]{whole_output.getWidth(), whole_output.getHeight(), whole_output.getDepth() / number_of_channels}, whole_output.getNativeType());
-                args[0] = input;
-                args[1] = output;
-
                 for (int c = 0; c < number_of_channels; c++) {
-                    clij2.crop3D(whole_input, input, 0, 0, c * input.getDepth());
+                    ClearCLBuffer input = whole_input[c];
+                    ClearCLBuffer output = whole_output[c];
+
+                    args[0] = input;
+                    args[1] = output;
+
                     if (plugin instanceof CLIJOpenCLProcessor) {
                         ((CLIJOpenCLProcessor) plugin).executeCL();
                     }
-                    clij2.paste(output, whole_output, 0,0, c * output.getDepth());
                 }
-                input.close();
-                output.close();
 
-                args[0] = whole_input;
-                args[1] = whole_output;
-
+                args[0] = whole_input[0];
+                args[1] = whole_output[0];
 
             } else {
                 ((CLIJOpenCLProcessor) plugin).executeCL();
@@ -312,14 +313,19 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         }
     }
 
-    protected ClearCLBuffer createOutputBufferFromSource(ClearCLBuffer pushed) {
-        ClearCLBuffer result = plugin.createOutputBufferFromSource(pushed);
-        if (my_source.getNChannels() > 1) {
-            ClearCLBuffer multichannel = IncubatorUtilities.increaseStackSizeWithChannels(CLIJx.getInstance(), result, my_source.getNChannels());
-            result.close();
-            result = multichannel;
+    protected ClearCLBuffer[] createOutputBufferFromSource(ClearCLBuffer[] pushed) {
+        CLIJx clijx = CLIJx.getInstance();
+        ClearCLBuffer result = plugin.createOutputBufferFromSource(pushed[0]);
+        if (pushed.length > 1) {
+            ClearCLBuffer[] output = new ClearCLBuffer[pushed.length];
+            output[0] = result;
+            for (int i = 1; i < pushed.length; i ++) {
+                output[i] = clijx.create(output[0]);
+            }
+            return output;
+        } else {
+            return new ClearCLBuffer[] {result};
         }
-        return result;
     }
 
     protected boolean configure() {
@@ -330,6 +336,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
     public void refreshView() {
         if (paused)
         {
+            System.out.println("Paused");
             return;
         }
         if (sync_view != null && sync_view.getState() == false) {
@@ -340,25 +347,48 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             return;
         }
         if (my_source.getNSlices() == my_target.getNSlices()) {
-            my_target.setZ(my_source.getZ());
+            if (my_source.getZ() != my_target.getZ()) {
+                System.out.println("Setting Z");
+                my_target.setZ(my_source.getZ());
+            }
         }
         if (my_source.getNChannels() == my_target.getNChannels()) {
-            int source_c = my_source.getC();
-            int target_c = my_target.getC();
+            //int source_c = my_source.getC();
+            //int target_c = my_target.getC();
 
             for (int c = 0; c < my_source.getNChannels(); c++) {
-                my_source.setC(c + 1);
-                my_target.setC(c + 1);
+                int source_t = my_source.getT() - 1;
+                int source_z = my_source.getZ() - 1;
 
-                my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
-                my_target.getProcessor().setLut(my_source.getProcessor().getLut());
-                my_target.setProcessor(my_target.getProcessor());
+                int target_t = 0;
+                int target_z = my_target.getZ() - 1;
 
-                System.out.println("source lut " + my_source.getProcessor().getLut());
-                System.out.println("target lut " + my_target.getProcessor().getLut());
+                int source_n = source_t * my_source.getNSlices() * my_source.getNChannels() + source_z * my_source.getNChannels() + c + 1;
+                int target_n = target_t * my_target.getNSlices() * my_target.getNChannels() + target_z * my_target.getNChannels() + c + 1;
+
+
+
+                //my_source.setC(c + 1);
+                //my_target.setC(c + 1);
+                //new Duplicator().run()
+                ImageProcessor source_processor = my_source.getStack().getProcessor(source_n);
+                ImageProcessor target_processor = my_target.getStack().getProcessor(target_n);
+                target_processor.setMinAndMax(source_processor.getMin(), source_processor.getMax());
+
+                //my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
+                //my_target.getProcessor().setLut(my_source.getProcessor().getLut());
+                //my_target.setProcessor(my_target.getProcessor());
+
+                //System.out.println("source lut " + my_source.getProcessor().getLut());
+                //System.out.println("target lut " + my_target.getProcessor().getLut());
             }
-            my_source.setC(source_c);
-            my_target.setC(target_c);
+            my_target.updateAndRepaintWindow();//setProcessor(my_target.getProcessor());
+
+            System.out.println("composite mode s" + my_source.getCompositeMode());
+            System.out.println("composite mode t" + my_target.getCompositeMode());
+
+            //my_source.setC(source_c);
+            //my_target.setC(target_c);
         }
     }
 
@@ -380,7 +410,12 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
     protected void setTarget(ImagePlus result) {
         paused = true;
         if (my_target == null) {
-            my_target = result;
+            if (my_source != null && my_source.isComposite()) {
+                my_target = new CompositeImage(result, my_source.getCompositeMode());
+                ((CompositeImage)my_target).copyLuts(my_source);
+            } else {
+                my_target = result;
+            }
             //my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
             my_target.show();
             refreshView();
@@ -402,12 +437,12 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             //IJ.run(my_target, "Enhance Contrast", "saturated=0.35");
         } else {
             ImagePlus output = result;
-            double min = my_target.getDisplayRangeMin();
-            double max = my_target.getDisplayRangeMax();
+            //double min = my_target.getDisplayRangeMin();
+            //double max = my_target.getDisplayRangeMax();
             //LUT[] lut = my_target.getLuts();
             my_target.setStack(output.getStack());
             //my_target.setLut(lut[0]);
-            my_target.setDisplayRange(min, max);
+           // my_target.setDisplayRange(min, max);
         }
         IncubatorUtilities.transferCalibration(my_source, my_target);
         String name_to_consider = (my_source.getTitle() + " " + my_target.getTitle()).toLowerCase();
@@ -693,7 +728,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
     public void setTargetIsProcessing() {
         if (my_target.getStack() instanceof CLIJxVirtualStack) {
-            ((CLIJxVirtualStack) my_target.getStack()).getBuffer().setName(this.getClass().getName());
+            ((CLIJxVirtualStack) my_target.getStack()).getBuffer(0).setName(this.getClass().getName());
         }
         setButtonColor(refreshText, refreshing_color);
     }
