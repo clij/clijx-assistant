@@ -27,6 +27,7 @@ public class ExtractChannel extends AbstractIncubatorPlugin implements MakeIsotr
     protected GenericDialog buildNonModalDialog(Frame parent) {
         GenericDialog gd = new GenericDialog(IncubatorUtilities.niceName(this.getClass().getSimpleName()));
         gd.addNumericField("Channel (0-indexed)", 0);
+        addPlusMinusPanel(gd, "channel");
 
         channel_number = (TextField) gd.getNumericFields().get(0);
 
@@ -40,13 +41,25 @@ public class ExtractChannel extends AbstractIncubatorPlugin implements MakeIsotr
         int channel = 0;
         if (channel_number != null) {
             try {
-                channel = Integer.parseInt(channel_number.getText());
+                channel = (int)Double.parseDouble(channel_number.getText());
             } catch (Exception e) {
                 System.out.println("Error parsing text (ExtractChannel)");
             }
         }
+        if (channel < 0) {
+            channel = 0;
+            channel_number.setText("" + channel);
+            return;
+        }
 
         net.haesleinhuepf.clij2.plugins.Copy plugin = (net.haesleinhuepf.clij2.plugins.Copy) getCLIJMacroPlugin();
+
+        if (channel >= pushed.length) {
+            channel = pushed.length - 1;
+            channel_number.setText("" + channel);
+            return;
+        }
+
         args = new Object[] {
                 pushed[channel],
                 null

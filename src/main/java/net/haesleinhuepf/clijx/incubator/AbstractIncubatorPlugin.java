@@ -13,6 +13,7 @@ import ij.process.ImageProcessor;
 import net.haesleinhuepf.clij.clearcl.ClearCL;
 import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
+import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.ExtractChannel;
 import net.haesleinhuepf.clijx.incubator.scriptgenerator.*;
 import net.haesleinhuepf.clijx.incubator.utilities.*;
 import net.haesleinhuepf.clijx.incubator.scriptgenerator.*;
@@ -339,9 +340,9 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             System.out.println("Paused");
             return;
         }
-        if (sync_view != null && sync_view.getState() == false) {
-            return;
-        }
+        //if (sync_view != null && sync_view.getState() == false) {
+        //    return;
+        //}
 
         if (my_target == null || my_source == null) {
             return;
@@ -373,7 +374,9 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                 //new Duplicator().run()
                 ImageProcessor source_processor = my_source.getStack().getProcessor(source_n);
                 ImageProcessor target_processor = my_target.getStack().getProcessor(target_n);
+
                 target_processor.setMinAndMax(source_processor.getMin(), source_processor.getMax());
+                System.out.println("Setting min max [" + c + "] " + source_processor.getMin() + " " + source_processor.getMax());
 
                 //my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
                 //my_target.getProcessor().setLut(my_source.getProcessor().getLut());
@@ -384,8 +387,8 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             }
             my_target.updateAndRepaintWindow();//setProcessor(my_target.getProcessor());
 
-            System.out.println("composite mode s" + my_source.getCompositeMode());
-            System.out.println("composite mode t" + my_target.getCompositeMode());
+            //System.out.println("composite mode s" + my_source.getCompositeMode());
+            //System.out.println("composite mode t" + my_target.getCompositeMode());
 
             //my_source.setC(source_c);
             //my_target.setC(target_c);
@@ -408,9 +411,11 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
     protected boolean paused = false;
     protected void setTarget(ImagePlus result) {
+        boolean do_refresh_view_afterwards = false;
         paused = true;
         if (my_target == null) {
-            if (my_source != null && my_source.isComposite()) {
+            if (my_source != null && my_source.isComposite() && result.getNChannels() > 1) {
+                System.out.println("Channels: " + result.getNChannels());
                 my_target = new CompositeImage(result, my_source.getCompositeMode());
                 ((CompositeImage)my_target).copyLuts(my_source);
             } else {
@@ -418,7 +423,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             }
             //my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
             my_target.show();
-            refreshView();
+            do_refresh_view_afterwards = true;
             my_target.getWindow().getCanvas().disablePopupMenu(true);
             my_target.getWindow().getCanvas().addMouseListener(new MouseAdapter() {
                 @Override
@@ -455,6 +460,9 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             //my_target.setLut(my_source.getProcessor().getLut());
         }
         paused = false;
+        if (do_refresh_view_afterwards){
+            refreshView();
+        }
     }
 
     protected void handlePopupMenu(MouseEvent e) {
@@ -472,7 +480,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         menu.add(submenu);
     }
 
-    Checkbox sync_view = null;
+    //Checkbox sync_view = null;
     protected PopupMenu buildPopup(MouseEvent e, ImagePlus my_source, ImagePlus my_target) {
         PopupMenu menu = new PopupMenu("CLIncubator");
 
@@ -486,6 +494,14 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         // -------------------------------------------------------------------------------------------------------------
 
         Menu suggestedFollowers = new Menu("Suggested next steps");
+        if (my_target.getNChannels() > 1) {
+            addMenuAction(suggestedFollowers, "Extract channel", (a) -> {
+                my_target.show();
+                new ExtractChannel().run(null);
+            });
+            addMenuAction(suggestedFollowers, "-", null);
+        }
+
         for (Class klass : SuggestionService.getInstance().getSuggestedNextStepsFor(this)) {
             addMenuAction(suggestedFollowers, klass.getSimpleName(), (a) -> {
                 my_target.show();
@@ -607,9 +623,9 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         dialog.setOKLabel(refreshText);
 
         dialog.setCancelLabel(doneText);
-        dialog.addCheckbox("Sync with source", true);
-        sync_view = (Checkbox) dialog.getCheckboxes().lastElement();
-        dialog.addToSameRow();
+        //dialog.addCheckbox("Sync with source", true);
+        //sync_view = (Checkbox) dialog.getCheckboxes().lastElement();
+        //dialog.addToSameRow();
         dialog.showDialog();
 
         for (KeyListener listener : dialog.getKeyListeners()) {

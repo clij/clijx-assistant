@@ -75,12 +75,12 @@ public class CLIJxVirtualStack extends VirtualStack {
 
     @Override
     public synchronized ImageProcessor getProcessor(int n) {
-        System.out.println("Requested processor " + n);
+        //System.out.println("Requested processor " + n);
         int index = n - 1;
         int zplane = index / buffer.length;
         int channel = index % buffer.length;
         //int depth = (int) (buffer.getDepth() / number_of_channels);
-        System.out.println("z/c " + zplane + " / " + channel );
+        //System.out.println("z/c " + zplane + " / " + channel );
 
         if (zplane != former_z || formerSliceProcessors == null) {
 
@@ -91,7 +91,7 @@ public class CLIJxVirtualStack extends VirtualStack {
 
             for (int c = 0; c < buffer.length; c++) {
                 clijx.copySlice(buffer[c], slice, zplane);
-                System.out.println("Mean slice[" + c + "] " + clijx.meanOfAllPixels(slice));
+                //System.out.println("Mean slice[" + c + "] " + clijx.meanOfAllPixels(slice));
                 ImagePlus imp = clijx.pull(slice);
                 formerSliceProcessors[c] = imp.getProcessor();
             }
@@ -100,11 +100,11 @@ public class CLIJxVirtualStack extends VirtualStack {
 
             former_z = zplane;
         }
-        for (int c = 0; c < buffer.length; c++) {
-            System.out.println("wtf [" + c + "]" + new ImagePlus("",formerSliceProcessors[c] ).getStatistics().mean);
-        }
-        System.out.println("Processor returned: " + formerSliceProcessors[channel]);
-        System.out.println("Mean [" + channel + "]: " + new ImagePlus("",formerSliceProcessors[channel] ).getStatistics().mean);
+        //for (int c = 0; c < buffer.length; c++) {
+        //    System.out.println("wtf [" + c + "]" + new ImagePlus("",formerSliceProcessors[c] ).getStatistics().mean);
+        //}
+        //System.out.println("Processor returned: " + formerSliceProcessors[channel]);
+        //System.out.println("Mean [" + channel + "]: " + new ImagePlus("",formerSliceProcessors[channel] ).getStatistics().mean);
         return (ImageProcessor) formerSliceProcessors[channel].clone();
     }
 
@@ -123,9 +123,9 @@ public class CLIJxVirtualStack extends VirtualStack {
         count++;
         ImagePlus imp = new ImagePlus(("CLIJxVirtualStack " + count + " " + buffer[0].getName()).trim(), cvs);
         if (number_of_channels > 1) {
-            System.out.println("imp " + imp.getNSlices());
-            System.out.println("buf " + buffer[0].getDepth());
-            System.out.println("cha " + number_of_channels);
+            //System.out.println("imp " + imp.getNSlices());
+            //System.out.println("buf " + buffer[0].getDepth());
+            //System.out.println("cha " + number_of_channels);
             imp = HyperStackConverter.toHyperStack(imp, number_of_channels, (int) buffer[0].getDepth(), 1);
         }
         return imp;
