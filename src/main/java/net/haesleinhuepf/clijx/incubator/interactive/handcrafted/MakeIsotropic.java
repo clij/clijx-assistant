@@ -83,8 +83,9 @@ public class MakeIsotropic extends AbstractIncubatorPlugin implements MakeIsotro
         my_target.getCalibration().pixelHeight = new_voxel_size_in_microns;
         my_target.getCalibration().pixelDepth = new_voxel_size_in_microns;
         my_target.getCalibration().setUnit("micron");
-        //my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
+        my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
         my_target.updateAndDraw();
+        enhanceContrast();
     }
 
     @Override

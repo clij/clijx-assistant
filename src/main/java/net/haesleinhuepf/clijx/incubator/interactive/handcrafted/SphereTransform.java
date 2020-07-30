@@ -92,6 +92,10 @@ public class SphereTransform extends AbstractIncubatorPlugin implements SphereTr
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle("Sphere transformed " + my_source.getTitle());
+        my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
+        my_target.updateAndDraw();
+        enhanceContrast();
+
     }
 
 

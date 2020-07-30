@@ -1,9 +1,6 @@
 package net.haesleinhuepf.spimcat.io;
 
-import ij.ImageListener;
-import ij.ImagePlus;
-import ij.ImageStack;
-import ij.VirtualStack;
+import ij.*;
 import ij.plugin.HyperStackConverter;
 import ij.process.ImageProcessor;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
@@ -32,8 +29,9 @@ public class CLIJxVirtualStack extends VirtualStack {
                 }
 
                 @Override
-                public void imageClosed(ImagePlus imp) {
+                public synchronized void imageClosed(ImagePlus imp) {
                     if (imp.getStack() instanceof CLIJxVirtualStack) {
+                        IJ.log("closing " + imp);
                         CLIJx clijx = CLIJx.getInstance();
                         //
                         ImageStack stack = imp.getStack();
@@ -57,6 +55,7 @@ public class CLIJxVirtualStack extends VirtualStack {
                             imp.setStack(CLIJx.getInstance().pull(collection).getStack());
                             collection.close();
                         }
+                        IJ.log("closed " + imp);
 
                     }
                 }

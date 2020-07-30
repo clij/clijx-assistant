@@ -169,4 +169,16 @@ class IncubatorPluginRegistry {
         }
         return true;
     }
+
+    public ArrayList<ImagePlus> getFollowers(ImagePlus source) {
+        ArrayList<ImagePlus> followers = new ArrayList();
+
+        for (IncubatorPlugin plugin : registeredPlugins) {
+            if (plugin.getSource() == source) {
+                followers.add(plugin.getTarget());
+            }
+        }
+
+        return followers;
+    }
 }

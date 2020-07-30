@@ -75,6 +75,9 @@ public class ExtractChannel extends AbstractIncubatorPlugin implements MakeIsotr
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle("Extracted channel " + my_source.getTitle());
+        my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
+        my_target.updateAndDraw();
+        enhanceContrast();
     }
 
 }

@@ -102,6 +102,7 @@ public class IncubatorUtilities {
         System.out.println(dir);
         if (!dir.contains("null") && dir.toLowerCase().contains("fiji")) {
 
+
             new java.util.Timer().schedule(
                     new java.util.TimerTask() {
                         @Override
