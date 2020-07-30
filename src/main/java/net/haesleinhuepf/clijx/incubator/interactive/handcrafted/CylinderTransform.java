@@ -3,7 +3,9 @@ package net.haesleinhuepf.clijx.incubator.interactive.handcrafted;
 import ij.IJ;
 import ij.gui.GenericDialog;
 import net.haesleinhuepf.clij.macro.CLIJOpenCLProcessor;
+import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.incubator.interactive.suggestions.CylinderTransformSuggestion;
+import net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities;
 import net.haesleinhuepf.clijx.incubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.clijx.incubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
@@ -50,10 +52,10 @@ public class CylinderTransform extends AbstractIncubatorPlugin implements Cylind
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
         GenericDialog gdp = new GenericDialog("Cylinder transform");
-        gdp.addNumericField("Center_x (0...1)", relative_center_x);
+        gdp.addNumericField("Relative_center_x (0...1)", relative_center_x);
         addPlusMinusPanel(gdp, "relative_center_x");
 
-        gdp.addNumericField("Center_z (0...1)", relative_center_z);
+        gdp.addNumericField("Relative_enter_z (0...1)", relative_center_z);
         addPlusMinusPanel(gdp, "relative_center_z");
 
 
@@ -68,7 +70,7 @@ public class CylinderTransform extends AbstractIncubatorPlugin implements Cylind
     public void refreshView() {}
 
 
-    ClearCLBuffer result = null;
+    ClearCLBuffer[] result = null;
     public synchronized void refresh()
     {
         if (center_z_slider != null) {
@@ -80,24 +82,25 @@ public class CylinderTransform extends AbstractIncubatorPlugin implements Cylind
             }
         }
 
-        ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
+        ClearCLBuffer[] pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
 
-        args = new Object[]{pushed, null, number_of_angles, delta_angle_in_degrees, relative_center_x, relative_center_z};
+        args = new Object[]{pushed[0], null, number_of_angles, delta_angle_in_degrees, relative_center_x, relative_center_z};
         net.haesleinhuepf.clijx.plugins.CylinderTransform plugin = (net.haesleinhuepf.clijx.plugins.CylinderTransform) getCLIJMacroPlugin();
         plugin.setArgs(args);
         if (result == null) {
-            result = plugin.createOutputBufferFromSource(pushed);
+            result = createOutputBufferFromSource(pushed);
         }
-        args[1] = result;
-        if (plugin instanceof CLIJOpenCLProcessor) {
-            plugin.executeCL();
-        }
-        pushed.close();
+        args[1] = result[0];
+        executeCL(pushed, result);
+        cleanup(my_source, pushed);
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle("Cylinder transformed " + my_source.getTitle());
-    }
+        my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
+        my_target.updateAndDraw();
+        enhanceContrast();
 
+    }
 
 
 

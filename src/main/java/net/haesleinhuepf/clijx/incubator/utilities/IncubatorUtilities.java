@@ -90,15 +90,16 @@ public class IncubatorUtilities {
         result = result.replace("Do G", "DoG");
         result = result.replace("Lo G", "LoG");
         result = result.replace("Cl Esperanto", "ClEsperanto");
+        result = result.replace("CL IJ", "CLIJ");
 
         return result.trim();
 
     }
 
     public static void glasbey(ImagePlus imp) {
-        //System.out.println();
         String dir = IJ.getDirectory("imagej");
-        if (!dir.contains("null")) {
+        if (!dir.contains("null") && dir.toLowerCase().contains("fiji")) {
+
 
             new java.util.Timer().schedule(
                     new java.util.TimerTask() {
@@ -157,5 +158,4 @@ public class IncubatorUtilities {
                 1000
         );
     }
-
 }

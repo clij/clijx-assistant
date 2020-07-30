@@ -45,7 +45,7 @@ public class MakeIsotropic extends AbstractIncubatorPlugin implements MakeIsotro
         return gd;
     }
 
-    ClearCLBuffer result = null;
+    ClearCLBuffer[] result = null;
     public synchronized void refresh()
     {
         Calibration calib = my_source.getCalibration();
@@ -56,11 +56,11 @@ public class MakeIsotropic extends AbstractIncubatorPlugin implements MakeIsotro
         System.out.println("voxel size y: " + original_voxel_size_y);
         System.out.println("voxel size z: " + original_voxel_size_z);
 
-        ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
+        ClearCLBuffer[] pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
 
         net.haesleinhuepf.clijx.plugins.MakeIsotropic plugin = (net.haesleinhuepf.clijx.plugins.MakeIsotropic) getCLIJMacroPlugin();
         args = new Object[] {
-                pushed,
+                pushed[0],
                 null,
                 original_voxel_size_x,
                 original_voxel_size_y,
@@ -70,22 +70,22 @@ public class MakeIsotropic extends AbstractIncubatorPlugin implements MakeIsotro
         plugin.setArgs(args);
 
         if (result == null) {
-            result = plugin.createOutputBufferFromSource(pushed);
+            result = createOutputBufferFromSource(pushed);
         }
-        args[1] = result;
-        if (plugin instanceof CLIJOpenCLProcessor) {
-            plugin.executeCL();
-        }
-        pushed.close();
+        args[1] = result[0];
+        executeCL(pushed, result);
+        cleanup(my_source, pushed);
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
+
         my_target.setTitle("Isotropic " + my_source.getTitle());
         my_target.getCalibration().pixelWidth = new_voxel_size_in_microns;
         my_target.getCalibration().pixelHeight = new_voxel_size_in_microns;
         my_target.getCalibration().pixelDepth = new_voxel_size_in_microns;
         my_target.getCalibration().setUnit("micron");
-        //my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
+        my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
         my_target.updateAndDraw();
+        enhanceContrast();
     }
 
     @Override

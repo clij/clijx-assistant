@@ -54,11 +54,11 @@ public class SphereTransform extends AbstractIncubatorPlugin implements SphereTr
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
         GenericDialog gdp = new GenericDialog("Sphere transform");
-        gdp.addNumericField("Center_x (0...1)", relative_center_x);
+        gdp.addNumericField("Relative_center_x (0...1)", relative_center_x);
         addPlusMinusPanel(gdp, "relative_center_x");
-        gdp.addNumericField("Center_y (0...1)", relative_center_y);
+        gdp.addNumericField("Relativce_center_y (0...1)", relative_center_y);
         addPlusMinusPanel(gdp, "relative_center_y");
-        gdp.addNumericField("Center_z (0...1)", relative_center_z);
+        gdp.addNumericField("Relative_center_z (0...1)", relative_center_z);
         addPlusMinusPanel(gdp, "relative_center_z");
 
         center_x_slider = (TextField) gdp.getNumericFields().get(0);
@@ -68,10 +68,10 @@ public class SphereTransform extends AbstractIncubatorPlugin implements SphereTr
         return gdp;
     }
 
-    ClearCLBuffer result = null;
+    ClearCLBuffer[] result = null;
     public synchronized void refresh()
     {
-        ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
+        ClearCLBuffer[] pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
 
         if (center_y_slider != null) {
             relative_center_x = Float.parseFloat(center_x_slider.getText());
@@ -79,21 +79,23 @@ public class SphereTransform extends AbstractIncubatorPlugin implements SphereTr
             relative_center_z = Float.parseFloat(center_z_slider.getText());
         }
 
-        args = new Object[]{pushed, null, number_of_angles, delta_angle_in_degrees, relative_center_x * pushed.getWidth(), relative_center_y * pushed.getHeight(), relative_center_z * pushed.getDepth()};
+        args = new Object[]{pushed[0], null, number_of_angles, delta_angle_in_degrees, relative_center_x * pushed[0].getWidth(), relative_center_y * pushed[0].getHeight(), relative_center_z * pushed[0].getDepth()};
         net.haesleinhuepf.clijx.plugins.SphereTransform plugin = (net.haesleinhuepf.clijx.plugins.SphereTransform) getCLIJMacroPlugin();
         plugin.setArgs(args);
         if (result == null) {
-            result = plugin.createOutputBufferFromSource(pushed);
+            result = createOutputBufferFromSource(pushed);
         }
-        args[1] = result;
-        if (plugin instanceof CLIJOpenCLProcessor) {
-            plugin.executeCL();
-        }
+        args[1] = result[0];
 
-        pushed.close();
+        executeCL(pushed, result);
+        cleanup(my_source, pushed);
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle("Sphere transformed " + my_source.getTitle());
+        my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
+        my_target.updateAndDraw();
+        enhanceContrast();
+
     }
 
 

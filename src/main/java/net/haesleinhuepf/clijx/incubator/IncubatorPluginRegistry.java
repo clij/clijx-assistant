@@ -60,7 +60,7 @@ class IncubatorPluginRegistry {
         }
         //IJ.log("Invalidate " + imp.getTitle());
         if (imp.getStack() instanceof CLIJxVirtualStack) {
-            ((CLIJxVirtualStack) imp.getStack()).getBuffer().setName("");
+            ((CLIJxVirtualStack) imp.getStack()).getBuffer(0).setName("");
         }
 
         // search for plugins which have it as source and invalidate their targets
@@ -112,7 +112,7 @@ class IncubatorPluginRegistry {
 
     private boolean isValid(ImagePlus imp) {
         if (imp.getStack() instanceof CLIJxVirtualStack) {
-            return ((CLIJxVirtualStack) imp.getStack()).getBuffer().getName().length() != 0;
+            return ((CLIJxVirtualStack) imp.getStack()).getBuffer(0).getName().length() != 0;
         }
         return true;
     }
@@ -168,5 +168,27 @@ class IncubatorPluginRegistry {
             }
         }
         return true;
+    }
+
+    public ArrayList<ImagePlus> getFollowers(ImagePlus source) {
+        ArrayList<ImagePlus> followers = new ArrayList();
+
+        for (IncubatorPlugin plugin : registeredPlugins) {
+            if (plugin.getSource() == source) {
+                followers.add(plugin.getTarget());
+            }
+        }
+
+        return followers;
+    }
+
+    public IncubatorPlugin getPlugin(ImagePlus target) {
+        for (IncubatorPlugin plugin : registeredPlugins) {
+            if (plugin.getTarget() == target) {
+                return plugin;
+            }
+        }
+
+        return null;
     }
 }

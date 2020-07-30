@@ -1,14 +1,20 @@
 package net.haesleinhuepf.clijx.incubator;
 
+import ij.CompositeImage;
 import ij.IJ;
 import ij.ImageListener;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
+import ij.gui.ImageCanvas;
 import ij.gui.Toolbar;
 import ij.measure.Calibration;
 import ij.plugin.Duplicator;
 import ij.plugin.PlugIn;
+import ij.process.ImageProcessor;
+import net.haesleinhuepf.clij.clearcl.ClearCL;
+import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
+import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.ExtractChannel;
 import net.haesleinhuepf.clijx.incubator.scriptgenerator.*;
 import net.haesleinhuepf.clijx.incubator.utilities.*;
 import net.haesleinhuepf.clijx.incubator.scriptgenerator.*;
@@ -51,6 +57,8 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
     private AbstractCLIJPlugin plugin = null;
     protected Object[] args = null;
+
+    boolean auto_contrast = true;
 
     public AbstractIncubatorPlugin(){}
 
@@ -177,14 +185,15 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
     }
 
-    ClearCLBuffer result = null;
+    ClearCLBuffer[] result = null;
     public synchronized void refresh()
     {
         if (plugin == null) {
             return;
         }
+        System.out.println("Updating " + my_source);
 
-        ClearCLBuffer pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
+        ClearCLBuffer[] pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
 
         String[] parameters = plugin.getParameterHelpText().split(",");
 
@@ -253,29 +262,77 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             }
         }
 
-        args[0] = pushed;
+        args[0] = pushed[0]; // todo: potentially store the whole array here
         plugin.setArgs(args);
         if (result == null) {
-            result = plugin.createOutputBufferFromSource(pushed);
+            result = createOutputBufferFromSource(pushed);
 
         }
-        args[1] = result;
-        plugin.setArgs(args); // might not be necessary
+        args[1] = result[0]; // todo: potentially store the whole array here
 
-        if (plugin instanceof CLIJOpenCLProcessor) {
-            ((CLIJOpenCLProcessor) plugin).executeCL();
-        }
-        pushed.close();
+        executeCL(pushed, result);
+        cleanup(my_source, pushed);
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle(IncubatorUtilities.niceName(this.getClass().getSimpleName()) + " of " + my_source.getTitle());
         if (this.getClass().getSimpleName().toLowerCase().contains("label")) {
-            my_target.setDisplayRange(0, CLIJx.getInstance().maximumOfAllPixels(result));
+            my_target.setDisplayRange(0, CLIJx.getInstance().maximumOfAllPixels(result[0]));
         } else if (this.getClass().getSimpleName().toLowerCase().contains("binary") ||
                 this.getClass().getSimpleName().toLowerCase().contains("threshold") ||
                 (plugin instanceof IsCategorized && (((IsCategorized)plugin).getCategories().toLowerCase().contains("segmentation") || ((IsCategorized)plugin).getCategories().toLowerCase().contains("binary")))
         ) {
             my_target.setDisplayRange(0, 1);
+        } else {
+
+            enhanceContrast();
+        }
+    }
+
+    protected void cleanup(ImagePlus my_source, ClearCLBuffer[] pushed) {
+        if (!(my_source.getStack() instanceof CLIJxVirtualStack)) {
+            for (int i = 0; i < pushed.length; i++) {
+                pushed[i].close();
+            }
+        }
+    }
+
+    protected void executeCL(ClearCLBuffer[] whole_input, ClearCLBuffer[] whole_output) {
+        if (plugin instanceof CLIJOpenCLProcessor) {
+            if (my_source.getNChannels() > 1) {
+                int number_of_channels = my_source.getNChannels();
+                for (int c = 0; c < number_of_channels; c++) {
+                    ClearCLBuffer input = whole_input[c];
+                    ClearCLBuffer output = whole_output[c];
+
+                    args[0] = input;
+                    args[1] = output;
+
+                    if (plugin instanceof CLIJOpenCLProcessor) {
+                        ((CLIJOpenCLProcessor) plugin).executeCL();
+                    }
+                }
+
+                args[0] = whole_input[0];
+                args[1] = whole_output[0];
+
+            } else {
+                ((CLIJOpenCLProcessor) plugin).executeCL();
+            }
+        }
+    }
+
+    protected ClearCLBuffer[] createOutputBufferFromSource(ClearCLBuffer[] pushed) {
+        CLIJx clijx = CLIJx.getInstance();
+        ClearCLBuffer result = plugin.createOutputBufferFromSource(pushed[0]);
+        if (pushed.length > 1) {
+            ClearCLBuffer[] output = new ClearCLBuffer[pushed.length];
+            output[0] = result;
+            for (int i = 1; i < pushed.length; i ++) {
+                output[i] = clijx.create(output[0]);
+            }
+            return output;
+        } else {
+            return new ClearCLBuffer[] {result};
         }
     }
 
@@ -285,13 +342,23 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
     }
 
     public void refreshView() {
+        if (paused)
+        {
+            System.out.println("Paused");
+            return;
+        }
+
         if (my_target == null || my_source == null) {
             return;
         }
         if (my_source.getNSlices() == my_target.getNSlices()) {
-            my_target.setZ(my_source.getZ());
+            if (my_source.getZ() != my_target.getZ()) {
+                System.out.println("Setting Z");
+                my_target.setZ(my_source.getZ());
+            }
         }
     }
+
 
     public ImagePlus getSource() {
         return my_source;
@@ -306,38 +373,24 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         return my_target;
     }
 
-    private boolean paused = false;
+    protected boolean paused = false;
     protected void setTarget(ImagePlus result) {
         paused = true;
         if (my_target == null) {
-            my_target = result;
-            //my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
+            if (my_source != null && my_source.isComposite() && result.getNChannels() > 1) {
+                System.out.println("Channels: " + result.getNChannels());
+                my_target = new CompositeImage(result, my_source.getCompositeMode());
+                ((CompositeImage)my_target).copyLuts(my_source);
+            } else {
+                my_target = result;
+            }
+
             my_target.show();
-            refreshView();
-            my_target.getWindow().getCanvas().disablePopupMenu(true);
-            my_target.getWindow().getCanvas().addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    int toolID = Toolbar.getToolId();
-                    int flags = e.getModifiers();
-                    if (toolID != Toolbar.MAGNIFIER && (e.isPopupTrigger() || (!IJ.isMacintosh() && (flags & Event.META_MASK) != 0))) {
-                        handlePopupMenu(e);
-                        return;
-                    }
-
-                }
-            });
-
-
-            IJ.run(my_target, "Enhance Contrast", "saturated=0.35");
+            attachMenu(my_target);
+            enhanceContrast();
         } else {
             ImagePlus output = result;
-            double min = my_target.getDisplayRangeMin();
-            double max = my_target.getDisplayRangeMax();
-            //LUT[] lut = my_target.getLuts();
             my_target.setStack(output.getStack());
-            //my_target.setLut(lut[0]);
-            my_target.setDisplayRange(min, max);
         }
         IncubatorUtilities.transferCalibration(my_source, my_target);
         String name_to_consider = (my_source.getTitle() + " " + my_target.getTitle()).toLowerCase();
@@ -350,6 +403,41 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             //my_target.setLut(my_source.getProcessor().getLut());
         }
         paused = false;
+
+        refreshView();
+    }
+
+    private void attachMenu(ImagePlus imp) {
+        System.out.println("Attach menu");
+        ImageCanvas canvas = imp.getWindow().getCanvas();
+        canvas.disablePopupMenu(true);
+        for (MouseListener listener : canvas.getMouseListeners()) {
+            if (listener instanceof MyMouseAdapter) {
+                canvas.removeMouseListener(listener);
+            }
+        }
+        canvas.addMouseListener(new MyMouseAdapter(imp));
+        System.out.println("Menu attached");
+    }
+
+    class MyMouseAdapter extends MouseAdapter {
+
+        private ImagePlus imp;
+
+        MyMouseAdapter(ImagePlus imp) {
+            this.imp = imp;
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            int toolID = Toolbar.getToolId();
+            int flags = e.getModifiers();
+            if (toolID != Toolbar.MAGNIFIER && (e.isPopupTrigger() || (!IJ.isMacintosh() && (flags & Event.META_MASK) != 0))) {
+                ((AbstractIncubatorPlugin)IncubatorPluginRegistry.getInstance().getPlugin(imp)).handlePopupMenu(e);
+                return;
+            }
+
+        }
     }
 
     protected void handlePopupMenu(MouseEvent e) {
@@ -359,7 +447,6 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
     }
 
     private void addMenuAction(Menu menu, String label, ActionListener listener) {
-        label = IncubatorUtilities.niceName(label);
         MenuItem submenu = new MenuItem(label);
         if (listener != null) {
             submenu.addActionListener(listener);
@@ -367,7 +454,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         menu.add(submenu);
     }
 
-
+    //Checkbox sync_view = null;
     protected PopupMenu buildPopup(MouseEvent e, ImagePlus my_source, ImagePlus my_target) {
         PopupMenu menu = new PopupMenu("CLIncubator");
 
@@ -376,13 +463,24 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                 registered_dialog.show();
             }
         });
+        addMenuAction(menu, "Hide", (a) -> {
+            my_target.getWindow().setVisible(false);
+        });
         menu.add("-");
 
         // -------------------------------------------------------------------------------------------------------------
 
         Menu suggestedFollowers = new Menu("Suggested next steps");
+        if (my_target.getNChannels() > 1) {
+            addMenuAction(suggestedFollowers, "Extract channel", (a) -> {
+                my_target.show();
+                new ExtractChannel().run(null);
+            });
+            addMenuAction(suggestedFollowers, "-", null);
+        }
+
         for (Class klass : SuggestionService.getInstance().getSuggestedNextStepsFor(this)) {
-            addMenuAction(suggestedFollowers, klass.getSimpleName(), (a) -> {
+            addMenuAction(suggestedFollowers, IncubatorUtilities.niceName(klass.getSimpleName()), (a) -> {
                 my_target.show();
                 try {
                     SuggestedPlugin plugin = (SuggestedPlugin) klass.newInstance();
@@ -420,6 +518,28 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
         // -------------------------------------------------------------------------------------------------------------
 
+        Menu predecessor = new Menu("Predecessor");
+        addMenuAction(predecessor, my_source.getTitle(), (a) -> {
+            my_source.show();
+            my_source.getWindow().toFront();
+            attachMenu(my_source);
+        });
+        menu.add(predecessor);
+
+        // -------------------------------------------------------------------------------------------------------------
+        Menu followers = new Menu("Followers");
+        for (ImagePlus follower : IncubatorPluginRegistry.getInstance().getFollowers(my_target)) {
+            addMenuAction(followers, follower.getTitle(), (a) -> {
+                follower.show();
+                follower.getWindow().toFront();
+                attachMenu(follower);
+            });
+        }
+        menu.add(followers);
+        menu.add("-");
+
+        // -------------------------------------------------------------------------------------------------------------
+
         Menu script = new Menu("Generate script");
 
         addMenuAction(script, "ImageJ Macro", (a) -> {generateScript(new MacroGenerator());});
@@ -435,15 +555,10 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         menu.add(script);
 
 
-        // -------------------------------------------------------------------------------------------------------------
+
+
 
         Menu info = new Menu("Info");
-        addMenuAction(info, "Source: " + my_source.getTitle(), (a) -> {
-            System.out.println("huhu source");
-            my_source.show();});
-        addMenuAction(info, "Target: " + my_target.getTitle(), (a) -> {my_target.show();});
-        menu.add(info);
-
         addMenuAction(info,"GPU: " + CLIJx.getInstance().getGPUName(), (a) -> {
             IJ.log(CLIJx.clinfo());
         });
@@ -455,9 +570,14 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
         menu.add("-");
 
-        addMenuAction(menu, "Auto Brightness & Contrast", (a) -> {
-            IJ.run(my_target, "Enhance Contrast", "saturated=0.35");
+        MenuItem auto_contrast_item = new MenuItem("Auto Brightness & Contrast: " + (auto_contrast?"ON":"OFF"));
+        auto_contrast_item.addActionListener((a) -> {
+            auto_contrast = !auto_contrast;
+            enhanceContrast();
         });
+        menu.add(auto_contrast_item);
+
+
         addMenuAction(menu, "Duplicate and go ahead with ImageJ", (a) -> {
             new Duplicator().run(my_target, 1, my_target.getNSlices()).show();
         });
@@ -467,7 +587,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         String documentation_link =
                 ((plugin != null) ?online_documentation_link + "_" + plugin.getName().replace("CLIJ2_", "").replace("CLIJx_", ""):online_website_link);
 
-        addMenuAction(menu,"Online documentation", (a) -> {
+        addMenuAction(menu,"Documentation for " + IncubatorUtilities.niceName(getClass().getSimpleName()), (a) -> {
             try {
                 Desktop.getDesktop().browse(new URI(documentation_link));
             } catch (IOException e1) {
@@ -477,6 +597,22 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             }
         });
         return menu;
+    }
+
+    protected synchronized void enhanceContrast() {
+        if (!auto_contrast) {
+            return;
+        }
+
+        paused = true;
+        int c_before = my_target.getC();
+        for (int c = 0; c < my_target.getNChannels(); c++) {
+            my_target.setC(c);
+            IJ.resetMinAndMax(my_target);
+            IJ.run(my_target, "Enhance Contrast", "saturated=0.35");
+        }
+        my_target.setC(c_before);
+        paused = false;
     }
 
     protected void generateScript(ScriptGenerator generator) {
@@ -503,6 +639,9 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
         dialog.setCancelLabel(doneText);
         dialog.showDialog();
+        if (dialog.getNumericFields() == null && dialog.getCheckboxes() == null) {
+            dialog.setVisible(false);
+        }
 
         for (KeyListener listener : dialog.getKeyListeners()) {
             dialog.removeKeyListener(listener);
@@ -609,6 +748,8 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             return;
         }
         if (imp == my_source) {
+            //IJ.log("Updating " + my_source);
+            //enhanceContrast();
             refreshView();
         }
     }
@@ -620,7 +761,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
     public void setTargetIsProcessing() {
         if (my_target.getStack() instanceof CLIJxVirtualStack) {
-            ((CLIJxVirtualStack) my_target.getStack()).getBuffer().setName(this.getClass().getName());
+            ((CLIJxVirtualStack) my_target.getStack()).getBuffer(0).setName(this.getClass().getName());
         }
         setButtonColor(refreshText, refreshing_color);
     }
