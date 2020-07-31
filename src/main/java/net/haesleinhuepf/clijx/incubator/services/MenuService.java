@@ -3,6 +3,7 @@ package net.haesleinhuepf.clijx.incubator.services;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
+import net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities;
 
 import java.util.ArrayList;
 
@@ -75,18 +76,20 @@ public class MenuService {
             String categories = "";
 
             CLIJMacroPlugin macroPlugin = service.getCLIJMacroPlugin(entry);
-            if (macroPlugin instanceof OffersDocumentation) {
-                description = ((OffersDocumentation) macroPlugin).getDescription();
-            }
-            if (macroPlugin instanceof IsCategorized) {
-                categories = ((IsCategorized) macroPlugin).getCategories();
-            }
+            if ( IncubatorUtilities.isIncubatablePlugin(macroPlugin)) {
+                if (macroPlugin instanceof OffersDocumentation) {
+                    description = ((OffersDocumentation) macroPlugin).getDescription();
+                }
+                if (macroPlugin instanceof IsCategorized) {
+                    categories = ((IsCategorized) macroPlugin).getCategories();
+                }
 
-            if (search_string.length() == 0 ||
-                    (description != null && (description.toLowerCase().contains(search_string.toLowerCase()))) ||
-                    (categories != null && categories.toLowerCase().contains(search_string.toLowerCase())) ||
-                    name.toLowerCase().contains(search_string.toLowerCase())) {
-                result.add(getPluginByCLIJPlugin(macroPlugin));
+                if (search_string.length() == 0 ||
+                        (description != null && (description.toLowerCase().contains(search_string.toLowerCase()))) ||
+                        (categories != null && categories.toLowerCase().contains(search_string.toLowerCase())) ||
+                        name.toLowerCase().contains(search_string.toLowerCase())) {
+                    result.add(getPluginByCLIJPlugin(macroPlugin));
+                }
             }
         }
 
