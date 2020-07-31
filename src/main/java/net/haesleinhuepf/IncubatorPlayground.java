@@ -8,10 +8,7 @@ import ij.process.ImageProcessor;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.MemoryDisplay;
 import net.haesleinhuepf.clijx.incubator.IncubatorStartingPoint;
-import net.haesleinhuepf.clijx.incubator.interactive.generated.MaximumZProjection;
-import net.haesleinhuepf.clijx.incubator.interactive.generated.Median;
-import net.haesleinhuepf.clijx.incubator.interactive.generated.RigidTransform;
-import net.haesleinhuepf.clijx.incubator.interactive.generated.TopHat;
+import net.haesleinhuepf.clijx.incubator.interactive.generic.GenericIncubatorPlugin;
 import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.CylinderTransform;
 import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.MakeIsotropic;
 
@@ -55,19 +52,9 @@ public class IncubatorPlayground implements PlugInFilter {
     @Override
     public void run(ImageProcessor ip) {
 
-
-        new Median().run("");
-
         new MakeIsotropic().run("");
-
-        //if (true) return;
-
-        new RigidTransform().run("");
-
-        new TopHat().run("");
 
         new CylinderTransform().run("");
 
-        new MaximumZProjection().run("");
     }
 }

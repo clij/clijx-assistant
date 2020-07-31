@@ -65,9 +65,6 @@ public class IncubatorUtilities {
     }
 
     public static String niceName(String name) {
-        if (name.compareTo(MenuSeparator.class.getSimpleName()) == 0) {
-            name = "-";
-        }
 
         String result = "";
 

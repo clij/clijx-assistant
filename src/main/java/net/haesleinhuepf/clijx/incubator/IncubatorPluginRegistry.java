@@ -1,7 +1,7 @@
 package net.haesleinhuepf.clijx.incubator;
 
 import ij.ImagePlus;
-import net.haesleinhuepf.clijx.incubator.utilities.IncubatorPlugin;
+import net.haesleinhuepf.clijx.incubator.services.IncubatorPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 
 import java.util.ArrayList;

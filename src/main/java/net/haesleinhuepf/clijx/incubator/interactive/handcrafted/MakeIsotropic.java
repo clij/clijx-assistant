@@ -3,10 +3,8 @@ package net.haesleinhuepf.clijx.incubator.interactive.handcrafted;
 import ij.IJ;
 import ij.gui.GenericDialog;
 import ij.measure.Calibration;
-import net.haesleinhuepf.clij.macro.CLIJOpenCLProcessor;
-import net.haesleinhuepf.clijx.incubator.interactive.suggestions.MakeIsotropicSuggestion;
 import net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities;
-import net.haesleinhuepf.clijx.incubator.utilities.SuggestedPlugin;
+import net.haesleinhuepf.clijx.incubator.services.IncubatorPlugin;
 import net.haesleinhuepf.clijx.incubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
@@ -14,8 +12,8 @@ import org.scijava.plugin.Plugin;
 
 import java.awt.*;
 
-@Plugin(type = SuggestedPlugin.class)
-public class MakeIsotropic extends AbstractIncubatorPlugin implements MakeIsotropicSuggestion {
+@Plugin(type = IncubatorPlugin.class)
+public class MakeIsotropic extends AbstractIncubatorPlugin {
 
     float new_voxel_size_in_microns = 1;
 
@@ -95,7 +93,4 @@ public class MakeIsotropic extends AbstractIncubatorPlugin implements MakeIsotro
         }
         my_target.setZ((int) (my_source.getZ() * my_source.getCalibration().pixelDepth / my_target.getCalibration().pixelDepth));
     }
-
-
-
 }

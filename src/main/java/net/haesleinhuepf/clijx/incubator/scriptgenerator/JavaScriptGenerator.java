@@ -1,7 +1,7 @@
 package net.haesleinhuepf.clijx.incubator.scriptgenerator;
 
 import ij.ImagePlus;
-import net.haesleinhuepf.clijx.incubator.utilities.IncubatorPlugin;
+import net.haesleinhuepf.clijx.incubator.services.IncubatorPlugin;
 
 public class JavaScriptGenerator extends JythonGenerator {
 

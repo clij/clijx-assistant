@@ -4,7 +4,7 @@ import ij.ImagePlus;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.utilities.HasAuthor;
 import net.haesleinhuepf.clijx.incubator.ScriptGenerator;
-import net.haesleinhuepf.clijx.incubator.utilities.IncubatorPlugin;
+import net.haesleinhuepf.clijx.incubator.services.IncubatorPlugin;
 import net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities;
 
 import java.util.Random;

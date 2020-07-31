@@ -2,11 +2,7 @@ package net.haesleinhuepf.clijx.incubator.interactive.handcrafted;
 
 import ij.IJ;
 import ij.gui.GenericDialog;
-import net.haesleinhuepf.clij.macro.CLIJOpenCLProcessor;
-import net.haesleinhuepf.clijx.CLIJx;
-import net.haesleinhuepf.clijx.incubator.interactive.suggestions.CylinderTransformSuggestion;
-import net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities;
-import net.haesleinhuepf.clijx.incubator.utilities.SuggestedPlugin;
+import net.haesleinhuepf.clijx.incubator.services.IncubatorPlugin;
 import net.haesleinhuepf.clijx.incubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
@@ -14,8 +10,8 @@ import org.scijava.plugin.Plugin;
 
 import java.awt.*;
 
-@Plugin(type = SuggestedPlugin.class)
-public class CylinderTransform extends AbstractIncubatorPlugin implements CylinderTransformSuggestion {
+@Plugin(type = IncubatorPlugin.class)
+public class CylinderTransform extends AbstractIncubatorPlugin {
 
     int number_of_angles = 360;
     float delta_angle_in_degrees = 1;

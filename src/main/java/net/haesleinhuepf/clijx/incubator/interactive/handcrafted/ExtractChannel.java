@@ -1,21 +1,18 @@
 package net.haesleinhuepf.clijx.incubator.interactive.handcrafted;
 
-import ij.IJ;
 import ij.gui.GenericDialog;
-import ij.measure.Calibration;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij2.plugins.Copy;
 import net.haesleinhuepf.clijx.incubator.AbstractIncubatorPlugin;
-import net.haesleinhuepf.clijx.incubator.interactive.suggestions.MakeIsotropicSuggestion;
+import net.haesleinhuepf.clijx.incubator.services.IncubatorPlugin;
 import net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities;
-import net.haesleinhuepf.clijx.incubator.utilities.SuggestedPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
 
 import java.awt.*;
 
-@Plugin(type = SuggestedPlugin.class)
-public class ExtractChannel extends AbstractIncubatorPlugin implements MakeIsotropicSuggestion {
+@Plugin(type = IncubatorPlugin.class)
+public class ExtractChannel extends AbstractIncubatorPlugin {
 
     TextField channel_number = null;
 

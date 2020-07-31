@@ -5,19 +5,14 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.Toolbar;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.plugins.Copy;
-import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.InteractiveWindowPosition;
-import net.haesleinhuepf.clijx.incubator.interactive.generated.GaussianBlur;
-import net.haesleinhuepf.clijx.incubator.interactive.generated.MaximumZProjection;
-import net.haesleinhuepf.clijx.incubator.interactive.generated.TopHat;
-import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.MakeIsotropic;
-import net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities;
-import net.haesleinhuepf.clijx.incubator.utilities.SuggestedPlugin;
+import net.haesleinhuepf.clijx.incubator.services.IncubatorPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = SuggestedPlugin.class)
+@Plugin(type = IncubatorPlugin.class)
 public class IncubatorStartingPoint extends AbstractIncubatorPlugin {
 
     public IncubatorStartingPoint(){
@@ -27,22 +22,6 @@ public class IncubatorStartingPoint extends AbstractIncubatorPlugin {
     int former_z = -1;
     int former_t = -1;
     int former_c = -1;
-
-
-    @Override
-    public <T extends SuggestedPlugin> Class<T>[] suggestedNextSteps() {
-        return new Class[] {
-                GaussianBlur.class,
-                TopHat.class,
-                MakeIsotropic.class,
-                MaximumZProjection.class
-        };
-    }
-
-    @Override
-    public <T extends SuggestedPlugin> Class<T>[] suggestedPreviousSteps() {
-        return new Class[0];
-    }
 
     @Override
     public void run(String arg) {
@@ -110,5 +89,10 @@ public class IncubatorStartingPoint extends AbstractIncubatorPlugin {
                 former_c = imp.getC();
             }
         }
+    }
+
+    @Override
+    public boolean canManage(CLIJMacroPlugin plugin) {
+        return plugin instanceof Copy;
     }
 }

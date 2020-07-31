@@ -10,9 +10,11 @@ import ij.gui.Toolbar;
 import ij.measure.Calibration;
 import ij.plugin.Duplicator;
 import ij.plugin.PlugIn;
+import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.ExtractChannel;
 import net.haesleinhuepf.clijx.incubator.scriptgenerator.*;
+import net.haesleinhuepf.clijx.incubator.services.CLIJMacroPluginService;
 import net.haesleinhuepf.clijx.incubator.utilities.*;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.AbstractCLIJPlugin;
@@ -20,6 +22,9 @@ import net.haesleinhuepf.clij.macro.CLIJOpenCLProcessor;
 import net.haesleinhuepf.clij2.AbstractCLIJ2Plugin;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.MemoryDisplay;
+import net.haesleinhuepf.clijx.incubator.services.IncubatorPlugin;
+import net.haesleinhuepf.clijx.incubator.services.MenuService;
+import net.haesleinhuepf.clijx.incubator.services.SuggestionService;
 import net.haesleinhuepf.clijx.utilities.AbstractCLIJxPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 
@@ -30,11 +35,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
-public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, SuggestedPlugin, IncubatorPlugin {
+public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, IncubatorPlugin {
 
     public final static String online_documentation_link = "https://clij.github.io/clij2-docs/reference";
     private final static String online_website_link = "https://clij.github.io/incubator";
@@ -50,23 +53,26 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
     protected ImagePlus my_target = null;
 
-    private AbstractCLIJPlugin plugin = null;
+    private CLIJMacroPlugin plugin = null;
     protected Object[] args = null;
 
     boolean auto_contrast = true;
 
-    public AbstractIncubatorPlugin(){}
+    public AbstractIncubatorPlugin(CLIJMacroPlugin plugin) {
+        setCLIJMacroPlugin(plugin);
+    }
 
-    public AbstractIncubatorPlugin(AbstractCLIJPlugin plugin) {
+    public void setCLIJMacroPlugin(CLIJMacroPlugin plugin) {
         this.plugin = plugin;
-        if (plugin instanceof AbstractCLIJPlugin) {
-            ((AbstractCLIJPlugin) plugin).setClij(CLIJx.getInstance().getCLIJ());
-        }
 
-        if (plugin instanceof AbstractCLIJ2Plugin) {
-            ((AbstractCLIJ2Plugin) plugin).setCLIJ2(CLIJx.getInstance());
-        } else if (plugin instanceof AbstractCLIJxPlugin) {
-            //((AbstractCLIJxPlugin) plugin).setCLIJx(CLIJx.getInstance());
+        if (plugin != null) {
+            plugin.setClij(CLIJx.getInstance().getCLIJ());
+
+            if (plugin instanceof AbstractCLIJ2Plugin) {
+                ((AbstractCLIJ2Plugin) plugin).setCLIJ2(CLIJx.getInstance());
+            } else if (plugin instanceof AbstractCLIJxPlugin) {
+                //((AbstractCLIJxPlugin) plugin).setCLIJx(CLIJx.getInstance());
+            }
         }
     }
 
@@ -77,7 +83,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         }
         IncubatorPluginRegistry.getInstance().register(this);
         ImagePlus.addImageListener(this);
-        IJ.showStatus("Running " + IncubatorUtilities.niceName(this.getClass().getSimpleName()) + "...");
+        IJ.showStatus("Running " + IncubatorUtilities.niceName(this.getName()) + "...");
         refresh();
         IJ.showStatus("");
 
@@ -88,12 +94,14 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
     }
 
     protected GenericDialog buildNonModalDialog(Frame parent) {
-        GenericDialog gd = new GenericDialog(IncubatorUtilities.niceName(this.getClass().getSimpleName()));
+        GenericDialog gd = new GenericDialog(IncubatorUtilities.niceName(this.getName()));
         if (plugin == null) {
             return gd;
         }
-        Object[] default_values = plugin.getDefaultValues();
-
+        Object[] default_values = null;
+        if (plugin instanceof AbstractCLIJPlugin) {
+            default_values = ((AbstractCLIJPlugin) plugin).getDefaultValues();
+        }
         String[] parameters = plugin.getParameterHelpText().split(",");
         if (parameters.length > 0 && parameters[0].length() > 0) {
             for (int i = 0; i < parameters.length; i++) {
@@ -193,7 +201,10 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         String[] parameters = plugin.getParameterHelpText().split(",");
 
 
-        Object[] default_values = plugin.getDefaultValues();
+        Object[] default_values = null;
+        if (plugin instanceof AbstractCLIJPlugin) {
+            default_values = ((AbstractCLIJPlugin) plugin).getDefaultValues();
+        }
         args = new Object[parameters.length];
 
         int boolean_count = 0;
@@ -269,11 +280,11 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         cleanup(my_source, pushed);
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle(IncubatorUtilities.niceName(this.getClass().getSimpleName()) + " of " + my_source.getTitle());
-        if (this.getClass().getSimpleName().toLowerCase().contains("label")) {
+        my_target.setTitle(IncubatorUtilities.niceName(this.getName()) + " of " + my_source.getTitle());
+        if (this.getName().toLowerCase().contains("label")) {
             my_target.setDisplayRange(0, CLIJx.getInstance().maximumOfAllPixels(result[0]));
-        } else if (this.getClass().getSimpleName().toLowerCase().contains("binary") ||
-                this.getClass().getSimpleName().toLowerCase().contains("threshold") ||
+        } else if (this.getName().toLowerCase().contains("binary") ||
+                this.getName().toLowerCase().contains("threshold") ||
                 (plugin instanceof IsCategorized && (((IsCategorized)plugin).getCategories().toLowerCase().contains("segmentation") || ((IsCategorized)plugin).getCategories().toLowerCase().contains("binary")))
         ) {
             my_target.setDisplayRange(0, 1);
@@ -453,7 +464,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
     protected PopupMenu buildPopup(MouseEvent e, ImagePlus my_source, ImagePlus my_target) {
         PopupMenu menu = new PopupMenu("CLIncubator");
 
-        addMenuAction(menu, "CLIJx " + this.getClass().getSimpleName() + " (experimental)", (a) -> {
+        addMenuAction(menu, "CLIJx " + IncubatorUtilities.niceName(this.getName()) + " (experimental)", (a) -> {
             if (registered_dialog != null) {
                 registered_dialog.show();
             }
@@ -473,12 +484,21 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             });
             addMenuAction(suggestedFollowers, "-", null);
         }
+                    // was:  IncubatorPluginService.getInstance().getSuggestedNextStepsFor(this)
 
-        for (Class klass : SuggestionService.getInstance().getSuggestedNextStepsFor(this)) {
-            addMenuAction(suggestedFollowers, IncubatorUtilities.niceName(klass.getSimpleName()), (a) -> {
+        HashMap<String, Class> suggestions = SuggestionService.getInstance().getIncubatorSuggestions(this);
+        ArrayList<String> suggestedNames = new ArrayList<>();
+        suggestedNames.addAll(suggestions.keySet());
+
+        Collections.sort(suggestedNames);
+
+        for (String name : suggestedNames ) {
+            Class klass = suggestions.get(name);
+            addMenuAction(suggestedFollowers, IncubatorUtilities.niceName(name.replace("CLIJ2_", "").replace("CLIJx_", "")), (a) -> {
                 my_target.show();
                 try {
-                    SuggestedPlugin plugin = (SuggestedPlugin) klass.newInstance();
+                    IncubatorPlugin plugin = (IncubatorPlugin) klass.newInstance();
+                    plugin.setCLIJMacroPlugin(CLIJMacroPluginService.getInstance().getService().getCLIJMacroPlugin(name));
                     plugin.run(null);
                 } catch (InstantiationException ex) {
 
@@ -494,13 +514,13 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         // -------------------------------------------------------------------------------------------------------------
 
         int category_count = 0;
-        for (String category : MenuOrganiser.getCategories()) {
+        for (String category : MenuService.getInstance().getCategories()) {
             category_count ++;
 
             int menu_count = 0;
             Menu moreOptions = new Menu(category_count + " " + IncubatorUtilities.niceName(category));
-            for (IncubatorPlugin plugin : MenuOrganiser.getPluginsInCategory(category)) {
-                addMenuAction(moreOptions, IncubatorUtilities.niceName(plugin.getClass().getSimpleName()), (a) -> {
+            for (IncubatorPlugin plugin : MenuService.getInstance().getPluginsInCategory(category)) {
+                addMenuAction(moreOptions, IncubatorUtilities.niceName(plugin.getName()), (a) -> {
                     plugin.run("");
                 });
                 menu_count ++;
@@ -778,11 +798,24 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         }
     }
 
-    public AbstractCLIJPlugin getCLIJMacroPlugin() {
+    public CLIJMacroPlugin getCLIJMacroPlugin() {
         return plugin;
     }
 
     public Object[] getArgs() {
         return args;
+    }
+
+    @Override
+    public boolean canManage(CLIJMacroPlugin plugin) {
+        if (this.plugin == null) {
+            return false;
+        } else {
+            return this.plugin.getClass() == plugin.getClass();
+        }
+    }
+
+    public String getName() {
+        return plugin.getName().replace("CLIJ2_", "").replace("CLIJx_", "");
     }
 }
