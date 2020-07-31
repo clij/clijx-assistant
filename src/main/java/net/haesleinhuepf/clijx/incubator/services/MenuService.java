@@ -6,6 +6,7 @@ import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MenuService {
     ArrayList<String> names = new ArrayList<>();
@@ -21,6 +22,7 @@ public class MenuService {
             }
         }
 
+        Collections.sort(names);
     }
 
     private static MenuService instance = null;
