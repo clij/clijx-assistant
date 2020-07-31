@@ -2,7 +2,6 @@ package net.haesleinhuepf.clijx.incubator;
 
 import ij.ImagePlus;
 import net.haesleinhuepf.clijx.incubator.utilities.IncubatorPlugin;
-import net.haesleinhuepf.clijx.incubator.scriptgenerator.ScriptGenerator;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 
 import java.util.ArrayList;
@@ -121,11 +120,12 @@ class IncubatorPluginRegistry {
     public String generateScript(ScriptGenerator generator) {
         String result = "";
 
-        // find start
+        // find start(s)
         for (IncubatorPlugin plugin : registeredPlugins) {
             ImagePlus source = plugin.getSource();
             ImagePlus target = plugin.getTarget();
             if (source != null && target != null && isNeverTarget(source)) {
+                result = result + generator.overview(plugin);
                 result = result + generator.push(source);
                 result = result + script(generator, plugin) + "\n\n";
             }
@@ -176,6 +176,18 @@ class IncubatorPluginRegistry {
         for (IncubatorPlugin plugin : registeredPlugins) {
             if (plugin.getSource() == source) {
                 followers.add(plugin.getTarget());
+            }
+        }
+
+        return followers;
+    }
+
+    public ArrayList<IncubatorPlugin> getFollowers(IncubatorPlugin node) {
+        ArrayList<IncubatorPlugin> followers = new ArrayList();
+
+        for (IncubatorPlugin plugin : registeredPlugins) {
+            if (plugin.getSource() == node.getTarget()) {
+                followers.add(plugin);
             }
         }
 

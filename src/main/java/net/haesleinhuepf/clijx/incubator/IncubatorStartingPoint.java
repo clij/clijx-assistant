@@ -5,6 +5,7 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.Toolbar;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij2.plugins.Copy;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.InteractiveWindowPosition;
 import net.haesleinhuepf.clijx.incubator.interactive.generated.GaussianBlur;
@@ -18,6 +19,10 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = SuggestedPlugin.class)
 public class IncubatorStartingPoint extends AbstractIncubatorPlugin {
+
+    public IncubatorStartingPoint(){
+        super(new Copy());
+    }
 
     int former_z = -1;
     int former_t = -1;
@@ -44,7 +49,7 @@ public class IncubatorStartingPoint extends AbstractIncubatorPlugin {
         Toolbar.addPlugInTool(new InteractiveWindowPosition());
 
         if (IJ.getImage().getStack() instanceof CLIJxVirtualStack) {
-            IJ.error("This image is managed by CLIncubator already.");
+            IJ.error("This image is managed by CLIJx-Incubator already.");
             return;
         }
         IncubatorPluginRegistry.getInstance().register(this);

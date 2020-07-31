@@ -2,6 +2,7 @@ package net.haesleinhuepf.clijx.incubator.scriptgenerator;
 
 import ij.ImagePlus;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
+import net.haesleinhuepf.clijx.incubator.ScriptGenerator;
 import net.haesleinhuepf.clijx.incubator.utilities.IncubatorPlugin;
 import net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities;
 
@@ -15,8 +16,8 @@ public class PyclesperantoGenerator implements ScriptGenerator {
     }
 
     @Override
-    public String comment(String name) {
-        return "# " + name + "\n";
+    public String comment(String text) {
+        return "# " + text.replace("\n", "\n# ") + "\n";
     }
 
     @Override

@@ -6,6 +6,11 @@ import net.haesleinhuepf.clijx.incubator.utilities.IncubatorPlugin;
 public class MatlabGenerator extends JythonGenerator {
 
     @Override
+    public String comment(String text) {
+        return "% " + text.replace("\n", "\n% ") + "\n";
+    }
+
+    @Override
     public String push(ImagePlus source) {
         return pyToMatlab(super.push(source));
     }

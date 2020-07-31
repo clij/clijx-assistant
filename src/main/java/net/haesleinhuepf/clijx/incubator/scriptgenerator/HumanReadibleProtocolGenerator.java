@@ -3,6 +3,7 @@ package net.haesleinhuepf.clijx.incubator.scriptgenerator;
 import ij.ImagePlus;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.utilities.HasAuthor;
+import net.haesleinhuepf.clijx.incubator.ScriptGenerator;
 import net.haesleinhuepf.clijx.incubator.utilities.IncubatorPlugin;
 import net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities;
 
@@ -22,7 +23,7 @@ public class HumanReadibleProtocolGenerator implements ScriptGenerator {
 
     @Override
     public String comment(String name) {
-        return "# " + name + "\n";
+        return name + "\n";
     }
 
     @Override
@@ -82,7 +83,7 @@ public class HumanReadibleProtocolGenerator implements ScriptGenerator {
 
     @Override
     public String header() {
-        return  "This protocol documents and image processing workflow using CLIncubator.\n" +
-                "Read more about it online: https://clij.github.io/clincubator/ \n\n";
+        return  "This protocol documents an image processing workflow using CLIJx-Incubator.\n" +
+                "Read more about it online: https://clij.github.io/incubator/ \n\n";
     }
 }

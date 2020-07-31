@@ -5,6 +5,12 @@ import net.haesleinhuepf.clijx.incubator.utilities.IncubatorPlugin;
 
 public class IcyJavaScriptGenerator extends JythonGenerator {
 
+
+    @Override
+    public String comment(String text) {
+        return "// " + text.replace("\n", "\n// ") + "\n";
+    }
+
     @Override
     public String push(ImagePlus source) {
         String image1 = makeImageID(source);
