@@ -149,8 +149,8 @@ public class IncubatorUtilities {
         while (parameters.contains(", ")) {
             parameters = parameters.replace(", ", ",");
         }
-        if (parameters.contains(",String ") || parameters.contains(",ByRef String ")) {
-            // contains String parameters
+        if (parameters.contains(",ByRef String ")) {
+            // contains String output parameters
             //System.out.println("B");
             return false;
         }
@@ -418,6 +418,11 @@ public class IncubatorUtilities {
         blocklist.add(net.haesleinhuepf.clij2.plugins.GenerateTouchCountMatrix.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.SmallerOrEqualConstant.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.Watershed.class);
+
+        blocklist.add(net.haesleinhuepf.clij2.plugins.GenerateParametricImageFromResultsTableColumn.class);
+        blocklist.add(net.haesleinhuepf.clij2.plugins.AffineTransform2D.class);
+        blocklist.add(net.haesleinhuepf.clij2.plugins.AffineTransform.class);
+        blocklist.add(net.haesleinhuepf.clij2.plugins.AffineTransform3D.class);
 
         if (blocklist.contains(clijMacroPlugin.getClass())) {
             return false;

@@ -654,7 +654,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
         dialog.setCancelLabel(doneText);
         dialog.showDialog();
-        if (dialog.getNumericFields() == null && dialog.getCheckboxes() == null) {
+        if (dialog.getNumericFields() == null && dialog.getCheckboxes() == null && dialog.getChoices() == null) {
             dialog.setVisible(false);
         }
 
@@ -711,6 +711,9 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         }
         if (dialog.getNumericFields() != null) {
             gui_components.addAll(dialog.getNumericFields());
+        }
+        if (dialog.getChoices() != null) {
+            gui_components.addAll(dialog.getChoices());
         }
         for (Component item : gui_components) {
             item.addKeyListener(keyAdapter);
