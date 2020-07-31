@@ -33,10 +33,17 @@ public class SuggestionService {
             files.add(file);
         }
 
+        File folder = new File(IJ.getDirectory("imagej") + "/suggestions/");
+        if (folder.exists()) {
+            for (File file : folder.listFiles()) {
+                if (!file.isDirectory() && file.getName().endsWith(".config")) {
+                    files.add(file);
+                }
+            }
+        }
+
         File[] fileArray = new File[files.size()];
         files.toArray(fileArray);
-
-        // todo add files from user config
         return fileArray;
 
     }
@@ -139,5 +146,9 @@ public class SuggestionService {
         //for (Class whatever : suggestionService.getIncubatorSuggestions(new MakeIsotropic())) {
         //    System.out.println(whatever.getName());
         //}
+    }
+
+    public void invalidate() {
+        instance = null;
     }
 }
