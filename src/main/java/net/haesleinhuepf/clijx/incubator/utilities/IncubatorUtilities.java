@@ -68,6 +68,9 @@ public class IncubatorUtilities {
 
     public static String niceName(String name) {
 
+        name = name.replace("3D", "");
+        name = name.replace("Box", "");
+
         String result = "";
 
         for (int i = 0; i < name.length(); i++) {
