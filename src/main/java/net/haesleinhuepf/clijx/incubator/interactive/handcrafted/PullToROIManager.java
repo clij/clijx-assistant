@@ -89,7 +89,7 @@ public class PullToROIManager extends AbstractIncubatorPlugin {
         cleanup(my_source, pushed);
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle("ROIs (" + algorithm + ") " + my_source.getTitle());
+        my_target.setTitle("ROIs of " + my_source.getTitle());
         rm.runCommand(my_target, "Show all with labels");
         enhanceContrast();
 

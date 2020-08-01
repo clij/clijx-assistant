@@ -94,6 +94,7 @@ public class IncubatorUtilities {
         result = result.replace("Lo G", "LoG");
         result = result.replace("Cl Esperanto", "ClEsperanto");
         result = result.replace("CL IJ", "CLIJ");
+        result = result.replace("R O I ", "ROI");
 
         return result.trim();
 

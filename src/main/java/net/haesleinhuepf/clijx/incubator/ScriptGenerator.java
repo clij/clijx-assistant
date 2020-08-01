@@ -37,7 +37,7 @@ public interface ScriptGenerator {
         for (int i = 0; i < level; i++) {
             text.append("  ");
         }
-        text.append(" * " + IncubatorUtilities.niceName(plugin.getClass().getSimpleName()) + " \n");
+        text.append(" * " + IncubatorUtilities.niceName(plugin.getName()) + " \n");
         for (IncubatorPlugin child : IncubatorPluginRegistry.getInstance().getFollowers(plugin)) {
             text.append(overview(child, level + 1));
         }

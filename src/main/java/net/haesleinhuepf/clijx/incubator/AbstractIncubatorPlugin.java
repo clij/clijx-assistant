@@ -403,11 +403,11 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             my_target.setStack(output.getStack());
         }
         IncubatorUtilities.transferCalibration(my_source, my_target);
-        String name_to_consider = (my_source.getTitle() + " " + my_target.getTitle()).toLowerCase();
+        String name_to_consider = (my_source.getTitle() + " " + my_target.getTitle()).toLowerCase() + this.getName();
 
         if (name_to_consider.contains("map") || name_to_consider.contains("mesh") ) {
             IncubatorUtilities.fire(my_target);
-        } else if (name_to_consider.contains("label") && !name_to_consider.contains("ROIs (")) {
+        } else if (name_to_consider.contains("label") && !name_to_consider.contains("ROI")) {
             IncubatorUtilities.glasbey(my_target);
         } else {
             //my_target.setLut(my_source.getProcessor().getLut());
@@ -606,7 +606,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         //String documentation_link =
         //        ((plugin != null) ?online_documentation_link + "_" + plugin.getName().replace("CLIJ2_", "").replace("CLIJx_", ""):online_website_link);
 
-        addMenuAction(menu,"Documentation for " + IncubatorUtilities.niceName(getClass().getSimpleName()), (a) -> {
+        addMenuAction(menu,"Documentation for " + IncubatorUtilities.niceName(getName()), (a) -> {
             String documentation = "";
             if (plugin instanceof HasAuthor) {
                 documentation = documentation + "By" + ((HasAuthor) plugin).getAuthorName() + "\n";
@@ -625,7 +625,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                 documentation = documentation + "License: " + ((HasLicense) plugin).getLicense() + "\n";
             }
 
-            new WaitForUserDialog("Help for " + getName(), documentation).show();
+            IJ.log("Documentation for " + getName() + "\n\n" + documentation);
 
             /*try {
                 Desktop.getDesktop().browse(new URI(documentation_link));
