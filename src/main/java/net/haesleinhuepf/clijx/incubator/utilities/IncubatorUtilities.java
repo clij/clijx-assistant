@@ -5,6 +5,7 @@ import ij.ImagePlus;
 import ij.gui.Toolbar;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
+import net.haesleinhuepf.clij2.plugins.PullToROIManager;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.*;
 
@@ -165,7 +166,9 @@ public class IncubatorUtilities {
 
         String[] parameterdefintions = parameters.split(",");
         if (parameterdefintions.length < 2) {
-            //System.out.println("A");
+            if (clijMacroPlugin instanceof PullToROIManager) {
+                return true;
+            }
             return false;
         }
 

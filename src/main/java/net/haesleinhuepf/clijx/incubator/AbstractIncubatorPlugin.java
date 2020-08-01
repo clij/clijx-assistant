@@ -7,10 +7,14 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.ImageCanvas;
 import ij.gui.Toolbar;
+import ij.gui.WaitForUserDialog;
 import ij.measure.Calibration;
 import ij.plugin.Duplicator;
 import ij.plugin.PlugIn;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
+import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
+import net.haesleinhuepf.clij2.utilities.HasAuthor;
+import net.haesleinhuepf.clij2.utilities.HasLicense;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.ExtractChannel;
 import net.haesleinhuepf.clijx.incubator.scriptgenerator.*;
@@ -403,7 +407,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
         if (name_to_consider.contains("map") || name_to_consider.contains("mesh") ) {
             IncubatorUtilities.fire(my_target);
-        } else if (name_to_consider.contains("label")) {
+        } else if (name_to_consider.contains("label") && !name_to_consider.contains("ROIs (")) {
             IncubatorUtilities.glasbey(my_target);
         } else {
             //my_target.setLut(my_source.getProcessor().getLut());
@@ -599,17 +603,37 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
         menu.add("-");
 
-        String documentation_link =
-                ((plugin != null) ?online_documentation_link + "_" + plugin.getName().replace("CLIJ2_", "").replace("CLIJx_", ""):online_website_link);
+        //String documentation_link =
+        //        ((plugin != null) ?online_documentation_link + "_" + plugin.getName().replace("CLIJ2_", "").replace("CLIJx_", ""):online_website_link);
 
         addMenuAction(menu,"Documentation for " + IncubatorUtilities.niceName(getClass().getSimpleName()), (a) -> {
-            try {
+            String documentation = "";
+            if (plugin instanceof HasAuthor) {
+                documentation = documentation + "By" + ((HasAuthor) plugin).getAuthorName() + "\n";
+            }
+
+            if (plugin instanceof OffersDocumentation) {
+                documentation = documentation + ((OffersDocumentation) plugin).getDescription() + "\n";
+            }
+
+            documentation = documentation + "Parameters: " + plugin.getParameterHelpText() + "\n";
+            if (plugin instanceof OffersDocumentation) {
+                documentation = documentation + "Supported dimensions: " + ((OffersDocumentation) plugin).getAvailableForDimensions() + "\n";
+            }
+
+            if (plugin instanceof HasLicense) {
+                documentation = documentation + "License: " + ((HasLicense) plugin).getLicense() + "\n";
+            }
+
+            new WaitForUserDialog("Help for " + getName(), documentation).show();
+
+            /*try {
                 Desktop.getDesktop().browse(new URI(documentation_link));
             } catch (IOException e1) {
                 e1.printStackTrace();
             } catch (URISyntaxException e2) {
                 e2.printStackTrace();
-            }
+            }*/
         });
         return menu;
     }
