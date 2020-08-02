@@ -25,9 +25,9 @@ public class MacroGenerator implements ScriptGenerator {
 
         CLIJMacroPlugin clijMacroPlugin = plugin.getCLIJMacroPlugin();
         if (clijMacroPlugin == null) {
-            return "// " + IncubatorUtilities.niceName(plugin.getClass().getSimpleName());
+            return "// " + IncubatorUtilities.niceName(plugin.getClass().getName());
         }
-        String methodName = clijMacroPlugin.getClass().getSimpleName();
+        String methodName = clijMacroPlugin.getName();
         methodName = methodName.substring(0,1).toLowerCase() + methodName.substring(1);
         String pakage = clijMacroPlugin.getClass().getPackage().getName();
         if (pakage.contains(".clij2")) {
@@ -40,7 +40,7 @@ public class MacroGenerator implements ScriptGenerator {
 
         String image1 = makeImageID(plugin.getSource());
         String image2 = makeImageID(plugin.getTarget());
-        String program = "// " + IncubatorUtilities.niceName(plugin.getClass().getSimpleName()) + "\n" +
+        String program = "// " + IncubatorUtilities.niceName(plugin.getName()) + "\n" +
                 "// " + image1 + " = \"" + plugin.getSource().getTitle() + "\";\n" +
                 "// " + image2 + " = \"" + plugin.getTarget().getTitle() + "\";\n";
 

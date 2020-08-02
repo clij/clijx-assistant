@@ -27,9 +27,9 @@ public class JythonGenerator implements ScriptGenerator {
 
         CLIJMacroPlugin clijMacroPlugin = plugin.getCLIJMacroPlugin();
         if (clijMacroPlugin == null) {
-            return "# " + IncubatorUtilities.niceName(plugin.getClass().getSimpleName());
+            return "# " + IncubatorUtilities.niceName(plugin.getName());
         }
-        String methodName = clijMacroPlugin.getClass().getSimpleName();
+        String methodName = clijMacroPlugin.getName();
         methodName = methodName.substring(0,1).toLowerCase() + methodName.substring(1);
         String pakage = clijMacroPlugin.getClass().getPackage().getName();
 
@@ -38,7 +38,7 @@ public class JythonGenerator implements ScriptGenerator {
 
         String image1 = makeImageID(plugin.getSource());
         String image2 = makeImageID(plugin.getTarget());
-        String program = "# " + IncubatorUtilities.niceName(plugin.getClass().getSimpleName()) + "\n";
+        String program = "# " + IncubatorUtilities.niceName(plugin.getName()) + "\n";
 
         ImagePlus imp = plugin.getTarget();
         if (imp.getNSlices() > 1) {

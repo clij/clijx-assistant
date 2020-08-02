@@ -36,7 +36,7 @@ public class HumanReadibleProtocolGenerator implements ScriptGenerator {
 
         String text = "\n" + startings[random.nextInt(startings.length)] +
                 "we applied \"" +
-                IncubatorUtilities.niceName(plugin.getClass().getSimpleName()) + "\"";
+                IncubatorUtilities.niceName(plugin.getName()) + "\"";
 
         if (clijMacroPlugin instanceof HasAuthor) {
             text = text +
