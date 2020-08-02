@@ -120,7 +120,7 @@ public class GeneratePluginsConfig {
             count++;
         }
         writer.append("\n\n" + count + " operations listed.\n\n\n" +
-                "Back to [CLIncubator](https://clij.github.io/incubator)\n");
+                "Back to [CLIJx-Incubator](https://clij.github.io/incubator)\n");
 
         writer.close();
     }
