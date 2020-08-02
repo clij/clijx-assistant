@@ -228,8 +228,8 @@ public class MenuService {
 
     public String[] getCategories() {
         return new String[] {
-                "Filter>Noise",
-                "Filter>Background",
+                "Filter>Noise removal",
+                "Filter>Background removal",
                 "Filter>Edges",
                 "Filter>All",
                 "Transform",
