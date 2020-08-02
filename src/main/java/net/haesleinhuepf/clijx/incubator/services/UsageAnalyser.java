@@ -52,40 +52,42 @@ public class UsageAnalyser {
             if (line.contains("Ext.")) {
                 String[] temp = line.split("Ext.")[1].split("\\(");
                 String method = temp[0];
-                String[] parameters = temp[1].replace(");","").split(",");
+                if (temp.length > 1) {
+                    String[] parameters = temp[1].replace(");", "").split(",");
 
 
-                //System.out.println("Method: " + method);
-                CLIJMacroPlugin plugin = service.getCLIJMacroPlugin( method);
-                if (plugin == null) {
-                    System.out.println("No plugin found for " + method);
-                    continue;
-                }
-                //System.out.println(plugin);
-                String[] parameterDefinitions = plugin.getParameterHelpText().replace(",", ", ").replace("  ", " ").replace("  ", " ").split(",");
+                    //System.out.println("Method: " + method);
+                    CLIJMacroPlugin plugin = service.getCLIJMacroPlugin(method);
+                    if (plugin == null) {
+                        System.out.println("No plugin found for " + method);
+                        continue;
+                    }
+                    //System.out.println(plugin);
+                    String[] parameterDefinitions = plugin.getParameterHelpText().replace(",", ", ").replace("  ", " ").replace("  ", " ").split(",");
 
-                //System.out.println("Parameters: " + parameterDefinitions.length);
-                //System.out.println("Parameters values: " + parameters.length);
+                    //System.out.println("Parameters: " + parameterDefinitions.length);
+                    //System.out.println("Parameters values: " + parameters.length);
 
-                if (parameterDefinitions.length == parameters.length) {
-                    for (int p = 0; p < parameters.length; p++) {
-                        parameters[p] = parameters[p].trim();
-                        if (!isNumeric(parameters[p])) {
-                            if (parameterDefinitions[p].toLowerCase().contains("byref")) {
-                                //System.out.println("Producer: " + method + " -> " + parameters[p]);
+                    if (parameterDefinitions.length == parameters.length) {
+                        for (int p = 0; p < parameters.length; p++) {
+                            parameters[p] = parameters[p].trim();
+                            if (!isNumeric(parameters[p])) {
+                                if (parameterDefinitions[p].toLowerCase().contains("byref")) {
+                                    //System.out.println("Producer: " + method + " -> " + parameters[p]);
 
-                                ArrayList<String> methods = producers.containsKey(parameters[p])?producers.get(parameters[p]):new ArrayList<>();
-                                methods.add(method);
+                                    ArrayList<String> methods = producers.containsKey(parameters[p]) ? producers.get(parameters[p]) : new ArrayList<>();
+                                    methods.add(method);
 
-                                producers.put(parameters[p], methods);
-                            } else {
+                                    producers.put(parameters[p], methods);
+                                } else {
 
-                                ArrayList<String> methods = consumers.containsKey(parameters[p])?consumers.get(parameters[p]):new ArrayList<>();
-                                methods.add(method);
-                                //System.out.println("Consumer: " + method + " <- " + parameters[p]);
-                                consumers.put(parameters[p], methods);
+                                    ArrayList<String> methods = consumers.containsKey(parameters[p]) ? consumers.get(parameters[p]) : new ArrayList<>();
+                                    methods.add(method);
+                                    //System.out.println("Consumer: " + method + " <- " + parameters[p]);
+                                    consumers.put(parameters[p], methods);
+                                }
+                                count++;
                             }
-                            count++;
                         }
                     }
                 }

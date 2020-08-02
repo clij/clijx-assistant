@@ -28,15 +28,7 @@ public class MacroGenerator implements ScriptGenerator {
             return "// " + IncubatorUtilities.niceName(plugin.getClass().getName());
         }
         String methodName = clijMacroPlugin.getName();
-        methodName = methodName.substring(0,1).toLowerCase() + methodName.substring(1);
-        String pakage = clijMacroPlugin.getClass().getPackage().getName();
-        if (pakage.contains(".clij2")) {
-            methodName = "Ext.CLIJ2_" + methodName;
-        } else if (pakage.contains(".clijx")) {
-            methodName = "Ext.CLIJx_" + methodName;
-        } else {
-            methodName = "Ext.CLIJ_" + methodName;
-        }
+        methodName = "Ext." + methodName;
 
         String image1 = makeImageID(plugin.getSource());
         String image2 = makeImageID(plugin.getTarget());
