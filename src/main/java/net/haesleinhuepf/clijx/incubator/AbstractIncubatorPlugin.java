@@ -247,14 +247,14 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                 } else if (parameterType.compareTo("Boolean") == 0) {
                     if (registered_dialog == null) {
                         if (default_values != null) {
-                            args[i] = (boolean) default_values[i] ? 1 : 0;
+                            args[i] = new Double ((boolean) default_values[i] ? 1.0 : 0.0);
                         } else {
-                            args[i] = 0;
+                            args[i] = new Double (0);
                         }
                     } else {
                         boolean value = ((Checkbox)registered_dialog.getCheckboxes().get(boolean_count)).getState();
                         boolean_count ++;
-                        args[i] = value ? 1.0 : 0.0;
+                        args[i] = new Double (value ? 1.0 : 0.0);
                     }
                 } else { // Number
                     if (registered_dialog == null) {
