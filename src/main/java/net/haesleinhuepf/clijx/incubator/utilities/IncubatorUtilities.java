@@ -8,6 +8,7 @@ import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.plugins.PullToROIManager;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.*;
+import net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfDiamond;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -430,6 +431,10 @@ public class IncubatorUtilities {
         blocklist.add(net.haesleinhuepf.clij2.plugins.AffineTransform2D.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.AffineTransform.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.AffineTransform3D.class);
+
+        blocklist.add(net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfDiamond.class);
+        blocklist.add(net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfBox.class);
+
 
         if (blocklist.contains(clijMacroPlugin.getClass())) {
             return false;
