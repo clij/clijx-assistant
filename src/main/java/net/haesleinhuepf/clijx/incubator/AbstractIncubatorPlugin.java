@@ -658,7 +658,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         String script = generator.header() +
                 IncubatorPluginRegistry.getInstance().generateScript(generator);
 
-        File outputTarget = new File(System.getProperty("java.io.tmpdir") + "new" + generator.fileEnding());
+        File outputTarget = new File(System.getProperty("java.io.tmpdir") + "/new" + generator.fileEnding());
 
         try {
             FileWriter writer = new FileWriter(outputTarget);
