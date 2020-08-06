@@ -442,7 +442,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         public void mouseReleased(MouseEvent e) {
             int toolID = Toolbar.getToolId();
             int flags = e.getModifiers();
-            if (toolID != Toolbar.MAGNIFIER && (e.isPopupTrigger() || (!IJ.isMacintosh() && (flags & Event.META_MASK) != 0))) {
+            if (toolID != Toolbar.MAGNIFIER && (e.isPopupTrigger() || ( (flags & Event.META_MASK) != 0))) {
                 ((AbstractIncubatorPlugin)IncubatorPluginRegistry.getInstance().getPlugin(imp)).handlePopupMenu(e);
                 return;
             }
