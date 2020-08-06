@@ -173,6 +173,9 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         if (parameterName.toLowerCase().contains("degree")) {
             return small_step ? 15 : 90;
         }
+        if (parameterName.toLowerCase().contains("long range")) {
+            return small_step ? 64 : 256;
+        }
         return small_step ? 1 : 10;
     }
 
