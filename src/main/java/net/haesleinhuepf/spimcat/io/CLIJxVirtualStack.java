@@ -1,6 +1,7 @@
 package net.haesleinhuepf.spimcat.io;
 
 import ij.*;
+import ij.gui.Roi;
 import ij.plugin.Duplicator;
 import ij.plugin.HyperStackConverter;
 import ij.process.ImageProcessor;
@@ -122,6 +123,9 @@ public class CLIJxVirtualStack extends VirtualStack {
             return copy;
         } else {
             if (imp.getNChannels() > 1) {
+                if (imp.getRoi() != null) {
+                    imp = (new Duplicator()).run(imp, 1, imp.getNChannels(), 1, imp.getNSlices(), imp.getT(), imp.getT());
+                }
                 ClearCLBuffer[] all = new ClearCLBuffer[imp.getNChannels()];
                 ImageStack imp_stack = imp.getStack();
                 int t = imp.getT() - 1;
@@ -146,7 +150,11 @@ public class CLIJxVirtualStack extends VirtualStack {
                 }
                 return all;
             } else {
-                return new ClearCLBuffer[]{clijx.pushCurrentZStack(imp)};
+                //Roi roi = imp.getRoi();
+                //imp.killRoi();
+                ClearCLBuffer[] buffer = new ClearCLBuffer[]{clijx.pushCurrentZStack(imp)};
+                //imp.setRoi(roi);
+                return buffer;
             }
         }
     }

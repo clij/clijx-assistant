@@ -201,7 +201,7 @@ public class IncubatorUtilities {
         blocklist.add(net.haesleinhuepf.clij2.plugins.AddImageAndScalar.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.MedianSliceBySliceBox.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.NonzeroMinimumDiamond.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Crop3D.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.Crop3D.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.TopHatBox
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ExtendLabelingViaVoronoi
         blocklist.add(net.haesleinhuepf.clij2.plugins.Crop2D.class);
