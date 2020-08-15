@@ -44,6 +44,9 @@ public class IncubatorStartingPoint extends AbstractIncubatorPlugin {
 
         //IncubatorUtilities.stamp(CLIJxVirtualStack.imagePlusToBuffer(my_target));
         refresh();
+        my_target.setFileInfo(my_source.getOriginalFileInfo());
+        System.out.println("Fileinfo: ");
+        System.out.println(my_target.getFileInfo());
 
         GenericDialog dialog = buildNonModalDialog(my_target.getWindow());
         if (dialog != null) {

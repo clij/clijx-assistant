@@ -572,8 +572,9 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         addMenuAction(script, "ImageJ JavaScript", (a) -> {generateScript(new JavaScriptGenerator());});
         addMenuAction(script, "ImageJ Jython", (a) -> {generateScript(new JythonGenerator());});
         script.add("-");
-        addMenuAction(script, "Human readible protocol", (a) -> {generateScript(new HumanReadibleProtocolGenerator());});
-        addMenuAction(script, "clEsperanto Python", (a) -> {generateScript(new PyclesperantoGenerator());});
+        addMenuAction(script, "Human readable protocol", (a) -> {generateScript(new HumanReadibleProtocolGenerator());});
+        addMenuAction(script, "clEsperanto Python", (a) -> {generateScript(new PyclesperantoGenerator(false));});
+        addMenuAction(script, "clEsperanto Python + Napari", (a) -> {generateScript(new PyclesperantoGenerator(true));});
         menu.add(script);
 
 
