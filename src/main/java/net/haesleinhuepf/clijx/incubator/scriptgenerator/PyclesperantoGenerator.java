@@ -34,7 +34,7 @@ public class PyclesperantoGenerator implements ScriptGenerator {
                 "image = imread(\"" + filename.replace("\\", "/") + "\")\n\n"+
 
                 "# Push " + source.getTitle() + " to GPU memory\n" +
-                "image1 = cle.push(image)\n";
+                makeImageID(source) + " = cle.push(image)\n";
 
 
         program = program.replace("\n", "\n" + line_start );
@@ -84,9 +84,14 @@ public class PyclesperantoGenerator implements ScriptGenerator {
         program = program + methodName + "(" + image1 + ", " + image2 + call + ")\n";
 
         if (use_napari) {
+            String scale = calibration.pixelHeight + ", " + calibration.pixelWidth;
+            if (plugin.getTarget().getNSlices() > 1) {
+                scale = calibration.pixelDepth + ", " + calibration.pixelHeight + ", " + calibration.pixelWidth;
+            }
+
             program = program +
                     "# show result\n\n" +
-                    "viewer.add_image(cle.pull(" + image2 + "), scale=(" + calibration.pixelDepth + ", " + calibration.pixelHeight + ", " + calibration.pixelWidth + "))\n\n";
+                    "viewer.add_image(cle.pull(" + image2 + "), scale=(" + scale + "))\n\n";
         } else {
             program = program +
             "# show result\n\n" +
@@ -123,10 +128,11 @@ public class PyclesperantoGenerator implements ScriptGenerator {
                 "#  > conda activate te_oki \n" +
                 "# install dependencies: \n" +
                 "#  > pip install pyopencl napari matplotlib numpy pyclesperanto_prototype \n" +
+                "# Also make sure conda is part of the PATH variable.\n" +
                 "# \n" +
-                "# If you want to run it from Fiji, configure conda in Fijis main menu \n" +
+                "# If you want to run it from Fiji and you're using a different conda environment, you can configure it in Fijis main menu \n" +
                 "# Plugins > ImageJ on GPU (CLIJx-Incubator) > Options >Conda configuration (Te Oki) \n" +
-                "# Furtermore, activate the scripting language Te Oki in Fijis script editor to run this script.\n\n" +
+                "# Furthermore, activate the scripting language Te Oki in Fijis script editor to run this script.\n\n" +
                 "# Stay tuned and check out http://clesperanto.net to learn more." +
                 "\n\n" +
                 "import pyclesperanto_prototype as cle\n";

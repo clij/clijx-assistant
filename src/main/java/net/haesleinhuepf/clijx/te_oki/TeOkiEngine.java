@@ -49,7 +49,7 @@ import java.nio.file.Paths;
 public class TeOkiEngine extends IJ1MacroEngine {
 
 	public static String teOkiDirectory = null;
-	public static String conda_directory = "C:\\Users\\rober\\miniconda3";
+	//public static String conda_directory = "";
 	public static String conda_env = "te_oki";
 
 
@@ -76,7 +76,7 @@ public class TeOkiEngine extends IJ1MacroEngine {
 				String conda_code;
 
 				if (isWindows) {
-					conda_code = "call " + conda_directory + "\\Scripts\\activate.bat " + conda_directory + "\n" +
+					conda_code = //"call " + conda_directory + "\\Scripts\\activate.bat " + conda_directory + "\n" +
 							"call conda activate " + conda_env + "\n" +
 							"cd " + directory + "\n" +
 							"ipython --gui=qt temp.py";
