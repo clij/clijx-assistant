@@ -2,6 +2,7 @@ package net.haesleinhuepf.clijx.incubator.scriptgenerator;
 
 import ij.IJ;
 import ij.ImagePlus;
+import ij.measure.Calibration;
 import ij.plugin.NextImageOpener;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clijx.incubator.ScriptGenerator;
@@ -54,6 +55,8 @@ public class PyclesperantoGenerator implements ScriptGenerator {
         if (clijMacroPlugin == null) {
             return "# " + IncubatorUtilities.niceName(plugin.getName());
         }
+        Calibration calibration = plugin.getTarget().getCalibration();
+
         String methodName = clijMacroPlugin.getName();
         methodName = methodName.substring(0,1).toLowerCase() + methodName.substring(1);
         String pakage = clijMacroPlugin.getClass().getPackage().getName();
@@ -83,7 +86,7 @@ public class PyclesperantoGenerator implements ScriptGenerator {
         if (use_napari) {
             program = program +
                     "# show result\n\n" +
-                    "viewer.add_image(cle.pull(" + image2 + "))\n\n";
+                    "viewer.add_image(cle.pull(" + image2 + "), scale=(" + calibration.pixelDepth + ", " + calibration.pixelHeight + ", " + calibration.pixelWidth + "))\n\n";
         } else {
             program = program +
             "# show result\n\n" +
