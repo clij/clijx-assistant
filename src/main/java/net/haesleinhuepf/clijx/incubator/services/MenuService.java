@@ -139,9 +139,6 @@ public class MenuService {
             any_other = any_other + ",laplace,sobel,edge,laplacian of gaussian,difference of gaussian";
         } else if (major.contains("filter")) {
             none = "threshold,labels";
-        } else if (major.contains("binary") && minor.contains("segmentation")) {
-            any_other = any_other + ",segmentation,threshold";
-            none = "drift";
         } else if (major.contains("binary")) {
             none = "drift,find,label,connected,pull,invert";
         } else if (major.contains("transform")) {
@@ -234,8 +231,7 @@ public class MenuService {
                 "Filter>All",
                 "Transform",
                 "Projection",
-                "Binary>Segmentation",
-                "Binary>All",
+                "Binary",
                 "Label>Segmentation",
                 "Label>Processing",
                 "Label>Measurement",
