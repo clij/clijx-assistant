@@ -4,10 +4,7 @@ import ij.CompositeImage;
 import ij.IJ;
 import ij.ImageListener;
 import ij.ImagePlus;
-import ij.gui.GenericDialog;
-import ij.gui.ImageCanvas;
-import ij.gui.Toolbar;
-import ij.gui.WaitForUserDialog;
+import ij.gui.*;
 import ij.measure.Calibration;
 import ij.plugin.Duplicator;
 import ij.plugin.PlugIn;
@@ -61,6 +58,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
     protected Object[] args = null;
 
     boolean auto_contrast = true;
+    static boolean auto_position = true;
 
     public AbstractIncubatorPlugin(CLIJMacroPlugin plugin) {
         setCLIJMacroPlugin(plugin);
@@ -541,7 +539,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         // -------------------------------------------------------------------------------------------------------------
 
         Menu predecessor = new Menu("Predecessor");
-        addMenuAction(predecessor, my_source.getTitle(), (a) -> {
+        addMenuAction(predecessor, IncubatorUtilities.shortName(my_source.getTitle()), (a) -> {
             my_source.show();
             my_source.getWindow().toFront();
             attachMenu(my_source);
@@ -551,13 +549,35 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         // -------------------------------------------------------------------------------------------------------------
         Menu followers = new Menu("Followers");
         for (ImagePlus follower : IncubatorPluginRegistry.getInstance().getFollowers(my_target)) {
-            addMenuAction(followers, follower.getTitle(), (a) -> {
+            addMenuAction(followers, IncubatorUtilities.shortName(follower.getTitle()), (a) -> {
                 follower.show();
                 follower.getWindow().toFront();
                 attachMenu(follower);
             });
         }
         menu.add(followers);
+        // -------------------------------------------------------------------------------------------------------------
+
+        Menu graph = new Menu("Compute graph");
+        ArrayList<Object[]> graphImages = IncubatorPluginRegistry.getInstance().getGraph(my_target);
+
+        String presign = "\\";
+        for (Object[] graphImage : graphImages) {
+            String name = (String) graphImage[0];
+            ImagePlus node = (ImagePlus) graphImage[1];
+            if (node == my_target) {
+                name = " " + name;
+                presign = "/";
+            } else {
+                name = presign + name;
+            }
+            addMenuAction(graph, IncubatorUtilities.shortName(name), (a) -> {
+                node.show();
+                node.getWindow().toFront();
+                attachMenu(node);
+            });
+        }
+        menu.add(graph);
         menu.add("-");
 
         // -------------------------------------------------------------------------------------------------------------
@@ -600,6 +620,11 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         });
         menu.add(auto_contrast_item);
 
+        MenuItem auto_position_item = new MenuItem("Auto Window Position: " + (auto_position?"ON":"OFF"));
+        auto_position_item.addActionListener((a) -> {
+            auto_position = !auto_position;
+        });
+        menu.add(auto_position_item);
 
         addMenuAction(menu, "Duplicate and go ahead with ImageJ", (a) -> {
             new Duplicator().run(my_target, 1, my_target.getNSlices()).show();
@@ -748,16 +773,52 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             item.addMouseListener(mouseAdapter);
         }
 
-        int delay = 500; //milliseconds
+        int delay = 100; //milliseconds
         heartbeat = new Timer();
         heartbeat.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if (my_target != null && registered_dialog != null) {
-                    registered_dialog.setLocation(my_target.getWindow().getX() + my_target.getWindow().getWidth(), my_target.getWindow().getY() );
-                }
+                reposition();
             }
         }, delay, delay);
+    }
+
+    private Integer relativePositionToSourceX = 0;
+    private Integer relativePositionToSourceY = 0;
+    private void reposition() {
+        if (!auto_position) {
+            return;
+        }
+
+        if (my_target != null && registered_dialog != null) {
+            registered_dialog.setLocation(my_target.getWindow().getX() + my_target.getWindow().getWidth() - 15, my_target.getWindow().getY() );
+        }
+        if (my_source == null) {
+            return;
+        }
+        ImageWindow sourceWindow = my_source.getWindow();
+        if (sourceWindow == null) {
+            return;
+        }
+        if (my_target == null) {
+            return;
+        }
+        ImageWindow targetWindow = my_target.getWindow();
+        if (targetWindow == null) {
+            return;
+        }
+
+        if (my_target == IJ.getImage()) {
+            relativePositionToSourceX = targetWindow.getX() - sourceWindow.getX();
+            relativePositionToSourceY = targetWindow.getY() - sourceWindow.getY();
+        } else if (relativePositionToSourceX != null && relativePositionToSourceY != null){
+            int newPositionX = sourceWindow.getX() + relativePositionToSourceX;
+            int newPositionY = sourceWindow.getY() + relativePositionToSourceY;
+
+            if (Math.abs(newPositionX - targetWindow.getX()) > 1 && Math.abs(newPositionY - targetWindow.getY()) > 1) {
+                targetWindow.setLocation(newPositionX, newPositionY);
+            }
+        }
     }
 
     private String calibrationToText(Calibration calibration) {

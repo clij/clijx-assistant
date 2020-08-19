@@ -1,12 +1,14 @@
 package net.haesleinhuepf.clijx.incubator;
 
+import ij.IJ;
 import ij.ImagePlus;
+import ij.gui.ImageWindow;
 import net.haesleinhuepf.clijx.incubator.services.IncubatorPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
+import net.imglib2.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.awt.*;
+import java.util.*;
 
 class IncubatorPluginRegistry {
     Timer heartbeat = null;
@@ -34,6 +36,7 @@ class IncubatorPluginRegistry {
             heartbeat.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
+                    highlightCurrent();
                     regenerate();
                 }
             }, delay, delay);
@@ -43,6 +46,45 @@ class IncubatorPluginRegistry {
             registeredPlugins.add(plugin);
         }
     }
+
+    private void highlightCurrent() {
+        /*
+        try {
+            for (IncubatorPlugin plugin : registeredPlugins) {
+                setColor(plugin.getTarget(), Color.white);
+            }
+
+            ImagePlus current = IJ.getImage();
+            if (current == null) {
+                return;
+            }
+            IncubatorPlugin plugin = getPlugin(current);
+            if (plugin == null) {
+                return;
+            }
+            ImagePlus predecessor = plugin.getSource();
+            if (!isNeverTarget(predecessor)) {
+                setColor(predecessor, new Color(235, 235, 235));
+            }
+
+            setColor(current, new Color(215, 215, 215));
+
+            for (ImagePlus imp : getFollowers(current)) {
+                setColor(current, new Color(235, 235, 235));
+            }
+        } catch (ConcurrentModificationException e) {}
+        */
+    }
+
+    private void setColor(ImagePlus current, Color color) {
+        if (current != null) {
+            ImageWindow win = current.getWindow();
+            if (win != null) {
+                win.setBackground(color);
+            }
+        }
+    }
+
 
     public void unregister(IncubatorPlugin plugin) {
         registeredPlugins.remove(plugin);
@@ -201,6 +243,46 @@ class IncubatorPluginRegistry {
             }
         }
 
+        return null;
+    }
+
+    ArrayList<Object[]> getGraph(ImagePlus imp) {
+        ImagePlus root = findRoot(imp);
+
+        //System.out.println("Root: " + root);
+        ArrayList<Object[]> list = new ArrayList<Object[]>();
+        getGraph(root, list, 1);
+
+        return list;
+    }
+    private void getGraph(ImagePlus imp, ArrayList<Object[]> list, int depth) {
+        String name = "";
+        for (int i = 0; i < depth; i++) {
+            name = name + " ";
+        }
+        //System.out.println("Node: " + imp);
+
+        list.add(new Object[]{name + imp.getTitle(), imp});
+
+        for (IncubatorPlugin plugin : registeredPlugins) {
+            if (plugin.getSource() == imp) {
+                getGraph(plugin.getTarget(), list, depth + 1);
+            }
+        }
+    }
+
+    private ImagePlus findRoot(ImagePlus imp) {
+        for (IncubatorPlugin plugin : registeredPlugins) {
+            ImagePlus source = plugin.getSource();
+            ImagePlus target = plugin.getTarget();
+            if (target == imp) {
+                if (isNeverTarget(source)) {
+                    return target;
+                } else {
+                    return findRoot(source);
+                }
+            }
+        }
         return null;
     }
 }

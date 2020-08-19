@@ -68,6 +68,14 @@ public class IncubatorUtilities {
         target.getCalibration().setZUnit(source.getCalibration().getZUnit());
     }
 
+    public static String shortName(String title) {
+        if (title.length() < 25) {
+            return title;
+        }
+        return title.substring(0, 25) + "...";
+    }
+
+
     public static String niceName(String name) {
 
         name = name.replace("3D", "");
