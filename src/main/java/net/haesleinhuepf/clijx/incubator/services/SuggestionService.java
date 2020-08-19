@@ -28,7 +28,7 @@ public class SuggestionService {
                 e.printStackTrace();
             }
 
-            System.out.println(filename);
+            //System.out.println(filename);
             File file = new File(filename);
             files.add(file);
         }
@@ -69,7 +69,7 @@ public class SuggestionService {
 
                     if (!line.startsWith(" ")) { // main entry
                         currentMainEntry = pluginNameToClass(line);
-                        System.out.println("main entry: " + currentMainEntry);
+                        //System.out.println("main entry: " + currentMainEntry);
                     } else { // follower
                         if (!suggestions.containsKey(currentMainEntry)) {
                             suggestions.put(currentMainEntry, new ArrayList<>());
@@ -110,11 +110,11 @@ public class SuggestionService {
         IncubatorPluginService incubatorPluginService = IncubatorPluginService.getInstance();
 
         String name = incubatorPlugin.getCLIJMacroPlugin().getName();
-        System.out.println("NAME " + name);
+        //System.out.println("NAME " + name);
 
         Class searchFor = pluginNameToClass(name);
 
-        System.out.println("Search for : " + searchFor);
+        //System.out.println("Search for : " + searchFor);
 
         ArrayList<CLIJMacroPlugin> clijSuggestions = suggestions.get(searchFor);
         if (clijSuggestions == null) {
@@ -127,7 +127,7 @@ public class SuggestionService {
             if (incubatorPluginClassFromCLIJ2Plugin != null) {
                 incubatorSuggestions.put(clijPlugin.getName(), incubatorPluginClassFromCLIJ2Plugin);
             } else {
-                System.out.println("Was null ?! " + clijPlugin);
+                //System.out.println("Was null ?! " + clijPlugin);
             }
         }
 
