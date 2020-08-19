@@ -105,9 +105,6 @@ public class MenuService {
             return true;
         }
 
-        if (name.toLowerCase().contains("subtractgaus") && search_string.contains("ackgr")) {
-            System.out.println("dd");
-        }
 
         search_string = search_string.toLowerCase();
 
