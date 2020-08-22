@@ -11,7 +11,7 @@ import net.haesleinhuepf.clijx.weka.ApplyWekaModel;
 import net.haesleinhuepf.clijx.weka.GenerateFeatureStack;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = CLIJMacroPlugin.class, name = "CLIJx_applyBinaryWekaPixelClassifier")
+//@Plugin(type = CLIJMacroPlugin.class, name = "CLIJx_applyBinaryWekaPixelClassifier")
 public class ApplyBinaryWekaPixelClassifier extends AbstractCLIJ2Plugin implements CLIJMacroPlugin, CLIJOpenCLProcessor, OffersDocumentation {
 
     @Override
