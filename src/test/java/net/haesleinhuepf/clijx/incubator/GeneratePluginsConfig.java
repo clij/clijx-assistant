@@ -39,7 +39,7 @@ public class GeneratePluginsConfig {
                 String clijName = plugin.getCLIJMacroPlugin().getName();
 
                 menu_entries.add(
-                        "Plugins>ImageJ on GPU (CLIJx-Incubator)>" + order[category_count] + " " + category + ", " +
+                        "Plugins>ImageJ on GPU (CLIJx-Incubator)>" + category.replace(">", " ") + ", " +
                                 "\"" + niceName + " (experimental)_" + category_count + "\", " + plugin.getClass().getName() + "(\"" + clijName + "\")\n"
                 );
             }
