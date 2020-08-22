@@ -1002,6 +1002,8 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
         //UnivariatePointValuePair next =  new UnivariatePointValuePair(solution.getPointRef()[0], solution.getValue());
 
+        ground_truth.close();
+        mask.close();
     }
 
     public void refreshDialogFromArguments() {
