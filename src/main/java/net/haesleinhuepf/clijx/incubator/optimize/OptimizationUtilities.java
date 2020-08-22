@@ -25,15 +25,26 @@ public class OptimizationUtilities {
             if (roi instanceof PolygonRoi) {
                 String name = roi.getName();
                 try {
+                    groundTruthImp.setSliceWithoutUpdate(roi.getZPosition());
+                    System.out.println("Roi z " + roi.getZPosition());
+                    System.out.println("Roi p " + roi.getPosition());
+
                     roi = Selection.lineToArea(roi);
-                    groundTruthImp.setRoi(roi);
-                    IJ.run(groundTruthImp, "Multiply...", "value=0");
-                    IJ.run(groundTruthImp, "Enlarge...", "enlarge=1");
-                    IJ.run(groundTruthImp, "Add...", "value=" + (name.startsWith("p") ? 2 : 1));
+                    if (roi.getStatistics().area > 0) {
+                        groundTruthImp.setRoi(roi);
+                        //groundTruthImp.setPosition(roi.getPosition());
+                        IJ.run(groundTruthImp, "Multiply...", "value=0");
+                        IJ.run(groundTruthImp, "Enlarge...", "enlarge=1");
+                        IJ.run(groundTruthImp, "Add...", "value=" + (name.startsWith("p") ? 2 : 1));
+                    } else {
+                        System.out.println("Roi area 0");
+                    }
                 } catch (Exception e){}
             }
         }
-        return clij2.push(groundTruthImp);
+        ClearCLBuffer ground_truth = clij2.push(groundTruthImp);
+        // clij2.show(ground_truth, "gr");
+        return ground_truth;
     }
 
     public static CLIJMacroPlugin[] getCLIJMacroPluginsFromIncubatorPlugins(IncubatorPlugin[] input) {
