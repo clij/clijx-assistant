@@ -972,10 +972,10 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         double[] current = f.getCurrent();
         System.out.println("Initial: " + Arrays.toString(current));
 
-        int iterations = 5;
+        int iterations = 6;
         for (int i = 0; i < iterations; i++) {
 
-            NelderMeadSimplex simplex = OptimizationUtilities.makeOptimizer(f.getNumDimensions(), workflow.getNumericParameterNames(), parameter_index_map, Math.pow(2, iterations - i - 1));
+            NelderMeadSimplex simplex = OptimizationUtilities.makeOptimizer(f.getNumDimensions(), workflow.getNumericParameterNames(), parameter_index_map, Math.pow(2, iterations / 2 - i - 1));
 
             PointValuePair solution = optimizer.optimize(new MaxEval(1000), new InitialGuess(current), simplex, new ObjectiveFunction(f), GoalType.MINIMIZE);
 

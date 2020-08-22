@@ -24,10 +24,13 @@ public class OptimizationUtilities {
             Roi roi = rm.getRoi(i);
             if (roi instanceof PolygonRoi) {
                 String name = roi.getName();
-                roi = Selection.lineToArea(roi);
-                groundTruthImp.setRoi(roi);
-                IJ.run(groundTruthImp, "Multiply...", "value=0");
-                IJ.run(groundTruthImp, "Add...", "value=" + (name.startsWith("p") ? 2 : 1));
+                try {
+
+                    roi = Selection.lineToArea(roi);
+                    groundTruthImp.setRoi(roi);
+                    IJ.run(groundTruthImp, "Multiply...", "value=0");
+                    IJ.run(groundTruthImp, "Add...", "value=" + (name.startsWith("p") ? 2 : 1));
+                } catch (Exception e){}
             }
         }
         return clij2.push(groundTruthImp);
