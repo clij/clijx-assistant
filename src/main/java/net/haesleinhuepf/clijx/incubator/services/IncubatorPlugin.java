@@ -22,4 +22,6 @@ public interface IncubatorPlugin extends SciJavaPlugin {
     boolean canManage(CLIJMacroPlugin plugin);
     void setCLIJMacroPlugin(CLIJMacroPlugin plugin);
     String getName();
+
+    void refreshDialogFromArguments();
 }

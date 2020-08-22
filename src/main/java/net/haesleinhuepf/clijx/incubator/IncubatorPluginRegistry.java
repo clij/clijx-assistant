@@ -285,4 +285,25 @@ class IncubatorPluginRegistry {
         }
         return null;
     }
+
+    public IncubatorPlugin[] getPathToRoot(IncubatorPlugin leaf) {
+        ArrayList<IncubatorPlugin> list = new ArrayList<>();
+        getPathToRoot(leaf, list);
+
+        IncubatorPlugin[] array = new IncubatorPlugin[list.size()];
+        list.toArray(array);
+        return array;
+    }
+
+    private void getPathToRoot(IncubatorPlugin leaf, ArrayList<IncubatorPlugin> list) {
+        list.add(0, leaf);
+        if (isNeverTarget(leaf.getSource())) {
+            return;
+        }
+        for (IncubatorPlugin plugin : registeredPlugins) {
+            if (leaf.getSource() == plugin.getTarget()) {
+                getPathToRoot(plugin, list);
+            }
+        }
+    }
 }

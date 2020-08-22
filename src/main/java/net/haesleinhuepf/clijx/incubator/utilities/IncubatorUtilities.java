@@ -8,6 +8,7 @@ import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.plugins.PullToROIManager;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.*;
+import net.haesleinhuepf.clijx.incubator.AbstractIncubatorPlugin;
 import net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfDiamond;
 
 import java.text.SimpleDateFormat;
@@ -476,4 +477,36 @@ public class IncubatorUtilities {
                 1000
         );
     }
+
+    public static boolean resultIsBinaryImage(AbstractIncubatorPlugin abstractIncubatorPlugin) {
+        String name = abstractIncubatorPlugin.getName().toLowerCase();
+        return name.contains("threshold") ||
+                name.contains("binary") ||
+                name.contains("watershed") ||
+                name.contains("greater") ||
+                name.contains("smaller") ||
+                name.contains("equal")
+                ;
+    }
+
+    public static double parmeterNameToStepSizeSuggestion(String parameterName, boolean small_step) {
+        if (parameterName.toLowerCase().contains("sigma")) {
+            return small_step ? 0.5 : 2;
+        }
+        if (parameterName.toLowerCase().contains("relative")) {
+            return small_step ? 0.05 : 0.2;
+        }
+        if (parameterName.toLowerCase().contains("micron")) {
+            return small_step ? 0.1 : 5;
+        }
+        if (parameterName.toLowerCase().contains("degree")) {
+            return small_step ? 15 : 90;
+        }
+        if (parameterName.toLowerCase().contains("long range")) {
+            return small_step ? 64 : 256;
+        }
+        return small_step ? 1 : 10;
+    }
+
+
 }

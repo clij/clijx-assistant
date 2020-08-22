@@ -8,12 +8,17 @@ import ij.gui.*;
 import ij.measure.Calibration;
 import ij.plugin.Duplicator;
 import ij.plugin.PlugIn;
+import ij.plugin.frame.RoiManager;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
+import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clij2.utilities.HasAuthor;
 import net.haesleinhuepf.clij2.utilities.HasLicense;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.ExtractChannel;
+import net.haesleinhuepf.clijx.incubator.optimize.BinaryImageFitnessFunction;
+import net.haesleinhuepf.clijx.incubator.optimize.OptimizationUtilities;
+import net.haesleinhuepf.clijx.incubator.optimize.Workflow;
 import net.haesleinhuepf.clijx.incubator.scriptgenerator.*;
 import net.haesleinhuepf.clijx.incubator.services.CLIJMacroPluginService;
 import net.haesleinhuepf.clijx.incubator.utilities.*;
@@ -28,6 +33,14 @@ import net.haesleinhuepf.clijx.incubator.services.MenuService;
 import net.haesleinhuepf.clijx.incubator.services.SuggestionService;
 import net.haesleinhuepf.clijx.utilities.AbstractCLIJxPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
+import org.apache.commons.math3.optim.InitialGuess;
+import org.apache.commons.math3.optim.MaxEval;
+import org.apache.commons.math3.optim.PointValuePair;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
+import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
+import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.NelderMeadSimplex;
+import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizer;
+import org.apache.commons.math3.optim.univariate.UnivariatePointValuePair;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -37,6 +50,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+
+import static net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities.parmeterNameToStepSizeSuggestion;
 
 public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, IncubatorPlugin {
 
@@ -137,6 +152,9 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                         gd.addNumericField(parameterName, 2, 2);
                     }
                     addPlusMinusPanel(gd, parameterName);
+
+                    
+
                 }
             }
         }
@@ -156,25 +174,6 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
         gd.addToSameRow();
         gd.addPanel(panel);
-    }
-
-    private double parmeterNameToStepSizeSuggestion(String parameterName, boolean small_step) {
-        if (parameterName.toLowerCase().contains("sigma")) {
-            return small_step ? 0.5 : 2;
-        }
-        if (parameterName.toLowerCase().contains("relative")) {
-            return small_step ? 0.05 : 0.2;
-        }
-        if (parameterName.toLowerCase().contains("micron")) {
-            return small_step ? 0.1 : 5;
-        }
-        if (parameterName.toLowerCase().contains("degree")) {
-            return small_step ? 15 : 90;
-        }
-        if (parameterName.toLowerCase().contains("long range")) {
-            return small_step ? 64 : 256;
-        }
-        return small_step ? 1 : 10;
     }
 
     private void addPlusMinusButton(Panel panel,GenericDialog gd, int element, double delta, String label) {
@@ -444,7 +443,10 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             int toolID = Toolbar.getToolId();
             int flags = e.getModifiers();
             if (toolID != Toolbar.MAGNIFIER && (e.isPopupTrigger() || ( (flags & Event.META_MASK) != 0))) {
-                ((AbstractIncubatorPlugin)IncubatorPluginRegistry.getInstance().getPlugin(imp)).handlePopupMenu(e);
+                AbstractIncubatorPlugin incplugin = ((AbstractIncubatorPlugin) IncubatorPluginRegistry.getInstance().getPlugin(imp));
+                if (incplugin != null) {
+                    incplugin.handlePopupMenu(e);
+                }
                 return;
             }
 
@@ -597,7 +599,11 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         addMenuAction(script, "clEsperanto Python + Napari", (a) -> {generateScript(new PyclesperantoGenerator(true));});
         menu.add(script);
 
-
+        if (IncubatorUtilities.resultIsBinaryImage(this)) {
+            addMenuAction(menu, "Optimize parameters", (a) -> {
+                optimize(true);
+            });
+        }
 
 
 
@@ -909,5 +915,106 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
     public String getName() {
         return plugin.getName().replace("CLIJ2_", "").replace("CLIJx_", "");
+    }
+
+    public void optimize(boolean show_gui) {
+        CLIJ2 clij2 = CLIJx.getInstance();
+
+        // -------------------------------------------------------------------------------------------------------------
+        // determine ground truth
+        RoiManager rm = RoiManager.getRoiManager();
+        if (rm.getCount() == 0) {
+            new WaitForUserDialog("No reference defined", "Please define reference ROIs in the ROI Manager.\nThese ROIs should have names starting with 'p' for positive and 'n' for negative.\n\nClick ok afterwards").show();
+            if (rm.getCount() == 0) {
+                IJ.log("Cancelled");
+            }
+        }
+        ClearCLBuffer ground_truth = OptimizationUtilities.makeGroundTruth(clij2, my_target.getWidth(), my_target.getHeight(), my_target.getNSlices(), rm);
+        //clij2.show(ground_truth, "ground");
+        //new WaitForUserDialog("dd tr").show();
+        ClearCLBuffer mask = clij2.create(ground_truth);
+        clij2.greaterConstant(ground_truth, mask, 0);
+
+        // -------------------------------------------------------------------------------------------------------------
+        // determine workflow to optimize
+
+        IncubatorPlugin[] path = IncubatorPluginRegistry.getInstance().getPathToRoot(this);
+        System.out.println("Path: " + Arrays.toString(path));
+
+        CLIJMacroPlugin[] plugins = OptimizationUtilities.getCLIJMacroPluginsFromIncubatorPlugins(path);
+        Object[][] parameters = OptimizationUtilities.getParameterArraysFromIncubatorPlugins(path);
+
+        Workflow workflow = new Workflow(plugins, parameters);
+
+        System.out.println(Arrays.toString(workflow.getNumericParameterNames()));
+        System.out.println(Arrays.toString(workflow.getPluginIndices()));
+        System.out.println(Arrays.toString(workflow.getParameterIndices()));
+
+
+
+
+        int[] parameter_index_map = OptimizationUtilities.getParameterIndexMap(workflow, true);
+        if (parameter_index_map == null) {
+            System.out.println("Optimization cancelled");
+            return;
+        }
+        System.out.println("Index map: " + Arrays.toString(parameter_index_map));
+
+
+        BinaryImageFitnessFunction f = new BinaryImageFitnessFunction(clij2, workflow,
+                parameter_index_map,
+                ground_truth,
+                mask
+        );
+
+        SimplexOptimizer optimizer = new SimplexOptimizer(-1, 1e-5);
+
+        double[] current = f.getCurrent();
+        System.out.println("Initial: " + Arrays.toString(current));
+
+        int iterations = 5;
+        for (int i = 0; i < iterations; i++) {
+
+            NelderMeadSimplex simplex = OptimizationUtilities.makeOptimizer(f.getNumDimensions(), workflow.getNumericParameterNames(), parameter_index_map, Math.pow(2, iterations - i - 1));
+
+            PointValuePair solution = optimizer.optimize(new MaxEval(1000), new InitialGuess(current), simplex, new ObjectiveFunction(f), GoalType.MINIMIZE);
+
+            current = solution.getKey();
+            System.out.println("Intermediate optimum: " + Arrays.toString(current));
+        }
+
+        System.out.println("Optimum: ");
+        f.value(current);
+        for (IncubatorPlugin plugin : path ) {
+            plugin.refreshDialogFromArguments();
+        }
+
+        //UnivariatePointValuePair next =  new UnivariatePointValuePair(solution.getPointRef()[0], solution.getValue());
+
+    }
+
+    public void refreshDialogFromArguments() {
+        if (registered_dialog == null) {
+            return;
+        }
+
+        Vector numericFields = registered_dialog.getNumericFields();
+        String[] parameterHelpTexts = plugin.getParameterHelpText().split(",");
+
+        int count = 0;
+        int parameter_count = 0;
+        for (String parameterHelpText : parameterHelpTexts) {
+            while (parameterHelpText.contains("  ")) {
+                parameterHelpText = parameterHelpText.replace("  ", "");
+            }
+            String[] temp = parameterHelpText.split(" ");
+            if (temp[temp.length - 2].compareTo("Number") == 0) {
+                ((TextField)(numericFields.get(count))).setText("" + args[parameter_count]);
+                count++;
+                //result[count] = parameter_count;
+            }
+            parameter_count++;
+        }
+        registered_dialog.invalidate();
     }
 }
