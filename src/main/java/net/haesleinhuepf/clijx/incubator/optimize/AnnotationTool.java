@@ -21,7 +21,7 @@ public class AnnotationTool extends PlugInTool {
             int y = e.getY();
             line = new PolygonRoi(new float[]{
                     imp.getWindow().getCanvas().offScreenX(x)}, new float[]{
-                    imp.getWindow().getCanvas().offScreenX(y)}, Roi.FREELINE);
+                    imp.getWindow().getCanvas().offScreenY(y)}, Roi.FREELINE);
             imp.setRoi(line);
         }
 
