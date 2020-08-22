@@ -68,7 +68,7 @@ public class OptimizationUtilities {
         String formername = "";
         for (int i = 0; i < parameter_names.length; i++) {
             String name = parameter_names[i];
-            if (hammingStringDistance(name, formername) > 2) {
+            if (hammingStringDistance(name, formername) > 1) {
                 counter ++;
             }
 

@@ -9,7 +9,10 @@ import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.plugins.Copy;
 import net.haesleinhuepf.clijx.gui.InteractiveWindowPosition;
 import net.haesleinhuepf.clijx.incubator.services.IncubatorPlugin;
+import net.haesleinhuepf.clijx.incubator.services.MenuService;
+import net.haesleinhuepf.clijx.incubator.services.SuggestionService;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
+import org.scijava.plugin.Menu;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = IncubatorPlugin.class)
@@ -53,6 +56,7 @@ public class IncubatorStartingPoint extends AbstractIncubatorPlugin {
             registerDialogAsNoneModal(dialog);
             //dialog.showDialog();
         }
+        SuggestionService.getInstance();
     }
 
     ClearCLBuffer[] result = null;

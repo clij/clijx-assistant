@@ -16,6 +16,7 @@ import net.haesleinhuepf.clij2.utilities.HasAuthor;
 import net.haesleinhuepf.clij2.utilities.HasLicense;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.ExtractChannel;
+import net.haesleinhuepf.clijx.incubator.optimize.AnnotationTool;
 import net.haesleinhuepf.clijx.incubator.optimize.BinaryImageFitnessFunction;
 import net.haesleinhuepf.clijx.incubator.optimize.OptimizationUtilities;
 import net.haesleinhuepf.clijx.incubator.optimize.Workflow;
@@ -924,10 +925,9 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         // determine ground truth
         RoiManager rm = RoiManager.getRoiManager();
         if (rm.getCount() == 0) {
-            new WaitForUserDialog("No reference defined", "Please define reference ROIs in the ROI Manager.\nThese ROIs should have names starting with 'p' for positive and 'n' for negative.\n\nClick ok afterwards").show();
-            if (rm.getCount() == 0) {
-                IJ.log("Cancelled");
-            }
+            IJ.log("Please define reference ROIs in the ROI Manager.\nThese ROIs should have names starting with 'p' for positive and 'n' for negative.");
+            Toolbar.addPlugInTool(new AnnotationTool());
+            return;
         }
         ClearCLBuffer ground_truth = OptimizationUtilities.makeGroundTruth(clij2, my_target.getWidth(), my_target.getHeight(), my_target.getNSlices(), rm);
         //clij2.show(ground_truth, "ground");
@@ -988,6 +988,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         for (IncubatorPlugin plugin : path ) {
             plugin.refreshDialogFromArguments();
         }
+        path[0].setTargetInvalid();
 
         //UnivariatePointValuePair next =  new UnivariatePointValuePair(solution.getPointRef()[0], solution.getValue());
 

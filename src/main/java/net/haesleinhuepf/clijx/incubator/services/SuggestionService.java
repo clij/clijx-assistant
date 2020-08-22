@@ -77,7 +77,7 @@ public class SuggestionService {
                         ArrayList<CLIJMacroPlugin> list = suggestions.get(currentMainEntry);
 
                         list.add(clijMacroPluginService.getCLIJMacroPlugin(line.split(" ")[1]));
-                        System.out.println("sub entry: " + clijMacroPluginService.getCLIJMacroPlugin(line.split(" ")[1]));
+                        //System.out.println("sub entry: " + clijMacroPluginService.getCLIJMacroPlugin(line.split(" ")[1]));
                     }
                 }
             } catch (FileNotFoundException e) {
