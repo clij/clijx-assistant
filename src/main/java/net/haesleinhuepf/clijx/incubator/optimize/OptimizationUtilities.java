@@ -25,10 +25,10 @@ public class OptimizationUtilities {
             if (roi instanceof PolygonRoi) {
                 String name = roi.getName();
                 try {
-
                     roi = Selection.lineToArea(roi);
                     groundTruthImp.setRoi(roi);
                     IJ.run(groundTruthImp, "Multiply...", "value=0");
+                    IJ.run(groundTruthImp, "Enlarge...", "enlarge=1");
                     IJ.run(groundTruthImp, "Add...", "value=" + (name.startsWith("p") ? 2 : 1));
                 } catch (Exception e){}
             }
