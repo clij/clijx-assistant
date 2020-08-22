@@ -75,7 +75,16 @@ public class OptimizationUtilities {
                 counter ++;
             }
 
-            dialog.addRadioButtonGroup(name, group, 1, group.length, group[counter]);
+            String default_value = group[counter];
+            if (name.endsWith("_z") || name.endsWith("Z")) {
+                ClearCLBuffer output = workflow.getOutput();
+                if (output.getDimension() != 3 || output.getDepth() == 1) {
+                    default_value = CONSTANT;
+                }
+            }
+
+            dialog.addRadioButtonGroup(name, group, 1, group.length, default_value);
+
             parameter_index_map[i] = counter;
             formername = name;
         }

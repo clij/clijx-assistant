@@ -37,6 +37,7 @@ import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.apache.commons.math3.optim.InitialGuess;
 import org.apache.commons.math3.optim.MaxEval;
 import org.apache.commons.math3.optim.PointValuePair;
+import org.apache.commons.math3.optim.SimpleBounds;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.NelderMeadSimplex;
@@ -601,7 +602,11 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         menu.add(script);
 
         if (IncubatorUtilities.resultIsBinaryImage(this)) {
-            addMenuAction(menu, "Optimize parameters", (a) -> {
+            menu.add("-");
+            addMenuAction(menu, "Optimize parameters (auto)", (a) -> {
+                optimize(false);
+            });
+            addMenuAction(menu, "Optimize parameters (config)", (a) -> {
                 optimize(true);
             });
         }
@@ -953,7 +958,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
 
 
 
-        int[] parameter_index_map = OptimizationUtilities.getParameterIndexMap(workflow, true);
+        int[] parameter_index_map = OptimizationUtilities.getParameterIndexMap(workflow, show_gui);
         if (parameter_index_map == null) {
             System.out.println("Optimization cancelled");
             return;
@@ -976,7 +981,12 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         for (int i = 0; i < iterations; i++) {
 
             NelderMeadSimplex simplex = OptimizationUtilities.makeOptimizer(f.getNumDimensions(), workflow.getNumericParameterNames(), parameter_index_map, Math.pow(2, iterations / 2 - i - 1));
-
+            //double[] lowerBounds = new double[simplex.getDimension()];
+            //double[] upperBounds = new double[simplex.getDimension()];
+            //for (int b = 0; b < upperBounds.length; b++) {
+            //    upperBounds[b] = Double.MAX_VALUE;
+            //}
+            //, new SimpleBounds(lowerBounds, upperBounds)
             PointValuePair solution = optimizer.optimize(new MaxEval(1000), new InitialGuess(current), simplex, new ObjectiveFunction(f), GoalType.MINIMIZE);
 
             current = solution.getKey();

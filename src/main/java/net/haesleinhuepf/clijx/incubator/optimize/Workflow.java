@@ -56,7 +56,7 @@ public class Workflow {
     public void setNumericParameter(int plugin_index, int parameter_index, Double parameter_value) {
         //System.out.println("Set " + plugin_index + "/" + parameter_index + " = " + parameter_value);
 
-        parameters.get(plugin_index)[parameter_index] = parameter_value;
+        parameters.get(plugin_index)[parameter_index] = Math.abs(parameter_value);
     }
 
     public Double getNumericParameter(int plugin_index, int parameter_index) {
