@@ -11,8 +11,8 @@ public class MatlabGenerator extends JythonGenerator {
     }
 
     @Override
-    public String push(ImagePlus source) {
-        return pyToMatlab(super.push(source));
+    public String push(IncubatorPlugin plugin) {
+        return pyToMatlab(super.push(plugin));
     }
 
     @Override

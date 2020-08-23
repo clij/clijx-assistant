@@ -12,7 +12,8 @@ public class IcyJavaScriptGenerator extends JythonGenerator {
     }
 
     @Override
-    public String push(ImagePlus source) {
+    public String push(IncubatorPlugin plugin) {
+        ImagePlus source = plugin.getSource();
         String image1 = makeImageID(source);
 
         return "// get current image from Icy\n" +

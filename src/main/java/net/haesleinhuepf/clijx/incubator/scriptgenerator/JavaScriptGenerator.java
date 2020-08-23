@@ -11,8 +11,8 @@ public class JavaScriptGenerator extends JythonGenerator {
     }
 
     @Override
-    public String push(ImagePlus source) {
-        return pyToJs(super.push(source));
+    public String push(IncubatorPlugin plugin) {
+        return pyToJs(super.push(plugin));
     }
 
     @Override

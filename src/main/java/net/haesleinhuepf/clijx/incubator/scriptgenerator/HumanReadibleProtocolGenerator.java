@@ -14,11 +14,17 @@ public class HumanReadibleProtocolGenerator implements ScriptGenerator {
     Random random = new Random();
 
     @Override
-    public String push(ImagePlus source) {
+    public String push(IncubatorPlugin plugin) {
+        ImagePlus source = plugin.getSource();
         String image1 = makeImageID(source);
 
         return ""+
                 "We start by processing the image \"" + source.getTitle() + "\" for simplicity, we call it " + image1 + ".\n";
+    }
+
+    @Override
+    public String pull(IncubatorPlugin result) {
+        return "";
     }
 
     @Override
@@ -85,5 +91,10 @@ public class HumanReadibleProtocolGenerator implements ScriptGenerator {
     public String header() {
         return  "This protocol documents an image processing workflow using CLIJx-Incubator.\n" +
                 "Read more about it online: https://clij.github.io/incubator/ \n\n";
+    }
+
+    @Override
+    public String finish() {
+        return "";
     }
 }

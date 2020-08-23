@@ -19,7 +19,8 @@ public class PyclesperantoGenerator implements ScriptGenerator {
     }
 
     @Override
-    public String push(ImagePlus source) {
+    public String push(IncubatorPlugin plugin) {
+        ImagePlus source = plugin.getSource();
         String filename = "";
         if (source.getOriginalFileInfo() != null) {
             filename = source.getOriginalFileInfo().directory + source.getOriginalFileInfo().fileName;
@@ -39,6 +40,11 @@ public class PyclesperantoGenerator implements ScriptGenerator {
 
         program = program.replace("\n", "\n" + line_start );
         return program;
+    }
+
+    @Override
+    public String pull(IncubatorPlugin result) {
+        return "";
     }
 
     @Override
@@ -150,5 +156,10 @@ public class PyclesperantoGenerator implements ScriptGenerator {
         }
 
         return header;
+    }
+
+    @Override
+    public String finish() {
+        return "";
     }
 }

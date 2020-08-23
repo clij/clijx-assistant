@@ -8,7 +8,8 @@ import java.util.HashMap;
 
 public interface ScriptGenerator {
 
-    String push(ImagePlus source);
+    String push(IncubatorPlugin source);
+    String pull(IncubatorPlugin result);
 
     String comment(String name);
 
@@ -44,4 +45,7 @@ public interface ScriptGenerator {
 
         return text.toString();
     }
+
+    String finish();
+
 }

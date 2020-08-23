@@ -1,6 +1,8 @@
 package net.haesleinhuepf.clijx.incubator.scriptgenerator;
 
+import ij.ImageListener;
 import ij.ImagePlus;
+import net.haesleinhuepf.clij.converters.implementations.ImagePlusToClearCLBufferConverter;
 import net.haesleinhuepf.clijx.incubator.ScriptGenerator;
 import net.haesleinhuepf.clijx.incubator.services.IncubatorPlugin;
 import net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities;
@@ -9,10 +11,19 @@ import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 public class MacroGenerator implements ScriptGenerator {
 
     @Override
-    public String push(ImagePlus source) {
+    public String push(IncubatorPlugin plugin) {
+        ImagePlus source = plugin.getSource();
+        String imageID = makeImageID(source);
+        //makeImageID
         return ""+
-                "image1 = \"" + source.getTitle() + "\";\n" +
-                "Ext.CLIJ2_push(image1);\n";
+                imageID + " = \"" + source.getTitle() + "\";\n" +
+                "Ext.CLIJ2_push(" + imageID + ");\n";
+    }
+
+    @Override
+    public String pull(IncubatorPlugin result) {
+        String imageID = makeImageID(result.getTarget());
+        return "Ext.CLIJ2_pull(" + imageID + ");\n";
     }
 
     @Override
@@ -63,5 +74,10 @@ public class MacroGenerator implements ScriptGenerator {
                 "// installation. Read more: https://clij.github.io\n\n" +
                 "// Init GPU\n" +
                 "run(\"CLIJ2 Macro Extensions\", \"cl_device=\");\n\n";
+    }
+
+    @Override
+    public String finish() {
+        return "";
     }
 }

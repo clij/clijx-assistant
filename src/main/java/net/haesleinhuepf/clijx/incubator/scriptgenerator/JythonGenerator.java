@@ -9,12 +9,22 @@ import net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities;
 public class JythonGenerator implements ScriptGenerator {
 
     @Override
-    public String push(ImagePlus source) {
+    public String push(IncubatorPlugin plugin) {
+        ImagePlus source = plugin.getSource();
         String image1 = makeImageID(source);
 
         return ""+
                 "# Push " + source.getTitle() + " to GPU memory\n" +
                 image1 + " = clijx.push(WindowManager.getImage(\"" + source.getTitle() + "\"))\n";
+    }
+
+    @Override
+    public String pull(IncubatorPlugin result) {
+        String image1 = makeImageID(result.getTarget());
+
+        return "" +
+                "result = clijx.pull(" + image1 + "))\n" +
+                "result.show()";
     }
 
     @Override
@@ -94,5 +104,10 @@ public class JythonGenerator implements ScriptGenerator {
                 "from net.haesleinhuepf.clijx import CLIJx\n\n" +
                 "# Init GPU\n" +
                 "clijx = CLIJx.getInstance()\n";
+    }
+
+    @Override
+    public String finish() {
+        return "";
     }
 }

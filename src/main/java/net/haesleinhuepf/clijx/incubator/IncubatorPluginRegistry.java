@@ -168,8 +168,9 @@ class IncubatorPluginRegistry {
             ImagePlus target = plugin.getTarget();
             if (source != null && target != null && isNeverTarget(source)) {
                 result = result + generator.overview(plugin);
-                result = result + generator.push(source);
+                result = result + generator.push(plugin);
                 result = result + script(generator, plugin) + "\n\n";
+                result = result + generator.finish();
             }
         }
 
@@ -182,6 +183,7 @@ class IncubatorPluginRegistry {
         for (IncubatorPlugin followers : findFollowers(plugin)) {
             result = result + script(generator, followers);
         }
+        generator.pull(plugin);
         return result;
     }
 

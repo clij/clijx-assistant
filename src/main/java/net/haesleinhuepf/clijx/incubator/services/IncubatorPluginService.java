@@ -1,6 +1,9 @@
 package net.haesleinhuepf.clijx.incubator.services;
 
+import ij.IJ;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
+import net.haesleinhuepf.clijx.incubator.interactive.generic.GenericIncubatorPlugin;
+import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.*;
 import net.imagej.ImageJService;
 import org.scijava.Context;
 import org.scijava.InstantiableException;
@@ -17,11 +20,42 @@ import java.util.Set;
 @Plugin(type = Service.class)
 public class IncubatorPluginService extends AbstractPTService<IncubatorPlugin> implements ImageJService {
 
-    private ArrayList<PluginInfo<IncubatorPlugin>> suggestedPlugins = new ArrayList<>();
+    // private ArrayList<PluginInfo<IncubatorPlugin>> suggestedPlugins = new ArrayList<>();
     private HashMap<String, PluginInfo<IncubatorPlugin>> namedPlugins = new HashMap<>();
+    private HashMap<String, Class> namedBackupPlugins = new HashMap<>();
     //private HashMap<Class, ArrayList<Class>> suggestedNextSteps = new HashMap<>();
 
     private ArrayList<IncubatorPlugin> plugins = new ArrayList<>();
+
+
+    private static IncubatorPluginService fallbackService() {
+        IncubatorPluginService service = new IncubatorPluginService();
+        service.initialized = true;
+
+        Class[] klasses = {
+                AutomaticThreshold.class,
+                Crop.class,
+                CylinderTransform.class,
+                ExtractChannel.class,
+                LabelingWorkflowALX.class,
+                MakeIsotropic.class,
+                PullToROIManager.class,
+                SphereTransform.class,
+                GenericIncubatorPlugin.class
+        };
+
+        for(Class klass : klasses) {
+            service.namedBackupPlugins.put(klass.getSimpleName(), klass);
+            try {
+                service.plugins.add((IncubatorPlugin) klass.newInstance());
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return service;
+    }
 
 
     @Override
@@ -52,7 +86,7 @@ public class IncubatorPluginService extends AbstractPTService<IncubatorPlugin> i
                 String[] temp = current.getClass().getPackage().getName().split("\\.");
                 String packageName = temp[temp.length - 1];
 
-                suggestedPlugins.add(info);
+                //suggestedPlugins.add(info);
                 namedPlugins.put(name, info);
 
                 //ArrayList<Class> services = new ArrayList<>();
@@ -78,7 +112,7 @@ public class IncubatorPluginService extends AbstractPTService<IncubatorPlugin> i
             }
         }
 */
-
+//        IJ.log("number of plugins: " + suggestedPlugins.size());
         initialized = true;
     }
 
@@ -104,24 +138,46 @@ public class IncubatorPluginService extends AbstractPTService<IncubatorPlugin> i
     static IncubatorPluginService instance = null;
     public static IncubatorPluginService getInstance() {
         if (instance == null) {
-            instance = new Context(IncubatorPluginService.class).getService(IncubatorPluginService.class);
+            IJ.log("inc pl serv 2");
+            try {
+                instance = new Context(IncubatorPluginService.class).getService(IncubatorPluginService.class);
+            } catch (Exception e) {
+                IJ.log("inc pl serv EX");
+                instance = fallbackService();
+            }
+            IJ.log("inc pl serv 3");
         }
         return instance;
     }
 
     public ArrayList<String> getNames() {
         initializeService();
-        Set set = namedPlugins.keySet();
-        ArrayList<String> list = new ArrayList<>(set);
-        Collections.sort(list);
-        return list;
+        if (namedPlugins.size() > 0) {
+            Set set = namedPlugins.keySet();
+            ArrayList<String> list = new ArrayList<>(set);
+            Collections.sort(list);
+            return list;
+        } else { // fallback
+            Set set = namedBackupPlugins.keySet();
+            ArrayList<String> list = new ArrayList<>(set);
+            Collections.sort(list);
+            return list;
+        }
     }
 
     public IncubatorPlugin getPluginByName(String name) {
         initializeService();
         try {
-            return namedPlugins.get(name).createInstance();
+            if (namedPlugins.size() > 0) {
+                return namedPlugins.get(name).createInstance();
+            } else {
+                return (IncubatorPlugin) namedBackupPlugins.get(name).newInstance();
+            }
         } catch (InstantiableException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
             e.printStackTrace();
         }
         return null;
