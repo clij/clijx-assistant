@@ -631,6 +631,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             new MemoryDisplay().run("");
             IJ.log(CLIJx.getInstance().reportMemory());
         });
+        menu.add(info);
 
         // -------------------------------------------------------------------------------------------------------------
         menu.add("-");
