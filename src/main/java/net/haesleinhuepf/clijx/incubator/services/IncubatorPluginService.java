@@ -1,6 +1,5 @@
 package net.haesleinhuepf.clijx.incubator.services;
 
-import ij.IJ;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clijx.incubator.interactive.generic.GenericIncubatorPlugin;
 import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.*;
@@ -138,14 +137,11 @@ public class IncubatorPluginService extends AbstractPTService<IncubatorPlugin> i
     static IncubatorPluginService instance = null;
     public static IncubatorPluginService getInstance() {
         if (instance == null) {
-            IJ.log("inc pl serv 2");
             try {
                 instance = new Context(IncubatorPluginService.class).getService(IncubatorPluginService.class);
             } catch (Exception e) {
-                IJ.log("inc pl serv EX");
                 instance = fallbackService();
             }
-            IJ.log("inc pl serv 3");
         }
         return instance;
     }
