@@ -1,5 +1,7 @@
 package net.haesleinhuepf.clijx.incubator.services;
 
+import ij.IJ;
+import net.haesleinhuepf.clij.macro.CLIJHandler;
 import org.scijava.Context;
 
 public class CLIJMacroPluginService {
@@ -7,7 +9,13 @@ public class CLIJMacroPluginService {
     private net.haesleinhuepf.clij.macro.CLIJMacroPluginService clijMacroPluginService = null;
 
     private CLIJMacroPluginService() {
-        clijMacroPluginService = new Context(net.haesleinhuepf.clij.macro.CLIJMacroPluginService.class).getService(net.haesleinhuepf.clij.macro.CLIJMacroPluginService.class);
+        try {
+            clijMacroPluginService = new Context(net.haesleinhuepf.clij.macro.CLIJMacroPluginService.class).getService(net.haesleinhuepf.clij.macro.CLIJMacroPluginService.class);
+        } catch (IllegalArgumentException e) {
+            IJ.log("replace service");
+            clijMacroPluginService = CLIJHandler.getInstance().getPluginService();
+            IJ.log("service replaced");
+        }
     }
 
     private static CLIJMacroPluginService instance = null;
