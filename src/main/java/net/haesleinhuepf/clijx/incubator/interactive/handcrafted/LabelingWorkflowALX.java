@@ -18,6 +18,9 @@ import org.scijava.plugin.Plugin;
 
 import java.awt.*;
 
+import static net.haesleinhuepf.clij.macro.AbstractCLIJPlugin.asBoolean;
+import static net.haesleinhuepf.clij.macro.AbstractCLIJPlugin.asFloat;
+
 @Plugin(type = IncubatorPlugin.class)
 public class LabelingWorkflowALX extends AbstractIncubatorPlugin {
 
@@ -28,7 +31,7 @@ public class LabelingWorkflowALX extends AbstractIncubatorPlugin {
     @Override
     public void refreshView() {
         super.refreshView();
-        if (args != null && Double.parseDouble("" + args[6]) != 0) {
+        if (args != null && asBoolean(args[6])) {
             if (my_target.getStack() instanceof CLIJxVirtualStack) {
                 ClearCLBuffer stack = ((CLIJxVirtualStack) my_target.getStack()).getBuffer(my_source.getC() - 1);
                 CLIJx clijx = CLIJx.getInstance();
