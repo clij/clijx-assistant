@@ -15,6 +15,7 @@ import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clij2.utilities.HasAuthor;
 import net.haesleinhuepf.clij2.utilities.HasLicense;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
+import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.Crop;
 import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.ExtractChannel;
 import net.haesleinhuepf.clijx.incubator.optimize.AnnotationTool;
 import net.haesleinhuepf.clijx.incubator.optimize.BinaryImageFitnessFunction;
@@ -540,6 +541,40 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         }
         menu.add("-");
 
+
+        // -------------------------------------------------------------------------------------------------------------
+
+        Menu script = new Menu("Generate script");
+
+        addMenuAction(script, "ImageJ Macro", (a) -> {generateScript(new MacroGenerator());});
+        script.add("-");
+        addMenuAction(script, "Icy Javascript", (a) -> {generateScript(new IcyJavaScriptGenerator());});
+        addMenuAction(script, "Matlab", (a) -> {generateScript(new MatlabGenerator());});
+        addMenuAction(script, "ImageJ Groovy", (a) -> {generateScript(new GroovyGenerator());});
+        addMenuAction(script, "ImageJ JavaScript", (a) -> {generateScript(new JavaScriptGenerator());});
+        addMenuAction(script, "ImageJ Jython", (a) -> {generateScript(new JythonGenerator());});
+        script.add("-");
+        addMenuAction(script, "Human readable protocol", (a) -> {generateScript(new HumanReadibleProtocolGenerator());});
+        addMenuAction(script, "clEsperanto Python", (a) -> {generateScript(new PyclesperantoGenerator(false));});
+        addMenuAction(script, "clEsperanto Python + Napari", (a) -> {generateScript(new PyclesperantoGenerator(true));});
+        menu.add(script);
+
+        // -------------------------------------------------------------------------------------------------------------
+        Menu more_actions = new Menu("More actions");
+        if (IncubatorUtilities.resultIsBinaryImage(this)) {
+            addMenuAction(more_actions, "Optimize parameters (auto)", (a) -> {
+                optimize(false);
+            });
+            addMenuAction(more_actions, "Optimize parameters (config)", (a) -> {
+                optimize(true);
+            });
+            more_actions.add("-");
+        }
+
+        menu.add(more_actions);
+
+        // -------------------------------------------------------------------------------------------------------------
+        Menu info = new Menu("Info");
         // -------------------------------------------------------------------------------------------------------------
 
         Menu predecessor = new Menu("Predecessor");
@@ -548,7 +583,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             my_source.getWindow().toFront();
             attachMenu(my_source);
         });
-        menu.add(predecessor);
+        info.add(predecessor);
 
         // -------------------------------------------------------------------------------------------------------------
         Menu followers = new Menu("Followers");
@@ -559,7 +594,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                 attachMenu(follower);
             });
         }
-        menu.add(followers);
+        info.add(followers);
         // -------------------------------------------------------------------------------------------------------------
 
         Menu graph = new Menu("Compute graph");
@@ -581,39 +616,11 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                 attachMenu(node);
             });
         }
-        menu.add(graph);
-        menu.add("-");
+        info.add(graph);
+        info.add("-");
 
         // -------------------------------------------------------------------------------------------------------------
 
-        Menu script = new Menu("Generate script");
-
-        addMenuAction(script, "ImageJ Macro", (a) -> {generateScript(new MacroGenerator());});
-        script.add("-");
-        addMenuAction(script, "Icy Javascript", (a) -> {generateScript(new IcyJavaScriptGenerator());});
-        addMenuAction(script, "Matlab", (a) -> {generateScript(new MatlabGenerator());});
-        addMenuAction(script, "ImageJ Groovy", (a) -> {generateScript(new GroovyGenerator());});
-        addMenuAction(script, "ImageJ JavaScript", (a) -> {generateScript(new JavaScriptGenerator());});
-        addMenuAction(script, "ImageJ Jython", (a) -> {generateScript(new JythonGenerator());});
-        script.add("-");
-        addMenuAction(script, "Human readable protocol", (a) -> {generateScript(new HumanReadibleProtocolGenerator());});
-        addMenuAction(script, "clEsperanto Python", (a) -> {generateScript(new PyclesperantoGenerator(false));});
-        addMenuAction(script, "clEsperanto Python + Napari", (a) -> {generateScript(new PyclesperantoGenerator(true));});
-        menu.add(script);
-
-        if (IncubatorUtilities.resultIsBinaryImage(this)) {
-            menu.add("-");
-            addMenuAction(menu, "Optimize parameters (auto)", (a) -> {
-                optimize(false);
-            });
-            addMenuAction(menu, "Optimize parameters (config)", (a) -> {
-                optimize(true);
-            });
-        }
-
-
-
-        Menu info = new Menu("Info");
         addMenuAction(info,"GPU: " + CLIJx.getInstance().getGPUName(), (a) -> {
             IJ.log(CLIJx.clinfo());
         });
@@ -623,6 +630,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
             IJ.log(CLIJx.getInstance().reportMemory());
         });
 
+        // -------------------------------------------------------------------------------------------------------------
         menu.add("-");
 
         MenuItem auto_contrast_item = new MenuItem("Auto Brightness & Contrast: " + (auto_contrast?"ON":"OFF"));
@@ -678,6 +686,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         });
         return menu;
     }
+
 
     protected synchronized void enhanceContrast() {
         if (!auto_contrast) {
