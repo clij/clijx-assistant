@@ -162,6 +162,10 @@ public class Crop extends AbstractIncubatorPlugin {
         }
     }
 
+    public void refreshDialogFromArguments() {
+        // do nothing
+    }
+
 
     public static void main(String[] args) {
         new ImageJ();
