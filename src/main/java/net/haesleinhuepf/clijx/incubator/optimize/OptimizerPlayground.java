@@ -33,7 +33,7 @@ import org.apache.xmlgraphics.image.codec.util.ImageEncodeParam;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class OptimizerPlayground {
+class OptimizerPlayground {
     public static void main(String[] args) {
 
         new ImageJ();

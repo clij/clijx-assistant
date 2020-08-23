@@ -505,6 +505,9 @@ public class IncubatorUtilities {
         if (parameterName.toLowerCase().contains("long range")) {
             return small_step ? 64 : 256;
         }
+        if (parameterName.toLowerCase().contains("constant")) {
+            return small_step ? 10 : 100;
+        }
         return small_step ? 1 : 10;
     }
 

@@ -17,10 +17,7 @@ import net.haesleinhuepf.clij2.utilities.HasLicense;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.Crop;
 import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.ExtractChannel;
-import net.haesleinhuepf.clijx.incubator.optimize.AnnotationTool;
-import net.haesleinhuepf.clijx.incubator.optimize.BinaryImageFitnessFunction;
-import net.haesleinhuepf.clijx.incubator.optimize.OptimizationUtilities;
-import net.haesleinhuepf.clijx.incubator.optimize.Workflow;
+import net.haesleinhuepf.clijx.incubator.optimize.*;
 import net.haesleinhuepf.clijx.incubator.scriptgenerator.*;
 import net.haesleinhuepf.clijx.incubator.services.CLIJMacroPluginService;
 import net.haesleinhuepf.clijx.incubator.utilities.*;
@@ -42,7 +39,6 @@ import org.apache.commons.math3.optim.SimpleBounds;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.NelderMeadSimplex;
-import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizer;
 import org.apache.commons.math3.optim.univariate.UnivariatePointValuePair;
 
 import java.awt.*;
@@ -562,13 +558,19 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         // -------------------------------------------------------------------------------------------------------------
         Menu more_actions = new Menu("More actions");
         if (IncubatorUtilities.resultIsBinaryImage(this)) {
-            addMenuAction(more_actions, "Optimize parameters (auto)", (a) -> {
-                optimize(false);
+            addMenuAction(more_actions, "Optimize parameters (simplex, auto)", (a) -> {
+                optimize(new SimplexOptimizer(), false);
             });
-            addMenuAction(more_actions, "Optimize parameters (config)", (a) -> {
-                optimize(true);
+            addMenuAction(more_actions, "Optimize parameters (gradient descent, auto)", (a) -> {
+                optimize(new GradientDescentOptimizer(), false);
             });
             more_actions.add("-");
+            addMenuAction(more_actions, "Optimize parameters (simplex, configurable)", (a) -> {
+                optimize(new SimplexOptimizer((int)IJ.getNumber( "Range",6 )), true);
+            });
+            addMenuAction(more_actions, "Optimize parameters (gradient descent, configurable)", (a) -> {
+                optimize(new GradientDescentOptimizer((int)IJ.getNumber( "Range",6 )), true);
+            });
         }
 
         menu.add(more_actions);
@@ -932,14 +934,17 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         return plugin.getName().replace("CLIJ2_", "").replace("CLIJx_", "");
     }
 
-    public void optimize(boolean show_gui) {
+    public void optimize(Optimizer optimizer, boolean show_gui) {
         CLIJ2 clij2 = CLIJx.getInstance();
 
         // -------------------------------------------------------------------------------------------------------------
         // determine ground truth
         RoiManager rm = RoiManager.getRoiManager();
         if (rm.getCount() == 0) {
-            IJ.log("Please define reference ROIs in the ROI Manager.\nThese ROIs should have names starting with 'p' for positive and 'n' for negative.");
+            IJ.log("Please define reference ROIs in the ROI Manager.\n\n" +
+                    "These ROIs should have names starting with 'p' for positive and 'n' for negative.\n\n" +
+                            "The just activated annotation tool can help you with that: Use the left mouse button to annotate positive regions.\n" +
+                    "Additionally hold CTRL/CMD to annotate negative (background) regions.");
             Toolbar.addPlugInTool(new AnnotationTool());
             return;
         }
@@ -981,26 +986,12 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                 mask
         );
 
-        SimplexOptimizer optimizer = new SimplexOptimizer(-1, 1e-5);
-
         double[] current = f.getCurrent();
         System.out.println("Initial: " + Arrays.toString(current));
 
-        int iterations = 6;
-        for (int i = 0; i < iterations; i++) {
+        //current = Optimizers.optimizeSimplex(current, workflow, parameter_index_map, f);
+        current = optimizer.optimize(current, workflow, parameter_index_map, f);
 
-            NelderMeadSimplex simplex = OptimizationUtilities.makeOptimizer(f.getNumDimensions(), workflow.getNumericParameterNames(), parameter_index_map, Math.pow(2, iterations / 2 - i - 1));
-            //double[] lowerBounds = new double[simplex.getDimension()];
-            //double[] upperBounds = new double[simplex.getDimension()];
-            //for (int b = 0; b < upperBounds.length; b++) {
-            //    upperBounds[b] = Double.MAX_VALUE;
-            //}
-            //, new SimpleBounds(lowerBounds, upperBounds)
-            PointValuePair solution = optimizer.optimize(new MaxEval(1000), new InitialGuess(current), simplex, new ObjectiveFunction(f), GoalType.MINIMIZE);
-
-            current = solution.getKey();
-            System.out.println("Intermediate optimum: " + Arrays.toString(current));
-        }
 
         System.out.println("Optimum: ");
         f.value(current);

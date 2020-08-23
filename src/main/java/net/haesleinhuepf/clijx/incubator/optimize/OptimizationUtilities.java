@@ -137,7 +137,7 @@ public class OptimizationUtilities {
     }
 
 
-    public static NelderMeadSimplex makeOptimizer(int numDimensions, String[] numericParameterNames, int[] parameter_index_map, double factor) {
+    static double[] range(int numDimensions, String[] numericParameterNames, int[] parameter_index_map, double factor) {
         double[] steps = new double[numDimensions];
         for (int i = 0; i < steps.length; i++) {
             steps[i] = 1;
@@ -145,14 +145,14 @@ public class OptimizationUtilities {
 
         for (int j = 0; j < parameter_index_map.length; j++) {
             int i = parameter_index_map[j];
+            System.out.println("param: " + j + " -> " + i);
             if (i >= 0) {
-                steps[i] = IncubatorUtilities.parmeterNameToStepSizeSuggestion(numericParameterNames[i], true) * factor;
+                System.out.println("name: " + numericParameterNames[j]);
+                steps[i] = IncubatorUtilities.parmeterNameToStepSizeSuggestion(numericParameterNames[j], true) * factor;
+                System.out.println("step: " + steps[i]);
             }
         }
-
-        System.out.println("Step lengths: " + Arrays.toString(steps) );
-
-        NelderMeadSimplex simplex = new NelderMeadSimplex(steps);
-        return simplex;
+        return steps;
     }
+
 }

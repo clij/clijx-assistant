@@ -24,7 +24,8 @@ public class IncubatorPlayground implements PlugInFilter {
 
         //ImagePlus imp = IJ.openImage("C:/structure/data/spim_TL18_Angle0-1.tif");
         //ImagePlus imp = IJ.openImage("D:/structure/data/Irene/ISB200714_well5_1pos_3h_MyosinGFP-small.tif");
-        ImagePlus imp = IJ.openImage("C:/structure/data/mitosis.tif");
+        //ImagePlus imp = IJ.openImage("C:/structure/data/mitosis.tif");
+        ImagePlus imp = IJ.openImage("C:/structure/data/blobs.tif");
         imp.show();
 
         //ImagePlus imp1 = IJ.openImage("C:\\structure\\teaching\\lecture_applied_bioimage_analysis_2020\\12_Volumetric_image_data\\data\\000200.raw.tif");
