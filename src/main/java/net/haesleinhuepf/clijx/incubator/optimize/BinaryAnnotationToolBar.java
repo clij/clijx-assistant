@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 
 public class BinaryAnnotationToolBar extends Dialog {
     static Color foregroundColor = Color.green;
@@ -143,25 +144,28 @@ public class BinaryAnnotationToolBar extends Dialog {
 
     private void reposition() {
         //IJ.log(IJ.getToolName());
+        try {
 
-        if (BinaryAnnotationTool.imp == null) {
-            setVisible(false);
-            return;
+            if (BinaryAnnotationTool.imp == null) {
+                setVisible(false);
+                return;
+            }
+            if (BinaryAnnotationTool.imp.getWindow() == null || !BinaryAnnotationTool.imp.getWindow().isVisible()) {
+                setVisible(false);
+                return;
+            }
+
+
+            if (IJ.getToolName().compareTo(BinaryAnnotationTool.TOOL_NAME) == 0) {
+                setVisible(true);
+                //IJ.log("Set pos" + BinaryAnnotationTool.imp.getWindow().getX());
+                this.setLocation(Math.max(BinaryAnnotationTool.imp.getWindow().getX() - getWidth(), 0), BinaryAnnotationTool.imp.getWindow().getY() + 45);
+            } else {
+                setVisible(false);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        if (BinaryAnnotationTool.imp.getWindow() == null || !BinaryAnnotationTool.imp.getWindow().isVisible()) {
-            setVisible(false);
-            return;
-        }
-
-
-        if (IJ.getToolName().compareTo(BinaryAnnotationTool.TOOL_NAME) == 0) {
-            setVisible(true);
-            //IJ.log("Set pos" + BinaryAnnotationTool.imp.getWindow().getX());
-            this.setLocation(Math.max(BinaryAnnotationTool.imp.getWindow().getX() - 45, 0), BinaryAnnotationTool.imp.getWindow().getY() + 45);
-        } else {
-            setVisible(false);
-        }
-
     }
 
     void updateVisualisation() {
@@ -192,5 +196,11 @@ public class BinaryAnnotationToolBar extends Dialog {
         imp.show();
 
         Toolbar.addPlugInTool(new BinaryAnnotationTool());
+    }
+
+    public void setVisible(boolean value) {
+        if (isVisible() != value) {
+            super.setVisible(value);
+        }
     }
 }

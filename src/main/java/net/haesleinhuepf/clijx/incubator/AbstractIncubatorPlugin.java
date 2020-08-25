@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.util.*;
 
 import static net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities.parmeterNameToStepSizeSuggestion;
+import static net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities.resultIsBinaryImage;
 
 public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, IncubatorPlugin {
 
@@ -686,11 +687,16 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
         }
 
         paused = true;
+        boolean binary = resultIsBinaryImage(this);
         int c_before = my_target.getC();
         for (int c = 0; c < my_target.getNChannels(); c++) {
             my_target.setC(c);
-            IJ.resetMinAndMax(my_target);
-            IJ.run(my_target, "Enhance Contrast", "saturated=0.35");
+            if (binary) {
+                IJ.setMinAndMax(my_target, 0, 1);
+            } else {
+                IJ.resetMinAndMax(my_target);
+                IJ.run(my_target, "Enhance Contrast", "saturated=0.35");
+            }
         }
         my_target.setC(c_before);
         paused = false;
