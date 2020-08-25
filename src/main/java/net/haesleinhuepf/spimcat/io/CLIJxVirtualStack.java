@@ -36,12 +36,12 @@ public class CLIJxVirtualStack extends VirtualStack {
                         ImageStack stack = imp.getStack();
                         if (imp.getNChannels() == 1) {
                             ClearCLBuffer buffer = ((CLIJxVirtualStack) stack).getBuffer(0);
-                            imp.setStack(CLIJx.getInstance().pull(buffer).getStack());
+                            //imp.setStack(CLIJx.getInstance().pull(buffer).getStack());
                             buffer.close();
                         } else {
 
-                            ImagePlus imp2 = new Duplicator().run(imp, 1, imp.getNChannels(), 1, imp.getNSlices(), 1, imp.getNFrames());
-                            imp.setStack(imp2.getStack());
+                            //ImagePlus imp2 = new Duplicator().run(imp, 1, imp.getNChannels(), 1, imp.getNSlices(), 1, imp.getNFrames());
+                            //imp.setStack(imp2.getStack());
 
                             for (int c = 0; c < imp.getNChannels(); c++) {
                                 ClearCLBuffer buffer = ((CLIJxVirtualStack) stack).getBuffer(c);
