@@ -34,7 +34,7 @@ public class OptimizationUtilities {
                         groundTruthImp.setRoi(roi);
                         //groundTruthImp.setPosition(roi.getPosition());
                         IJ.run(groundTruthImp, "Multiply...", "value=0");
-                        IJ.run(groundTruthImp, "Enlarge...", "enlarge=1");
+                        //IJ.run(groundTruthImp, "Enlarge...", "enlarge=1");
                         IJ.run(groundTruthImp, "Add...", "value=" + (name.startsWith("p") ? 2 : 1));
                     } else {
                         System.out.println("Roi area 0");
@@ -43,7 +43,7 @@ public class OptimizationUtilities {
             }
         }
         ClearCLBuffer ground_truth = clij2.push(groundTruthImp);
-        // clij2.show(ground_truth, "gr");
+        //clij2.show(ground_truth, "gr");
         return ground_truth;
     }
 

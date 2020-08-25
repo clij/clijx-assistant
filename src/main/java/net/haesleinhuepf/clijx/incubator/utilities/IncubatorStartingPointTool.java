@@ -21,7 +21,6 @@ public class IncubatorStartingPointTool extends PlugInTool {
                 }
                 if (eventID == IJEventListener.TOOL_CHANGED) {
                     if (IJ.getToolName().compareTo(getToolName()) == 0 ) {
-                        System.out.println("Start acquisition");
                         new IncubatorStartingPoint().run("");
                     }
                 }

@@ -9,8 +9,10 @@ import net.haesleinhuepf.clij2.plugins.PullToROIManager;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.*;
 import net.haesleinhuepf.clijx.incubator.AbstractIncubatorPlugin;
+import net.haesleinhuepf.clijx.incubator.optimize.BinaryAnnotationTool;
 import net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfDiamond;
 
+import javax.tools.Tool;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -460,7 +462,7 @@ public class IncubatorUtilities {
         ignoreEvent = true;
         //Toolbar.removeMacroTools();
 
-
+        Toolbar.addPlugInTool(new BinaryAnnotationTool());
         Toolbar.addPlugInTool(new IncubatorStartingPointTool());
 
         ignoreEvent = false;

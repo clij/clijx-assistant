@@ -15,7 +15,6 @@ import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clij2.utilities.HasAuthor;
 import net.haesleinhuepf.clij2.utilities.HasLicense;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
-import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.Crop;
 import net.haesleinhuepf.clijx.incubator.interactive.handcrafted.ExtractChannel;
 import net.haesleinhuepf.clijx.incubator.optimize.*;
 import net.haesleinhuepf.clijx.incubator.scriptgenerator.*;
@@ -32,22 +31,12 @@ import net.haesleinhuepf.clijx.incubator.services.MenuService;
 import net.haesleinhuepf.clijx.incubator.services.SuggestionService;
 import net.haesleinhuepf.clijx.utilities.AbstractCLIJxPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
-import org.apache.commons.math3.optim.InitialGuess;
-import org.apache.commons.math3.optim.MaxEval;
-import org.apache.commons.math3.optim.PointValuePair;
-import org.apache.commons.math3.optim.SimpleBounds;
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
-import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.NelderMeadSimplex;
-import org.apache.commons.math3.optim.univariate.UnivariatePointValuePair;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.*;
 
 import static net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities.parmeterNameToStepSizeSuggestion;
@@ -946,7 +935,7 @@ public abstract class AbstractIncubatorPlugin implements ImageListener, PlugIn, 
                     "These ROIs should have names starting with 'p' for positive and 'n' for negative.\n\n" +
                             "The just activated annotation tool can help you with that: Use the left mouse button to annotate positive regions.\n" +
                     "Additionally hold CTRL/CMD to annotate negative (background) regions.");
-            Toolbar.addPlugInTool(new AnnotationTool());
+            Toolbar.addPlugInTool(new BinaryAnnotationTool());
             return;
         }
         ClearCLBuffer ground_truth = OptimizationUtilities.makeGroundTruth(clij2, my_target.getWidth(), my_target.getHeight(), my_target.getNSlices(), rm);
