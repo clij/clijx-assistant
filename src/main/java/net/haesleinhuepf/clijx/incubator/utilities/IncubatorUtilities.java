@@ -6,6 +6,7 @@ import ij.gui.Toolbar;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.plugins.PullToROIManager;
+import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.*;
 import net.haesleinhuepf.clijx.incubator.AbstractIncubatorPlugin;
@@ -482,6 +483,10 @@ public class IncubatorUtilities {
 
     public static boolean resultIsBinaryImage(AbstractIncubatorPlugin abstractIncubatorPlugin) {
         String name = abstractIncubatorPlugin.getName().toLowerCase();
+        if (abstractIncubatorPlugin.getCLIJMacroPlugin() != null && abstractIncubatorPlugin.getCLIJMacroPlugin() instanceof IsCategorized) {
+            name = name + "," + ((IsCategorized) abstractIncubatorPlugin.getCLIJMacroPlugin()).getCategories().toLowerCase();
+        }
+
         return name.contains("threshold") ||
                 name.contains("binary") ||
                 name.contains("watershed") ||
