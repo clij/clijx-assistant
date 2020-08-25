@@ -11,4 +11,4 @@ Several languages are supported:
 **Please note:** While CLIJx-Incubator is running, the GPU may be busy and full of images. 
 Thus, before running your generated macro, close all CLIJx-Incubator windows.
 
-Back to [CLIJx-Incubator](https://clij.github.io/incubator)
+Back to [CLIJx-Assistant](https://clij.github.io/assistant)

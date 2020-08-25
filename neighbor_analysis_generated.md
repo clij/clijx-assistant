@@ -3,6 +3,9 @@
 todo... :-)
 
 ![Image](images/neighbor_analysis.png)
+
+
+Back to [CLIJx-Incubator](https://clij.github.io/incubator)
 * [Average Distance Of N Closest Neighbors Map](https://clij.github.io/clij2-docs/reference_averageDistanceOfNClosestNeighborsMap)
 Takes a label map, determines distances between all centroids and replaces every label with the average distance to the n closest neighboring labels.
 
@@ -98,4 +101,4 @@ Takes a label map, determines which labels touch and replaces every label with t
 26 operations listed.
 
 
-Back to [CLIJx-Incubator](https://clij.github.io/incubator)
+Back to [CLIJx-Assistant](https://clij.github.io/assistant)

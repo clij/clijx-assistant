@@ -1,0 +1,67 @@
+package net.haesleinhuepf.clijx.assistant.interactive.handcrafted;
+
+import ij.gui.GenericDialog;
+import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij2.plugins.AutoThresholderImageJ1;
+import net.haesleinhuepf.clijx.assistant.AbstracAssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
+import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
+import org.scijava.plugin.Plugin;
+
+import java.awt.*;
+
+@Plugin(type = AssistantGUIPlugin.class)
+public class AutomaticThreshold extends AbstracAssistantGUIPlugin {
+
+    Choice choice = null;
+
+    public AutomaticThreshold() {
+        super(new net.haesleinhuepf.clij2.plugins.AutomaticThreshold());
+    }
+
+    @Override
+    protected GenericDialog buildNonModalDialog(Frame parent) {
+        GenericDialog gd = new GenericDialog(AssistantUtilities.niceName(this.getClass().getSimpleName()));
+        gd.addChoice("Threshold algorithm", AutoThresholderImageJ1.getMethods(), "Default" );
+
+        choice = (Choice) gd.getChoices().get(0);
+
+        return gd;
+    }
+
+    ClearCLBuffer[] result = null;
+    public synchronized void refresh()
+    {
+        ClearCLBuffer[] pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
+        String algorithm = "";
+        if (choice != null) {
+            int index = choice.getSelectedIndex();
+            if (index >= 0) {
+                algorithm = AutoThresholderImageJ1.getMethods()[index];
+            }
+        }
+
+        net.haesleinhuepf.clij2.plugins.AutomaticThreshold plugin = (net.haesleinhuepf.clij2.plugins.AutomaticThreshold) getCLIJMacroPlugin();
+
+        args = new Object[] {
+                pushed[0],
+                null,
+                algorithm
+        };
+        plugin.setArgs(args);
+
+        if (result == null) {
+            result = createOutputBufferFromSource(new ClearCLBuffer[]{pushed[0]});
+        }
+        args[1] = result[0];
+        executeCL(pushed, result);
+        cleanup(my_source, pushed);
+
+        setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
+        my_target.setTitle("Thresholded (" + algorithm + ") " + my_source.getTitle());
+        my_target.setDisplayRange(0, 1);
+        my_target.updateAndDraw();
+    }
+
+}

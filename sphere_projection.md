@@ -50,4 +50,4 @@ If the maximum-Z-projection looks like this, the center is on the wrong end of t
 [Image data source: Daniela Vorkel, Myers lab, CSBD / MPI CBG]
 
 
-Back to [CLIJx-Incubator](https://clij.github.io/incubator)
+Back to [CLIJx-Assistant](https://clij.github.io/assistant)

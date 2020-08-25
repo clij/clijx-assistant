@@ -1,4 +1,4 @@
-# Getting started CLIJx-incubating image processing workflows
+# Getting started desinging image processing workflows with the CLIJx Assistant
 Open your 3D+channel+time data set. Consider opening it as [virtual stacks](https://imagej.nih.gov/ij/docs/guide/146-8.html)
 if it's huge. Afterwards, activate CLIJx-Incubator by clicking on its tool icon.
 
@@ -6,7 +6,7 @@ if it's huge. Afterwards, activate CLIJx-Incubator by clicking on its tool icon.
 
 ## Building workflows - step by step
 CLIJx-Incubator has a built-in suggestions of what to do next: 
-Just right click in any image that has been incubated.
+Just right click in any image that has the assistant attached.
 
 ![Image](images/suggestion_make_isotropic.png) 
 [Image data source: Irene Seijo Barandiaran, Grapin-Botton lab, MPI CBG]
@@ -29,4 +29,4 @@ You can use ImageJs `Duplicate...` menu or the built in menu:
 ![Image](images/interoperability_imagej.png)
 
 
-Back to [CLIJx-Incubator](https://clij.github.io/incubator)
+Back to [CLIJx-Assistant](https://clij.github.io/assistant)

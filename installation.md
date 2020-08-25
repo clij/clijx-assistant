@@ -1,5 +1,5 @@
-# CLIJx-Incubator installation instructions
-CLIJx-Incubator is under development. Please install it only in a separate Fiji installation. 
+# CLIJx-Assistant installation instructions
+CLIJx-Assistant is under development. Please install it only in a separate Fiji installation. 
 Do not use it for routine research yet. Planned release is early 2021. Stay tuned.
 
 * Download and unpack [Fiji](https://fiji.sc)
@@ -58,4 +58,4 @@ The menu `Plugins > ImageJ on GPU (CLIJx) > Memory Display` allows you to overvi
 
 ![Image](images/memory_display.png)
 
-Back to [CLIJx-Incubator](https://clij.github.io/clincubator)
+Back to [CLIJx-Assistant](https://clij.github.io/assistant)

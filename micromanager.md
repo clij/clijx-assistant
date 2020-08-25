@@ -7,7 +7,7 @@ To install CLIJx-Incubator to [MicroManager](), download a recent MicroManager g
 [clij-coremem](https://github.com/clij/clij2/releases/download/2.0.0.21/clij-coremem-2.0.0.10.jar),
 [clijx_](https://github.com/clij/clijx/releases/download/0.29.1.3/clijx_-0.29.1.3.jar)
  and
-[clijx-incubator](https://sites.imagej.net/clincubator/plugins/clijx-incubator_-0.2.2.4.jar-20200819215628). 
+[clijx-assistant](https://sites.imagej.net/clincubator/plugins/clijx-incubator_-0.2.2.4.jar-20200819215628). 
 Remove the number by the end of the filename, so that they are all end with .jar. 
 Copy the .jar files to you MicroManager installation folder `/plugins/Micro-Manager/`. 
 Within this folder, please delete older versions such as `clij-clearcl-0.10.0` and `clij-coremem-0.6.0`.
@@ -23,4 +23,4 @@ As soon as you started acquisition, execute these two menus:
 [Download video](images/incubator_generate_macro.mp4) [Image data source: Daniela Vorkel, Myers lab, CSBD / MPI CBG]
 
 
-Back to [CLIJx-Incubator](https://clij.github.io/incubator)
+Back to [CLIJx-Assistant](https://clij.github.io/assistant)

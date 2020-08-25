@@ -12,7 +12,6 @@ When annotations are ready, click the "Optimize parameters" menu:
 [Download video](images/optimize.mp4) [Image data source: Broad BioImage Benchmark collection](https://bbbc.broadinstitute.org/BBBC008)
 
 Note: For good scientific practice, please save the annotations and the protocol of the analysis. 
-The latter can be done by [exporting a script or human readable workflow](https://clij.github.io/incubator/macro_export).
+The latter can be done by [exporting a script or human readable workflow](https://clij.github.io/assistant/macro_export).
 
-Back to [CLIJx-Incubator](https://clij.github.io/incubator)
-
+Back to [CLIJx-Assistant](https://clij.github.io/assistant)

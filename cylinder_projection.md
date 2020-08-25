@@ -7,7 +7,7 @@ The cylinder projection is typically used to project intensities from a spherica
 When applying cylinder projections to image stacks, a rigid dransform in advance is helpful to have control of the position and tilt of your sample in projected space.
 
 
-Open your time lapse data set. [Start the CLIJx-Incubator](https://clij.github.io/incubator/getting_started) and follow these steps:
+Open your time lapse data set. [Start the CLIJx-Assistant](https://clij.github.io/assistant/getting_started) and follow these steps:
 
 * Your dataset
   * CLIJx-Incubator Starting point
@@ -35,4 +35,4 @@ In this case, you may also want to move the projection center to 0.
 
 A flip operation may also make sense in advance to reverse the order of the image in the stack.
 
-Back to [CLIJx-Incubator](https://clij.github.io/incubator)
+Back to [CLIJx-Assistant](https://clij.github.io/assistant)

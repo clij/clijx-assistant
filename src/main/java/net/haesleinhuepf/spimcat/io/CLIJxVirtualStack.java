@@ -1,16 +1,11 @@
 package net.haesleinhuepf.spimcat.io;
 
 import ij.*;
-import ij.gui.Roi;
 import ij.plugin.Duplicator;
 import ij.plugin.HyperStackConverter;
 import ij.process.ImageProcessor;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
-import net.haesleinhuepf.clij2.plugins.Clear;
 import net.haesleinhuepf.clijx.CLIJx;
-import net.haesleinhuepf.clijx.incubator.utilities.IncubatorUtilities;
-
-import java.awt.*;
 
 public class CLIJxVirtualStack extends VirtualStack {
     private ClearCLBuffer[] buffer;
@@ -47,7 +42,6 @@ public class CLIJxVirtualStack extends VirtualStack {
                                 ClearCLBuffer buffer = ((CLIJxVirtualStack) stack).getBuffer(c);
                                 buffer.close();
                             }
-
                         }
                     }
                 }

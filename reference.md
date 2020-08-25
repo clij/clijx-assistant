@@ -1,4 +1,4 @@
-## CLIIJx-incubator operations
+## CLIIJx-Assistant operations
 This is the list of currently supported [CLIJ2](https://clij.github.io/) and [CLIJx](https://clij.github.io/clijx) operations.
 
 Please note: CLIJx-Incubator is under development. Hence, this list is subject to change.
@@ -453,9 +453,12 @@ Takes a binary image, labels connected components and dilates the regions using 
 * [Voronoi Octagon](https://clij.github.io/clij2-docs/reference_voronoiOctagon)
 Takes a binary image and dilates the regions using a octagon shape until they touch. 
 
+* [Within Intensity Range](https://clij.github.io/clij2-docs/reference_withinIntensityRange)
+Generates a binary image where pixels with intensity within the given range are 1 and others are 0.
 
 
-137 operations listed.
+
+138 operations listed.
 
 
-Back to [CLIJx-Incubator](https://clij.github.io/incubator)
+Back to [CLIJx-Assistant](https://clij.github.io/assistant)

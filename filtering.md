@@ -22,4 +22,4 @@ such as thresholding. Instant feedback allows you to study consequences of diffe
 <iframe src="images/incubator_filtering_with_thresholding.mp4" width="540" height="540"></iframe>
 [Download video](images/incubator_filtering_with_thresholding.mp4) 
 
-Back to [CLIJx-Incubator](https://clij.github.io/incubator)
+Back to [CLIJx-Assistant](https://clij.github.io/assistant)
