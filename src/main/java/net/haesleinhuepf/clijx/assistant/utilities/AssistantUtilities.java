@@ -9,7 +9,7 @@ import net.haesleinhuepf.clij2.plugins.PullToROIManager;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.*;
-import net.haesleinhuepf.clijx.assistant.AbstracAssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.optimize.BinaryAnnotationTool;
 
 import java.text.SimpleDateFormat;
@@ -479,10 +479,10 @@ public class AssistantUtilities {
         );
     }
 
-    public static boolean resultIsBinaryImage(AbstracAssistantGUIPlugin abstracAssistantGUIPlugin) {
-        String name = abstracAssistantGUIPlugin.getName().toLowerCase();
-        if (abstracAssistantGUIPlugin.getCLIJMacroPlugin() != null && abstracAssistantGUIPlugin.getCLIJMacroPlugin() instanceof IsCategorized) {
-            name = name + "," + ((IsCategorized) abstracAssistantGUIPlugin.getCLIJMacroPlugin()).getCategories().toLowerCase();
+    public static boolean resultIsBinaryImage(AbstractAssistantGUIPlugin abstractAssistantGUIPlugin) {
+        String name = abstractAssistantGUIPlugin.getName().toLowerCase();
+        if (abstractAssistantGUIPlugin.getCLIJMacroPlugin() != null && abstractAssistantGUIPlugin.getCLIJMacroPlugin() instanceof IsCategorized) {
+            name = name + "," + ((IsCategorized) abstractAssistantGUIPlugin.getCLIJMacroPlugin()).getCategories().toLowerCase();
         }
 
         return name.contains("threshold") ||

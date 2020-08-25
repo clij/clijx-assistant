@@ -14,7 +14,7 @@ import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = AssistantGUIPlugin.class)
-public class AssistantGUIStartingPoint extends AbstracAssistantGUIPlugin {
+public class AssistantGUIStartingPoint extends AbstractAssistantGUIPlugin {
 
     public AssistantGUIStartingPoint(){
         super(new Copy());

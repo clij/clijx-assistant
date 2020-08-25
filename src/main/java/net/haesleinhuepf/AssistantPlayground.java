@@ -13,7 +13,7 @@ import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.MakeIsotropic;
 
 import java.io.FileNotFoundException;
 
-public class AssitantPlayground implements PlugInFilter {
+public class AssistantPlayground implements PlugInFilter {
 
     public static void main(String... args) throws FileNotFoundException {
         new ImageJ();
@@ -41,7 +41,7 @@ public class AssitantPlayground implements PlugInFilter {
 */
         //if (true) return;
         new AssistantGUIStartingPoint().run("");
-        //new AssitantPlayground().run(null);
+        //new AssistantPlayground().run(null);
     }
 
     @Override

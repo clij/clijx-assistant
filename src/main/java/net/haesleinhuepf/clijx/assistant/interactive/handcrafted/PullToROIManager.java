@@ -8,7 +8,7 @@ import ij.plugin.frame.RoiManager;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij2.plugins.AutoThresholderImageJ1;
 import net.haesleinhuepf.clijx.CLIJx;
-import net.haesleinhuepf.clijx.assistant.AbstracAssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
@@ -17,7 +17,7 @@ import org.scijava.plugin.Plugin;
 import java.awt.*;
 
 @Plugin(type = AssistantGUIPlugin.class)
-public class PullToROIManager extends AbstracAssistantGUIPlugin {
+public class PullToROIManager extends AbstractAssistantGUIPlugin {
 
     Choice choice = null;
     String[] titles = null;

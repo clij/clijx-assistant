@@ -5,7 +5,7 @@ import ij.gui.GenericDialog;
 import ij.measure.Calibration;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.AbstracAssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
@@ -13,7 +13,7 @@ import org.scijava.plugin.Plugin;
 import java.awt.*;
 
 @Plugin(type = AssistantGUIPlugin.class)
-public class MakeIsotropic extends AbstracAssistantGUIPlugin {
+public class MakeIsotropic extends AbstractAssistantGUIPlugin {
 
     float new_voxel_size_in_microns = 1;
 

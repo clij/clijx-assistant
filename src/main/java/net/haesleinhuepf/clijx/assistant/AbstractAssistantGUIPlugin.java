@@ -42,7 +42,7 @@ import java.util.*;
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.parmeterNameToStepSizeSuggestion;
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.resultIsBinaryImage;
 
-public abstract class AbstracAssistantGUIPlugin implements ImageListener, PlugIn, AssistantGUIPlugin {
+public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugIn, AssistantGUIPlugin {
 
     public final static String online_documentation_link = "https://clij.github.io/clij2-docs/reference";
     private final static String online_website_link = "https://clij.github.io/incubator";
@@ -64,7 +64,7 @@ public abstract class AbstracAssistantGUIPlugin implements ImageListener, PlugIn
     boolean auto_contrast = true;
     static boolean auto_position = true;
 
-    public AbstracAssistantGUIPlugin(CLIJMacroPlugin plugin) {
+    public AbstractAssistantGUIPlugin(CLIJMacroPlugin plugin) {
         setCLIJMacroPlugin(plugin);
     }
 
@@ -432,7 +432,7 @@ public abstract class AbstracAssistantGUIPlugin implements ImageListener, PlugIn
             int toolID = Toolbar.getToolId();
             int flags = e.getModifiers();
             if (toolID != Toolbar.MAGNIFIER && (e.isPopupTrigger() || ( (flags & Event.META_MASK) != 0))) {
-                AbstracAssistantGUIPlugin incplugin = ((AbstracAssistantGUIPlugin) AssistantGUIPluginRegistry.getInstance().getPlugin(imp));
+                AbstractAssistantGUIPlugin incplugin = ((AbstractAssistantGUIPlugin) AssistantGUIPluginRegistry.getInstance().getPlugin(imp));
                 if (incplugin != null) {
                     incplugin.handlePopupMenu(e);
                 }

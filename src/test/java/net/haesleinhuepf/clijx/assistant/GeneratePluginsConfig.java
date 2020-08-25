@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import static net.haesleinhuepf.clijx.assistant.AbstracAssistantGUIPlugin.online_documentation_link;
+import static net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin.online_documentation_link;
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.niceName;
 
 public class GeneratePluginsConfig {

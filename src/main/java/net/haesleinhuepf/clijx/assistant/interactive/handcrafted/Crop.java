@@ -6,7 +6,7 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.Roi;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
-import net.haesleinhuepf.clijx.assistant.AbstracAssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
@@ -17,7 +17,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @Plugin(type = AssistantGUIPlugin.class)
-public class Crop extends AbstracAssistantGUIPlugin {
+public class Crop extends AbstractAssistantGUIPlugin {
 
     int width_in_pixels = 256;
     int height_in_pixels = 256;

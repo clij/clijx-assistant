@@ -3,7 +3,7 @@ package net.haesleinhuepf.clijx.assistant.interactive.handcrafted;
 import ij.IJ;
 import ij.gui.GenericDialog;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.AbstracAssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
@@ -11,7 +11,7 @@ import org.scijava.plugin.Plugin;
 import java.awt.*;
 
 @Plugin(type = AssistantGUIPlugin.class)
-public class CylinderTransform extends AbstracAssistantGUIPlugin {
+public class CylinderTransform extends AbstractAssistantGUIPlugin {
 
     int number_of_angles = 360;
     float delta_angle_in_degrees = 1;

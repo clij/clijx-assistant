@@ -138,7 +138,7 @@ public class BinaryAnnotationTool extends PlugInTool implements ImageListener {
                 double bx2 = polygon2.xpoints[j - 1];
                 double by2 = polygon2.ypoints[j - 1];
 
-                if (Line2D.linesIntersect(ax1, ax1, ax2, ay2, bx1, by1, bx2, by2)) {
+                if (Line2D.linesIntersect(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2)) {
                     return true;
                 }
             }

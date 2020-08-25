@@ -3,7 +3,7 @@ package net.haesleinhuepf.clijx.assistant.interactive.handcrafted;
 import ij.gui.GenericDialog;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij2.plugins.Copy;
-import net.haesleinhuepf.clijx.assistant.AbstracAssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
@@ -12,7 +12,7 @@ import org.scijava.plugin.Plugin;
 import java.awt.*;
 
 @Plugin(type = AssistantGUIPlugin.class)
-public class ExtractChannel extends AbstracAssistantGUIPlugin {
+public class ExtractChannel extends AbstractAssistantGUIPlugin {
 
     TextField channel_number = null;
 
