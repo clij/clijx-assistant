@@ -28,6 +28,7 @@ Stay tuned.
 * Cell segmentation
   * [Nuclei segmentation](https://clij.github.io/assistant/segmentation_nuclei)
   * [Cell segmentation based on membranes](https://clij.github.io/assistant/segmentation_cells)
+  * [Pixel classifier (Weka)](https://clij.github.io/assistant/clijx_weka_pixel_classifier)
 * [Cell neighbor analysis](https://clij.github.io/assistant/neighbor_analysis_generated)
 
 * [Parameter optimization](https://clij.github.io/assistant/parameter_optimization)
