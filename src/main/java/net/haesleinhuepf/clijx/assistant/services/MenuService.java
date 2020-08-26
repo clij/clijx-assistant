@@ -7,6 +7,7 @@ import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class MenuService {
     ArrayList<String> names = new ArrayList<>();
@@ -22,7 +23,14 @@ public class MenuService {
             }
         }
 
-        Collections.sort(names);
+        Collections.sort(names, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                o1 = o1.replace("CLIJ2", "").replace("CLIJx", "");
+                o2 = o2.replace("CLIJ2", "").replace("CLIJx", "");
+                return o1.compareTo(o2);
+            }
+        });
     }
 
     private static MenuService instance = null;
