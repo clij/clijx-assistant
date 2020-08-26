@@ -692,8 +692,10 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         for (int c = 0; c < my_target.getNChannels(); c++) {
             my_target.setC(c);
             if (binary) {
+                System.out.println("Set 0 1");
                 IJ.setMinAndMax(my_target, 0, 1);
             } else {
+                System.out.println("Set Auto");
                 IJ.resetMinAndMax(my_target);
                 IJ.run(my_target, "Enhance Contrast", "saturated=0.35");
             }
@@ -939,8 +941,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         if (rm.getCount() == 0) {
             IJ.log("Please define reference ROIs in the ROI Manager.\n\n" +
                     "These ROIs should have names starting with 'p' for positive and 'n' for negative.\n\n" +
-                            "The just activated annotation tool can help you with that: Use the left mouse button to annotate positive regions.\n" +
-                    "Additionally hold CTRL/CMD to annotate negative (background) regions.");
+                            "The just activated annotation tool can help you with that.");
             Toolbar.addPlugInTool(new BinaryAnnotationTool());
             return;
         }

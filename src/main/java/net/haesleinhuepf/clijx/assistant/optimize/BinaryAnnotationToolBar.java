@@ -45,7 +45,7 @@ public class BinaryAnnotationToolBar extends Dialog {
         setLayout(new FlowLayout());
         setUndecorated(true);
 
-        setSize(45, 135);
+        //setSize(45, 235);
 
         long[] lastTimeClicked = {-1};
         long double_click_delta_time = 1000;
@@ -127,6 +127,7 @@ public class BinaryAnnotationToolBar extends Dialog {
 
 
         reposition();
+        updateVisualisation();
         //setVisible(true);
         //requestFocus();
 
