@@ -33,6 +33,9 @@ Fills holes (pixels with value 0 surrounded by pixels with value 1) in a binary 
 Computes a binary image (containing pixel values 0 and 1) from an image X by negating its pixel values
 x using the binary NOT operator !
 
+* [Binary Weka Pixel Classifier](https://clij.github.io/clij2-docs/reference_binaryWekaPixelClassifier)
+Applies a pre-trained CLIJx-Weka model to a 2D image. 
+
 * [Bottom Hat](https://clij.github.io/clij2-docs/reference_bottomHatBox)
 Apply a bottom-hat filter for background subtraction to the input image.
 
@@ -458,7 +461,7 @@ Generates a binary image where pixels with intensity within the given range are 
 
 
 
-138 operations listed.
+139 operations listed.
 
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
