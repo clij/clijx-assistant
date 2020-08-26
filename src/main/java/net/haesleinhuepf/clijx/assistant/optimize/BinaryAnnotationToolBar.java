@@ -51,7 +51,7 @@ public class BinaryAnnotationToolBar extends Dialog {
         long double_click_delta_time = 1000;
 
         {
-            foregroundButton = new JToggleButton("F");
+            foregroundButton = new JToggleButton("P");
             foregroundButton.setSize(45, 45);
             foregroundButton.addActionListener(new ActionListener() {
                 @Override
@@ -73,7 +73,7 @@ public class BinaryAnnotationToolBar extends Dialog {
         }
 
         {
-            backgroundButton = new JToggleButton("B");
+            backgroundButton = new JToggleButton("N");
             backgroundButton.setSize(45, 45);
             backgroundButton.addActionListener(new ActionListener() {
                 @Override
