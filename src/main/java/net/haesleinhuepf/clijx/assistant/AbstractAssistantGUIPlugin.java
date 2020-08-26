@@ -31,6 +31,7 @@ import net.haesleinhuepf.clijx.assistant.services.MenuService;
 import net.haesleinhuepf.clijx.assistant.services.SuggestionService;
 import net.haesleinhuepf.clijx.utilities.AbstractCLIJxPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
+import org.scijava.util.VersionUtils;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -549,17 +550,17 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         Menu more_actions = new Menu("More actions");
         if (AssistantUtilities.resultIsBinaryImage(this)) {
             addMenuAction(more_actions, "Optimize parameters (simplex, auto)", (a) -> {
-                optimize(new SimplexOptimizer(), false);
+                optimize(new SimplexOptimizer(), new IJLogger(), false);
             });
             addMenuAction(more_actions, "Optimize parameters (gradient descent, auto)", (a) -> {
-                optimize(new GradientDescentOptimizer(), false);
+                optimize(new GradientDescentOptimizer(), new IJLogger(), false);
             });
             more_actions.add("-");
             addMenuAction(more_actions, "Optimize parameters (simplex, configurable)", (a) -> {
-                optimize(new SimplexOptimizer((int)IJ.getNumber( "Range",6 )), true);
+                optimize(new SimplexOptimizer((int)IJ.getNumber( "Range",6 )), new IJLogger(), true);
             });
             addMenuAction(more_actions, "Optimize parameters (gradient descent, configurable)", (a) -> {
-                optimize(new GradientDescentOptimizer((int)IJ.getNumber( "Range",6 )), true);
+                optimize(new GradientDescentOptimizer((int)IJ.getNumber( "Range",6 )), new IJLogger(), true);
             });
         }
 
@@ -932,8 +933,13 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         return plugin.getName().replace("CLIJ2_", "").replace("CLIJx_", "");
     }
 
-    public void optimize(Optimizer optimizer, boolean show_gui) {
+    public void optimize(Optimizer optimizer, Logger logger, boolean show_gui) {
+        logger.log("Optimize");
+        logger.log("--------");
+        logger.log("Optimizer: " + optimizer.getClass().getSimpleName());
+
         CLIJ2 clij2 = CLIJx.getInstance();
+        logger.log("GPU: " + clij2.getGPUName() + " (OCLv: " + clij2.getOpenCLVersion() + ", AssistantV: " + VersionUtils.getVersion(optimizer.getClass()) + ")");
 
         // -------------------------------------------------------------------------------------------------------------
         // determine ground truth
@@ -961,6 +967,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         Object[][] parameters = OptimizationUtilities.getParameterArraysFromIncubatorPlugins(path);
 
         Workflow workflow = new Workflow(plugins, parameters);
+        logger.log(workflow.toString());
 
         System.out.println(Arrays.toString(workflow.getNumericParameterNames()));
         System.out.println(Arrays.toString(workflow.getPluginIndices()));
@@ -975,6 +982,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             return;
         }
         System.out.println("Index map: " + Arrays.toString(parameter_index_map));
+        logger.log("Index map: " + Arrays.toString(parameter_index_map));
 
 
         BinaryImageFitnessFunction f = new BinaryImageFitnessFunction(clij2, workflow,
@@ -987,15 +995,16 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         System.out.println("Initial: " + Arrays.toString(current));
 
         //current = Optimizers.optimizeSimplex(current, workflow, parameter_index_map, f);
-        current = optimizer.optimize(current, workflow, parameter_index_map, f);
+        current = optimizer.optimize(current, workflow, parameter_index_map, f, logger);
 
-
+        logger.log("Optimization done.");
         System.out.println("Optimum: ");
         f.value(current);
         for (AssistantGUIPlugin plugin : path ) {
             plugin.refreshDialogFromArguments();
         }
         path[0].setTargetInvalid();
+        logger.log("Bye.");
 
         //UnivariatePointValuePair next =  new UnivariatePointValuePair(solution.getPointRef()[0], solution.getValue());
 
