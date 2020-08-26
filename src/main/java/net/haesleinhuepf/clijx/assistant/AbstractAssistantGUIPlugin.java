@@ -40,8 +40,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.parmeterNameToStepSizeSuggestion;
-import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.resultIsBinaryImage;
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.*;
 
 public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugIn, AssistantGUIPlugin {
 
@@ -449,13 +448,6 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         popupmenu.show(my_target.getWindow().getCanvas(), e.getX(), e.getY());
     }
 
-    private void addMenuAction(Menu menu, String label, ActionListener listener) {
-        MenuItem submenu = new MenuItem(label);
-        if (listener != null) {
-            submenu.addActionListener(listener);
-        }
-        menu.add(submenu);
-    }
 
     //Checkbox sync_view = null;
     protected PopupMenu buildPopup(MouseEvent e, ImagePlus my_source, ImagePlus my_target) {
@@ -548,23 +540,10 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
         // -------------------------------------------------------------------------------------------------------------
         Menu more_actions = new Menu("More actions");
-        if (AssistantUtilities.resultIsBinaryImage(this)) {
-            addMenuAction(more_actions, "Optimize parameters (simplex, auto)", (a) -> {
-                optimize(new SimplexOptimizer(), new IJLogger(), false);
-            });
-            addMenuAction(more_actions, "Optimize parameters (gradient descent, auto)", (a) -> {
-                optimize(new GradientDescentOptimizer(), new IJLogger(), false);
-            });
-            more_actions.add("-");
-            addMenuAction(more_actions, "Optimize parameters (simplex, configurable)", (a) -> {
-                optimize(new SimplexOptimizer((int)IJ.getNumber( "Range",6 )), new IJLogger(), true);
-            });
-            addMenuAction(more_actions, "Optimize parameters (gradient descent, configurable)", (a) -> {
-                optimize(new GradientDescentOptimizer((int)IJ.getNumber( "Range",6 )), new IJLogger(), true);
-            });
+        addMoreActions(more_actions);
+        if (more_actions.getItemCount() > 0) {
+            menu.add(more_actions);
         }
-
-        menu.add(more_actions);
 
         // -------------------------------------------------------------------------------------------------------------
         Menu info = new Menu("Info");
@@ -679,6 +658,25 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             }*/
         });
         return menu;
+    }
+
+    protected void addMoreActions(Menu more_actions) {
+        if (AssistantUtilities.resultIsBinaryImage(this)) {
+            addMenuAction(more_actions, "Optimize parameters (simplex, auto)", (a) -> {
+                optimize(new SimplexOptimizer(), new IJLogger(), false);
+            });
+            addMenuAction(more_actions, "Optimize parameters (gradient descent, auto)", (a) -> {
+                optimize(new GradientDescentOptimizer(), new IJLogger(), false);
+            });
+            more_actions.add("-");
+            addMenuAction(more_actions, "Optimize parameters (simplex, configurable)", (a) -> {
+                optimize(new SimplexOptimizer((int)IJ.getNumber( "Range",6 )), new IJLogger(), true);
+            });
+            addMenuAction(more_actions, "Optimize parameters (gradient descent, configurable)", (a) -> {
+                optimize(new GradientDescentOptimizer((int)IJ.getNumber( "Range",6 )), new IJLogger(), true);
+            });
+        }
+
     }
 
 
@@ -808,38 +806,45 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     private Integer relativePositionToSourceX = 0;
     private Integer relativePositionToSourceY = 0;
     private void reposition() {
-        if (!auto_position) {
+        if (heartbeat == null) {
             return;
         }
-
-        if (my_target != null && registered_dialog != null) {
-            registered_dialog.setLocation(my_target.getWindow().getX() + my_target.getWindow().getWidth() - 15, my_target.getWindow().getY() );
-        }
-        if (my_source == null) {
-            return;
-        }
-        ImageWindow sourceWindow = my_source.getWindow();
-        if (sourceWindow == null) {
-            return;
-        }
-        if (my_target == null) {
-            return;
-        }
-        ImageWindow targetWindow = my_target.getWindow();
-        if (targetWindow == null) {
-            return;
-        }
-
-        if (my_target == IJ.getImage()) {
-            relativePositionToSourceX = targetWindow.getX() - sourceWindow.getX();
-            relativePositionToSourceY = targetWindow.getY() - sourceWindow.getY();
-        } else if (relativePositionToSourceX != null && relativePositionToSourceY != null){
-            int newPositionX = sourceWindow.getX() + relativePositionToSourceX;
-            int newPositionY = sourceWindow.getY() + relativePositionToSourceY;
-
-            if (Math.abs(newPositionX - targetWindow.getX()) > 1 && Math.abs(newPositionY - targetWindow.getY()) > 1) {
-                targetWindow.setLocation(newPositionX, newPositionY);
+        try {
+            if (!auto_position) {
+                return;
             }
+
+            if (my_target != null && registered_dialog != null) {
+                registered_dialog.setLocation(my_target.getWindow().getX() + my_target.getWindow().getWidth() - 15, my_target.getWindow().getY());
+            }
+            if (my_source == null) {
+                return;
+            }
+            ImageWindow sourceWindow = my_source.getWindow();
+            if (sourceWindow == null) {
+                return;
+            }
+            if (my_target == null) {
+                return;
+            }
+            ImageWindow targetWindow = my_target.getWindow();
+            if (targetWindow == null) {
+                return;
+            }
+
+            if (my_target == IJ.getImage()) {
+                relativePositionToSourceX = targetWindow.getX() - sourceWindow.getX();
+                relativePositionToSourceY = targetWindow.getY() - sourceWindow.getY();
+            } else if (relativePositionToSourceX != null && relativePositionToSourceY != null) {
+                int newPositionX = sourceWindow.getX() + relativePositionToSourceX;
+                int newPositionY = sourceWindow.getY() + relativePositionToSourceY;
+
+                if (Math.abs(newPositionX - targetWindow.getX()) > 1 && Math.abs(newPositionY - targetWindow.getY()) > 1) {
+                    targetWindow.setLocation(newPositionX, newPositionY);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Exception in AbstractAsssistantGUIPlugin " + e);
         }
     }
 
@@ -861,8 +866,9 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             ImagePlus.removeImageListener(this);
             AssistantGUIPluginRegistry.getInstance().unregister(this);
             if (heartbeat != null) {
-                heartbeat.cancel();
+                Timer copy = heartbeat;
                 heartbeat = null;
+                copy.cancel();
             }
             if (registered_dialog != null) {
                 registered_dialog.dispose();

@@ -12,6 +12,7 @@ import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.optimize.BinaryAnnotationTool;
 import net.haesleinhuepf.clijx.assistant.optimize.OptimizationUtilities;
+import net.haesleinhuepf.clijx.assistant.optimize.SimplexOptimizer;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import net.haesleinhuepf.clijx.assistant.utilities.IJLogger;
@@ -25,6 +26,8 @@ import org.scijava.util.VersionUtils;
 
 import javax.swing.*;
 import java.awt.*;
+
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.addMenuAction;
 
 @Plugin(type = AssistantGUIPlugin.class)
 public class BinaryWekaPixelClassifier extends AbstractAssistantGUIPlugin {
@@ -58,7 +61,7 @@ public class BinaryWekaPixelClassifier extends AbstractAssistantGUIPlugin {
         gd.addNumericField("Number of features", 2, 0);
         gd.addNumericField("Max depth", 0, 0);
 
-        {
+        /*{
             Panel panel = new Panel();
             Button button = new Button("Train");
             button.addActionListener((a) -> {
@@ -66,7 +69,7 @@ public class BinaryWekaPixelClassifier extends AbstractAssistantGUIPlugin {
             });
             panel.add(button);
             gd.addPanel(panel);
-        }
+        }*/
         gd.addMessage("Note: This only works for 2D images for now.");
 
         for (int i = 0; i < 2; i++) {
@@ -99,12 +102,12 @@ public class BinaryWekaPixelClassifier extends AbstractAssistantGUIPlugin {
         ClearCLBuffer[] pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
         ClearCLBuffer input = pushed[my_source.getC() - 1];
 
-        String feature_definitions = ((TextField)dialog.getStringFields().get(0)).getText();
-        String model_filename = ((TextField)dialog.getStringFields().get(1)).getText();
+        String feature_definitions = ((TextField) dialog.getStringFields().get(0)).getText();
+        String model_filename = ((TextField) dialog.getStringFields().get(1)).getText();
 
-        int num_trees = (int)Double.parseDouble(((TextField)dialog.getNumericFields().get(0)).getText());
-        int num_features = (int)Double.parseDouble(((TextField)dialog.getNumericFields().get(0)).getText());
-        int max_depth = (int)Double.parseDouble(((TextField)dialog.getNumericFields().get(0)).getText());
+        int num_trees = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(0)).getText());
+        int num_features = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(0)).getText());
+        int max_depth = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(0)).getText());
 
         ClearCLBuffer featureStack = GenerateFeatureStack.generateFeatureStack(clij2, input, feature_definitions);
 
@@ -118,6 +121,13 @@ public class BinaryWekaPixelClassifier extends AbstractAssistantGUIPlugin {
         logger.log("Model saved to " + model_filename);
         setTargetInvalid();
         logger.log("Bye.");
+    }
+
+    @Override
+    protected void addMoreActions(Menu more_actions) {
+        addMenuAction(more_actions, "Train Weka / Fast Random Forest classifier", (a) -> {
+            train(new IJLogger());
+        });
     }
 
 }

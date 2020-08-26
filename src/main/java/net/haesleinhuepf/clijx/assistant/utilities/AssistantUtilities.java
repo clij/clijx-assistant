@@ -12,6 +12,8 @@ import net.haesleinhuepf.clijx.gui.*;
 import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.optimize.BinaryAnnotationTool;
 
+import java.awt.*;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -515,6 +517,15 @@ public class AssistantUtilities {
         }
         return small_step ? 1 : 10;
     }
+
+    public static void addMenuAction(Menu menu, String label, ActionListener listener) {
+        MenuItem submenu = new MenuItem(label);
+        if (listener != null) {
+            submenu.addActionListener(listener);
+        }
+        menu.add(submenu);
+    }
+
 
 
 }
