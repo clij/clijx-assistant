@@ -1,5 +1,7 @@
 package net.haesleinhuepf.clijx.assistant.optimize;
 
+import net.haesleinhuepf.clijx.assistant.utilities.IJLogger;
+import net.haesleinhuepf.clijx.assistant.utilities.Logger;
 import org.apache.commons.math3.analysis.MultivariateFunction;
 import org.apache.commons.math3.optim.InitialGuess;
 import org.apache.commons.math3.optim.MaxEval;
@@ -22,7 +24,10 @@ public class SimplexOptimizer implements Optimizer {
     }
 
     @Override
-    public double[] optimize(double[] current, Workflow workflow, int[] parameter_index_map, MultivariateFunction fitness) {
+    public double[] optimize(double[] current, Workflow workflow, int[] parameter_index_map, MultivariateFunction fitness, Logger logger) {
+
+        logger.log("Start:        " + Arrays.toString(current) + "\t");
+
         org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizer optimizer = new org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizer(-1, 1e-5);
         for (int i = 0; i < iterations; i++) {
             NelderMeadSimplex simplex = makeSimplexOptimizer(current.length, workflow.getNumericParameterNames(), parameter_index_map, Math.pow(2, iterations / 2 - i - 1));
@@ -35,8 +40,9 @@ public class SimplexOptimizer implements Optimizer {
             PointValuePair solution = optimizer.optimize(new MaxEval(1000), new InitialGuess(current), simplex, new ObjectiveFunction(fitness), GoalType.MINIMIZE);
 
             current = solution.getKey();
-            System.out.println("Intermediate optimum: " + Arrays.toString(current));
+            logger.log("Intermediate: " + Arrays.toString(current) + "\t f = " + solution.getValue());
         }
+        logger.log("Final:        " + Arrays.toString(current) + "\t");
         return current;
     }
 

@@ -16,7 +16,7 @@ import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 
 public class OptimizationUtilities {
     public static ClearCLBuffer makeGroundTruth(CLIJ2 clij2, int width, int height, int depth, RoiManager rm) {
-        ImagePlus groundTruthImp = NewImage.createByteImage("ground_truth", width, height, depth, NewImage.FILL_BLACK);
+        ImagePlus groundTruthImp = NewImage.createFloatImage("ground_truth", width, height, depth, NewImage.FILL_BLACK);
         for (int i = 0; i < rm.getCount(); i++) {
             Roi roi = rm.getRoi(i);
             if (roi instanceof PolygonRoi) {
