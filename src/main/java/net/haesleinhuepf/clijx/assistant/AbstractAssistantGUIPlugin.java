@@ -38,6 +38,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Parameter;
 import java.util.*;
 
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.*;
@@ -581,6 +582,18 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             });
         }
         info.add(graph);
+
+        // -------------------------------------------------------------------------------------------------------------
+
+        Menu history = new Menu("Parameter history");
+
+        for (String timestamp : storedParameterKeys) {
+            addMenuAction(history, timestamp, (a) -> {
+                restoreParameters(storedParameters.get(timestamp));
+            });
+        }
+
+        info.add(history);
         info.add("-");
 
         // -------------------------------------------------------------------------------------------------------------
@@ -912,6 +925,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         if (my_target.getStack() instanceof CLIJxVirtualStack) {
             ((CLIJxVirtualStack) my_target.getStack()).getBuffer(0).setName(this.getClass().getName());
         }
+        storeParameters();
         setButtonColor(refreshText, refreshing_color);
     }
 
@@ -1057,5 +1071,39 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             parameter_count++;
         }
         registered_dialog.invalidate();
+    }
+
+    private HashMap<String, ParameterContainer> storedParameters = new HashMap<String, ParameterContainer>();
+    private ArrayList<String> storedParameterKeys = new ArrayList<>();
+    private void storeParameters() {
+        String key = AssistantUtilities.now();
+
+        AssistantGUIPlugin[] path = AssistantGUIPluginRegistry.getInstance().getPathToRoot(this);
+        Object[][] parameters = OptimizationUtilities.getParameterArraysFromIncubatorPlugins(path);
+
+        ParameterContainer container = new ParameterContainer(parameters);
+
+        if (storedParameterKeys.size() > 0) {
+            // check if last stored entries are identical with current
+            ParameterContainer formerContainer = storedParameters.get(storedParameterKeys.get(0));
+            if (formerContainer.equals(container)) {
+                return;
+            }
+        }
+
+        storedParameters.put(key, container);
+        storedParameterKeys.add(0, key);
+    }
+
+    private void restoreParameters(ParameterContainer container) {
+        AssistantGUIPlugin[] path = AssistantGUIPluginRegistry.getInstance().getPathToRoot(this);
+        Object[][] parameters = OptimizationUtilities.getParameterArraysFromIncubatorPlugins(path);
+
+        container.copyTo(parameters);
+
+        for (AssistantGUIPlugin plugin : path ) {
+            plugin.refreshDialogFromArguments();
+        }
+        path[0].setTargetInvalid();
     }
 }
