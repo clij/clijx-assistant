@@ -125,7 +125,7 @@ public class BinaryWekaPixelClassifier extends AbstractAssistantGUIPlugin {
 
     @Override
     protected void addMoreActions(Menu more_actions) {
-        addMenuAction(more_actions, "Train Weka / Fast Random Forest classifier", (a) -> {
+        addMenuAction(more_actions, "Train classifier", (a) -> {
             train(new IJLogger());
         });
     }

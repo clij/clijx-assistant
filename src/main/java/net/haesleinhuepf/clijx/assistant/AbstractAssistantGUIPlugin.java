@@ -48,6 +48,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     private final static String online_website_link = "https://clij.github.io/incubator";
     private final String doneText = "Done";
     private final String refreshText = "Refresh";
+    private String helpText = "Action";
 
     private final Color refreshing_color = new Color(205, 205, 128);
     private final Color invalid_color = new Color(205, 128, 128);
@@ -274,17 +275,8 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle(AssistantUtilities.niceName(this.getName()) + " of " + my_source.getTitle());
-        if (this.getName().toLowerCase().contains("label")) {
-            my_target.setDisplayRange(0, CLIJx.getInstance().maximumOfAllPixels(result[0]));
-        } else if (this.getName().toLowerCase().contains("binary") ||
-                this.getName().toLowerCase().contains("threshold") ||
-                (plugin instanceof IsCategorized && (((IsCategorized)plugin).getCategories().toLowerCase().contains("segmentation") || ((IsCategorized)plugin).getCategories().toLowerCase().contains("binary")))
-        ) {
-            my_target.setDisplayRange(0, 1);
-        } else {
+        enhanceContrast();
 
-            enhanceContrast();
-        }
     }
 
     protected void cleanup(ImagePlus my_source, ClearCLBuffer[] pushed) {
@@ -662,10 +654,10 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
     protected void addMoreActions(Menu more_actions) {
         if (AssistantUtilities.resultIsBinaryImage(this)) {
-            addMenuAction(more_actions, "Optimize parameters (simplex, auto)", (a) -> {
+            addMenuAction(more_actions, "Optimize parameters", (a) -> {
                 optimize(new SimplexOptimizer(), new IJLogger(), false);
             });
-            addMenuAction(more_actions, "Optimize parameters (gradient descent, auto)", (a) -> {
+            addMenuAction(more_actions, "Optimize parameters (gradient descent)", (a) -> {
                 optimize(new GradientDescentOptimizer(), new IJLogger(), false);
             });
             more_actions.add("-");
@@ -687,10 +679,14 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
         paused = true;
         boolean binary = resultIsBinaryImage(this);
+        boolean labelimage = resultIsLabelImage(this);
         int c_before = my_target.getC();
         for (int c = 0; c < my_target.getNChannels(); c++) {
             my_target.setC(c);
-            if (binary) {
+            if (labelimage) {
+                System.out.println("Set 0 max");
+                IJ.setMinAndMax(my_target,0, CLIJx.getInstance().maximumOfAllPixels(result[0]));
+            } else if (binary) {
                 System.out.println("Set 0 1");
                 IJ.setMinAndMax(my_target, 0, 1);
             } else {
@@ -701,6 +697,10 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         }
         my_target.setC(c_before);
         paused = false;
+    }
+
+    private boolean resultIsLabelImage(AbstractAssistantGUIPlugin abstractAssistantGUIPlugin) {
+        return (abstractAssistantGUIPlugin.getName().toLowerCase().contains("label"));
     }
 
     protected void generateScript(ScriptGenerator generator) {
@@ -724,8 +724,17 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     protected void registerDialogAsNoneModal(GenericDialog dialog) {
         dialog.setModal(false);
         dialog.setOKLabel(refreshText);
-
         dialog.setCancelLabel(doneText);
+
+        Menu menu = new Menu("temp");
+        addMoreActions(menu);
+        if (menu.getItemCount() > 0) {
+            helpText = menu.getItem(0).getLabel();
+            dialog.enableYesNoCancel(refreshText, helpText);
+            //dialog.setHelpLabel(helpText);
+            //dialog.addHelp("http://clij.github.io");
+        }
+
         dialog.showDialog();
         if (dialog.getNumericFields() == null && dialog.getCheckboxes() == null && dialog.getChoices() == null) {
             dialog.setVisible(false);
@@ -747,7 +756,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         });
         registered_dialog = dialog;
 
-        setButtonColor(doneText, valid_color);
+        //setButtonColor(doneText, valid_color);
         setButtonColor(refreshText, valid_color);
         for (Button component : dialog.getButtons()) {
             if (component instanceof Button) {
@@ -758,6 +767,11 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                     component.addActionListener((a) -> {
                         setTargetInvalid();
                     });
+                } else if (component.getLabel().compareTo(helpText) == 0) {
+                    for (ActionListener actionlistener : component.getActionListeners()) {
+                        component.removeActionListener(actionlistener);
+                    }
+                    component.addActionListener(menu.getItem(0).getActionListeners()[0]);
                 }
             }
         }
@@ -940,12 +954,6 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     }
 
     public void optimize(Optimizer optimizer, Logger logger, boolean show_gui) {
-        logger.log("Optimize");
-        logger.log("--------");
-        logger.log("Optimizer: " + optimizer.getClass().getSimpleName());
-
-        CLIJ2 clij2 = CLIJx.getInstance();
-        logger.log("GPU: " + clij2.getGPUName() + " (OCLv: " + clij2.getOpenCLVersion() + ", AssistantV: " + VersionUtils.getVersion(optimizer.getClass()) + ")");
 
         // -------------------------------------------------------------------------------------------------------------
         // determine ground truth
@@ -957,6 +965,14 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             Toolbar.addPlugInTool(new BinaryAnnotationTool());
             return;
         }
+
+        logger.log("Optimize");
+        logger.log("--------");
+        logger.log("Optimizer: " + optimizer.getClass().getSimpleName());
+
+        CLIJ2 clij2 = CLIJx.getInstance();
+        logger.log("GPU: " + clij2.getGPUName() + " (OCLv: " + clij2.getOpenCLVersion() + ", AssistantV: " + VersionUtils.getVersion(optimizer.getClass()) + ")");
+
         ClearCLBuffer ground_truth = OptimizationUtilities.makeGroundTruth(clij2, my_target.getWidth(), my_target.getHeight(), my_target.getNSlices(), rm);
         //clij2.show(ground_truth, "ground");
         //new WaitForUserDialog("dd tr").show();
