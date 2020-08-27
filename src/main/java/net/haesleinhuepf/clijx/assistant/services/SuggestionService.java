@@ -3,6 +3,8 @@ package net.haesleinhuepf.clijx.assistant.services;
 import ij.IJ;
 import net.haesleinhuepf.clij.clearcl.util.StringUtils;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
+import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
+import net.haesleinhuepf.clij2.plugins.GaussianBlur3D;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -113,6 +115,8 @@ public class SuggestionService {
 
         Class searchFor = pluginNameToClass(name);
 
+        int dimensionality = assistantGUIPlugin.getTarget().getNSlices() > 1?3:2;
+
         //System.out.println("Search for : " + searchFor);
 
         ArrayList<CLIJMacroPlugin> clijSuggestions = suggestions.get(searchFor);
@@ -124,7 +128,19 @@ public class SuggestionService {
         for (CLIJMacroPlugin clijPlugin : clijSuggestions) {
             Class incubatorPluginClassFromCLIJ2Plugin = assistantGUIPluginService.getIncubatorPluginClassFromCLIJ2Plugin(clijPlugin);
             if (incubatorPluginClassFromCLIJ2Plugin != null) {
-                incubatorSuggestions.put(clijPlugin.getName(), incubatorPluginClassFromCLIJ2Plugin);
+                boolean keep = true;
+                if (clijPlugin instanceof OffersDocumentation) {
+                    String dimensionality_constraint = ((OffersDocumentation) clijPlugin).getAvailableForDimensions().replace(" ", "").toUpperCase();
+                    if (dimensionality_constraint.compareTo("3D->2D") == 0) {
+                        // projections
+                        keep = dimensionality == 3;
+                    } else {
+                        //keep = (dimensionality_constraint.contains(dimensionality + "D"));
+                    }
+                }
+                if (keep) {
+                    incubatorSuggestions.put(clijPlugin.getName(), incubatorPluginClassFromCLIJ2Plugin);
+                }
             } else {
                 //System.out.println("Was null ?! " + clijPlugin);
             }
