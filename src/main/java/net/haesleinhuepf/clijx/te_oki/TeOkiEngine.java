@@ -33,11 +33,14 @@ import ij.IJ;
 import net.imagej.legacy.IJ1Helper;
 import net.imagej.legacy.plugin.IJ1MacroEngine;
 import org.scijava.ui.swing.script.TextEditor;
+import org.scijava.util.ProcessUtils;
 
 import javax.script.ScriptException;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -55,8 +58,11 @@ public class TeOkiEngine extends IJ1MacroEngine {
 
 	public TeOkiEngine(IJ1Helper ij1Helper) {
 		super(ij1Helper);
-		if (teOkiDirectory == null) {
+		if (teOkiDirectory == null && IJ.getDirectory("imagej") != null) {
 			teOkiDirectory = IJ.getDirectory("imagej") + "/";
+		}
+		if (teOkiDirectory == null || teOkiDirectory.startsWith("null")) {
+			teOkiDirectory = "./";
 		}
 	}
 
@@ -88,6 +94,45 @@ public class TeOkiEngine extends IJ1MacroEngine {
 
 				System.out.println(conda_code);
 
+				PrintStream out = new PrintStream(new OutputStream() {
+					@Override
+					public void write(int b) throws IOException {
+						//IJ.log("" + b);
+					}
+
+					@Override
+					public void write(byte[] b) throws IOException {
+						//IJ.log(new String(b));
+					}
+
+					@Override
+					public void write(byte[] b, int off, int len) throws IOException {
+						byte[] a = new byte[len];
+						System.arraycopy(b, off, a, 0, len);
+						//IJ.log("" + len);
+						if (a.length > 2) {
+							IJ.log(new String(a));
+						}
+					}
+				});
+				try {
+					Files.write(Paths.get(directory + "/temp.py"), macro.getBytes());
+					Files.write(Paths.get(directory + "/temp.bat"), conda_code.getBytes());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				//parent.getTab().showErrors();
+				try {
+					//String exec = ProcessUtils.exec(directory, out, out, "conda activate " + conda_env, "ipython --gui=qt  temp.py");
+					ProcessUtils.exec(directory, out, out, directory + "/temp.bat");
+					//IJ.log(exec);
+					//parent.errorHandler = handler.errorHandler;
+				} catch (RuntimeException e) {
+					e.printStackTrace();
+				}
+
+				/*
 				Process process;
 				try {
 
@@ -116,8 +161,8 @@ public class TeOkiEngine extends IJ1MacroEngine {
 					//	e.printStackTrace();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
-				}
-				IJ.log("Bye.");
+				}*/
+				IJ.log("Te Oki: Bye.");
 			}
 		}).start();
 
@@ -125,7 +170,7 @@ public class TeOkiEngine extends IJ1MacroEngine {
 	}
 
 	public static void main(String[] args) throws IOException, ScriptException {
-		String content = new String(Files.readAllBytes(Paths.get(teOkiDirectory + "te_oki.py")));
+		String content = "print('Hello world')"; //new String(Files.readAllBytes(Paths.get(teOkiDirectory + "te_oki.py")));
 
 		new TeOkiEngine(null).eval(content);
 	}
