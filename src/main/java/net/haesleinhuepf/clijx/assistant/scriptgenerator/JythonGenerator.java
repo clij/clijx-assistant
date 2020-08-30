@@ -40,6 +40,7 @@ public class JythonGenerator implements ScriptGenerator {
             return "# " + AssistantUtilities.niceName(plugin.getName());
         }
         String methodName = clijMacroPlugin.getName();
+        methodName = methodName.replace("CLIJ2_", "").replace("CLIJx_", "");
         methodName = methodName.substring(0,1).toLowerCase() + methodName.substring(1);
         String pakage = clijMacroPlugin.getClass().getPackage().getName();
 
@@ -64,7 +65,7 @@ public class JythonGenerator implements ScriptGenerator {
         for (int i = 2; i < parameters.length; i++) {
             String temp[] = parameters[i].trim().split(" ");
             String name = temp[temp.length - 1];
-            call = call + ", " + name + "=" + name;
+            call = call + ", " + name;
             program = program + name + " = " + plugin.getArgs()[i] + "  \n";
         }
         program = program + methodName + "(" + image1 + ", " + image2 + call + ")\n";
@@ -75,7 +76,7 @@ public class JythonGenerator implements ScriptGenerator {
         return program;
     }
 
-    private String bitDepthToType(int bitDepth) {
+    protected String bitDepthToType(int bitDepth) {
         if (bitDepth == 8) {
             return "UnsignedByte";
         } else if (bitDepth == 16) {
@@ -84,7 +85,7 @@ public class JythonGenerator implements ScriptGenerator {
             return "Float";
     }
 
-    private String pythonize(String methodName) {
+    protected String pythonize(String methodName) {
         return methodName; // AssistantUtilities.niceName(methodName).trim().replace(" ", "_").toLowerCase();
     }
 
@@ -103,11 +104,13 @@ public class JythonGenerator implements ScriptGenerator {
                 "from ij import WindowManager\n" +
                 "from net.haesleinhuepf.clijx import CLIJx\n\n" +
                 "# Init GPU\n" +
-                "clijx = CLIJx.getInstance()\n";
+                "clijx = CLIJx.getInstance()\n" +
+                "clijx.clear()\n\n";
     }
 
     @Override
     public String finish() {
-        return "";
+        return "# clean up memory \n" +
+                "clijx.clear()\n\n";
     }
 }

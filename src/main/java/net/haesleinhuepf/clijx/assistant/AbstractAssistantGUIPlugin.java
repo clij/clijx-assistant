@@ -519,6 +519,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         Menu script = new Menu("Generate script");
 
         addMenuAction(script, "ImageJ Macro", (a) -> {generateScript(new MacroGenerator());});
+        addMenuAction(script, "Human readable protocol", (a) -> {generateScript(new HumanReadibleProtocolGenerator());});
         script.add("-");
         addMenuAction(script, "Icy Javascript", (a) -> {generateScript(new IcyJavaScriptGenerator());});
         addMenuAction(script, "Matlab", (a) -> {generateScript(new MatlabGenerator());});
@@ -526,7 +527,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         addMenuAction(script, "ImageJ JavaScript", (a) -> {generateScript(new JavaScriptGenerator());});
         addMenuAction(script, "ImageJ Jython", (a) -> {generateScript(new JythonGenerator());});
         script.add("-");
-        addMenuAction(script, "Human readable protocol", (a) -> {generateScript(new HumanReadibleProtocolGenerator());});
+        addMenuAction(script, "CLIJPy Python", (a) -> {generateScript(new CLIJPyGenerator());});
         addMenuAction(script, "clEsperanto Python", (a) -> {generateScript(new PyclesperantoGenerator(false));});
         addMenuAction(script, "clEsperanto Python + Napari", (a) -> {generateScript(new PyclesperantoGenerator(true));});
         menu.add(script);

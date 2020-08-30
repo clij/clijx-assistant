@@ -37,6 +37,11 @@ public class JavaScriptGenerator extends JythonGenerator {
                 "clijx = CLIJx.getInstance();\n";
     }
 
+    @Override
+    public String finish() {
+        return pyToJs(super.finish());
+    }
+
     protected String pyToJs(String text) {
         return text.replace("#", "//").replace(")\n", ");\n").replace("  \n", ";\n");
     }

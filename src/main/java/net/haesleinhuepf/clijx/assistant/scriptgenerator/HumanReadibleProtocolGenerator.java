@@ -74,8 +74,8 @@ public class HumanReadibleProtocolGenerator implements ScriptGenerator {
                     }
                     text = text + name + " = " + plugin.getArgs()[i] + "";
                 }
+                text = text + ".";
             }
-            text = text + ".";
         }
         return text;
     }

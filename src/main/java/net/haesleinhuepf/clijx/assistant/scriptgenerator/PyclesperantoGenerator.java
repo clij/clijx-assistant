@@ -131,7 +131,7 @@ public class PyclesperantoGenerator implements ScriptGenerator {
                 "# activate the environment: \n" +
                 "#  > conda activate te_oki \n" +
                 "# install dependencies: \n" +
-                "#  > pip install pyopencl napari matplotlib numpy pyclesperanto_prototype \n" +
+                "#  > pip install pyopencl napari ipython matplotlib numpy pyclesperanto_prototype scikit-image \n" +
                 "# Also make sure conda is part of the PATH variable.\n" +
                 "# \n" +
                 "# If you want to run it from Fiji and you're using a different conda environment, you can configure it in Fijis main menu \n" +
