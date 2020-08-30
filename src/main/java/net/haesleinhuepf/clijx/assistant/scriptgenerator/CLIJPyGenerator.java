@@ -29,7 +29,7 @@ public class CLIJPyGenerator extends JythonGenerator {
                 "\n" +
                 "# convert and array to an ImageJ2 img:\n" +
                 "import numpy as np\n" +
-                "np_arr = np.array(sk_img)\n" +
+                "np_arr = np.array(image)\n" +
                 "ij_img = ij.py.to_java(np_arr)\n" +
                 "\n" +
                 "# push the image to the GPU\n" +
@@ -85,8 +85,8 @@ public class CLIJPyGenerator extends JythonGenerator {
         }
         program = program + methodName + "(" + image1 + ", " + image2 + call + ")\n";
 
-        //program = program + comment("consider removing this line if you don't need to see that image");
-        //program = program + "clijx.show(" + image2 + ", \"" + plugin.getTarget().getTitle() + "\")\n";
+        program = program + comment("consider removing this line if you don't need to see that image");
+        program = program + "clijx.show(" + image2 + ", \"" + plugin.getTarget().getTitle() + "\")\n";
 
         return program;
     }

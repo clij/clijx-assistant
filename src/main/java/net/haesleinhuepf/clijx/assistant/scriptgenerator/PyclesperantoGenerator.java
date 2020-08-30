@@ -150,7 +150,7 @@ public class PyclesperantoGenerator implements ScriptGenerator {
         } else {
             line_start = "";
             header = header +
-                    "import from skimage import io\n\n";
+                    "from skimage import io\n\n";
         }
 
         return header;
