@@ -41,7 +41,7 @@ import org.scijava.ui.swing.script.highliters.ImageJMacroTokenMaker;
  *
  * @author Robert Haase
  */
-@Plugin(type = SyntaxHighlighter.class, name = "Te Oki")
+@Plugin(type = SyntaxHighlighter.class, name = "te-oki")
 public class TeOkiTokenMaker extends PythonTokenMaker implements
 	SyntaxHighlighter
 {
