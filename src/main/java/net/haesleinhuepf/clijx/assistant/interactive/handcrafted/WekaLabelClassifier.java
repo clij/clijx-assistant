@@ -28,7 +28,12 @@ import org.scijava.plugin.Plugin;
 import org.scijava.util.VersionUtils;
 
 import java.awt.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.GenericArrayType;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.addMenuAction;
@@ -61,8 +66,41 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
         gd.addChoice("Intensity image", titles, titles[titles.length - 2] );
         choice = (Choice) gd.getChoices().get(0);
 
-
+        loadFeatures(filename + ".features.txt");
         gd.addStringField("Feature definition", features);
+        TextField feature_field = ((TextField) gd.getStringFields().get(0));
+        feature_field.setMinimumSize(new Dimension(500, 10));
+        feature_field.setMaximumSize(new Dimension(500, 10));
+        gd.addToSameRow();
+        {
+            Panel panel = new Panel();
+            Button button = new Button("Features...");
+            button.addActionListener((a) -> {
+                String feature_collection = "";
+                GenericDialog sub_dialog = new GenericDialog("Features");
+                String[] allFeatures = GenerateLabelFeatureImage.allFeatures();
+                for (String entry : allFeatures) {
+                    sub_dialog.addCheckbox(entry, (" " + features + " ").toLowerCase().contains(" " + entry.toLowerCase() + " "));
+                }
+                sub_dialog.showDialog();
+                if (sub_dialog.wasCanceled()) {
+                    return;
+                }
+
+                String new_features = " ";
+                for (String entry : allFeatures) {
+                    if (sub_dialog.getNextBoolean()) {
+                        new_features = new_features + entry + " ";
+                    }
+                }
+                if (feature_collection.length() > 1) {
+                    feature_field.setText(feature_collection.trim());
+                }
+            });
+            panel.add(button);
+            gd.addPanel(panel);
+        }
+
 
         gd.addStringField("Model file", filename);
 
@@ -75,6 +113,9 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
                 String file = IJ.getFilePath("Model location");
                 if (file.length() > 0) {
                     filename_field.setText(file);
+
+                    loadFeatures(filename + ".features.txt");
+                    feature_field.setText(features);
                 }
             });
             panel.add(button);
@@ -195,9 +236,33 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
 
 
         logger.log("Model saved to " + model_filename);
+        saveFeatures(model_filename + ".features.txt");
+        logger.log("Featurelist saved to " + model_filename + ".features.txt");
         setTargetInvalid();
         logger.log("Bye.");
     }
+
+    private void saveFeatures(String filename) {
+        File outputTarget = new File(filename);
+        try {
+            FileWriter writer = new FileWriter(outputTarget);
+            writer.write(features);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private void loadFeatures(String filename) {
+        try {
+            features = new String(Files.readAllBytes(Paths.get(filename)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     protected void addMoreActions(Menu more_actions) {

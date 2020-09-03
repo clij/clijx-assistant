@@ -331,6 +331,25 @@ public class GenerateLabelFeatureImage extends AbstractCLIJ2Plugin implements CL
                 "average_distance_of_touching_neighbors";
     }
 
+    public static String[] allFeatures() {
+        Set<String> set1 = new LabelFeatureGenerator().getLabelPropertyNames();
+
+        String[] result = new String[set1.size() + supported_features.length];
+
+        int count = 0;
+        for (StatisticsOfLabelledPixels.STATISTICS_ENTRY entry : supported_features) {
+            result[count] = entry.toString();
+            count ++;
+        }
+
+        for (String entry : set1) {
+            result[count] = entry;
+            count ++;
+        }
+
+        return result;
+    }
+
     @Override
     public String getAvailableForDimensions() {
         return "2D, 3D";
