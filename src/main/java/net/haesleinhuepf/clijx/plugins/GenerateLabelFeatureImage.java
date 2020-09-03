@@ -59,18 +59,18 @@ public class GenerateLabelFeatureImage extends AbstractCLIJ2Plugin implements CL
     }
 
     public static ClearCLBuffer generateLabelFeatureImage(CLIJ2 clij2, ClearCLBuffer input, ClearCLBuffer label_map, String featureDefinitions) {
-        String[] definitionsArray = preparseFeatures(featureDefinitions);
-        ClearCLBuffer dstFeatureStack = clij2.create(new long[]{input.getWidth(), input.getHeight(), definitionsArray.length}, input.getNativeType());
-        generateLabelFeatureImage(clij2, input, dstFeatureStack, featureDefinitions);
-        return dstFeatureStack;
+        ClearCLBuffer feature_image_t =  new LabelFeatureGenerator(clij2, input, label_map, featureDefinitions).getImage();
+        ClearCLBuffer feature_image = clij2.create(feature_image_t.getHeight(), feature_image_t.getWidth());
+        clij2.transposeXY(feature_image_t, feature_image);
+        feature_image_t.close();
+
+        return feature_image;
     }
 
     public static boolean generateLabelFeatureImage(CLIJ2 clij2, ClearCLBuffer input, ClearCLBuffer label_map, ClearCLBuffer feature_image, String featureDefinitions) {
-        HashMap<String, ClearCLBuffer> generatedFeatures = new HashMap<String, ClearCLBuffer>();
-
-        ClearCLBuffer features = new LabelFeatureGenerator(clij2, input, label_map, featureDefinitions).getImage();
-
-        clij2.transposeXY(features, feature_image);
+        ClearCLBuffer feature_image_t = new LabelFeatureGenerator(clij2, input, label_map, featureDefinitions).getImage();
+        clij2.transposeXY(feature_image_t, feature_image);
+        feature_image_t.close();
 
         return true;
     }
@@ -91,8 +91,8 @@ public class GenerateLabelFeatureImage extends AbstractCLIJ2Plugin implements CL
         ResultsTable statistics_of_labels = null;
 
 
-        ClearCLBuffer measurement_vector = clij2.create(number_of_labels, 1, 1);
-        ClearCLBuffer temp_vector = clij2.create(measurement_vector);
+        ClearCLBuffer measurement_vector = null;
+        ClearCLBuffer temp_vector = null;
         double numericParameter = 0;
 
 
@@ -208,11 +208,13 @@ public class GenerateLabelFeatureImage extends AbstractCLIJ2Plugin implements CL
             // generate features
             String[] definitionsArray = preparseFeatures(featureDefinitions);
             result = clij2.create(number_of_labels, definitionsArray.length);
+            System.out.println("feature table has size " + result.getWidth() + "/" + result.getHeight());
 
             int row = 0;
             for (String featureDefinition : definitionsArray) {
                 ClearCLBuffer buffer = generateFeature(featureDefinition);
                 if (buffer != null) {
+                    System.out.println("Buffer " + row + " has size " + buffer.getWidth() + "/" + buffer.getHeight());
                     clij2.paste(buffer, result, 0, row);
                     buffer.close();
                 } else {
@@ -229,6 +231,7 @@ public class GenerateLabelFeatureImage extends AbstractCLIJ2Plugin implements CL
         }
 
         private ClearCLBuffer generateFeature(String featureDefinition) {
+            System.out.println("Determining " + featureDefinition);
 
             String[] temp = featureDefinition.split("=");
             String featureName = temp[0];
@@ -238,20 +241,23 @@ public class GenerateLabelFeatureImage extends AbstractCLIJ2Plugin implements CL
             measurement_vector = clij2.create(number_of_labels, 1, 1);
 
             for (StatisticsOfLabelledPixels.STATISTICS_ENTRY supported_stats_feature : supported_features) {
-                if (featureName.compareTo(supported_stats_feature.toString()) == 0) {
-                    clij2.pushResultsTableColumn(measurement_vector, statistics_of_labels, supported_stats_feature.toString());
-                    temp_vector.close();
+                if (featureName.compareTo(supported_stats_feature.toString().toLowerCase()) == 0) {
+                    clij2.pushResultsTableColumn(measurement_vector, getStatistics(), supported_stats_feature.toString());
+                    //temp_vector.close();
+                    clij2.print(measurement_vector);
                     return measurement_vector;
                 }
             }
 
             for (String key : computers.keySet()) {
-                if (key.compareTo(featureDefinition) == 0) {
+                if (key.compareTo(featureDefinition.toLowerCase()) == 0) {
                     computers.get(key).compute();
-                    temp_vector.close();
+                    //temp_vector.close();
+                    clij2.print(measurement_vector);
                     return measurement_vector;
                 }
             }
+            System.out.println("NONE");
             return null;
         }
 

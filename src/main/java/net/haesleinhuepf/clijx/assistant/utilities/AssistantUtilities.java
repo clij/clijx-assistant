@@ -11,6 +11,7 @@ import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.*;
 import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.optimize.BinaryAnnotationTool;
+import net.haesleinhuepf.clijx.plugins.WekaLabelClassifier;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -160,6 +161,11 @@ public class AssistantUtilities {
         }
         String parameters = clijMacroPlugin.getParameterHelpText();
 
+        // white list
+        if (clijMacroPlugin instanceof WekaLabelClassifier) {
+            return true;
+        }
+
         //if (!clijMacroPlugin.getName().contains("makeIso")) {
         //    return false;
         //}
@@ -210,6 +216,7 @@ public class AssistantUtilities {
             return false;
         }
 
+        // blacklist
         ArrayList<Class> blocklist = new ArrayList<>();
         blocklist.add(net.haesleinhuepf.clij2.plugins.AddImageAndScalar.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.MedianSliceBySliceBox.class);

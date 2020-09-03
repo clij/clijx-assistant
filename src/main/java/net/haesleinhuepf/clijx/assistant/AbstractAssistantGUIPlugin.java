@@ -183,7 +183,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
     }
 
-    ClearCLBuffer[] result = null;
+    protected ClearCLBuffer[] result = null;
     public synchronized void refresh()
     {
         if (plugin == null) {
@@ -312,6 +312,32 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             }
         }
     }
+
+    protected void executeCL(ClearCLBuffer[][] whole) {
+        if (plugin instanceof CLIJOpenCLProcessor) {
+            if (my_source.getNChannels() > 1) {
+                int number_of_channels = my_source.getNChannels();
+                for (int c = 0; c < number_of_channels; c++) {
+                    for (int i = 0; i < whole.length; i++) {
+                        if (whole[i].length > c) {
+                            args[i] = whole[i][c];
+                        } else {
+                            args[i] = whole[i][0];
+                        }
+                    }
+                    if (plugin instanceof CLIJOpenCLProcessor) {
+                        ((CLIJOpenCLProcessor) plugin).executeCL();
+                    }
+                }
+                for (int i = 0; i < whole.length; i++) {
+                    args[i] = whole[i][0];
+                }
+            } else {
+                ((CLIJOpenCLProcessor) plugin).executeCL();
+            }
+        }
+    }
+
 
     protected ClearCLBuffer[] createOutputBufferFromSource(ClearCLBuffer[] pushed) {
         CLIJx clijx = CLIJx.getInstance();
