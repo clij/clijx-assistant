@@ -106,8 +106,8 @@ public class BinaryWekaPixelClassifier extends AbstractAssistantGUIPlugin {
         String model_filename = ((TextField) dialog.getStringFields().get(1)).getText();
 
         int num_trees = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(0)).getText());
-        int num_features = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(0)).getText());
-        int max_depth = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(0)).getText());
+        int num_features = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(1)).getText());
+        int max_depth = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(2)).getText());
 
         ClearCLBuffer featureStack = GenerateFeatureStack.generateFeatureStack(clij2, input, feature_definitions);
 
