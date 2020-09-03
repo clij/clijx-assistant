@@ -60,7 +60,7 @@ public class WekaLabelClassifier extends AbstractCLIJ2Plugin implements CLIJMacr
 
         ApplyWekaToTable.applyWekaToTable(clij2, table, "CLASS", model_filename);
 
-        table.show("PREDICTION");
+        //table.show("PREDICTION");
 
         ClearCLBuffer vector = clij2.create(table.size(), 1, 1);
         clij2.pushResultsTableColumn(vector, table, "CLASS");

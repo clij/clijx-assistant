@@ -35,6 +35,7 @@ import java.lang.reflect.GenericArrayType;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Vector;
 
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.addMenuAction;
 
@@ -52,6 +53,8 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
     int num_features = 2;
     int max_depth = 0;
 
+    boolean show_table = false;
+
     public WekaLabelClassifier() {
         super(new net.haesleinhuepf.clijx.plugins.WekaLabelClassifier());
     }
@@ -62,21 +65,27 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
         GenericDialog gd = new GenericDialog(AssistantUtilities.niceName(this.getName()));
         dialog = gd;
 
-        String[] titles = WindowManager.getImageTitles();
-        gd.addChoice("Intensity image", titles, titles[titles.length - 2] );
+        titles = WindowManager.getImageTitles();
+        String[] short_titles = new String[titles.length];
+        for (int i = 0; i < titles.length; i++) {
+            short_titles[i] = titles[i];
+            if (short_titles[i].length() > 30) {
+                short_titles[i] = short_titles[i].substring(0, 30) + " ...";
+            }
+        }
+
+        gd.addChoice("Intensity image", short_titles, short_titles[short_titles.length - 2]);
         choice = (Choice) gd.getChoices().get(0);
 
         loadFeatures(filename + ".features.txt");
-        gd.addStringField("Feature definition", features);
+        gd.addStringField("Feature definition", features, 30);
         TextField feature_field = ((TextField) gd.getStringFields().get(0));
-        feature_field.setMinimumSize(new Dimension(500, 10));
-        feature_field.setMaximumSize(new Dimension(500, 10));
-        gd.addToSameRow();
+
+        //gd.addToSameRow();
         {
             Panel panel = new Panel();
             Button button = new Button("Features...");
             button.addActionListener((a) -> {
-                String feature_collection = "";
                 GenericDialog sub_dialog = new GenericDialog("Features");
                 String[] allFeatures = GenerateLabelFeatureImage.allFeatures();
                 for (String entry : allFeatures) {
@@ -93,19 +102,21 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
                         new_features = new_features + entry + " ";
                     }
                 }
-                if (feature_collection.length() > 1) {
-                    feature_field.setText(feature_collection.trim());
+                if (new_features.length() > 1) {
+                    feature_field.setText(new_features.trim());
                 }
             });
             panel.add(button);
+            //gd.add(new Panel());
+            //gd.addToSameRow();
             gd.addPanel(panel);
         }
 
 
-        gd.addStringField("Model file", filename);
+        gd.addStringField("Model file", filename, 30);
 
         TextField filename_field = ((TextField) gd.getStringFields().get(1));
-        gd.addToSameRow();
+        //gd.addToSameRow();
         {
             Panel panel = new Panel();
             Button button = new Button("File...");
@@ -125,9 +136,11 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
         gd.addNumericField("Number of trees", 200, 0);
         gd.addNumericField("Number of features", 2, 0);
         gd.addNumericField("Max depth", 0, 0);
+        gd.addCheckbox("Show table while training", show_table);
 
         return gd;
     }
+
 
     @Override
     public void refresh() {
@@ -138,7 +151,7 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
 
         ClearCLBuffer image = null;
         if (choice != null) {
-            image = clijx.pushCurrentZStack(WindowManager.getImage(choice.getSelectedItem()));
+            image = clijx.pushCurrentZStack(WindowManager.getImage(titles[choice.getSelectedIndex()]));
         } else {
             image = pushed[0];
         }
@@ -178,6 +191,11 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
             num_trees = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(0)).getText());
             num_features = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(1)).getText());
             max_depth = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(2)).getText());
+            show_table = ((Checkbox)dialog.getCheckboxes().get(0)).getState();
+
+            //feature_field.setMinimumSize(new Dimension(500, 10));
+            //feature_field.setMaximumSize(new Dimension(500, 10));
+            //feature_field.setSize(500, feature_field.getHeight());
 
         }
     }
@@ -228,7 +246,9 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
 
         table = filterTable(table, "CLASS");
 
-        table.show("TRAINING");
+        if (show_table) {
+            table.show("TRAINING");
+        }
 
         TrainWekaFromTable.trainWekaFromTable(clij2, table, "CLASS", model_filename, num_trees, num_features, max_depth);
 
@@ -251,7 +271,6 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
 
