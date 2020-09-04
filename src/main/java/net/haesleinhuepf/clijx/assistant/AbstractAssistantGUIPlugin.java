@@ -14,7 +14,7 @@ import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
 import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clij2.utilities.HasAuthor;
 import net.haesleinhuepf.clij2.utilities.HasLicense;
-import net.haesleinhuepf.clij2.utilities.IsCategorized;
+import net.haesleinhuepf.clijx.assistant.annotation.BinaryAnnotationTool;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.ExtractChannel;
 import net.haesleinhuepf.clijx.assistant.optimize.*;
 import net.haesleinhuepf.clijx.assistant.scriptgenerator.*;
@@ -38,7 +38,6 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Parameter;
 import java.util.*;
 
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.*;

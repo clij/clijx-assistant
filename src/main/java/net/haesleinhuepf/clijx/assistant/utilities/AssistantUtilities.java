@@ -10,7 +10,7 @@ import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.*;
 import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.optimize.BinaryAnnotationTool;
+import net.haesleinhuepf.clijx.assistant.annotation.BinaryAnnotationTool;
 import net.haesleinhuepf.clijx.plugins.WekaLabelClassifier;
 
 import java.awt.*;

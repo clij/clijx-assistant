@@ -1,4 +1,4 @@
-package net.haesleinhuepf.clijx.assistant.optimize;
+package net.haesleinhuepf.clijx.assistant.annotation;
 
 import ij.IJ;
 import ij.ImageJ;

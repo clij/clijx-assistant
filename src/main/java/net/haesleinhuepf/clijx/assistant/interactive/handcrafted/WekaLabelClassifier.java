@@ -1,28 +1,24 @@
 package net.haesleinhuepf.clijx.assistant.interactive.handcrafted;
 
 import ij.IJ;
-import ij.ImagePlus;
 import ij.WindowManager;
 import ij.gui.GenericDialog;
 import ij.gui.Toolbar;
 import ij.measure.ResultsTable;
 import ij.plugin.frame.RoiManager;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
-import net.haesleinhuepf.clij.macro.AbstractCLIJPlugin;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.optimize.BinaryAnnotationTool;
+import net.haesleinhuepf.clijx.assistant.annotation.BinaryAnnotationTool;
 import net.haesleinhuepf.clijx.assistant.optimize.OptimizationUtilities;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import net.haesleinhuepf.clijx.assistant.utilities.IJLogger;
 import net.haesleinhuepf.clijx.assistant.utilities.Logger;
 import net.haesleinhuepf.clijx.plugins.GenerateLabelFeatureImage;
-import net.haesleinhuepf.clijx.weka.GenerateFeatureStack;
 import net.haesleinhuepf.clijx.weka.TrainWekaFromTable;
-import net.haesleinhuepf.clijx.weka.TrainWekaModelWithOptions;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
 import org.scijava.util.VersionUtils;
@@ -31,11 +27,9 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.GenericArrayType;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.Vector;
 
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.addMenuAction;
 

@@ -5,26 +5,20 @@ import ij.gui.GenericDialog;
 import ij.gui.Toolbar;
 import ij.plugin.frame.RoiManager;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
-import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.CLIJ2;
-import net.haesleinhuepf.clij2.plugins.AutoThresholderImageJ1;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.optimize.BinaryAnnotationTool;
+import net.haesleinhuepf.clijx.assistant.annotation.BinaryAnnotationTool;
 import net.haesleinhuepf.clijx.assistant.optimize.OptimizationUtilities;
-import net.haesleinhuepf.clijx.assistant.optimize.SimplexOptimizer;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import net.haesleinhuepf.clijx.assistant.utilities.IJLogger;
 import net.haesleinhuepf.clijx.assistant.utilities.Logger;
 import net.haesleinhuepf.clijx.weka.GenerateFeatureStack;
-import net.haesleinhuepf.clijx.weka.TrainWekaModel;
 import net.haesleinhuepf.clijx.weka.TrainWekaModelWithOptions;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
 import org.scijava.util.VersionUtils;
 
-import javax.swing.*;
 import java.awt.*;
 
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.addMenuAction;
