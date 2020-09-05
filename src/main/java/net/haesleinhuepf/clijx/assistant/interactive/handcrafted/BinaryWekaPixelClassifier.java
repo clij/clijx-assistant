@@ -5,26 +5,20 @@ import ij.gui.GenericDialog;
 import ij.gui.Toolbar;
 import ij.plugin.frame.RoiManager;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
-import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.CLIJ2;
-import net.haesleinhuepf.clij2.plugins.AutoThresholderImageJ1;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.optimize.BinaryAnnotationTool;
+import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
 import net.haesleinhuepf.clijx.assistant.optimize.OptimizationUtilities;
-import net.haesleinhuepf.clijx.assistant.optimize.SimplexOptimizer;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import net.haesleinhuepf.clijx.assistant.utilities.IJLogger;
 import net.haesleinhuepf.clijx.assistant.utilities.Logger;
 import net.haesleinhuepf.clijx.weka.GenerateFeatureStack;
-import net.haesleinhuepf.clijx.weka.TrainWekaModel;
 import net.haesleinhuepf.clijx.weka.TrainWekaModelWithOptions;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
 import org.scijava.util.VersionUtils;
 
-import javax.swing.*;
 import java.awt.*;
 
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.addMenuAction;
@@ -94,7 +88,7 @@ public class BinaryWekaPixelClassifier extends AbstractAssistantGUIPlugin {
             IJ.log("Please define reference ROIs in the ROI Manager.\n\n" +
                     "These ROIs should have names starting with 'p' for positive and 'n' for negative.\n\n" +
                     "The just activated annotation tool can help you with that.");
-            Toolbar.addPlugInTool(new BinaryAnnotationTool());
+            Toolbar.addPlugInTool(new AnnotationTool());
             return;
         }
         ClearCLBuffer ground_truth = OptimizationUtilities.makeGroundTruth(clij2, my_target.getWidth(), my_target.getHeight(), my_target.getNSlices(), rm);
@@ -106,8 +100,8 @@ public class BinaryWekaPixelClassifier extends AbstractAssistantGUIPlugin {
         String model_filename = ((TextField) dialog.getStringFields().get(1)).getText();
 
         int num_trees = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(0)).getText());
-        int num_features = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(0)).getText());
-        int max_depth = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(0)).getText());
+        int num_features = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(1)).getText());
+        int max_depth = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(2)).getText());
 
         ClearCLBuffer featureStack = GenerateFeatureStack.generateFeatureStack(clij2, input, feature_definitions);
 

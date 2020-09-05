@@ -14,7 +14,7 @@ import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
 import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clij2.utilities.HasAuthor;
 import net.haesleinhuepf.clij2.utilities.HasLicense;
-import net.haesleinhuepf.clij2.utilities.IsCategorized;
+import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.ExtractChannel;
 import net.haesleinhuepf.clijx.assistant.optimize.*;
 import net.haesleinhuepf.clijx.assistant.scriptgenerator.*;
@@ -38,7 +38,6 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Parameter;
 import java.util.*;
 
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.*;
@@ -183,7 +182,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
     }
 
-    ClearCLBuffer[] result = null;
+    protected ClearCLBuffer[] result = null;
     public synchronized void refresh()
     {
         if (plugin == null) {
@@ -312,6 +311,32 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             }
         }
     }
+
+    protected void executeCL(ClearCLBuffer[][] whole) {
+        if (plugin instanceof CLIJOpenCLProcessor) {
+            if (my_source.getNChannels() > 1) {
+                int number_of_channels = my_source.getNChannels();
+                for (int c = 0; c < number_of_channels; c++) {
+                    for (int i = 0; i < whole.length; i++) {
+                        if (whole[i].length > c) {
+                            args[i] = whole[i][c];
+                        } else {
+                            args[i] = whole[i][0];
+                        }
+                    }
+                    if (plugin instanceof CLIJOpenCLProcessor) {
+                        ((CLIJOpenCLProcessor) plugin).executeCL();
+                    }
+                }
+                for (int i = 0; i < whole.length; i++) {
+                    args[i] = whole[i][0];
+                }
+            } else {
+                ((CLIJOpenCLProcessor) plugin).executeCL();
+            }
+        }
+    }
+
 
     protected ClearCLBuffer[] createOutputBufferFromSource(ClearCLBuffer[] pushed) {
         CLIJx clijx = CLIJx.getInstance();
@@ -713,9 +738,6 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         paused = false;
     }
 
-    private boolean resultIsLabelImage(AbstractAssistantGUIPlugin abstractAssistantGUIPlugin) {
-        return (abstractAssistantGUIPlugin.getName().toLowerCase().contains("label"));
-    }
 
     protected void generateScript(ScriptGenerator generator) {
         String script = generator.header() +
@@ -977,7 +999,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             IJ.log("Please define reference ROIs in the ROI Manager.\n\n" +
                     "These ROIs should have names starting with 'p' for positive and 'n' for negative.\n\n" +
                             "The just activated annotation tool can help you with that.");
-            Toolbar.addPlugInTool(new BinaryAnnotationTool());
+            Toolbar.addPlugInTool(new AnnotationTool());
             return;
         }
 
@@ -1106,5 +1128,9 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             plugin.refreshDialogFromArguments();
         }
         path[0].setTargetInvalid();
+    }
+
+    public static AssistantGUIPlugin getPluginFromTargetImage(ImagePlus imp) {
+        return AssistantGUIPluginRegistry.getInstance().getPlugin(imp);
     }
 }

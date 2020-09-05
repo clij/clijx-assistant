@@ -3,9 +3,15 @@ package net.haesleinhuepf;
 import ij.IJ;
 import ij.ImageJ;
 import ij.ImagePlus;
+import ij.gui.Toolbar;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+import net.haesleinhuepf.clij2.plugins.ConnectedComponentsLabelingBox;
+import net.haesleinhuepf.clij2.plugins.GaussianBlur3D;
+import net.haesleinhuepf.clij2.plugins.ThresholdOtsu;
 import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
+import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.gui.MemoryDisplay;
 import net.haesleinhuepf.clijx.assistant.AssistantGUIStartingPoint;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.CylinderTransform;
@@ -42,6 +48,15 @@ public class AssistantPlayground implements PlugInFilter {
         //if (true) return;
         new AssistantGUIStartingPoint().run("");
         //new AssistantPlayground().run(null);
+
+        new GenericAssistantGUIPlugin(new GaussianBlur3D()).run("");
+        new GenericAssistantGUIPlugin(new ThresholdOtsu()).run("");
+        new GenericAssistantGUIPlugin(new ConnectedComponentsLabelingBox()).run("");
+
+        //new WekaLabelClassifier().run("");
+
+
+        Toolbar.addPlugInTool(new AnnotationTool());
     }
 
     @Override
