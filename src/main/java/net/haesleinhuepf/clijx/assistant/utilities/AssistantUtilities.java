@@ -8,9 +8,10 @@ import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.plugins.PullToROIManager;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
+import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.gui.*;
 import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.annotation.BinaryAnnotationTool;
 import net.haesleinhuepf.clijx.plugins.WekaLabelClassifier;
 
 import java.awt.*;
@@ -470,7 +471,7 @@ public class AssistantUtilities {
         ignoreEvent = true;
         //Toolbar.removeMacroTools();
 
-        Toolbar.addPlugInTool(new BinaryAnnotationTool());
+        Toolbar.addPlugInTool(new AnnotationTool());
         Toolbar.addPlugInTool(new AssistantStartingPointTool());
 
         ignoreEvent = false;
@@ -501,6 +502,15 @@ public class AssistantUtilities {
                 name.contains("smaller") ||
                 name.contains("equal")
                 ;
+    }
+
+    public static boolean resultIsLabelImage(AssistantGUIPlugin abstractAssistantGUIPlugin) {
+        String name = abstractAssistantGUIPlugin.getName().toLowerCase();
+        if (abstractAssistantGUIPlugin.getCLIJMacroPlugin() != null && abstractAssistantGUIPlugin.getCLIJMacroPlugin() instanceof IsCategorized) {
+            name = name + "," + ((IsCategorized) abstractAssistantGUIPlugin.getCLIJMacroPlugin()).getCategories().toLowerCase();
+        }
+
+        return name.contains("label");
     }
 
     public static double parmeterNameToStepSizeSuggestion(String parameterName, boolean small_step) {

@@ -14,12 +14,12 @@ import java.awt.geom.Line2D;
 
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.ignoreEvent;
 
-public class BinaryAnnotationTool extends PlugInTool implements ImageListener {
+public class AnnotationTool extends PlugInTool implements ImageListener {
     PolygonRoi line = null;
     static ImagePlus imp = null;
 
     static String TOOL_NAME = "Binary annotation tool";
-    public BinaryAnnotationTool(){
+    public AnnotationTool(){
         IJ.addEventListener(new IJEventListener() {
             @Override
             public void eventOccurred(int eventID) {
@@ -31,7 +31,7 @@ public class BinaryAnnotationTool extends PlugInTool implements ImageListener {
                         if (WindowManager.getCurrentImage() != null) {
                             imp = WindowManager.getCurrentImage();
                         }
-                        BinaryAnnotationToolBar.getInstance();
+                        AnnotationToolBar.getInstance();
                     }
                 }
             }
@@ -46,10 +46,10 @@ public class BinaryAnnotationTool extends PlugInTool implements ImageListener {
         line = new PolygonRoi(new float[]{
                 imp.getWindow().getCanvas().offScreenX(x)}, new float[]{
                 imp.getWindow().getCanvas().offScreenY(y)}, Roi.FREELINE);
-        line.setStrokeWidth(BinaryAnnotationToolBar.thickness);
-//        IJ.log("thick " + BinaryAnnotationToolBar.thickness);
+        line.setStrokeWidth(AnnotationToolBar.thickness);
+//        IJ.log("thick " + AnnotationToolBar.thickness);
         imp.setRoi(line);
-        BinaryAnnotationToolBar.getInstance().updateVisualisation();
+        AnnotationToolBar.getInstance().updateVisualisation();
 
         ImagePlus.removeImageListener(this);
         ImagePlus.addImageListener(this);
@@ -73,8 +73,8 @@ public class BinaryAnnotationTool extends PlugInTool implements ImageListener {
 
         FloatPolygon newPolygon = new FloatPolygon(xes, yes);
         line = new PolygonRoi(newPolygon, Roi.FREELINE);
-        line.setStrokeWidth(BinaryAnnotationToolBar.thickness);
-        line.setStrokeColor(BinaryAnnotationToolBar.current_color);
+        line.setStrokeWidth(AnnotationToolBar.thickness);
+        line.setStrokeColor(AnnotationToolBar.current_class.getColor());
         imp.setRoi(line);
     }
 
@@ -92,7 +92,7 @@ public class BinaryAnnotationTool extends PlugInTool implements ImageListener {
         line.setPosition(imp.getSlice());
         //line.setPosition(imp);//.getChannel(), imp.getSlice(), imp.getFrame());
 
-        if (BinaryAnnotationToolBar.current_color == BinaryAnnotationToolBar.eraseColor) {
+        if (AnnotationToolBar.current_class == AnnotationToolBar.erase) {
 
             for (int i = rm.getCount() - 1; i >= 0; i--) {
                 Roi otherRoi = rm.getRoi(i);
@@ -109,13 +109,13 @@ public class BinaryAnnotationTool extends PlugInTool implements ImageListener {
                 }
             }
         } else {
-            line.setName("" + (BinaryAnnotationToolBar.current_color == BinaryAnnotationToolBar.foregroundColor?"p":"n"));
+            line.setName("" + (AnnotationToolBar.current_class.getName()));
             rm.addRoi(line);
         }
 
         imp.killRoi();
         showAll(rm);
-        BinaryAnnotationToolBar.getInstance().updateVisualisation();
+        AnnotationToolBar.getInstance().updateVisualisation();
 
         //rm.runCommand(imp, "Show all");
         line = null;
@@ -151,11 +151,7 @@ public class BinaryAnnotationTool extends PlugInTool implements ImageListener {
         for (int i = 0; i < rm.getCount(); i++) {
             Roi roi = rm.getRoi(i);
             if (roi.getZPosition() == imp.getZ()) {
-                if (roi.getName().startsWith("p")) {
-                    roi.setStrokeColor(BinaryAnnotationToolBar.foregroundColor);
-                } else if (roi.getName().startsWith("n")) {
-                    roi.setStrokeColor(BinaryAnnotationToolBar.backgroundColor);
-                }
+                //roi.setStrokeColor(AnnotationToolBar.);
                 overlay.add(roi);
             }
         }

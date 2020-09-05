@@ -14,7 +14,7 @@ import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
 import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clij2.utilities.HasAuthor;
 import net.haesleinhuepf.clij2.utilities.HasLicense;
-import net.haesleinhuepf.clijx.assistant.annotation.BinaryAnnotationTool;
+import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.ExtractChannel;
 import net.haesleinhuepf.clijx.assistant.optimize.*;
 import net.haesleinhuepf.clijx.assistant.scriptgenerator.*;
@@ -738,9 +738,6 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         paused = false;
     }
 
-    private boolean resultIsLabelImage(AbstractAssistantGUIPlugin abstractAssistantGUIPlugin) {
-        return (abstractAssistantGUIPlugin.getName().toLowerCase().contains("label"));
-    }
 
     protected void generateScript(ScriptGenerator generator) {
         String script = generator.header() +
@@ -1002,7 +999,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             IJ.log("Please define reference ROIs in the ROI Manager.\n\n" +
                     "These ROIs should have names starting with 'p' for positive and 'n' for negative.\n\n" +
                             "The just activated annotation tool can help you with that.");
-            Toolbar.addPlugInTool(new BinaryAnnotationTool());
+            Toolbar.addPlugInTool(new AnnotationTool());
             return;
         }
 
@@ -1131,5 +1128,9 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             plugin.refreshDialogFromArguments();
         }
         path[0].setTargetInvalid();
+    }
+
+    public static AssistantGUIPlugin getPluginFromTargetImage(ImagePlus imp) {
+        return AssistantGUIPluginRegistry.getInstance().getPlugin(imp);
     }
 }

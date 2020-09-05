@@ -8,7 +8,7 @@ import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.annotation.BinaryAnnotationTool;
+import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
 import net.haesleinhuepf.clijx.assistant.optimize.OptimizationUtilities;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.IJLogger;
@@ -88,7 +88,7 @@ public class BinaryWekaPixelClassifier extends AbstractAssistantGUIPlugin {
             IJ.log("Please define reference ROIs in the ROI Manager.\n\n" +
                     "These ROIs should have names starting with 'p' for positive and 'n' for negative.\n\n" +
                     "The just activated annotation tool can help you with that.");
-            Toolbar.addPlugInTool(new BinaryAnnotationTool());
+            Toolbar.addPlugInTool(new AnnotationTool());
             return;
         }
         ClearCLBuffer ground_truth = OptimizationUtilities.makeGroundTruth(clij2, my_target.getWidth(), my_target.getHeight(), my_target.getNSlices(), rm);

@@ -11,7 +11,7 @@ import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.annotation.BinaryAnnotationTool;
+import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
 import net.haesleinhuepf.clijx.assistant.optimize.OptimizationUtilities;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
@@ -211,7 +211,7 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
             IJ.log("Please define reference ROIs in the ROI Manager.\n\n" +
                     "These ROIs should have names starting with 'p' for positive and 'n' for negative.\n\n" +
                     "The just activated annotation tool can help you with that.");
-            Toolbar.addPlugInTool(new BinaryAnnotationTool());
+            Toolbar.addPlugInTool(new AnnotationTool());
             return;
         }
 
