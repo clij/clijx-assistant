@@ -73,20 +73,23 @@ public class OptimizationUtilities {
 
                         ArrayList<Integer> labels_of_roi = getLabelsFromRoi(label_map, roi);
 
-                        Integer roi_label = 0;
+                        Integer roi_class = 0;
                         if (name.startsWith("n")) {
-                            roi_label = 1;
+                            roi_class = 1;
                         } else if (name.startsWith("p")) {
-                            roi_label = 2;
+                            roi_class = 2;
                         } else {
                             try {
-                                roi_label = (int) Double.parseDouble(name);
+                                roi_class = (int) Double.parseDouble(name);
                             } catch (Exception e) {
 
                             }
                         }
                         for (int j = 0; j < labels_of_roi.size(); j++) {
-                            result.put(labels_of_roi.get(j), roi_label);
+                            int label = labels_of_roi.get(j);
+                            if (label > 0) {
+                                result.put(label, roi_class);
+                            }
                         }
                     } else {
                         System.out.println("Roi area 0");

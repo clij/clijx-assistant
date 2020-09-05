@@ -233,8 +233,12 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
 
         String model_filename = ((TextField) dialog.getStringFields().get(1)).getText();
 
-        for (Integer klass : ground_truth.keySet()) {
-            table.setValue("CLASS", klass, ground_truth.get(klass));
+        for (Integer label : ground_truth.keySet()) {
+            int klass = ground_truth.get(label);
+            System.out.println("Label " + label + ", class " + klass);
+            if (label > 0) {
+                table.setValue("CLASS", label - 1, klass);
+            }
         }
 
 
