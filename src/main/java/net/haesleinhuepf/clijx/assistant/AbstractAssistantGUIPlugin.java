@@ -279,6 +279,33 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
     }
 
+    protected void invalidateResultsIfDimensionsChanged(long[] new_dimensions) {
+        if (result != null) {
+            ClearCLBuffer first = result[0];
+            long[] result_dimensions = first.getDimensions();
+
+
+            boolean equal_dimensions = true;
+            for (int d = 0; d < new_dimensions.length; d++) {
+                System.out.println("" + new_dimensions[d] + " != " + result_dimensions[d]);
+                if (new_dimensions[d] != result_dimensions[d]) {
+                    System.out.println("!");
+                    equal_dimensions = false;
+                    break;
+                }
+            }
+
+            if (!equal_dimensions) {
+                for (ClearCLBuffer buffer : result) {
+                    buffer.close();
+                }
+                System.out.println("Make a new result");
+                result = null;
+            }
+        }
+    }
+
+
     protected void cleanup(ImagePlus my_source, ClearCLBuffer[] pushed) {
         if (!(my_source.getStack() instanceof CLIJxVirtualStack)) {
             for (int i = 0; i < pushed.length; i++) {
