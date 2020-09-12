@@ -678,7 +678,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         menu.add(auto_position_item);
 
         addMenuAction(menu, "Duplicate and go ahead with ImageJ", (a) -> {
-            new Duplicator().run(my_target, 1, my_target.getNSlices()).show();
+            new Duplicator().run(my_target, 1, my_target.getNChannels(), 1, my_target.getNSlices(),  1, my_target.getNFrames()).show();
         });
 
         menu.add("-");
