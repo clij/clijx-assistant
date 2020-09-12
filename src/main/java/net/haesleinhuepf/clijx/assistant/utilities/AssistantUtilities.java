@@ -532,6 +532,9 @@ public class AssistantUtilities {
         if (parameterName.toLowerCase().contains("constant")) {
             return small_step ? 10 : 100;
         }
+        if (parameterName.toLowerCase().contains("zoom")) {
+            return small_step ? 0.1 : 1;
+        }
         return small_step ? 1 : 10;
     }
 
