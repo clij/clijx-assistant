@@ -9,6 +9,7 @@ import java.io.IOException;
 public class StoreUsageAnalysis {
     public static void main(String[] args) throws IOException {
         UsageAnalyser combinedUsageStats = new UsageAnalyser(
+                "src/main/macro/",
                 "../clij2-docs/src/main/macro/",
                 "../clijx/src/main/macro/",
                 "../scripts_hidden/",

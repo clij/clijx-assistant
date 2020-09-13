@@ -129,6 +129,9 @@ Determine maxima with a given tolerance to surrounding maxima and background and
 * [Find Maxima Plateaus](https://clij.github.io/clij2-docs/reference_findMaximaPlateaus)
 Finds local maxima, which might be groups of pixels with the same intensity and marks them in a binary image.
 
+* [Find Maxima](https://clij.github.io/clij2-docs/reference_findMaxima)
+Finds and labels local maxima with neighboring maxima and background above a given tolerance threshold.
+
 * [Flip](https://clij.github.io/clij2-docs/reference_flip3D)
 Flips an image in X, Y and/or Z direction depending on boolean flags.
 
@@ -143,9 +146,6 @@ Determines if two images A and B greater pixel wise.
 
 * [Greater Or Equal Constant](https://clij.github.io/clij2-docs/reference_greaterOrEqualConstant)
 Determines if two images A and B greater or equal pixel wise. 
-
-* [Grey Level Atttribute Filtering](https://clij.github.io/clij2-docs/reference_greyLevelAtttributeFiltering)
-Todo.
 
 * [Intensity Correction Above Threshold Otsu](https://clij.github.io/clij2-docs/reference_intensityCorrectionAboveThresholdOtsu)
 Determines the mean intensity of all pixel the image stack which are above a determined Threshold (Otsu et al. 1979) and multiplies it with a factor so that the mean intensity becomes equal to a given value.
@@ -456,12 +456,18 @@ Takes a binary image, labels connected components and dilates the regions using 
 * [Voronoi Octagon](https://clij.github.io/clij2-docs/reference_voronoiOctagon)
 Takes a binary image and dilates the regions using a octagon shape until they touch. 
 
+* [Weka Label Classifier](https://clij.github.io/clij2-docs/reference_wekaLabelClassifier)
+Applies a pre-trained CLIJx-Weka model to an image and a corresponding label map. 
+
 * [Within Intensity Range](https://clij.github.io/clij2-docs/reference_withinIntensityRange)
 Generates a binary image where pixels with intensity within the given range are 1 and others are 0.
 
+* [Zoom](https://clij.github.io/clij2-docs/reference_zoom)
+See Scale2D and Scale3D.
 
 
-139 operations listed.
+
+141 operations listed.
 
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)

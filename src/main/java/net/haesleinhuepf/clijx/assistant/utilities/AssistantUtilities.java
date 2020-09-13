@@ -455,6 +455,8 @@ public class AssistantUtilities {
         blocklist.add(net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfDiamond.class);
         blocklist.add(net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfBox.class);
 
+        blocklist.add(net.haesleinhuepf.clijx.plugins.GreyLevelAtttributeFiltering.class);
+
 
         if (blocklist.contains(clijMacroPlugin.getClass())) {
             return false;

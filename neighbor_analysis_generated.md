@@ -94,9 +94,12 @@ neighboring labels and replaces the label index with the local standard deviatio
 * [Touching Neighbor Count Map](https://clij.github.io/clij2-docs/reference_touchingNeighborCountMap)
 Takes a label map, determines which labels touch and replaces every label with the number of touching neighboring labels.
 
+* [Weka Label Classifier](https://clij.github.io/clij2-docs/reference_wekaLabelClassifier)
+Applies a pre-trained CLIJx-Weka model to an image and a corresponding label map. 
 
 
-26 operations listed.
+
+27 operations listed.
 
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
