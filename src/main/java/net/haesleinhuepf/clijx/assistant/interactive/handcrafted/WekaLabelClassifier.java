@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
@@ -274,7 +275,13 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
 
     private void loadFeatures(String filename) {
         try {
-            features = new String(Files.readAllBytes(Paths.get(filename)));
+            if (new File(filename).exists()) {
+                features = new String(Files.readAllBytes(Paths.get(filename)));
+            } else {
+                System.out.println(filename + " doesn't exist.");
+            }
+        } catch (NoSuchFileException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
