@@ -1,1 +1,8 @@
+title: CLIJx-assistant
+logo: /images/clijx_logo.png
+description: A user interface for GPU-accelerated image processing using CLIJ2
+show_downloads: false
+google_analytics:
 theme: jekyll-theme-minimal
+plugins:
+  - jekyll-redirect-from
