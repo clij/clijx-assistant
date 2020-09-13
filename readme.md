@@ -40,7 +40,7 @@ Stay tuned.
 
 * Analysis
   * [Cell neighbor analysis](https://clij.github.io/assistant/neighbor_analysis_generated)
-  * [Label classifier (Weka)](https://clij.github.io/assistant/clix_weka_label_classifier)
+  * [Label classifier (Weka)](https://clij.github.io/assistant/clijx_weka_label_classifier)
 
 * Reproducibility
   * [Export workflows as ImageJ Script](https://clij.github.io/assistant/macro_export)
