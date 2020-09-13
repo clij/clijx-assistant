@@ -52,13 +52,14 @@ public class MacroGenerator implements ScriptGenerator {
             String temp[] = parameters[i].trim().split(" ");
             String name = temp[temp.length - 1];
             call = call + ", " + name;
-            program = program + name + " = " + plugin.getArgs()[i] + ";\n";
+            program = program + name + " = " + objectToString(plugin.getArgs()[i]) + ";\n";
         }
         program = program + methodName + "(" + image1 + ", " + image2 + call + ");\n";
         program = program + "Ext.CLIJ2_pull(" + image2 + "); // consider removing this line if you don't need to see that image\n";
 
         return program;
     }
+
 
     @Override
     public String fileEnding() {

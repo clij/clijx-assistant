@@ -66,7 +66,7 @@ public class JythonGenerator implements ScriptGenerator {
             String temp[] = parameters[i].trim().split(" ");
             String name = temp[temp.length - 1];
             call = call + ", " + name;
-            program = program + name + " = " + plugin.getArgs()[i] + "  \n";
+            program = program + name + " = " + objectToString(plugin.getArgs()[i]) + "  \n";
         }
         program = program + methodName + "(" + image1 + ", " + image2 + call + ")\n";
 

@@ -46,6 +46,14 @@ public interface ScriptGenerator {
         return text.toString();
     }
 
+    default String objectToString(Object arg) {
+        if (arg instanceof String) {
+            return "\"" + arg + "\"";
+        } else {
+            return arg.toString();
+        }
+    }
+
     String finish();
 
 }
