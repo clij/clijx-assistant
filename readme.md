@@ -8,13 +8,16 @@ Do not use it for routine research yet.
 Planned release is early 2021. 
 Stay tuned.
 
-![Image](images/suggestions.png)
+![Image](images/teaser1.png)
 
 
 ## Overview
-* [Installation](https://clij.github.io/assistant/installation)
-* [Getting started](https://clij.github.io/assistant/getting_started)
-* [Reference](https://clij.github.io/assistant/reference)
+* Introduction
+  * [Installation](https://clij.github.io/assistant/installation)
+  * [Building workflows](https://clij.github.io/assistant/getting_started)
+  * [Parameter optimization](https://clij.github.io/assistant/parameter_optimization)
+  * [Undo parameter changes](https://clij.github.io/assistant/undo)
+  * [Reference](https://clij.github.io/assistant/reference)
 
 * Filtering / correction
   * [Image filtering](https://clij.github.io/assistant/filtering)
@@ -23,6 +26,7 @@ Stay tuned.
 
 * Transformation
   * [Maximum projection](https://clij.github.io/assistant/intensity_projection)
+  * [Crop, Pan & zoom](https://clij.github.io/assistant/crop_pan_zoom)
   * [Multi-channel image visualisation](https://clij.github.io/assistant/multi_channel_support)
   * [Cylinder projection](https://clij.github.io/assistant/cylinder_projection)
   * [Sphere projection](https://clij.github.io/assistant/sphere_projection)
@@ -32,11 +36,11 @@ Stay tuned.
   * Cell segmentation
     * [Nuclei segmentation](https://clij.github.io/assistant/segmentation_nuclei)
     * [Cell segmentation based on membranes](https://clij.github.io/assistant/segmentation_cells)
-    * [Parameter optimization](https://clij.github.io/assistant/parameter_optimization)
     * [Pixel classifier (Weka)](https://clij.github.io/assistant/clijx_weka_pixel_classifier)
 
 * Analysis
   * [Cell neighbor analysis](https://clij.github.io/assistant/neighbor_analysis_generated)
+  * [Label classifier (Weka)](https://clij.github.io/assistant/clix_weka_label_classifier)
 
 * Reproducibility
   * [Export workflows as ImageJ Script](https://clij.github.io/assistant/macro_export)
@@ -44,9 +48,12 @@ Stay tuned.
 
 * Extensibility
   * [CLIJ2 Plugin template](https://github.com/clij/clij2-plugin-template)
-  * [CLIJ2 imglib2 example plugin](https://github.com/haesleinhuepf/clijx-assistant-imglib2)
-  * [CLIJ2 ImageJ example plugin](https://github.com/haesleinhuepf/clijx-assistant-imagej)
-  * [CLIJ2 ImageJ2 example plugin](https://github.com/haesleinhuepf/clijx-assistant-imagej2)
+  * [CLIJ2 imglib2 example plugin](https://github.com/clij/clijx-assistant-imglib2)
+  * [CLIJ2 ImageJ example plugin](https://github.com/clij/clijx-assistant-imagej)
+  * [CLIJ2 ImageJ2 example plugin](https://github.com/clij/clijx-assistant-imagej2)
+  * [CLIJ2 BoneJ example plugin](https://github.com/clij/clijx-assistant-bonej)
+  * [CLIJ2 MorphoLibJ example plugin](https://github.com/clij/clijx-assistant-morpholibj)
+  * [CLIJ2 ImageJ 3D Suite example plugin](https://github.com/clij/clijx-assistant-imagej3dsuite)
 
 
 ## Instant feedback
