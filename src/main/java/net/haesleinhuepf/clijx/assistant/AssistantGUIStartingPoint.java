@@ -100,4 +100,9 @@ public class AssistantGUIStartingPoint extends AbstractAssistantGUIPlugin {
     public boolean canManage(CLIJMacroPlugin plugin) {
         return plugin instanceof Copy;
     }
+
+    public static AssistantGUIPlugin getCurrentPlugin() {
+        ImagePlus imp = IJ.getImage();
+        return AssistantGUIPluginRegistry.getInstance().getPlugin(imp);
+    }
 }

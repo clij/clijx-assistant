@@ -8,11 +8,13 @@ import net.haesleinhuepf.clij2.plugins.GaussianBlur2D;
 import net.haesleinhuepf.clij2.plugins.GreaterConstant;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Workflow {
 
     ArrayList<CLIJMacroPlugin> plugins;
     ArrayList<Object[]> parameters;
+    Object[][] args;
 
     public Workflow(CLIJMacroPlugin[] clijPlugins, Object[][] args) {
         plugins = new ArrayList<CLIJMacroPlugin>();
@@ -22,6 +24,7 @@ public class Workflow {
             plugins.add(clijPlugins[i]);
             parameters.add(args[i]);
         }
+        this.args = args;
     }
 
     @Deprecated
@@ -141,5 +144,13 @@ public class Workflow {
             }
         }
         return result;
+    }
+
+    public ArrayList<CLIJMacroPlugin> getPlugins() {
+        return plugins;
+    }
+
+    public Object[][] getArgs() {
+        return args;
     }
 }

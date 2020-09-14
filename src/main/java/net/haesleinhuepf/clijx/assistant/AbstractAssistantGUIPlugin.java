@@ -1160,4 +1160,14 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     public static AssistantGUIPlugin getPluginFromTargetImage(ImagePlus imp) {
         return AssistantGUIPluginRegistry.getInstance().getPlugin(imp);
     }
+
+    public Workflow getWorkflow() {
+        AssistantGUIPlugin[] path = AssistantGUIPluginRegistry.getInstance().getPathToRoot(this);
+        System.out.println("Path: " + Arrays.toString(path));
+
+        CLIJMacroPlugin[] plugins = OptimizationUtilities.getCLIJMacroPluginsFromIncubatorPlugins(path);
+        Object[][] parameters = OptimizationUtilities.getParameterArraysFromIncubatorPlugins(path);
+
+        return new Workflow(plugins, parameters);
+    }
 }

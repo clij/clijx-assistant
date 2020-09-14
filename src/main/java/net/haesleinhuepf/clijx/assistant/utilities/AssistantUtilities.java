@@ -13,9 +13,16 @@ import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.gui.*;
 import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.plugins.WekaLabelClassifier;
+import org.scijava.util.ProcessUtils;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -548,6 +555,34 @@ public class AssistantUtilities {
         menu.add(submenu);
     }
 
+    public static void execute(String directory, String... command) {
+        PrintStream out = new PrintStream(new OutputStream() {
+            @Override
+            public void write(int b) throws IOException {
+                //IJ.log("" + b);
+            }
 
+            @Override
+            public void write(byte[] b) throws IOException {
+                //IJ.log(new String(b));
+            }
+
+            @Override
+            public void write(byte[] b, int off, int len) throws IOException {
+                byte[] a = new byte[len];
+                System.arraycopy(b, off, a, 0, len);
+                //IJ.log("" + len);
+                if (a.length > 2) {
+                    IJ.log(new String(a));
+                }
+            }
+        });
+
+        try {
+            ProcessUtils.exec(new File(directory), out, out, command);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

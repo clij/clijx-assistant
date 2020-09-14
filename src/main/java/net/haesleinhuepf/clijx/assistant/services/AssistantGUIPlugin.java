@@ -2,6 +2,7 @@ package net.haesleinhuepf.clijx.assistant.services;
 
 import ij.ImagePlus;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
+import net.haesleinhuepf.clijx.assistant.optimize.Workflow;
 import org.scijava.plugin.SciJavaPlugin;
 
 public interface AssistantGUIPlugin extends SciJavaPlugin {
@@ -24,4 +25,6 @@ public interface AssistantGUIPlugin extends SciJavaPlugin {
     String getName();
 
     void refreshDialogFromArguments();
+
+    Workflow getWorkflow();
 }
