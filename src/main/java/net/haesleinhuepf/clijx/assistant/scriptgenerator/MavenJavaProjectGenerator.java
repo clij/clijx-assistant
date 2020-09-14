@@ -26,10 +26,11 @@ import java.util.Date;
 
 class MavenJavaProjectGenerator {
 
-    static String TEMPLATE_REPOSITORY = "C:/structure/code/clijx-assistant-plugin-generator-template/";
-    //"https://github.com/clij/clijx-assistant-plugin-generator-template";
+    static String TEMPLATE_REPOSITORY = //"C:/structure/code/clijx-assistant-plugin-generator-template/";
+                                        "https://github.com/clij/clijx-assistant-plugin-generator-template";
     static String GIT_EXECUTABLE = "git";
     static String MAVEN_EXECUTABLE = "mvn";
+    static String JDK_HOME = "C:/Program Files/Java/jdk1.8.0_202/";
 
     String enter_lower_case_plugin_name_here = "";
     String enter_plugin_name_here = "";
@@ -46,6 +47,7 @@ class MavenJavaProjectGenerator {
     String enter_typed_parameters_here = "";
     String enter_default_values_here = "";
     String enter_value_parsers_here = "";
+    String enter_custom_dependencies_here = "";
 
     public MavenJavaProjectGenerator(Workflow workflow, String plugin_name, String plugin_description, String author_name, String author_id) {
 
@@ -74,6 +76,7 @@ class MavenJavaProjectGenerator {
         enter_typed_parameters_here = "";
         enter_default_values_here = "";
         enter_value_parsers_here = "";
+        enter_custom_dependencies_here = "";
 
         /*
         if (enter_parameters_here.length() > 0) {
@@ -106,6 +109,7 @@ class MavenJavaProjectGenerator {
             } else {
                 call = "// Note: this operation needs " + jar + "\n";
                 call = call + plugin.getClass().getName() + "." + validJavaFunctionName(plugin.getClass().getSimpleName()) + "(clijx, ";
+                enter_custom_dependencies_here = enter_custom_dependencies_here + dependency(jar);
             }
 
             // ---------------------------------------------------------------------------------------------------------
@@ -173,6 +177,27 @@ class MavenJavaProjectGenerator {
 
         enter_code_here = ("\n" + enter_code_here).replace("\n", "\n        ");
 
+    }
+
+    private String dependencies = "";
+    private String dependency(String jar) {
+        if (dependencies.contains(jar)) {
+            return "";
+        }
+        dependencies = dependencies + jar + "\n";
+
+        return
+        "\t\t<dependency>\n" +
+        "\t\t\t<artifactId>.dep" + dependencies.split(",").length + ".</artifactId>\n" +
+        "\t\t\t<groupId>..</groupId>\n" +
+        "\t\t\t<version>1</version>\n" +
+        "\t\t\t<scope>system</scope>\n" +
+        "\t\t\t<systemPath>" + jar + "</systemPath>\n" +
+        "\t\t</dependency>";
+    }
+
+    public String getDependencies() {
+        return dependencies;
     }
 
     private String variableValueToJavaParser(Object variable, int arg_count) {
@@ -305,6 +330,7 @@ class MavenJavaProjectGenerator {
         content = content.replace(", 1/*enter_default_values_here*/", enter_default_values_here);
         content = content.replace(", 1f /*enter_value_parsers_here*/", enter_value_parsers_here);
         content = content.replace("enter_function_name_here", enter_function_name_here);
+        content = content.replace("<!-- enter_custom_dependencies_here -->", enter_custom_dependencies_here);
 
         return content;
     }
@@ -326,7 +352,7 @@ class MavenJavaProjectGenerator {
     }
 
     public static void mvn_package(String target_directory) {
-        String[] command = {MAVEN_EXECUTABLE, "package"};
+        String[] command = {MAVEN_EXECUTABLE, "-Dmaven.compiler.fork=true", "-Dmaven.compiler.executable=" + JDK_HOME + "bin/javac", "package"};
         AssistantUtilities.execute(target_directory, command);
 
     }

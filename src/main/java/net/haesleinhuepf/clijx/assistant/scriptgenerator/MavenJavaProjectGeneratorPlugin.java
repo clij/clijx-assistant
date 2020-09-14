@@ -45,8 +45,11 @@ public class MavenJavaProjectGeneratorPlugin implements PlugIn {
 
     @Override
     public void run(String arg) {
-
         AssistantGUIPlugin plugin = AssistantGUIStartingPoint.getCurrentPlugin();
+        generate(plugin);
+    }
+
+    public void generate(AssistantGUIPlugin plugin) {
         if (plugin == null) {
             new WaitForUserDialog("Error: Only CLIJx-Assistant plugins allow generating CLIJx/Fiji plugins.");
         }
@@ -65,17 +68,15 @@ public class MavenJavaProjectGeneratorPlugin implements PlugIn {
 
         System.out.println(temp_folder);
 
-        MavenJavaProjectGenerator.git_clone(TEMPLATE_REPOSITORY, temp_folder);
-
-
-
         GenericDialog dialog = new GenericDialog("Generate CLIJx/Fiji plugin");
         dialog.addStringField("Plugin name", plugin_name);
         dialog.addStringField("Plugin description", plugin_description);
         dialog.addStringField("Author", author_name);
         dialog.addStringField("Author ID", author_id);
-        dialog.addStringField("Maven executabe", MAVEN_EXECUTABLE);
-        dialog.addStringField("Git executabe", GIT_EXECUTABLE);
+        dialog.addStringField("Working directory", temp_folder);
+        dialog.addStringField("Maven executable", MAVEN_EXECUTABLE);
+        dialog.addStringField("JDK home folder", JDK_HOME);
+        dialog.addStringField("Git executab;e", GIT_EXECUTABLE);
 
         dialog.showDialog();
         if (dialog.wasCanceled()) {
@@ -86,13 +87,17 @@ public class MavenJavaProjectGeneratorPlugin implements PlugIn {
         plugin_description = dialog.getNextString();
         author_name = dialog.getNextString();
         author_id = dialog.getNextString();
+        temp_folder = dialog.getNextString();
         MAVEN_EXECUTABLE = dialog.getNextString();
+        JDK_HOME = dialog.getNextString();
         GIT_EXECUTABLE = dialog.getNextString();
 
         generate(workflow, temp_folder, plugin_name, plugin_description, author_name, author_id);
     }
 
     public static void generate(Workflow workflow, String temp_folder, String plugin_name, String plugin_description, String author_name, String author_id) {
+        MavenJavaProjectGenerator.git_clone(TEMPLATE_REPOSITORY, temp_folder);
+
         MavenJavaProjectGenerator generator = new MavenJavaProjectGenerator(workflow, plugin_name, plugin_description, author_name, author_id);
 
         generator.parseSubFolders(new File(temp_folder));
@@ -105,6 +110,10 @@ public class MavenJavaProjectGeneratorPlugin implements PlugIn {
             IJ.log("The source code is saved to " + temp_folder);
             IJ.log("Make sure to make a copy before closing Fiji.");
             IJ.log("\nRestart Fiji to try out your new Plugin.");
+            String dependencies = generator.getDependencies();
+            if (dependencies.length() > 0) {
+                IJ.log("If you plan to ship this plugin to others, you also need to ship these dependencies:\n" + dependencies);
+            }
         } else {
             IJ.log("\nBuild failed.");
             IJ.log("\nThis typically happens if not all plugins in your workflow are supported for code generation.");
