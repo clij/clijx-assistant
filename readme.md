@@ -64,7 +64,7 @@ You can fine tune parameters of your workflow while inspecting different z-plane
 
 ## Generate CLIJx / Fiji plugins from windows on screen
 After a workflow has been set up, you can generate a new CLIJx / Fiji plugin and use it to spare steps in future workflows.
-<iframe src="images/generate_clijx_plugins3_acc.mp4.mp4" width="500" height="250"></iframe>
+<iframe src="images/generate_clijx_plugins3_acc.mp4" width="500" height="250"></iframe>
 [Download video](images/generate_clijx_plugins3_acc.mp4)
 
 
