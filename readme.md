@@ -62,7 +62,10 @@ You can fine tune parameters of your workflow while inspecting different z-plane
 <iframe src="images/incubator_segmentation_intro.mp4" width="500" height="800"></iframe>
 [Download video](images/incubator_segmentation_intro.mp4) [Image data source: Daniela Vorkel, Myers lab, CSBD / MPI CBG]
 
-
+## Generate CLIJx / Fiji plugins from windows on screen
+After a workflow has been set up, you can generate a new CLIJx / Fiji plugin and use it to spare steps in future workflows.
+<iframe src="images/generate_clijx_plugins3_acc.mp4.mp4" width="500" height="250"></iframe>
+[Download video](images/generate_clijx_plugins3_acc.mp4)
 
 
 ## Wish list and known issues
