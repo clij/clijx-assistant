@@ -30,3 +30,5 @@ Furthermore, if you want to project in different directions, conider these metho
 [Download video](images/incubator__working_principle.mp4) [Image data source: Daniela Vorkel, Myers lab, CSBD / MPI CBG]
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
+
+[Imprint](https://clij.github.io/imprint)

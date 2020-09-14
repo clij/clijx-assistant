@@ -12,3 +12,5 @@ Several languages are supported:
 Thus, before running your generated macro, close all CLIJx-Incubator windows.
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
+
+[Imprint](https://clij.github.io/imprint)

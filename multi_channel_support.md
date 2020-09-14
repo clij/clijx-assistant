@@ -19,3 +19,5 @@ Open your data set. [Start the CLIJx-Assistant](https://clij.github.io/assistant
 
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
+
+[Imprint](https://clij.github.io/imprint)

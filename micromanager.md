@@ -24,3 +24,6 @@ As soon as you started acquisition, execute these two menus:
 
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
+
+
+[Imprint](https://clij.github.io/imprint)

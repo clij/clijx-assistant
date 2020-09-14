@@ -18,3 +18,5 @@ Open your data set. [Start the CLIJx-Assistant](https://clij.github.io/assistant
 [Download video](images/assistant_crop_pan_zoom.mp4) [Image data source: Daniela Vorkel, Myers lab, CSBD / MPI CBG]
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
+
+[Imprint](https://clij.github.io/imprint)

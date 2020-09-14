@@ -33,3 +33,5 @@ Annotations can be saved using the `More >>` button in the ROI Manager:
 The latter can be done by [exporting a script or human readable workflow](https://clij.github.io/assistant/macro_export).
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
+
+[Imprint](https://clij.github.io/imprint)

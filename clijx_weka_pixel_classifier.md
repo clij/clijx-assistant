@@ -11,3 +11,5 @@ It is also possible to enter a pre-existing model and skip the annotaiton step.
 Note: For technical reasons, the model files are not compatible with traditional Trainable Weka Segmentation.
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
+
+[Imprint](https://clij.github.io/imprint)

@@ -471,3 +471,6 @@ See Scale2D and Scale3D.
 
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
+
+[Imprint](https://clij.github.io/imprint)
+

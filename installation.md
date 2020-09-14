@@ -59,3 +59,5 @@ The menu `Plugins > ImageJ on GPU (CLIJx) > Memory Display` allows you to overvi
 ![Image](images/memory_display.png)
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
+
+[Imprint](https://clij.github.io/imprint)

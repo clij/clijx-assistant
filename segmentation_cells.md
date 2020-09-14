@@ -183,3 +183,5 @@ Ext.CLIJ2_pull(image9); // consider removing this line if you don't need to see 
 
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
+
+[Imprint](https://clij.github.io/imprint)

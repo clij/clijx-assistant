@@ -8,3 +8,5 @@ You can go back to former parameter settings by selecting the setting from the `
 [Download video](images/undo.mp4)
 
 Back to [CLIJx-Assistant](https://clij.github.io/incubator)
+
+[Imprint](https://clij.github.io/imprint)

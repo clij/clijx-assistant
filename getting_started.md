@@ -30,3 +30,6 @@ You can use ImageJs `Duplicate...` menu or the built in menu:
 
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
+
+[Imprint](https://clij.github.io/imprint)
+

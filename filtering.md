@@ -23,3 +23,5 @@ such as thresholding. Instant feedback allows you to study consequences of diffe
 [Download video](images/incubator_filtering_with_thresholding.mp4) 
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
+
+[Imprint](https://clij.github.io/imprint)

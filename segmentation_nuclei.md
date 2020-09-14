@@ -23,3 +23,5 @@ After assembling your workflow, put these operations next to each other, change 
 [Image data source: Daniela Vorkel, Myers lab, CSBD / MPI CBG]
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
+
+[Imprint](https://clij.github.io/imprint)
