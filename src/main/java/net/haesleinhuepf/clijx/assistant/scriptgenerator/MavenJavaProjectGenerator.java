@@ -225,7 +225,7 @@ class MavenJavaProjectGenerator {
     }
 
     private String bufferToTypeString(ClearCLBuffer output, ClearCLBuffer input, String buffername) {
-        return output.getNativeType() == input.getNativeType() ? buffername + ".getNativeType()":("clijx." + output.getNativeType().getClass().getSimpleName());
+        return output.getNativeType() == input.getNativeType() ? buffername + ".getNativeType()":("clijx." + output.getNativeType().toString());
     }
 
     private String variableValueToCLIJParameterString(Object variable, String name) {

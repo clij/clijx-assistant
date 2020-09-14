@@ -109,7 +109,7 @@ public class MavenJavaProjectGeneratorPlugin implements PlugIn {
             IJ.log("\nThe compiled version is saved to your Fiji/plugins/" + generator.getJarFilename());
             IJ.log("The source code is saved to " + temp_folder);
             IJ.log("Make sure to make a copy before closing Fiji.");
-            IJ.log("\nRestart Fiji to try out your new Plugin.");
+            IJ.log("\nPlease restart Fiji to try out your new Plugin.");
             String dependencies = generator.getDependencies();
             if (dependencies.length() > 0) {
                 IJ.log("If you plan to ship this plugin to others, you also need to ship these dependencies:\n" + dependencies);
