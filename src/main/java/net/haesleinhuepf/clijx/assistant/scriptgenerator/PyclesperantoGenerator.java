@@ -108,15 +108,6 @@ public class PyclesperantoGenerator implements ScriptGenerator {
         return program;
     }
 
-    private String pythonize(String methodName) {
-        return AssistantUtilities.niceName(methodName).trim()
-                .toLowerCase()
-                .replace(" ", "_")
-                .replace("clij2_", "")
-                .replace("clij_", "")
-                .replace("clijx_", "")
-                ;
-    }
 
     @Override
     public String fileEnding() {

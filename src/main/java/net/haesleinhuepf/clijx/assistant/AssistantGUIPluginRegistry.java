@@ -181,7 +181,7 @@ class AssistantGUIPluginRegistry {
         for (AssistantGUIPlugin followers : findFollowers(plugin)) {
             result = result + script(generator, followers);
         }
-        generator.pull(plugin);
+        result = result + generator.pull(plugin);
         return result;
     }
 

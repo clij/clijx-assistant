@@ -54,6 +54,16 @@ public interface ScriptGenerator {
         }
     }
 
+    default String pythonize(String methodName) {
+        return AssistantUtilities.niceName(methodName).trim()
+                .toLowerCase()
+                .replace(" ", "_")
+                .replace("clij2_", "")
+                .replace("clij_", "")
+                .replace("clijx_", "")
+                ;
+    }
+
     String finish();
 
 }

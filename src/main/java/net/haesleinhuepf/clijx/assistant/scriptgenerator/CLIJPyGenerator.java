@@ -85,8 +85,12 @@ public class CLIJPyGenerator extends JythonGenerator {
         }
         program = program + methodName + "(" + image1 + ", " + image2 + call + ")\n";
 
-        program = program + comment("consider removing this line if you don't need to see that image");
-        program = program + "clijx.show(" + image2 + ", \"" + plugin.getTarget().getTitle() + "\")\n";
+        program = program + comment("consider calling these methods to retrieve the image");
+        program = program + comment("result_ij = clijx.pull(" + image2 + ")");
+        program = program + comment("result_np = ij.py.rai_to_numpy(result_ij);");
+        program = program + comment("consider calling these methods to save the image");
+        program = program + comment("clijx.saveAsTif(" + image2 + ", 'filename.tif')");
+
 
         return program;
     }

@@ -85,7 +85,7 @@ public class JythonGenerator implements ScriptGenerator {
             return "Float";
     }
 
-    protected String pythonize(String methodName) {
+    public String pythonize(String methodName) {
         return methodName; // AssistantUtilities.niceName(methodName).trim().replace(" ", "_").toLowerCase();
     }
 
