@@ -40,6 +40,7 @@ Stay tuned.
 
 * Analysis
   * [Cell neighbor analysis](https://clij.github.io/assistant/neighbor_analysis_generated)
+  * [Distance analysis using MorholibJ](https://clij.github.io/assistant/morpholibj_chamfer_distance_map)
   * [Label classifier (Weka)](https://clij.github.io/assistant/clijx_weka_label_classifier)
 
 * Reproducibility
