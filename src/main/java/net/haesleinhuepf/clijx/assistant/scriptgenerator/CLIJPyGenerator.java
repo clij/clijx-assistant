@@ -40,11 +40,20 @@ public class CLIJPyGenerator extends JythonGenerator {
     public String pull(AssistantGUIPlugin result) {
         String image1 = makeImageID(result.getTarget());
 
-        return "" +
-                "result = clijx.pull(" + image1 + "))\n" +
-                "# show result\n\n" +
-                "io.imshow(result)\n" +
-                "io.show()\n\n";
+        String program = "";
+        program = program + comment("consider calling these methods to retrieve the image");
+        program = program + comment("result_ij = clijx.pull(" + image1 + ")");
+        program = program + comment("result_np = ij.py.rai_to_numpy(result_ij);");
+        program = program + comment("consider calling these methods to save the image");
+        program = program + comment("clijx.saveAsTif(" + image1 + ", 'filename.tif')");
+
+        return program;
+
+//        return "" +
+               // "result = clijx.pull(" + image1 + "))\n" +
+               // "# show result\n\n" +
+               // "io.imshow(result)\n" +
+               // "io.show()\n\n";
     }
 
     @Override
@@ -84,12 +93,6 @@ public class CLIJPyGenerator extends JythonGenerator {
             program = program + name + " = " + objectToString(plugin.getArgs()[i]) + "  \n";
         }
         program = program + methodName + "(" + image1 + ", " + image2 + call + ")\n";
-
-        program = program + comment("consider calling these methods to retrieve the image");
-        program = program + comment("result_ij = clijx.pull(" + image2 + ")");
-        program = program + comment("result_np = ij.py.rai_to_numpy(result_ij);");
-        program = program + comment("consider calling these methods to save the image");
-        program = program + comment("clijx.saveAsTif(" + image2 + ", 'filename.tif')");
 
 
         return program;

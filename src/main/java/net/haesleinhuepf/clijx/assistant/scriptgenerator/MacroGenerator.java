@@ -55,7 +55,7 @@ public class MacroGenerator implements ScriptGenerator {
             program = program + name + " = " + objectToString(plugin.getArgs()[i]) + ";\n";
         }
         program = program + methodName + "(" + image1 + ", " + image2 + call + ");\n";
-        program = program + "Ext.CLIJ2_pull(" + image2 + "); // consider removing this line if you don't need to see that image\n";
+        //program = program + "Ext.CLIJ2_pull(" + image2 + "); // consider removing this line if you don't need to see that image\n";
 
         return program;
     }

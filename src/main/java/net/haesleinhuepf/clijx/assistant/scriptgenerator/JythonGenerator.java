@@ -70,8 +70,8 @@ public class JythonGenerator implements ScriptGenerator {
         }
         program = program + methodName + "(" + image1 + ", " + image2 + call + ")\n";
 
-        program = program + comment("consider removing this line if you don't need to see that image");
-        program = program + "clijx.show(" + image2 + ", \"" + plugin.getTarget().getTitle() + "\")\n";
+        //program = program + comment("consider removing this line if you don't need to see that image");
+        //program = program + "clijx.show(" + image2 + ", \"" + plugin.getTarget().getTitle() + "\")\n";
 
         return program;
     }
