@@ -1,6 +1,7 @@
 package net.haesleinhuepf.clijx.assistant.interactive.handcrafted;
 
 import ij.IJ;
+import ij.ImagePlus;
 import ij.WindowManager;
 import ij.gui.GenericDialog;
 import ij.gui.Toolbar;
@@ -219,8 +220,18 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
         HashMap<Integer, Integer> ground_truth = OptimizationUtilities.makeLabelClassificationGroundTruth(clij2, my_source, rm);
 
         ClearCLBuffer[] pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
-        ClearCLBuffer input_image = clij2.pushCurrentZStack(WindowManager.getImage(choice.getSelectedItem()));
+
+        ImagePlus imp = WindowManager.getImage(titles[choice.getSelectedIndex()]);
+        if (imp == null) {
+            IJ.log("Error: Intensity image " + choice.getSelectedItem() + " not found.");
+            return;
+        }
+
+        ClearCLBuffer input_image = clij2.pushCurrentZStack(imp);
         ClearCLBuffer label_map = pushed[my_source.getC() - 1];
+
+        IJ.log("Intensity image: " + imp.getTitle());
+        IJ.log("Label image: " + my_source.getTitle());
 
         String feature_definitions = ((TextField) dialog.getStringFields().get(0)).getText();
 
