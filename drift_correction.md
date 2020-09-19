@@ -1,5 +1,5 @@
 # Drift correction
-CLIJx-Incubator comes with two operations for drift correction:
+CLIJx-Assistant comes with two operations for drift correction:
 * Drift correction by center of mass fixation
 * Drift correction by centroid fixation
 
@@ -9,10 +9,10 @@ Drift correction by centroid fixation has another parameter: Enter an intensity 
 allow the plugin differentiating background and the object to drift-correct in the foreground.
 
 ## How to apply configure drift correction
-Open your time lapse data set. [Start the CLIJx-Incubator](https://clij.github.io/incubator/getting_started) and follow these steps:
+Open your time lapse data set. [Start the CLIJx-Assistant](https://clij.github.io/assistant/getting_started) and follow these steps:
 
 * Your dataset
-  * CLIJx-Incubator Starting point
+  * CLIJx-Assistant Starting point
     * Maximum Z Projection
     * Drift correction by centroid fixation
       * Maximum Z Projection

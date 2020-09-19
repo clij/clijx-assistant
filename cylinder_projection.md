@@ -10,7 +10,7 @@ When applying cylinder projections to image stacks, a rigid dransform in advance
 Open your time lapse data set. [Start the CLIJx-Assistant](https://clij.github.io/assistant/getting_started) and follow these steps:
 
 * Your dataset
-  * CLIJx-Incubator Starting point
+  * CLIJx-Assistant Starting point
     * [Optional: Noise removal and Background subtraction]
       * Make Isotropic
         * Rigid transform

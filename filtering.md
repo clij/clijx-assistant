@@ -1,5 +1,5 @@
 # Filtering
-CLIJx-Incubator comes with filters for 
+CLIJx-Assistant comes with filters for 
 * Noise removal
   * Mean
   * Median
@@ -15,7 +15,7 @@ CLIJx-Incubator comes with filters for
   
 
 ## How to apply filters to your data
-Open your data set. [Start the CLIJx-Incubator](https://clij.github.io/incubator/getting_started). 
+Open your data set. [Start the CLIJx-Assistant](https://clij.github.io/assistant/getting_started). 
 To configure the filter of your choice with the optimal settings, also activate following processing steps, 
 such as thresholding. Instant feedback allows you to study consequences of different parameter settings.
 

@@ -1,5 +1,5 @@
 # Intensity projection
-CLIJx-Incubator has these intensity projections in Z available:
+CLIJx-Assistant has these intensity projections in Z available:
 * Maximum Z Projection
 * Minimum Z Projection
 * Mean Z Projection
@@ -13,11 +13,11 @@ You can increase contrast in visualisation of your sample by executing [backgrou
 Open your time lapse data set. [Start the CLIJx-assistant](https://clij.github.io/assistant/getting_started) and follow these steps:
 
 * Your dataset
-  * CLIJx-Incubator Starting point
+  * CLIJx-Assistant Starting point
     * Background subtraction
       * Maximum Z Projection
 
-Furthermore, if you want to project in different directions, conider these methods:
+Furthermore, if you want to project in different directions, consider these methods:
 * Reslice Left
 * Reslice Right
 * Reslice Top

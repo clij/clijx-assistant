@@ -7,6 +7,6 @@ You can go back to former parameter settings by selecting the setting from the `
 <iframe src="images/undo.mp4" width="500" height="250"></iframe>
 [Download video](images/undo.mp4)
 
-Back to [CLIJx-Assistant](https://clij.github.io/incubator)
+Back to [CLIJx-Assistant](https://clij.github.io/assistant)
 
 [Imprint](https://clij.github.io/imprint)

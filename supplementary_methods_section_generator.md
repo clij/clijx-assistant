@@ -9,8 +9,8 @@ recommended to mark these texts as generated.
 
 ### Example
 ```
-This protocol documents an image processing workflow using CLIJx-Incubator.
-Read more about it online: https://clij.github.io/incubator/ 
+This protocol documents an image processing workflow using CLIJx-Assistant.
+Read more about it online: https://clij.github.io/assistant/ 
 
 Overview
  * Copy 

@@ -16,3 +16,7 @@ Activate the "IJPB-plugins" update site in Fiji.
    * Binary Not 
      * Morpho Lib J Chamfer Distance Map 
 
+
+Back to [CLIJx-Assistant](https://clij.github.io/assistant)
+
+[Imprint](https://clij.github.io/imprint)

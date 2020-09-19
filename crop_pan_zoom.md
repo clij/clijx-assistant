@@ -9,7 +9,7 @@ attached to its result. Furthermore, there is a Zoom operation for inspecting re
 Open your data set. [Start the CLIJx-Assistant](https://clij.github.io/assistant/getting_started) and follow these steps:
 
 * Your dataset
-  * CLIJx-Incubator Starting point
+  * CLIJx-Assistant Starting point
     * Crop
       * [Optional: Post-processing, such as Background subtraction]
         * Zoom

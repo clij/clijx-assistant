@@ -8,7 +8,7 @@ Do not use it for routine research yet. Planned release is early 2021. Stay tune
 ![Image](images/install_fiji_menu.png)
 
 * Click on "Manage update sites" and activate the two updates sites "clij" and "clij2". Furthermore, please click on 
-"Add update site" and enter another "CLIJx-Incubator" update site with the URL "https://sites.imagej.net/clincubator/"
+"Add update site" and enter another "CLIJx-Assistant" update site with the URL "https://sites.imagej.net/clincubator/"
 
 ![Image](images/installation.png)
 
@@ -16,7 +16,7 @@ Do not use it for routine research yet. Planned release is early 2021. Stay tune
 * Click on "Apply Changes"
 * Restart Fiji
 
-Installation was successful if you find the CLIJx-Incubator starting point button in Fijis tool bar:
+Installation was successful if you find the CLIJx-Assistant starting point button in Fijis tool bar:
 
 ![Image](images/installation_ok.png)
 
@@ -36,9 +36,41 @@ https://forum.image.sc/t/ijm-macro-crashes-after-a-few-loops/40130/17).
 ## Linux specific installation
 Also under linux, installation of drivers from the vendors website is necessary ([AMD](https://www.amd.com/en/support), [NVidia](https://www.nvidia.com/Download/index.aspx)). Furthermore, when working with Intel graphics, it might be necessary to install packages such as "ocl-icd-devel" to make Fiji / CLIJ discover the right GPU devices.
 
+<a name="maven"></a>
+## Optional: Plugin generator Installation
+In order to build Fiji plugins, you need to install and Java Development kit, version 8 or higher, e.g. [OpenJDK](https://openjdk.java.net/).
+Furthermore, you need [git](https://git-scm.com/) and [maven](https://maven.apache.org/). To make it work easily, it is recommended to add the git and maven  
+installation directories to the PATH variable of your environment (How to: 
+[Windows](https://answers.microsoft.com/en-us/windows/forum/windows_10-other_settings/adding-path-variable/97300613-20cb-4d85-8d0e-cc9d3549ba23)
+[Linux](https://opensource.com/article/17/6/set-path-linux)
+[MacOS](https://support.apple.com/guide/terminal/use-environment-variables-apd382cc5fa-4f58-4449-b20a-41c53c006f8f/mac)
+).
+
+<a name="te_oki"></a>
+## Optional: Te Oki / Python Installation
+If you want to run Python and/or Napari from Fiji, please install a conda environment, e.g. via [mini-conda](https://docs.conda.io/en/latest/miniconda.html).
+
+Using conda, create a conda environment e.g. named te_oki:
+```
+conda create --name te_oki 
+```
+Activate the environment: 
+```
+conda activate te_oki 
+```
+Install dependencies, either via conda install or
+```
+pip install pyopencl napari ipython matplotlib numpy pyclesperanto_prototype scikit-image
+```
+Within this environment you can run generated [clEsperanto](https://clesperanto.github.io/) python scripts.
+
+<a name="clijpy"></a>
+## Optional: CLIJPY / PyImageJ / Python Installation
+For running pyimagej python code, please follow the installation instructions on the [pyimagej github page](https://github.com/imagej/pyimagej).
+
 <a name="hardware"></a>
 ## Hardware requirements
-CLIJx-Incubator uses modern graphics cards to ensure real-time image processing experience. 
+CLIJx-Assistant uses modern graphics cards to ensure real-time image processing experience. 
 Therefore it is recommended to utilize state-of-the art graphics computing units (GPUs). 
 When considering purchasing modern GPUs, please take into account:
 * **Memory size**: As image processing is [memory-bound](https://en.wikipedia.org/wiki/Memory_bound_function) look out for GPUs with 

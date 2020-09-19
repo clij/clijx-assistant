@@ -1,7 +1,7 @@
 ## CLIIJx-Assistant operations
 This is the list of currently supported [CLIJ2](https://clij.github.io/) and [CLIJx](https://clij.github.io/clijx) operations.
 
-Please note: CLIJx-Incubator is under development. Hence, this list is subject to change.
+Please note: CLIJx-Assistant is under development. Hence, this list is subject to change.
 
 * [Absolute](https://clij.github.io/clij2-docs/reference_absolute)
 Computes the absolute value of every individual pixel x in a given image.
