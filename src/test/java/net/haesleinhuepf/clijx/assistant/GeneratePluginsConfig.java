@@ -44,6 +44,7 @@ public class GeneratePluginsConfig {
             }
         }
 
+        /*
         Collections.sort(menu_entries);
         {
             File outputTarget = new File("src/main/resources/plugins.config");
@@ -55,6 +56,7 @@ public class GeneratePluginsConfig {
             }
             writer.close();
         }
+        */
 
 
         ArrayList<String> link_to_docs = new ArrayList<>();
