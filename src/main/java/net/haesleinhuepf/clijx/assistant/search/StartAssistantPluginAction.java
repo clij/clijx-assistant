@@ -15,4 +15,9 @@ public class StartAssistantPluginAction implements SearchAction {
     public void run() {
         plugin.run("");
     }
+
+    @Override
+    public String toString() {
+        return "Run " + plugin.getName();
+    }
 }
