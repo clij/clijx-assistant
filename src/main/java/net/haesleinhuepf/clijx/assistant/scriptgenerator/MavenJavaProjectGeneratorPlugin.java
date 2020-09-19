@@ -69,14 +69,14 @@ public class MavenJavaProjectGeneratorPlugin implements PlugIn {
         System.out.println(temp_folder);
 
         GenericDialog dialog = new GenericDialog("Generate CLIJx/Fiji plugin");
-        dialog.addStringField("Plugin name", plugin_name);
-        dialog.addStringField("Plugin description", plugin_description);
-        dialog.addStringField("Author", author_name);
-        dialog.addStringField("Author ID", author_id);
-        dialog.addStringField("Working directory", temp_folder);
-        dialog.addStringField("Maven executable", MAVEN_EXECUTABLE);
-        dialog.addStringField("JDK home folder", JDK_HOME);
-        dialog.addStringField("Git executab;e", GIT_EXECUTABLE);
+        dialog.addStringField("Plugin name", plugin_name, 20);
+        dialog.addStringField("Plugin description", plugin_description, 20);
+        dialog.addStringField("Author", author_name, 20);
+        dialog.addStringField("Author ID", author_id, 20);
+        dialog.addStringField("Working directory", temp_folder, 20);
+        dialog.addStringField("Maven executable", MAVEN_EXECUTABLE, 20);
+        dialog.addStringField("JDK home folder", JDK_HOME, 20);
+        dialog.addStringField("Git executab;e", GIT_EXECUTABLE, 20);
 
         dialog.showDialog();
         if (dialog.wasCanceled()) {
