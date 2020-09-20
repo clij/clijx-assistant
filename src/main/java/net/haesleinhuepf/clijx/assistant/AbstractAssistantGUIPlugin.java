@@ -583,6 +583,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         script.add("-");
         addMenuAction(script, "CLIJPy Python", (a) -> {generateScript(new CLIJPyGenerator());});
         addMenuAction(script, "clEsperanto clic", (a) -> {generateScript(new ClicGenerator());});
+        addMenuAction(script, "clEsperanto ImageJ Macro", (a) -> {generateScript(new ClEsperantoMacroGenerator());});
         addMenuAction(script, "clEsperanto Python", (a) -> {generateScript(new PyclesperantoGenerator(false));});
         addMenuAction(script, "clEsperanto Python + Napari", (a) -> {generateScript(new PyclesperantoGenerator(true));});
         menu.add(script);
