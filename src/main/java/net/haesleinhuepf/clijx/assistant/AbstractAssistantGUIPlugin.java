@@ -573,11 +573,11 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         addMenuAction(script, "ImageJ Macro", (a) -> {generateScript(new MacroGenerator());});
         addMenuAction(script, "Human readable protocol", (a) -> {generateScript(new HumanReadibleProtocolGenerator());});
         script.add("-");
-        addMenuAction(script, "Icy Javascript", (a) -> {generateScript(new IcyJavaScriptGenerator());});
+        addMenuAction(script, "Icy JavaScript", (a) -> {generateScript(new IcyJavaScriptGenerator());});
         addMenuAction(script, "Matlab", (a) -> {generateScript(new MatlabGenerator());});
-        addMenuAction(script, "ImageJ Groovy", (a) -> {generateScript(new GroovyGenerator());});
-        addMenuAction(script, "ImageJ JavaScript", (a) -> {generateScript(new JavaScriptGenerator());});
-        addMenuAction(script, "ImageJ Jython", (a) -> {generateScript(new JythonGenerator());});
+        addMenuAction(script, "Fiji Groovy", (a) -> {generateScript(new GroovyGenerator());});
+        addMenuAction(script, "Fiji JavaScript", (a) -> {generateScript(new JavaScriptGenerator());});
+        addMenuAction(script, "Fiji Jython", (a) -> {generateScript(new JythonGenerator());});
         script.add("-");
         addMenuAction(script, "CLIJx / Fiji plugin", (a) -> {new MavenJavaProjectGeneratorPlugin().generate(this);});
         script.add("-");
