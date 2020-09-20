@@ -178,9 +178,10 @@ class AssistantGUIPluginRegistry {
     private String script(ScriptGenerator generator, AssistantGUIPlugin plugin) {
         String result = "\n";
         result = result + generator.execute(plugin);
+        result = result + generator.pull(plugin);
+
         for (AssistantGUIPlugin followers : findFollowers(plugin)) {
             result = result + script(generator, followers);
-            result = result + generator.pull(plugin);
         }
         return result;
     }
