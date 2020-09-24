@@ -50,9 +50,9 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     private final String refreshText = "Refresh";
     private String helpText = "Action";
 
-    private final Color refreshing_color = new Color(205, 205, 128);
-    private final Color invalid_color = new Color(205, 128, 128);
-    private final Color valid_color = new Color(128, 205, 128);
+    final static Color REFRESHING_COLOR = new Color(205, 205, 128);
+    final static Color INVALID_COLOR = new Color(205, 128, 128);
+    final static Color VALID_COLOR = new Color(128, 205, 128);
 
 
     protected ImagePlus my_source = null;
@@ -823,8 +823,8 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         });
         registered_dialog = dialog;
 
-        //setButtonColor(doneText, valid_color);
-        setButtonColor(refreshText, valid_color);
+        //setButtonColor(doneText, VALID_COLOR);
+        setButtonColor(refreshText, VALID_COLOR);
         for (Button component : dialog.getButtons()) {
             if (component instanceof Button) {
                 if (component.getLabel().compareTo(refreshText) == 0) {
@@ -972,7 +972,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
     public void setTargetInvalid() {
         AssistantGUIPluginRegistry.getInstance().invalidate(my_target);
-        setButtonColor(refreshText, invalid_color);
+        setButtonColor(refreshText, INVALID_COLOR);
     }
 
     public void setTargetIsProcessing() {
@@ -980,12 +980,12 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             ((CLIJxVirtualStack) my_target.getStack()).getBuffer(0).setName(this.getClass().getName());
         }
         storeParameters();
-        setButtonColor(refreshText, refreshing_color);
+        setButtonColor(refreshText, REFRESHING_COLOR);
     }
 
     @Override
     public void setTargetValid() {
-        setButtonColor(refreshText, valid_color);
+        setButtonColor(refreshText, VALID_COLOR);
     }
 
     private void setButtonColor(String button, Color color) {
@@ -997,6 +997,15 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                     }
                 }
             }
+        }
+        if (button.compareTo(refreshText) == 0) {
+            if (my_target != null) {
+                ImageWindow win = my_target.getWindow();
+                if (win != null) {
+                    win.setBackground(color);
+                }
+            }
+
         }
     }
 

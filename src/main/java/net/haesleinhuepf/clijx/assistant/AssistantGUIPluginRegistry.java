@@ -120,32 +120,32 @@ class AssistantGUIPluginRegistry {
         regenerating = true;
 
         //System.out.println("Regen");
+        try{
+            boolean found_something_to_regenerate = true;
+            while (found_something_to_regenerate) {
+                found_something_to_regenerate = false;
 
-        boolean found_something_to_regenerate = true;
-        while (found_something_to_regenerate) {
-            found_something_to_regenerate = false;
+                for (AssistantGUIPlugin plugin : registeredPlugins) {
+                    ImagePlus source = plugin.getSource();
+                    ImagePlus target = plugin.getTarget();
+                    if (source != null && target != null && isValid(source) && !isValid(target)) {
+                        //IJ.log("Regenerating " + target.getTitle());
 
-            for (AssistantGUIPlugin plugin : registeredPlugins) {
-                ImagePlus source = plugin.getSource();
-                ImagePlus target = plugin.getTarget();
-                if (source != null && target != null && isValid(source) && !isValid(target)) {
-                    //IJ.log("Regenerating " + target.getTitle());
+                        plugin.setTargetIsProcessing();
+                        plugin.refresh();
+                        found_something_to_regenerate = true;
 
-                    plugin.setTargetIsProcessing();
-                    plugin.refresh();
-                    found_something_to_regenerate = true;
+                        if (isValid(target)) {
+                            plugin.setTargetValid();
+                        } else {
+                            plugin.setTargetInvalid();
+                        }
 
-                    if (isValid(target)) {
-                        plugin.setTargetValid();
-                    } else {
-                        plugin.setTargetInvalid();
+                        break;
                     }
-
-                    break;
                 }
             }
-        }
-
+        } catch (ConcurrentModificationException e) {}
         regenerating = false;
     }
 
