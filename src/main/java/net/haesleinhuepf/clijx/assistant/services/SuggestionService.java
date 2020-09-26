@@ -126,23 +126,25 @@ public class SuggestionService {
         HashMap<String, Class> incubatorSuggestions = new HashMap<>();
 
         for (CLIJMacroPlugin clijPlugin : clijSuggestions) {
-            Class incubatorPluginClassFromCLIJ2Plugin = assistantGUIPluginService.getIncubatorPluginClassFromCLIJ2Plugin(clijPlugin);
-            if (incubatorPluginClassFromCLIJ2Plugin != null) {
-                boolean keep = true;
-                if (clijPlugin instanceof OffersDocumentation) {
-                    String dimensionality_constraint = ((OffersDocumentation) clijPlugin).getAvailableForDimensions().replace(" ", "").toUpperCase();
-                    if (dimensionality_constraint.compareTo("3D->2D") == 0) {
-                        // projections
-                        keep = dimensionality == 3;
-                    } else {
-                        //keep = (dimensionality_constraint.contains(dimensionality + "D"));
+            if (clijPlugin != null) {
+                Class incubatorPluginClassFromCLIJ2Plugin = assistantGUIPluginService.getIncubatorPluginClassFromCLIJ2Plugin(clijPlugin);
+                if (incubatorPluginClassFromCLIJ2Plugin != null) {
+                    boolean keep = true;
+                    if (clijPlugin instanceof OffersDocumentation) {
+                        String dimensionality_constraint = ((OffersDocumentation) clijPlugin).getAvailableForDimensions().replace(" ", "").toUpperCase();
+                        if (dimensionality_constraint.compareTo("3D->2D") == 0) {
+                            // projections
+                            keep = dimensionality == 3;
+                        } else {
+                            //keep = (dimensionality_constraint.contains(dimensionality + "D"));
+                        }
                     }
+                    if (keep) {
+                        incubatorSuggestions.put(clijPlugin.getName(), incubatorPluginClassFromCLIJ2Plugin);
+                    }
+                } else {
+                    //System.out.println("Was null ?! " + clijPlugin);
                 }
-                if (keep) {
-                    incubatorSuggestions.put(clijPlugin.getName(), incubatorPluginClassFromCLIJ2Plugin);
-                }
-            } else {
-                //System.out.println("Was null ?! " + clijPlugin);
             }
         }
 
