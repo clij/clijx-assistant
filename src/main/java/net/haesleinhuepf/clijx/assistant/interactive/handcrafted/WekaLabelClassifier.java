@@ -33,6 +33,8 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
+import static net.haesleinhuepf.clijx.assistant.interactive.handcrafted.BinaryWekaPixelClassifier.loadFeatures;
+import static net.haesleinhuepf.clijx.assistant.interactive.handcrafted.BinaryWekaPixelClassifier.saveFeatures;
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.addMenuAction;
 
 @Plugin(type = AssistantGUIPlugin.class)
@@ -73,7 +75,10 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
         gd.addChoice("Intensity image", short_titles, short_titles[short_titles.length - 2]);
         choice = (Choice) gd.getChoices().get(0);
 
-        loadFeatures(filename + ".features.txt");
+        String temp = loadFeatures(filename + ".features.txt");
+        if (temp.length() > 0) {
+            features = temp;
+        }
         gd.addStringField("Feature definition", features, 30);
         TextField feature_field = ((TextField) gd.getStringFields().get(0));
 
@@ -268,38 +273,11 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
 
 
         logger.log("Model saved to " + model_filename);
-        saveFeatures(model_filename + ".features.txt");
+        saveFeatures(model_filename + ".features.txt", features);
         logger.log("Featurelist saved to " + model_filename + ".features.txt");
         setTargetInvalid();
         logger.log("Bye.");
     }
-
-    private void saveFeatures(String filename) {
-        File outputTarget = new File(filename);
-        try {
-            FileWriter writer = new FileWriter(outputTarget);
-            writer.write(features);
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private void loadFeatures(String filename) {
-        try {
-            if (new File(filename).exists()) {
-                features = new String(Files.readAllBytes(Paths.get(filename)));
-            } else {
-                System.out.println(filename + " doesn't exist.");
-            }
-        } catch (NoSuchFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     @Override
     protected void addMoreActions(Menu more_actions) {
