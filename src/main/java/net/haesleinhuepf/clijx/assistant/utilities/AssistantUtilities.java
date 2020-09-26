@@ -12,7 +12,7 @@ import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.gui.*;
 import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.plugins.WekaLabelClassifier;
+import net.haesleinhuepf.clijx.weka.WekaLabelClassifier;
 import org.scijava.util.ProcessUtils;
 
 import java.awt.*;
@@ -21,8 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;

@@ -18,7 +18,7 @@ import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import net.haesleinhuepf.clijx.assistant.utilities.IJLogger;
 import net.haesleinhuepf.clijx.assistant.utilities.Logger;
-import net.haesleinhuepf.clijx.plugins.GenerateLabelFeatureImage;
+import net.haesleinhuepf.clijx.weka.GenerateLabelFeatureImage;
 import net.haesleinhuepf.clijx.weka.TrainWekaFromTable;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
@@ -52,7 +52,7 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
     boolean show_table = false;
 
     public WekaLabelClassifier() {
-        super(new net.haesleinhuepf.clijx.plugins.WekaLabelClassifier());
+        super(new net.haesleinhuepf.clijx.weka.WekaLabelClassifier());
     }
 
     @Override
@@ -260,7 +260,7 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
             table.show("TRAINING");
         }
 
-        net.haesleinhuepf.clijx.plugins.WekaLabelClassifier.invalidateCache();
+        net.haesleinhuepf.clijx.weka.WekaLabelClassifier.invalidateCache();
 
         TrainWekaFromTable.trainWekaFromTable(clij2, table, "CLASS", model_filename, num_trees, num_features, max_depth);
 
