@@ -260,6 +260,8 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
             table.show("TRAINING");
         }
 
+        net.haesleinhuepf.clijx.plugins.WekaLabelClassifier.invalidateCache();
+
         TrainWekaFromTable.trainWekaFromTable(clij2, table, "CLASS", model_filename, num_trees, num_features, max_depth);
 
         cleanup(my_source, pushed);

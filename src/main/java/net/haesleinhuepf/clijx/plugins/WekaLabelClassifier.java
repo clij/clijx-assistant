@@ -11,6 +11,7 @@ import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.weka.ApplyWekaModel;
 import net.haesleinhuepf.clijx.weka.ApplyWekaToTable;
+import net.haesleinhuepf.clijx.weka.CLIJxWeka2;
 import net.haesleinhuepf.clijx.weka.GenerateFeatureStack;
 import org.scijava.plugin.Plugin;
 
@@ -19,6 +20,8 @@ import java.io.File;
 @Plugin(type = CLIJMacroPlugin.class, name = "CLIJx_wekaLabelClassifier")
 public class WekaLabelClassifier extends AbstractCLIJ2Plugin implements CLIJMacroPlugin, CLIJOpenCLProcessor, OffersDocumentation, IsCategorized {
 
+    private static CLIJxWeka2 clijxWeka2 = null;
+    private static String last_loaded_filename = "";
 
     @Override
     public String getParameterHelpText() {
@@ -46,7 +49,7 @@ public class WekaLabelClassifier extends AbstractCLIJ2Plugin implements CLIJMacr
     {
         if (!new File(model_filename).exists()) {
             clij2.set(output, 0);
-            System.out.println("Model " + model_filename + " not found. Cancelling wekaObjectClassifier.");
+            System.out.println("Model " + model_filename + " not found. Cancelling WekaLabelClassifier.");
             return true;
         }
 
@@ -58,7 +61,13 @@ public class WekaLabelClassifier extends AbstractCLIJ2Plugin implements CLIJMacr
         featureImage.close();
 
 
-        ApplyWekaToTable.applyWekaToTable(clij2, table, "CLASS", model_filename);
+        if (!(clijxWeka2 != null && last_loaded_filename.compareTo(model_filename) == 0)) {
+            clijxWeka2 = new CLIJxWeka2(clij2, null, model_filename);
+            last_loaded_filename = model_filename;
+            System.out.println("Load model");
+        }
+
+        ApplyWekaToTable.applyWekaToTable(clij2, table, "CLASS", clijxWeka2);
 
         //table.show("PREDICTION");
 
@@ -102,5 +111,8 @@ public class WekaLabelClassifier extends AbstractCLIJ2Plugin implements CLIJMacr
         return "Label,Segmentation";
     }
 
+    public static void invalidateCache() {
+        last_loaded_filename = "";
+    }
 
 }

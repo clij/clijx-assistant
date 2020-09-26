@@ -105,6 +105,8 @@ public class BinaryWekaPixelClassifier extends AbstractAssistantGUIPlugin {
 
         ClearCLBuffer featureStack = GenerateFeatureStack.generateFeatureStack(clij2, input, feature_definitions);
 
+        net.haesleinhuepf.clijx.plugins.BinaryWekaPixelClassifier.invalidateCache();
+        
         TrainWekaModelWithOptions.trainWekaModelWithOptions(clij2, featureStack, ground_truth, model_filename, num_trees, num_features, max_depth);
 
         cleanup(my_source, pushed);
