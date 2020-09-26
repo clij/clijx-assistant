@@ -22,8 +22,12 @@ public class MakeIsotropic extends AbstractAssistantGUIPlugin {
     }
 
     protected boolean configure() {
+        String unit = "unit";
+        if (my_source != null) {
+            unit = my_source.getCalibration().getUnit();
+        }
         GenericDialog gdp = new GenericDialog("Make isotropic");
-        gdp.addNumericField("Future voxel size (in microns)", 1.0, 1);
+        gdp.addNumericField("Future voxel size (in " + unit + ")", 1.0, 1);
         gdp.showDialog();
 
         System.out.println("First dialog done");
