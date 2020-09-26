@@ -2,6 +2,8 @@
 CLIJx-Assistant is under development. Please install it only in a separate Fiji installation. 
 Do not use it for routine research yet. Planned release is early 2021. Stay tuned.
 
+<a name="fiji"></a>
+## Installation in Fiji
 * Download and unpack [Fiji](https://fiji.sc)
 * Start Fiji and run its update using the menu `Help > Update`
 
@@ -20,6 +22,26 @@ Installation was successful if you find the CLIJx-Assistant starting point butto
 
 ![Image](images/installation_ok.png)
 
+<a name="imagej"></a>
+## Installation in ImageJ
+Download and upack [ImageJ](https://imagej.nih.gov/ij/download.html) and some jar-files:
+ 
+* [clij2-imagej1](https://github.com/clij/clij2-imagej1/releases/download/2.1.4.0/clij2-image1_-2.1.4.0-jar-with-dependencies.jar)
+* [clijx-weka_-0.29.4.7.jar](https://github.com/clij/clijx/releases/download/0.29.4.7/clijx-weka_-0.29.4.7.jar)
+* [clijx_-0.29.4.7.jar](https://github.com/clij/clijx/releases/download/0.29.4.7/clijx_-0.29.4.7.jar)
+* [clijx-assistant_-0.2.4.7.jar](https://github.com/clij/assistant/releases/download/0.2.4.7/clijx-assistant_-0.2.4.7.jar)
+
+Please put these jar files in the `plugins` sub-directory of ImageJ:
+
+![Image](images/installation_imagej.png)
+
+Installation in ImageJ was ok, if the menu `Plugins > ImageJ on GPU (CLIJx-assistant)` appeared. 
+Click on `Start CLIJx-Assistant` to try it out. 
+If a window with a green frame appears, it worked!
+![Image](images/installation_imagej_ok.png)
+
+<a name="troubleshooting"></a>
+## Troubleshooting
 In case of any issues, please refer to the more detailed [installation instructions of CLIJ2](https://clij.github.io/clij2-docs/installationInFiji) and
 the [trouble shooting](https://clij.github.io/clij2-docs/troubleshooting) section.
 
