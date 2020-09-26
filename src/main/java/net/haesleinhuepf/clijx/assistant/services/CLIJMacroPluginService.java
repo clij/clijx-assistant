@@ -2,7 +2,7 @@ package net.haesleinhuepf.clijx.assistant.services;
 
 import ij.IJ;
 import net.haesleinhuepf.clij.macro.CLIJHandler;
-import net.haesleinhuepf.clij2.legacy.FallBackCLIJMacroPluginService;
+import net.haesleinhuepf.clijx.legacy.FallBackCLIJMacroPluginService;
 import org.scijava.Context;
 
 public class CLIJMacroPluginService {
@@ -13,14 +13,14 @@ public class CLIJMacroPluginService {
         try {
             clijMacroPluginService = new Context(net.haesleinhuepf.clij.macro.CLIJMacroPluginService.class).getService(net.haesleinhuepf.clij.macro.CLIJMacroPluginService.class);
         } catch (IllegalArgumentException e) {
-            IJ.log("replace service");
+            System.out.println("replace service");
             clijMacroPluginService = CLIJHandler.getInstance().getPluginService();
-            IJ.log("service replaced");
+            System.out.println("service replaced");
         }
         if (clijMacroPluginService == null) {
-            IJ.log("loading fallback service");
+            System.out.println("loading fallback service");
             clijMacroPluginService = new FallBackCLIJMacroPluginService();
-            IJ.log("fallback service loaded");
+            System.out.println("fallback service loaded");
         }
     }
 
