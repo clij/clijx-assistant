@@ -125,9 +125,9 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                     // no choice
                 } else if (parameterType.compareTo("String") == 0) {
                     if (default_values != null) {
-                        gd.addStringField(parameterName, (String) default_values[i], 2);
+                        gd.addStringField(parameterName, (String) default_values[i], 30);
                     } else {
-                        gd.addStringField(parameterName, "");
+                        gd.addStringField(parameterName, "", 30);
                     }
                 } else if (parameterType.compareTo("Boolean") == 0) {
                     if (default_values != null) {
