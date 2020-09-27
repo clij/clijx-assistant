@@ -48,6 +48,7 @@ Stay tuned.
   * [Export workflows as ImageJ Script](https://clij.github.io/assistant/macro_export)
   * [Supplementary methods section generator](https://clij.github.io/assistant/supplementary_methods_section_generator)
   * [Generate CLIJx / Fiji plugins](https://clij.github.io/assistant/generate_clijx_plugins)
+  * [Export Groovy Script for QuPath](https://clij.github.io/assistant/export_to_clupath)
   * [Export workflows as Python script using clEsperanto and Napari](https://clij.github.io/assistant/te_oki_export)
 
 * Extensibility
