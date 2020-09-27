@@ -43,6 +43,6 @@ public class JavaScriptGenerator extends JythonGenerator {
     }
 
     protected String pyToJs(String text) {
-        return text.replace("#", "//").replace(")\n", ");\n").replace("  \n", ";\n");
+        return text.replace("#", "//").replace(")\n", ");\n").replace("  \n", ";\n").replace("[","new long[]{").replace("]", "}");
     }
 }

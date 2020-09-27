@@ -497,7 +497,7 @@ public class AssistantUtilities {
         );
     }
 
-    public static boolean resultIsBinaryImage(AbstractAssistantGUIPlugin abstractAssistantGUIPlugin) {
+    public static boolean resultIsBinaryImage(AssistantGUIPlugin abstractAssistantGUIPlugin) {
         String name = abstractAssistantGUIPlugin.getName().toLowerCase();
         if (abstractAssistantGUIPlugin.getCLIJMacroPlugin() != null && abstractAssistantGUIPlugin.getCLIJMacroPlugin() instanceof IsCategorized) {
             name = name + "," + ((IsCategorized) abstractAssistantGUIPlugin.getCLIJMacroPlugin()).getCategories().toLowerCase();

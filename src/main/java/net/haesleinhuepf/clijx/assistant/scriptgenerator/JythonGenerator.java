@@ -51,13 +51,28 @@ public class JythonGenerator implements ScriptGenerator {
         String image2 = makeImageID(plugin.getTarget());
         String program = "# " + AssistantUtilities.niceName(plugin.getName()) + "\n";
 
-        ImagePlus imp = plugin.getTarget();
-        if (imp.getNSlices() > 1) {
+        ImagePlus target = plugin.getTarget();
+        ImagePlus source = plugin.getTarget();
+
+        if (target != null &&
+                source != null &&
+                target.getWidth() == source.getWidth() &&
+                target.getHeight() == source.getHeight() &&
+                target.getNSlices() == source.getNSlices()
+        ) {
+            if ( target.getBitDepth() == source.getBitDepth()) {
+                program = program +
+                        image2 + " = clijx.create(" + image1 + ")\n";
+            } else {
+                program = program +
+                        image2 + " = clijx.create(" + image1 + ".getDimensions(), clijx." + bitDepthToType(target.getBitDepth()) + " )\n";
+            }
+        }else if (target.getNSlices() > 1) {
             program = program +
-                image2 + " = clijx.create([" + imp.getWidth() + ", " + imp.getHeight() + ", "  + imp.getNSlices() + "], clijx." + bitDepthToType(imp.getBitDepth()) + ")\n";
+                image2 + " = clijx.create([" + target.getWidth() + ", " + target.getHeight() + ", "  + target.getNSlices() + "], clijx." + bitDepthToType(target.getBitDepth()) + ")\n";
         } else {
             program = program +
-                    image2 + " = clijx.create([" + imp.getWidth() + ", " + imp.getHeight() + "], clijx." + bitDepthToType(imp.getBitDepth()) + ")\n";
+                    image2 + " = clijx.create([" + target.getWidth() + ", " + target.getHeight() + "], clijx." + bitDepthToType(target.getBitDepth()) + ")\n";
         }
         String call = "";
 

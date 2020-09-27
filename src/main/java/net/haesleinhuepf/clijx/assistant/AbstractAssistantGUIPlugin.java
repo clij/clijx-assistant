@@ -571,7 +571,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         Menu script = new Menu("Generate script");
         addMenuAction(script, "ImageJ Macro", (a) -> {generateScript(new MacroGenerator());});
         addMenuAction(script, "Human readable protocol", (a) -> {generateScript(new HumanReadibleProtocolGenerator());});
-        addMenuAction(script, "Export workflow as groovy", (a) -> {generateScript(new AssistantGroovyGenerator());});
+        addMenuAction(script, "Export workflow as groovy (for re-loading)", (a) -> {generateScript(new AssistantGroovyGenerator());});
         script.add("-");
         addMenuAction(script, "Icy JavaScript", (a) -> {generateScript(new IcyJavaScriptGenerator());});
         addMenuAction(script, "Matlab", (a) -> {generateScript(new MatlabGenerator());});
@@ -580,8 +580,8 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         addMenuAction(script, "Fiji Jython", (a) -> {generateScript(new JythonGenerator());});
         script.add("-");
         addMenuAction(script, "CLIJx / Fiji plugin (Java)", (a) -> {new MavenJavaProjectGeneratorPlugin().generate(this);});
-        script.add("-");
         addMenuAction(script, "CLIJPy Python", (a) -> {generateScript(new CLIJPyGenerator());});
+        addMenuAction(script, "CluPath Groovy", (a) -> {generateScript(new CluPathGroovyGenerator());});
         addMenuAction(script, "clEsperanto clic", (a) -> {generateScript(new ClicGenerator());});
         addMenuAction(script, "clEsperanto ImageJ Macro", (a) -> {generateScript(new ClEsperantoMacroGenerator());});
         addMenuAction(script, "clEsperanto Python", (a) -> {generateScript(new PyclesperantoGenerator(false));});
