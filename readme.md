@@ -15,6 +15,7 @@ Stay tuned.
 * Introduction
   * [Installation](https://clij.github.io/assistant/installation)
   * [Building workflows](https://clij.github.io/assistant/getting_started)
+  * [Saving and loading workflows](https://clij.github.io/assistant/save_and_load)
   * [Parameter optimization](https://clij.github.io/assistant/parameter_optimization)
   * [Undo parameter changes](https://clij.github.io/assistant/undo)
   * [Reference](https://clij.github.io/assistant/reference)

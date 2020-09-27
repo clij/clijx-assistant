@@ -569,9 +569,9 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         // -------------------------------------------------------------------------------------------------------------
 
         Menu script = new Menu("Generate script");
-
         addMenuAction(script, "ImageJ Macro", (a) -> {generateScript(new MacroGenerator());});
         addMenuAction(script, "Human readable protocol", (a) -> {generateScript(new HumanReadibleProtocolGenerator());});
+        addMenuAction(script, "Export workflow as groovy", (a) -> {generateScript(new AssistantGroovyGenerator());});
         script.add("-");
         addMenuAction(script, "Icy JavaScript", (a) -> {generateScript(new IcyJavaScriptGenerator());});
         addMenuAction(script, "Matlab", (a) -> {generateScript(new MatlabGenerator());});
@@ -770,11 +770,13 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     }
 
 
+    int script_count = 0;
     protected void generateScript(ScriptGenerator generator) {
         String script = generator.header() +
                 AssistantGUIPluginRegistry.getInstance().generateScript(generator);
 
-        File outputTarget = new File(System.getProperty("java.io.tmpdir") + "/new" + generator.fileEnding());
+        script_count++;
+        File outputTarget = new File(System.getProperty("java.io.tmpdir") + "/new" + script_count + generator.fileEnding());
 
         try {
             FileWriter writer = new FileWriter(outputTarget);
@@ -891,12 +893,10 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             return;
         }
         try {
-            if (!auto_position) {
-                return;
-            }
-
             if (my_target != null && registered_dialog != null) {
-                registered_dialog.setLocation(my_target.getWindow().getX() + my_target.getWindow().getWidth() - 15, my_target.getWindow().getY());
+                if (auto_position) {
+                    registered_dialog.setLocation(my_target.getWindow().getX() + my_target.getWindow().getWidth() - 15, my_target.getWindow().getY());
+                }
             }
             if (my_source == null) {
                 return;
@@ -913,7 +913,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                 return;
             }
 
-            if (my_target == IJ.getImage()) {
+            if (my_target == IJ.getImage() || !auto_position) {
                 relativePositionToSourceX = targetWindow.getX() - sourceWindow.getX();
                 relativePositionToSourceY = targetWindow.getY() - sourceWindow.getY();
             } else if (relativePositionToSourceX != null && relativePositionToSourceY != null) {
@@ -921,7 +921,9 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                 int newPositionY = sourceWindow.getY() + relativePositionToSourceY;
 
                 if (Math.abs(newPositionX - targetWindow.getX()) > 1 && Math.abs(newPositionY - targetWindow.getY()) > 1) {
-                    targetWindow.setLocation(newPositionX, newPositionY);
+                    if (auto_position) {
+                        targetWindow.setLocation(newPositionX, newPositionY);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -1182,5 +1184,13 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         Object[][] parameters = OptimizationUtilities.getParameterArraysFromIncubatorPlugins(path);
 
         return new Workflow(plugins, parameters);
+    }
+
+    public static boolean isAutoPosition() {
+        return auto_position;
+    }
+
+    public static void setAutoPosition(boolean auto_position) {
+        AbstractAssistantGUIPlugin.auto_position = auto_position;
     }
 }
