@@ -3,7 +3,7 @@ You can export Groovy scripts for single-channel image analysis to QuPath.
 Only workflows which result in binary images are supported for now. 
 In order to make them work, please follow the [CluPath](https://clij.github.io/clupath/) installation instructions.
 
-<iframe src="images/export_clupath_groovy.mp4" width="260" height="260"></iframe>
+<iframe src="images/export_clupath_groovy.mp4" width="540" height="540"></iframe>
 [Download video](images/export_clupath_groovy.mp4) 
 
 
