@@ -26,7 +26,7 @@ Installation was successful if you find the CLIJx-Assistant starting point butto
 ## Installation in ImageJ
 Download and upack [ImageJ](https://imagej.nih.gov/ij/download.html) and some jar-files:
  
-* [clij2-imagej1](https://github.com/clij/clij2-imagej1/releases/download/2.1.4.0/clij2-image1_-2.1.4.0-jar-with-dependencies.jar)
+* [clij2-imagej1](https://github.com/clij/clij2-imagej1/releases/download/2.1.4.7/clij2-imagej_-2.1.4.7-jar-with-dependencies.jar)
 * [clijx-weka_-0.29.4.7.jar](https://github.com/clij/clijx/releases/download/0.29.4.7/clijx-weka_-0.29.4.7.jar)
 * [clijx_-0.29.4.7.jar](https://github.com/clij/clijx/releases/download/0.29.4.7/clijx_-0.29.4.7.jar)
 * [clijx-assistant_-0.2.4.7.jar](https://github.com/clij/assistant/releases/download/0.2.4.7/clijx-assistant_-0.2.4.7.jar)
