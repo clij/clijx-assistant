@@ -1,6 +1,6 @@
 # CLIJx-Assistant
-[CLIJx-Assistant](https://clij.github.io/assistant) is an intuitive user interface for building custom GPU-accelerated image processing workflows using [CLIJ2](https://clij.github.io) in [Fiji](https://fiji.sc) and an interactive compute graph. 
-It suggests what to do next, optimizes parameters automatically and generates scripts and human readable protocols to facilitate reproducing workflows.
+[CLIJx-Assistant](https://clij.github.io/assistant) is an intuitive user interface for building custom GPU-accelerated image processing workflows using [CLIJ2](https://clij.github.io) in [Fiji](https://fiji.sc). 
+It suggests what to do next, optimizes parameters automatically and generates scripts and human readable protocols to facilitate reproducing workflows. These generated scripts also run in other platforms such as Matlab, Icy, Python and QuPath.
 
 CLIJx-Assistant is under development and is subject to change. 
 Please treat everything with care.
