@@ -50,7 +50,7 @@ Download and install [MicroManager 2](https://micro-manager.org/wiki/Download_Mi
 * [clijx-assistant_-0.2.4.7.jar](https://github.com/clij/assistant/releases/download/0.2.4.7/clijx-assistant_-0.2.4.7.jar)
 
 Please put these jar files in the `plugins\Micro-Manager` sub-directory of MicroManager:
-![Image](images/installation_micromanager.png)
+![Image](images/installation_mm.png)
 
 Start MicroManager and check if the installation worked as in the [ImageJ](https://clij.github.io/assistant/installation#imagej) section above.
 During multi-dimenionsal acquisition, just Start CLIJx-Assistant and use the right click menu to setup a workflow:
