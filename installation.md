@@ -26,7 +26,7 @@ Installation was successful if you find the CLIJx-Assistant starting point butto
 ## Installation in ImageJ
 Download and upack [ImageJ](https://imagej.nih.gov/ij/download.html) and some jar-files:
  
-* [clij2-imagej1](https://github.com/clij/clij2-imagej1/releases/download/2.1.4.7/clij2-imagej_-2.1.4.7-jar-with-dependencies.jar)
+* [clij2-imagej_-2.1.4.7-jar-with-dependencies.jar](https://github.com/clij/clij2-imagej1/releases/download/2.1.4.7/clij2-imagej_-2.1.4.7-jar-with-dependencies.jar)
 * [clijx-weka_-0.29.4.7.jar](https://github.com/clij/clijx/releases/download/0.29.4.7/clijx-weka_-0.29.4.7.jar)
 * [clijx_-0.29.4.7.jar](https://github.com/clij/clijx/releases/download/0.29.4.7/clijx_-0.29.4.7.jar)
 * [clijx-assistant_-0.2.4.7.jar](https://github.com/clij/assistant/releases/download/0.2.4.7/clijx-assistant_-0.2.4.7.jar)
@@ -39,6 +39,20 @@ Installation in ImageJ was ok, if the menu `Plugins > ImageJ on GPU (CLIJx-assis
 Click on `Start CLIJx-Assistant` to try it out. 
 If a window with a green frame appears, it worked!
 ![Image](images/installation_imagej_ok.png)
+
+<a name="micromanager"></a>
+## Installation in MicroManager 2
+Download and install [MicroManager 2](https://micro-manager.org/wiki/Download_Micro-Manager_Latest_Release) and some jar files:
+
+* [clij2-imagej_-2.1.4.7-jar-with-dependencies.jar](https://github.com/clij/clij2-imagej1/releases/download/2.1.4.7/clij2-imagej_-2.1.4.7-jar-with-dependencies.jar)
+* [clijx-weka_-0.29.4.7.jar](https://github.com/clij/clijx/releases/download/0.29.4.7/clijx-weka_-0.29.4.7.jar)
+* [clijx_-0.29.4.7.jar](https://github.com/clij/clijx/releases/download/0.29.4.7/clijx_-0.29.4.7.jar)
+* [clijx-assistant_-0.2.4.7.jar](https://github.com/clij/assistant/releases/download/0.2.4.7/clijx-assistant_-0.2.4.7.jar)
+
+Please put these jar files in the `plugins\Micro-Manager` sub-directory of MicroManager:
+![Image](images/installation_micromanager.png)
+
+Start MicroManager and check if the installation worked as in the [ImageJ](https://clij.github.io/assistant/installation#imagej) section above.
 
 <a name="troubleshooting"></a>
 ## Troubleshooting
