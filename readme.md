@@ -44,7 +44,7 @@ Stay tuned.
   * [Distance analysis using MorholibJ](https://clij.github.io/assistant/morpholibj_chamfer_distance_map)
   * [Label classifier (Weka)](https://clij.github.io/assistant/clijx_weka_label_classifier)
 
-* Reproducibility
+* Reproducibility / interoperability
   * [Export workflows as ImageJ Script](https://clij.github.io/assistant/macro_export)
   * [Supplementary methods section generator](https://clij.github.io/assistant/supplementary_methods_section_generator)
   * [Generate CLIJx / Fiji plugins](https://clij.github.io/assistant/generate_clijx_plugins)
