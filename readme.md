@@ -59,6 +59,7 @@ Stay tuned.
   * [CLIJ2 BoneJ example plugin](https://github.com/clij/clijx-assistant-bonej)
   * [CLIJ2 MorphoLibJ example plugin](https://github.com/clij/clijx-assistant-morpholibj)
   * [CLIJ2 ImageJ 3D Suite example plugin](https://github.com/clij/clijx-assistant-imagej3dsuite)
+  * [CLIJ2 SimpleITK example plugin](https://github.com/clij/clijx-assistant-simpleitk)
 
 
 ## Instant feedback
