@@ -432,6 +432,13 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             my_target.show();
             attachMenu(my_target);
             enhanceContrast();
+            if (my_source != null && my_source.getWindow() != null) {
+                my_target.getWindow().setLocation(
+                        my_source.getWindow().getX() + my_source.getWindow().getWidth() / 4 * (4 - AssistantGUIPluginRegistry.getInstance().getFollowers(my_source).size()),
+                        my_source.getWindow().getY() + my_source.getWindow().getHeight() / 4 * AssistantGUIPluginRegistry.getInstance().getFollowers(my_source).size()
+                        );
+            }
+
         } else {
             ImagePlus output = result;
             my_target.setStack(output.getStack());
