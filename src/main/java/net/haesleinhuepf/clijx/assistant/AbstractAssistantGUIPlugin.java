@@ -579,6 +579,8 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         addMenuAction(script, "Fiji JavaScript", (a) -> {generateScript(new JavaScriptGenerator());});
         addMenuAction(script, "Fiji Jython", (a) -> {generateScript(new JythonGenerator());});
         script.add("-");
+
+        addMenuAction(script, "ImageJ Macro Markdown", (a) -> {generateScript(new MacroMarkdownGenerator());});
         addMenuAction(script, "CLIJx / Fiji plugin (Java)", (a) -> {new MavenJavaProjectGeneratorPlugin().generate(this);});
         addMenuAction(script, "CLIJPy Python", (a) -> {generateScript(new CLIJPyGenerator());});
         addMenuAction(script, "CluPath Groovy", (a) -> {generateScript(new CluPathGroovyGenerator());});

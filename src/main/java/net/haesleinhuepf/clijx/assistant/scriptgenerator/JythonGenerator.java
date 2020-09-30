@@ -13,9 +13,21 @@ public class JythonGenerator implements ScriptGenerator {
         ImagePlus source = plugin.getSource();
         String image1 = makeImageID(source);
 
-        return ""+
-                "# Push " + source.getTitle() + " to GPU memory\n" +
-                image1 + " = clijx.push(WindowManager.getImage(\"" + source.getTitle() + "\"))\n";
+        String filename = getFilename(source);
+
+        String output = "";
+        if (filename != null && filename.length() > 0) {
+            output = output + "" +
+                    "# Load image from disc \n" +
+                    "imp = IJ.open(\"" + filename + "\")\n" +
+                    "# Push " + source.getTitle() + " to GPU memory\n" +
+                    image1 + " = clijx.push(imp)\n";
+        } else {
+            output = output +
+                    "# Push " + source.getTitle() + " to GPU memory\n" +
+                    image1 + " = clijx.push(WindowManager.getImage(\"" + source.getTitle() + "\"))\n";
+        }
+        return output;
     }
 
     @Override

@@ -19,12 +19,7 @@ public class PyclesperantoGenerator implements ScriptGenerator {
     @Override
     public String push(AssistantGUIPlugin plugin) {
         ImagePlus source = plugin.getSource();
-        String filename = "";
-        if (source.getOriginalFileInfo() != null) {
-            filename = source.getOriginalFileInfo().directory + source.getOriginalFileInfo().fileName;
-        } else if (source.getFileInfo() != null) {
-            filename = source.getFileInfo().directory + source.getFileInfo().fileName;
-        }
+        String filename = getFilename(source);
 
         String program = "\n"+
                 "from tifffile import imread\n\n" +

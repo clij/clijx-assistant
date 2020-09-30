@@ -64,6 +64,17 @@ public interface ScriptGenerator {
                 ;
     }
 
+    default String getFilename(ImagePlus source)
+    {
+        String filename = "";
+        if (source.getOriginalFileInfo() != null) {
+            filename = source.getOriginalFileInfo().directory + source.getOriginalFileInfo().fileName;
+        } else if (source.getFileInfo() != null) {
+            filename = source.getFileInfo().directory + source.getFileInfo().fileName;
+        }
+        return filename.replace("\\", "/");
+    }
+
     String finish();
 
 }

@@ -13,9 +13,22 @@ public class MacroGenerator implements ScriptGenerator {
         ImagePlus source = plugin.getSource();
         String imageID = makeImageID(source);
         //makeImageID
-        return ""+
-                imageID + " = \"" + source.getTitle() + "\";\n" +
-                "Ext.CLIJ2_push(" + imageID + ");\n";
+
+        String filename = getFilename(source);
+
+        String output = "";
+        if (filename != null && filename.length() > 0) {
+            output = output + "" +
+                    "// Load image from disc \n" +
+                    "open(\"" + filename + "\");\n" +
+                    imageID + " = getTitle();\n" +
+                    "Ext.CLIJ2_push(" + imageID + ");\n";
+        } else {
+            output = output + "" +
+                    imageID + " = \"" + source.getTitle() + "\";\n" +
+                    "Ext.CLIJ2_push(" + imageID + ");\n";
+        }
+        return output;
     }
 
     @Override
