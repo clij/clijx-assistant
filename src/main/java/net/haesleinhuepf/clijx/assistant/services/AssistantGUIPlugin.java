@@ -2,6 +2,7 @@ package net.haesleinhuepf.clijx.assistant.services;
 
 import ij.ImagePlus;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
+import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.optimize.Workflow;
 import org.scijava.plugin.SciJavaPlugin;
 
@@ -27,4 +28,5 @@ public interface AssistantGUIPlugin extends SciJavaPlugin {
     void refreshDialogFromArguments();
 
     Workflow getWorkflow();
+    String generateScript(ScriptGenerator generator);
 }

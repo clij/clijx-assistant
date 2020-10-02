@@ -780,9 +780,8 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
 
     int script_count = 0;
-    protected void generateScript(ScriptGenerator generator) {
-        String script = generator.header() +
-                AssistantGUIPluginRegistry.getInstance().generateScript(generator);
+    private void generateScriptFile(ScriptGenerator generator) {
+        String script = generateScript(generator);
 
         script_count++;
         File outputTarget = new File(System.getProperty("java.io.tmpdir") + "/new" + script_count + generator.fileEnding());
@@ -795,7 +794,14 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             e.printStackTrace();
         }
         IJ.open(outputTarget.getAbsolutePath());
+
     }
+
+    public String generateScript(ScriptGenerator generator) {
+        return generator.header() +
+                AssistantGUIPluginRegistry.getInstance().generateScript(generator);
+    }
+
 
     Timer heartbeat = null;
     GenericDialog registered_dialog = null;
