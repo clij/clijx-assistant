@@ -44,6 +44,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.niceName;
+
 public class AssistantPluginSearchResult implements SearchResult {
 
 	private static final String ICON = "/icons/search/clijx_logo.png";
@@ -64,7 +66,7 @@ public class AssistantPluginSearchResult implements SearchResult {
 
 	@Override
 	public String name() {
-		return plugin.getName();
+		return niceName(plugin.getName());
 	}
 
 	@Override
