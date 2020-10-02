@@ -160,13 +160,12 @@ public class ClEsperantoMacroAPIGenerator {
         result = result.replace("I J", "IJ");
         result = result.replace("Do G", "DoG");
         result = result.replace("Lo G", "LoG");
-        result = result.replace("Cl Esperanto", "ClEsperanto");
+        result = result.replace("Cl Esperanto", "clEsperanto");
         result = result.replace("Morpho Lib J", "MorphoLibJ");
+        result = result.replace("Simple I T K", "SimpleITK");
         result = result.replace("CL IJ", "CLIJ");
         result = result.replace("R O I ", "ROI");
-
         return result.trim();
-
     }
 
 
