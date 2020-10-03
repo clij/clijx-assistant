@@ -1,6 +1,7 @@
 package net.haesleinhuepf.clijx.assistant.interactive.handcrafted;
 
 import ij.IJ;
+import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.measure.Calibration;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
@@ -23,8 +24,8 @@ public class MakeIsotropic extends AbstractAssistantGUIPlugin {
 
     protected boolean configure() {
         String unit = "unit";
-        if (my_source != null) {
-            unit = my_source.getCalibration().getUnit();
+        if (my_sources != null) {
+            unit = my_sources[0].getCalibration().getUnit();
         }
         GenericDialog gdp = new GenericDialog("Make isotropic");
         gdp.addNumericField("Future voxel size (in " + unit + ")", 1.0, 1);
@@ -36,7 +37,7 @@ public class MakeIsotropic extends AbstractAssistantGUIPlugin {
             return false;
         }
 
-        setSource(IJ.getImage());
+        setSources(new ImagePlus[]{IJ.getImage()});
         new_voxel_size_in_microns = (float) gdp.getNextNumber();
         return true;
     }
@@ -50,7 +51,7 @@ public class MakeIsotropic extends AbstractAssistantGUIPlugin {
     ClearCLBuffer[] result = null;
     public synchronized void refresh()
     {
-        Calibration calib = my_source.getCalibration();
+        Calibration calib = my_sources[0].getCalibration();
         float original_voxel_size_x = (float) calib.pixelWidth;
         float original_voxel_size_y = (float) calib.pixelHeight;
         float original_voxel_size_z = (float) calib.pixelDepth;
@@ -58,7 +59,7 @@ public class MakeIsotropic extends AbstractAssistantGUIPlugin {
         System.out.println("voxel size y: " + original_voxel_size_y);
         System.out.println("voxel size z: " + original_voxel_size_z);
 
-        ClearCLBuffer[] pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
+        ClearCLBuffer[][] pushed = CLIJxVirtualStack.imagePlusesToBuffers(my_sources);
 
         net.haesleinhuepf.clijx.plugins.MakeIsotropic plugin = (net.haesleinhuepf.clijx.plugins.MakeIsotropic) getCLIJMacroPlugin();
         args = new Object[] {
@@ -72,29 +73,29 @@ public class MakeIsotropic extends AbstractAssistantGUIPlugin {
         plugin.setArgs(args);
 
         if (result == null) {
-            result = createOutputBufferFromSource(pushed);
+            result = createOutputBufferFromSource(pushed[0]);
         }
         args[1] = result[0];
-        executeCL(pushed, result);
-        cleanup(my_source, pushed);
+        executeCL(pushed, new ClearCLBuffer[][]{result});
+        cleanup(my_sources, pushed);
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
 
-        my_target.setTitle("Isotropic " + my_source.getTitle());
+        my_target.setTitle("Isotropic " + my_sources[0].getTitle());
         my_target.getCalibration().pixelWidth = new_voxel_size_in_microns;
         my_target.getCalibration().pixelHeight = new_voxel_size_in_microns;
         my_target.getCalibration().pixelDepth = new_voxel_size_in_microns;
         my_target.getCalibration().setUnit("micron");
-        my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
+        my_target.setDisplayRange(my_sources[0].getDisplayRangeMin(), my_sources[0].getDisplayRangeMax());
         my_target.updateAndDraw();
         enhanceContrast();
     }
 
     @Override
     public void refreshView() {
-        if (my_source == null || my_target == null) {
+        if (my_sources == null || my_target == null) {
             return;
         }
-        my_target.setZ((int) (my_source.getZ() * my_source.getCalibration().pixelDepth / my_target.getCalibration().pixelDepth));
+        my_target.setZ((int) (my_sources[0].getZ() * my_sources[0].getCalibration().pixelDepth / my_target.getCalibration().pixelDepth));
     }
 }

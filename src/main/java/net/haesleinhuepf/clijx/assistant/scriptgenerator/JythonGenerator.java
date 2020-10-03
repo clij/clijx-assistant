@@ -10,22 +10,25 @@ public class JythonGenerator implements ScriptGenerator {
 
     @Override
     public String push(AssistantGUIPlugin plugin) {
-        ImagePlus source = plugin.getSource();
-        String image1 = makeImageID(source);
-
-        String filename = getFilename(source);
-
         String output = "";
-        if (filename != null && filename.length() > 0) {
-            output = output + "" +
-                    "# Load image from disc \n" +
-                    "imp = IJ.open(\"" + filename + "\")\n" +
-                    "# Push " + source.getTitle() + " to GPU memory\n" +
-                    image1 + " = clijx.push(imp)\n";
-        } else {
-            output = output +
-                    "# Push " + source.getTitle() + " to GPU memory\n" +
-                    image1 + " = clijx.push(WindowManager.getImage(\"" + source.getTitle() + "\"))\n";
+
+
+        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
+            ImagePlus source = plugin.getSource(s);
+            String filename = getFilename(source);
+
+
+            if (filename != null && filename.length() > 0) {
+                output = output + "" +
+                        "# Load image from disc \n" +
+                        "imp = IJ.open(\"" + filename + "\")\n" +
+                        "# Push " + source.getTitle() + " to GPU memory\n" +
+                        makeImageID(source) + " = clijx.push(imp)\n";
+            } else {
+                output = output +
+                        "# Push " + source.getTitle() + " to GPU memory\n" +
+                        makeImageID(source) + " = clijx.push(WindowManager.getImage(\"" + source.getTitle() + "\"))\n";
+            }
         }
         return output;
     }
@@ -59,12 +62,12 @@ public class JythonGenerator implements ScriptGenerator {
         methodName = "clijx." + pythonize(methodName);
 
 
-        String image1 = makeImageID(plugin.getSource());
+        String[] image1s = makeImageIDs(plugin);
         String image2 = makeImageID(plugin.getTarget());
         String program = "# " + AssistantUtilities.niceName(plugin.getName()) + "\n";
 
         ImagePlus target = plugin.getTarget();
-        ImagePlus source = plugin.getTarget();
+        ImagePlus source = plugin.getSource(0);
 
         if (target != null &&
                 source != null &&
@@ -74,10 +77,10 @@ public class JythonGenerator implements ScriptGenerator {
         ) {
             if ( target.getBitDepth() == source.getBitDepth()) {
                 program = program +
-                        image2 + " = clijx.create(" + image1 + ")\n";
+                        image2 + " = clijx.create(" + image1s[0] + ")\n";
             } else {
                 program = program +
-                        image2 + " = clijx.create(" + image1 + ".getDimensions(), clijx." + bitDepthToType(target.getBitDepth()) + " )\n";
+                        image2 + " = clijx.create(" + image1s[0] + ".getDimensions(), clijx." + bitDepthToType(target.getBitDepth()) + " )\n";
             }
         }else if (target.getNSlices() > 1) {
             program = program +
@@ -95,7 +98,7 @@ public class JythonGenerator implements ScriptGenerator {
             call = call + ", " + name;
             program = program + name + " = " + objectToString(plugin.getArgs()[i]) + "  \n";
         }
-        program = program + methodName + "(" + image1 + ", " + image2 + call + ")\n";
+        program = program + methodName + "(" + namesToCommaSeparated(image1s) + ", " + image2 + call + ")\n";
 
         //program = program + comment("consider removing this line if you don't need to see that image");
         //program = program + "clijx.show(" + image2 + ", \"" + plugin.getTarget().getTitle() + "\")\n";

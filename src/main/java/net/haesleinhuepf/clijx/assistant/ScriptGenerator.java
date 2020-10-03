@@ -28,6 +28,27 @@ public interface ScriptGenerator {
         return image_map.get(target);
     }
 
+    default String[] makeImageIDs(AssistantGUIPlugin plugin) {
+        String[] result = new String[plugin.getNumberOfSources()];
+        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
+            ImagePlus source = plugin.getSource(s);
+            result[s] = makeImageID(source);
+        }
+        return result;
+    }
+
+    default String namesToCommaSeparated(String[] names) {
+        String names_concat = "";
+        for (int i = 0; i < names.length; i++) {
+            if (i > 0) {
+                names_concat = names_concat + ", ";
+            }
+            names_concat = names_concat + names[i];
+        }
+        return names_concat;
+    }
+
+
     default String overview(AssistantGUIPlugin plugin) {
         return comment("Overview\n" + overview(plugin, 0));
     }

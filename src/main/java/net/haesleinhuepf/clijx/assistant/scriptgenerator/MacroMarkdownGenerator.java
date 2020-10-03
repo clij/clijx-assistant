@@ -15,11 +15,16 @@ public class MacroMarkdownGenerator extends MacroGenerator {
         String methodName = clijMacroPlugin.getName();
         methodName = "Ext." + methodName;
 
-        String image1 = makeImageID(plugin.getSource());
+        String[] image1s = makeImageIDs(plugin);
         String image2 = makeImageID(plugin.getTarget());
         String program = "/*\n" +
-                "## " + AssistantUtilities.niceName(plugin.getName()) + "\n" +
-                "" + image1 + ": \"" + plugin.getSource().getTitle() + "\"\n\n" +
+                "## " + AssistantUtilities.niceName(plugin.getName()) + "\n";
+
+        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
+            program = program +
+                    "" + image1s[s] + ": \"" + plugin.getSource(s).getTitle() + "\"\n\n";
+        }
+        program = program +
                 "" + image2 + ": \"" + plugin.getTarget().getTitle() + "\"\n" +
                 "*/\n";
 
@@ -32,7 +37,7 @@ public class MacroMarkdownGenerator extends MacroGenerator {
             call = call + ", " + name;
             program = program + name + " = " + objectToString(plugin.getArgs()[i]) + ";\n";
         }
-        program = program + methodName + "(" + image1 + ", " + image2 + call + ");\n";
+        program = program + methodName + "(" + namesToCommaSeparated(image1s) + ", " + image2 + call + ");\n";
         //program = program + "Ext.CLIJ2_pull(" + image2 + "); // consider removing this line if you don't need to see that image\n";
 
         return program;

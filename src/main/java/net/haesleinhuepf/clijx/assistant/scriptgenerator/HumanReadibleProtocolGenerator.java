@@ -15,11 +15,19 @@ public class HumanReadibleProtocolGenerator implements ScriptGenerator {
 
     @Override
     public String push(AssistantGUIPlugin plugin) {
-        ImagePlus source = plugin.getSource();
+        ImagePlus source = plugin.getSource(0);
         String image1 = makeImageID(source);
 
-        return ""+
+        String output =
                 "We start by processing the image \"" + source.getTitle() + "\" for simplicity, we call it " + image1 + ".\n";
+        for (int s = 1; s < plugin.getNumberOfSources(); s++) {
+            source = plugin.getSource(s);
+            image1 = makeImageID(source);
+
+            output = output +
+                    "Furthermore, we work with the image \"" + source.getTitle() + "\" for simplicity, we call it " + image1 + ".\n";
+        }
+        return output;
     }
 
     @Override
@@ -35,7 +43,7 @@ public class HumanReadibleProtocolGenerator implements ScriptGenerator {
     @Override
     public String execute(AssistantGUIPlugin plugin) {
         String[] startings = {"Then, ", "Afterwards, ", "Following, ", "As the next step "};
-        String image1 = makeImageID(plugin.getSource());
+        String[] image1s = makeImageIDs(plugin);
         String image2 = makeImageID(plugin.getTarget());
 
         CLIJMacroPlugin clijMacroPlugin = plugin.getCLIJMacroPlugin();
@@ -50,7 +58,7 @@ public class HumanReadibleProtocolGenerator implements ScriptGenerator {
         }
 
         text = text +
-                " on " + image1 +
+                " on " + namesToCommaSeparated(image1s) +
                 " and got a new image out, \n" + image2 + ", also titled \"" + plugin.getTarget().getTitle() + "\".\n";
 
         String[] midparts = {"In order to do so, ", "Therefore, ", "In detail, ", "While doing that, "};

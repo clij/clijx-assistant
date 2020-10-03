@@ -189,8 +189,8 @@ public class BinaryWekaPixelClassifier extends AbstractAssistantGUIPlugin {
         }
         ClearCLBuffer ground_truth = OptimizationUtilities.makeGroundTruth(clij2, my_target.getWidth(), my_target.getHeight(), my_target.getNSlices(), rm);
 
-        ClearCLBuffer[] pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
-        ClearCLBuffer input = pushed[my_source.getC() - 1];
+        ClearCLBuffer[][] pushed = CLIJxVirtualStack.imagePlusesToBuffers(my_sources);
+        ClearCLBuffer input = pushed[0][my_sources[0].getC() - 1];
 
         features = ((TextField) dialog.getStringFields().get(0)).getText();
         filename = ((TextField) dialog.getStringFields().get(1)).getText();
@@ -205,7 +205,7 @@ public class BinaryWekaPixelClassifier extends AbstractAssistantGUIPlugin {
 
         TrainWekaModelWithOptions.trainWekaModelWithOptions(clij2, featureStack, ground_truth, filename, num_trees, num_features, max_depth);
 
-        cleanup(my_source, pushed);
+        cleanup(my_sources, pushed);
 
         ground_truth.close();
         featureStack.close();

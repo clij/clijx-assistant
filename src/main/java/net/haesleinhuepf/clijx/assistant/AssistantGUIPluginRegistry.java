@@ -104,8 +104,10 @@ class AssistantGUIPluginRegistry {
 
         // search for plugins which have it as source and invalidate their targets
         for (AssistantGUIPlugin plugin : registeredPlugins) {
-            if (plugin.getSource() == imp) {
-                plugin.setTargetInvalid();
+            for (int s = 0; s < plugin.getNumberOfSources(); s++) {
+                if (plugin.getSource(s) == imp) {
+                    plugin.setTargetInvalid();
+                }
             }
         }
     }
@@ -126,9 +128,9 @@ class AssistantGUIPluginRegistry {
                 found_something_to_regenerate = false;
 
                 for (AssistantGUIPlugin plugin : registeredPlugins) {
-                    ImagePlus source = plugin.getSource();
+                    //ImagePlus source = plugin.getSource();
                     ImagePlus target = plugin.getTarget();
-                    if (source != null && target != null && isValid(source) && !isValid(target)) {
+                    if (target != null && allSourcesValid(plugin) && !isValid(target)) {
                         //IJ.log("Regenerating " + target.getTitle());
 
                         plugin.setTargetIsProcessing();
@@ -149,6 +151,15 @@ class AssistantGUIPluginRegistry {
         regenerating = false;
     }
 
+    private boolean allSourcesValid(AssistantGUIPlugin plugin) {
+        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
+            if (!isValid(plugin.getSource(s))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private boolean isValid(ImagePlus imp) {
         if (imp.getStack() instanceof CLIJxVirtualStack) {
             return ((CLIJxVirtualStack) imp.getStack()).getBuffer(0).getName().length() != 0;
@@ -160,16 +171,11 @@ class AssistantGUIPluginRegistry {
     public String generateScript(ScriptGenerator generator) {
         String result = "";
 
-        // find start(s)
         for (AssistantGUIPlugin plugin : registeredPlugins) {
-            ImagePlus source = plugin.getSource();
-            ImagePlus target = plugin.getTarget();
-            if (source != null && target != null && isNeverTarget(source)) {
-                result = result + generator.overview(plugin);
-                result = result + generator.push(plugin);
-                result = result + script(generator, plugin) + "\n\n";
-                result = result + generator.finish();
-            }
+            result = result + generator.overview(plugin);
+            result = result + generator.push(plugin);
+            result = result + script(generator, plugin) + "\n\n";
+            result = result + generator.finish();
         }
 
         return result;
@@ -180,12 +186,12 @@ class AssistantGUIPluginRegistry {
         result = result + generator.execute(plugin);
         result = result + generator.pull(plugin);
 
-        for (AssistantGUIPlugin followers : findFollowers(plugin)) {
-            result = result + script(generator, followers);
-        }
+        //for (AssistantGUIPlugin followers : findFollowers(plugin)) {
+        //    result = result + script(generator, followers);
+        //}
         return result;
     }
-
+/*
     private ArrayList<AssistantGUIPlugin> findFollowers(AssistantGUIPlugin plugin) {
         ArrayList<AssistantGUIPlugin> list = new ArrayList<>();
         ImagePlus target = plugin.getTarget();
@@ -201,7 +207,7 @@ class AssistantGUIPluginRegistry {
         }
         return list;
     }
-
+*/
 
     private boolean isNeverTarget(ImagePlus source) {
         for (AssistantGUIPlugin plugin : registeredPlugins) {
@@ -217,8 +223,10 @@ class AssistantGUIPluginRegistry {
         ArrayList<ImagePlus> followers = new ArrayList();
 
         for (AssistantGUIPlugin plugin : registeredPlugins) {
-            if (plugin.getSource() == source) {
-                followers.add(plugin.getTarget());
+            for (int s = 0; s < plugin.getNumberOfSources(); s++) {
+                if (plugin.getSource(s) == source) {
+                    followers.add(plugin.getTarget());
+                }
             }
         }
 
@@ -229,8 +237,10 @@ class AssistantGUIPluginRegistry {
         ArrayList<AssistantGUIPlugin> followers = new ArrayList();
 
         for (AssistantGUIPlugin plugin : registeredPlugins) {
-            if (plugin.getSource() == node.getTarget()) {
-                followers.add(plugin);
+            for (int s = 0; s < plugin.getNumberOfSources(); s++) {
+                if (plugin.getSource(s) == node.getTarget()) {
+                    followers.add(plugin);
+                }
             }
         }
 
@@ -246,13 +256,18 @@ class AssistantGUIPluginRegistry {
 
         return null;
     }
-
+/*
     ArrayList<Object[]> getGraph(ImagePlus imp) {
-        ImagePlus root = findRoot(imp);
+        //ImagePlus root = findRoot(imp);
 
         //System.out.println("Root: " + root);
         ArrayList<Object[]> list = new ArrayList<Object[]>();
-        getGraph(root, list, 1);
+
+        for (AssistantGUIPlugin plugin : registeredPlugins) {
+            ImagePlus imp = plugin.getTarget();
+            list.add(new Object[]{name + imp.getTitle(), imp});
+        }
+        //getGraph(root, list, 1);
 
         return list;
     }
@@ -286,16 +301,13 @@ class AssistantGUIPluginRegistry {
         }
         return null;
     }
-
+*/
     public AssistantGUIPlugin[] getPathToRoot(AssistantGUIPlugin leaf) {
-        ArrayList<AssistantGUIPlugin> list = new ArrayList<>();
-        getPathToRoot(leaf, list);
-
-        AssistantGUIPlugin[] array = new AssistantGUIPlugin[list.size()];
-        list.toArray(array);
+        AssistantGUIPlugin[] array = new AssistantGUIPlugin[registeredPlugins.size()];
+        registeredPlugins.toArray(array);
         return array;
     }
-
+/*
     private void getPathToRoot(AssistantGUIPlugin leaf, ArrayList<AssistantGUIPlugin> list) {
         list.add(0, leaf);
         if (isNeverTarget(leaf.getSource())) {
@@ -307,4 +319,6 @@ class AssistantGUIPluginRegistry {
             }
         }
     }
+
+ */
 }

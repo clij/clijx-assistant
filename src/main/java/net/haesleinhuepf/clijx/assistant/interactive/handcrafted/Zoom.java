@@ -42,10 +42,10 @@ public class Zoom extends AbstractAssistantGUIPlugin {
 
         if (result != null) {
             long[] old_dimensions = null;
-            if (my_source.getNSlices() > 1) {
-                old_dimensions = new long[]{my_source.getWidth(), my_source.getHeight(), my_source.getNSlices()};
+            if (my_sources[0].getNSlices() > 1) {
+                old_dimensions = new long[]{my_sources[0].getWidth(), my_sources[0].getHeight(), my_sources[0].getNSlices()};
             } else {
-                old_dimensions = new long[]{my_source.getWidth(), my_source.getHeight()};
+                old_dimensions = new long[]{my_sources[0].getWidth(), my_sources[0].getHeight()};
             }
 
             long[] new_dimensions = net.haesleinhuepf.clijx.plugins.Zoom.getNewDimensions(old_dimensions, zoom_factor);

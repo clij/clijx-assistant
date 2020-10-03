@@ -36,7 +36,7 @@ public class AssistantGUIStartingPoint extends AbstractAssistantGUIPlugin {
         ImagePlus.addImageListener(this);
 
         ImagePlus imp = IJ.getImage();
-        setSource(imp);
+        setSources(new ImagePlus[]{imp});
         former_t = imp.getT();
         former_c = imp.getC();
         former_z = imp.getZ();
@@ -45,7 +45,7 @@ public class AssistantGUIStartingPoint extends AbstractAssistantGUIPlugin {
 
         //AssistantUtilities.stamp(CLIJxVirtualStack.imagePlusToBuffer(my_target));
         refresh();
-        my_target.setFileInfo(my_source.getOriginalFileInfo());
+        my_target.setFileInfo(my_sources[0].getOriginalFileInfo());
         System.out.println("Fileinfo: ");
         System.out.println(my_target.getFileInfo());
 
@@ -61,25 +61,25 @@ public class AssistantGUIStartingPoint extends AbstractAssistantGUIPlugin {
 
     int former_refreshed_t = -1;
     public synchronized void refresh() {
-        if (my_source.getT() == former_refreshed_t) {
+        if (my_sources[0].getT() == former_refreshed_t) {
             return;
         }
-        former_refreshed_t = my_source.getT();
+        former_refreshed_t = my_sources[0].getT();
 
         if (result != null) {
             for (int i = 0; i < result.length; i++) {
                 result[i].close();
             }
         }
-        result = CLIJxVirtualStack.imagePlusToBuffer(my_source);
+        result = CLIJxVirtualStack.imagePlusToBuffer(my_sources[0]);
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle("CLIJx Image of " + my_source.getTitle());
+        my_target.setTitle("CLIJx Image of " + my_sources[0].getTitle());
         refreshView();
     }
 
     @Override
     public void imageUpdated(ImagePlus imp) {
-        if (imp == my_source) {
+        if (imp == my_sources[0]) {
             System.out.println("Source updated");
             if (imp.getT() != former_t) {
                 System.out.println("Target invalidated");

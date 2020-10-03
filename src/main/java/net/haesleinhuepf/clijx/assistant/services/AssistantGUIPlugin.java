@@ -10,7 +10,8 @@ public interface AssistantGUIPlugin extends SciJavaPlugin {
     void run(String command);
 
     void refresh();
-    ImagePlus getSource();
+    ImagePlus getSource(int source);
+    int getNumberOfSources();
     ImagePlus getTarget();
 
     void setTargetInvalid();

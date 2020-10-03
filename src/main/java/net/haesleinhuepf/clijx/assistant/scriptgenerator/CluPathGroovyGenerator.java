@@ -9,7 +9,7 @@ public class CluPathGroovyGenerator extends GroovyGenerator {
     @Override
     public String push(AssistantGUIPlugin plugin) {
 
-        ImagePlus source = plugin.getSource();
+        ImagePlus source = plugin.getSource(0);
         String image1 = makeImageID(source);
 
         return "// Read image and convert it to ImageJ\n" +

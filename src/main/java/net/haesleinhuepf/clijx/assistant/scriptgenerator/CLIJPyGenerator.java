@@ -11,29 +11,31 @@ public class CLIJPyGenerator extends JythonGenerator {
 
     @Override
     public String push(AssistantGUIPlugin plugin) {
-        ImagePlus source = plugin.getSource();
-        String image1 = makeImageID(source);
 
-        String filename = "";
-        if (source.getOriginalFileInfo() != null) {
-            filename = source.getOriginalFileInfo().directory + source.getOriginalFileInfo().fileName;
-        } else if (source.getFileInfo() != null) {
-            filename = source.getFileInfo().directory + source.getFileInfo().fileName;
+        String output = "" +
+            "from skimage import io\n" +
+            "import numpy as np\n";
+
+
+        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
+            ImagePlus source = plugin.getSource(s);
+            String image1 = makeImageID(source);
+            String filename = getFilename(source);
+
+
+            output = output +
+                    "# Push " + source.getTitle() + " to GPU memory\n" +
+                    "# load image data\n" +
+                    "image = io.imread(\"" + filename.replace("\\", "/") + "\")\n" +
+                    "\n" +
+                    "# convert and array to an ImageJ2 img:\n" +
+                    "np_arr = np.array(image)\n" +
+                    "ij_img = ij.py.to_java(np_arr)\n" +
+                    "\n" +
+                    "# push the image to the GPU\n" +
+                    image1 + " = clijx.push(ij_img)\n\n";
         }
-
-        return "" +
-                "# Push " + source.getTitle() + " to GPU memory\n" +
-                "# load image data\n" +
-                "from skimage import io\n" +
-                "image = io.imread(\"" + filename.replace("\\", "/") + "\")\n" +
-                "\n" +
-                "# convert and array to an ImageJ2 img:\n" +
-                "import numpy as np\n" +
-                "np_arr = np.array(image)\n" +
-                "ij_img = ij.py.to_java(np_arr)\n" +
-                "\n" +
-                "# push the image to the GPU\n" +
-                image1 + " = clijx.push(ij_img)\n";
+        return output;
     }
 
     @Override
@@ -71,7 +73,7 @@ public class CLIJPyGenerator extends JythonGenerator {
         methodName = "clijx." + pythonize(methodName);
 
 
-        String image1 = makeImageID(plugin.getSource());
+        String[] image1s = makeImageIDs(plugin);
         String image2 = makeImageID(plugin.getTarget());
         String program = "# " + AssistantUtilities.niceName(plugin.getName()) + "\n";
 
@@ -92,7 +94,7 @@ public class CLIJPyGenerator extends JythonGenerator {
             call = call + ", " + name + "=" + name;
             program = program + name + " = " + objectToString(plugin.getArgs()[i]) + "  \n";
         }
-        program = program + methodName + "(" + image1 + ", " + image2 + call + ")\n";
+        program = program + methodName + "(" + namesToCommaSeparated(image1s) + ", " + image2 + call + ")\n";
 
 
         return program;

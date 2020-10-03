@@ -12,23 +12,25 @@ public class ClicGenerator implements ScriptGenerator {
 
     @Override
     public String push(AssistantGUIPlugin plugin) {
-        ImagePlus imp = plugin.getTarget();
-        String image1 = makeImageID(imp);
         String program = "";
 
-        program = program +
-                "// Push image \n";
+        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
+            ImagePlus imp = plugin.getSource(s);
+            String image1 = makeImageID(imp);
 
-        if (imp.getNSlices() > 1) {
             program = program +
-                    "Image<" + bitDepthToType(imp.getBitDepth())  + "> raw_image (raw_data, " + imp.getWidth() + ", " + imp.getHeight() + ", " + imp.getNSlices() + ", \"" + bitDepthToType(imp.getBitDepth()) + "\"); \n";
-        } else {
+                    "// Push image \n";
+
+            if (imp.getNSlices() > 1) {
+                program = program +
+                        "Image<" + bitDepthToType(imp.getBitDepth()) + "> raw_image (raw_data, " + imp.getWidth() + ", " + imp.getHeight() + ", " + imp.getNSlices() + ", \"" + bitDepthToType(imp.getBitDepth()) + "\"); \n";
+            } else {
+                program = program +
+                        "Image<" + bitDepthToType(imp.getBitDepth()) + "> raw_image (raw_data, " + imp.getWidth() + ", " + imp.getHeight() + ", \"" + bitDepthToType(imp.getBitDepth()) + "\"); \n";
+            }
             program = program +
-                    "Image<" + bitDepthToType(imp.getBitDepth())  + "> raw_image (raw_data, " + imp.getWidth() + ", " + imp.getHeight() + ", \"" + bitDepthToType(imp.getBitDepth()) + "\"); \n";
+                    "cle::Buffer " + image1 + " = gpu.Push<" + bitDepthToType(imp.getBitDepth()) + ">(raw_image); \n\n";
         }
-        program = program +
-                "cle::Buffer " + image1 + " = gpu.Push<" +  bitDepthToType(imp.getBitDepth()) + ">(raw_image); \n";
-
         return program;
     }
 
@@ -68,7 +70,7 @@ public class ClicGenerator implements ScriptGenerator {
         methodName = pythonize(methodName);
 
 
-        String image1 = makeImageID(plugin.getSource());
+        String[] image1s = makeImageIDs(plugin);
         String image2 = makeImageID(plugin.getTarget());
         String program = comment(" " + AssistantUtilities.niceName(plugin.getName()));
 
@@ -96,7 +98,7 @@ public class ClicGenerator implements ScriptGenerator {
         }
 
         program = program + "cle::" + methodName + " operation" + call_count + "(gpu);\n" +
-        "operation" + call_count + ".Execute(" + image1 + ", " + image2 + call + ");\n\n";
+        "operation" + call_count + ".Execute(" + namesToCommaSeparated(image1s) + ", " + image2 + call + ");\n\n";
 
         call_count++;
 

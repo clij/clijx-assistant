@@ -59,7 +59,7 @@ public class Crop extends AbstractAssistantGUIPlugin {
 
         if (result != null) {
             long[] new_dimensions = null;
-            if (my_source.getNSlices() > 1) {
+            if (my_sources[0].getNSlices() > 1) {
                 new_dimensions = new long[]{width_in_pixels, height_in_pixels, depth_in_pixels};
             } else {
                 new_dimensions = new long[]{width_in_pixels, height_in_pixels};
@@ -71,13 +71,13 @@ public class Crop extends AbstractAssistantGUIPlugin {
 
 
         net.haesleinhuepf.clij2.plugins.Crop3D plugin = (net.haesleinhuepf.clij2.plugins.Crop3D) getCLIJMacroPlugin();
-        ClearCLBuffer[] pushed;
+        ClearCLBuffer[][] pushed;
 
-        if (my_source.getStack() instanceof CLIJxVirtualStack) {
+        if (my_sources[0].getStack() instanceof CLIJxVirtualStack) {
 
-            my_source.killRoi();
-            pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
-            my_source.setRoi(x_in_pixels, y_in_pixels, width_in_pixels, height_in_pixels);
+            my_sources[0].killRoi();
+            pushed = CLIJxVirtualStack.imagePlusesToBuffers(my_sources);
+            my_sources[0].setRoi(x_in_pixels, y_in_pixels, width_in_pixels, height_in_pixels);
 
             args = new Object[] {
                     pushed[0],
@@ -90,9 +90,9 @@ public class Crop extends AbstractAssistantGUIPlugin {
                     depth_in_pixels
             };
         } else {
-            my_source.setRoi(x_in_pixels, y_in_pixels, width_in_pixels, height_in_pixels);
+            my_sources[0].setRoi(x_in_pixels, y_in_pixels, width_in_pixels, height_in_pixels);
             try {
-                pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
+                pushed = CLIJxVirtualStack.imagePlusesToBuffers(my_sources);
             } catch (Exception e) {
                 IJ.log(e.getMessage());
                 return;
@@ -114,19 +114,19 @@ public class Crop extends AbstractAssistantGUIPlugin {
         plugin.setArgs(args);
 
         if (result == null) {
-            result = createOutputBufferFromSource(pushed);
+            result = createOutputBufferFromSource(pushed[0]);
         }
         args[1] = result[0];
 
-        executeCL(pushed, result);
+        executeCL(pushed, new ClearCLBuffer[][]{result});
 
-        cleanup(my_source, pushed);
+        cleanup(my_sources, pushed);
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
 
-        my_target.setTitle("Crop of " + my_source.getTitle());
+        my_target.setTitle("Crop of " + my_sources[0].getTitle());
         //ImagePlus.addImageListener(new MyImageListener());
-        my_source.getWindow().getCanvas().addMouseListener(new MyListener());
+        my_sources[0].getWindow().getCanvas().addMouseListener(new MyListener());
 
         enhanceContrast();
     }
@@ -134,8 +134,8 @@ public class Crop extends AbstractAssistantGUIPlugin {
     class MyListener extends MouseAdapter {
         @Override
         public void mouseReleased(MouseEvent e) {
-            if (my_source != null && my_source.getWindow() != null && my_source.getWindow().getCanvas() != null && dialog != null) {
-                Roi roi = my_source.getRoi();
+            if (my_sources[0] != null && my_sources[0].getWindow() != null && my_sources[0].getWindow().getCanvas() != null && dialog != null) {
+                Roi roi = my_sources[0].getRoi();
                 if (roi != null) {
                     if(roi.getBounds().x != x_in_pixels || roi.getBounds().y != y_in_pixels || roi.getBounds().width != width_in_pixels || roi.getBounds().getHeight() != height_in_pixels) {
                         ((TextField) dialog.getNumericFields().get(0)).setText("" + roi.getBounds().x);

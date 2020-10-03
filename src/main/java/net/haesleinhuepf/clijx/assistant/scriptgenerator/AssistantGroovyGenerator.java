@@ -10,20 +10,27 @@ public class AssistantGroovyGenerator implements ScriptGenerator {
 
     @Override
     public String push(AssistantGUIPlugin plugin) {
-        ImagePlus source = plugin.getSource();
-        String image1 = makeImageID(source);
+        String output = "";
+        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
+            ImagePlus source = plugin.getSource(s);
+            String image1 = makeImageID(source);
 
-        String filename = "";
-        if (source.getOriginalFileInfo() != null) {
-            filename = source.getOriginalFileInfo().directory + source.getOriginalFileInfo().fileName;
-        } else if (source.getFileInfo() != null) {
-            filename = source.getFileInfo().directory + source.getFileInfo().fileName;
+            String filename = "";
+            if (source.getOriginalFileInfo() != null) {
+                filename = source.getOriginalFileInfo().directory + source.getOriginalFileInfo().fileName;
+            } else if (source.getFileInfo() != null) {
+                filename = source.getFileInfo().directory + source.getFileInfo().fileName;
+            }
+
+
+
+            output = output +
+                    "// Load image from disc \n" +
+                    image1 + " = IJ.openImage(\"" + filename.replace("\\", "/") + "\");\n" +
+                    image1 + ".setTitle(\"" + source.getTitle() + "\");\n" +
+                    image1 + ".show();\n";
         }
-
-
-        return ""+
-                "// Load image from disc \n"+
-                "IJ.open(\"" + filename.replace("\\", "/") +  "\");\n";
+        return output;
     }
 
     @Override
@@ -51,6 +58,7 @@ public class AssistantGroovyGenerator implements ScriptGenerator {
         } else {
             output.append("node = new " + klass.getName() + "();\n");
         }
+        output.append(namesToCommaSeparated(makeImageIDs(plugin)));
         output.append("node.run(\"\");\n");
 
         Object[] args = plugin.getArgs();

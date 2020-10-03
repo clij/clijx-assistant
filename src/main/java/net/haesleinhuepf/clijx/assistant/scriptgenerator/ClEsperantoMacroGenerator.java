@@ -11,12 +11,16 @@ public class ClEsperantoMacroGenerator implements ScriptGenerator {
 
     @Override
     public String push(AssistantGUIPlugin plugin) {
-        ImagePlus source = plugin.getSource();
-        String imageID = makeImageID(source);
-        //makeImageID
-        return ""+
-                imageID + " = \"" + source.getTitle() + "\";\n" +
-                "push(" + imageID + ");\n";
+        String output = "";
+        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
+            ImagePlus source = plugin.getSource(s);
+            String imageID = makeImageID(source);
+            //makeImageID
+            output = output +
+                    imageID + " = \"" + source.getTitle() + "\";\n" +
+                    "push(" + imageID + ");\n\n";
+        }
+        return output;
     }
 
     @Override
@@ -40,10 +44,15 @@ public class ClEsperantoMacroGenerator implements ScriptGenerator {
         String methodName = clijMacroPlugin.getName();
         methodName = ClEsperantoMacroAPIGenerator.pythonize(methodName);
 
-        String image1 = makeImageID(plugin.getSource());
+        String[] image1s = makeImageIDs(plugin);
         String image2 = makeImageID(plugin.getTarget());
-        String program = "// " + AssistantUtilities.niceName(plugin.getName()) + "\n" +
-                image1 + " = \"" + plugin.getSource().getTitle() + "\";\n" +
+        String program = "// " + AssistantUtilities.niceName(plugin.getName()) + "\n";
+
+        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
+            program = program +
+                    "" + image1s[s] + ": \"" + plugin.getSource(s).getTitle() + "\"\n\n";
+        }
+        program = program +
                 image2 + " = \"" + plugin.getTarget().getTitle() + "\";\n";
 
         String call = "";
@@ -55,7 +64,7 @@ public class ClEsperantoMacroGenerator implements ScriptGenerator {
             call = call + ", " + name;
             program = program + name + " = " + objectToString(plugin.getArgs()[i]) + ";\n";
         }
-        program = program + methodName + "(" + image1 + ", " + image2 + call + ");\n";
+        program = program + methodName + "(" + namesToCommaSeparated(image1s) + ", " + image2 + call + ");\n";
         //program = program + "Ext.CLIJ2_pull(" + image2 + "); // consider removing this line if you don't need to see that image\n";
 
         return program;

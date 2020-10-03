@@ -40,17 +40,9 @@ public class PullToROIManager extends AbstractAssistantGUIPlugin {
     ClearCLBuffer[] result = null;
     public synchronized void refresh()
     {
-        ClearCLBuffer[] pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
-        if (pushed[0].getDepth() > 1 || pushed.length > 1) {
+        ClearCLBuffer[][] pushed = CLIJxVirtualStack.imagePlusesToBuffers(my_sources);
+        if (pushed[0][0].getDepth() > 1 || pushed[0].length > 1) {
             IJ.log("Warning: Show in ROIM Manager is only supported for single channel 2D Images.");
-        }
-
-        String algorithm = "";
-        if (choice != null) {
-            int index = choice.getSelectedIndex();
-            if (index >= 0) {
-                algorithm = AutoThresholderImageJ1.getMethods()[index];
-            }
         }
 
         // we just do that so that the recorder has something to analyse
@@ -64,7 +56,7 @@ public class PullToROIManager extends AbstractAssistantGUIPlugin {
         CLIJx clijx = CLIJx.getInstance();
 
         if (result == null) {
-            result = new ClearCLBuffer[]{clijx.create(new long[]{pushed[0].getWidth(), pushed[0].getHeight()}, pushed[0].getNativeType())};
+            result = new ClearCLBuffer[]{clijx.create(new long[]{pushed[0][0].getWidth(), pushed[0][0].getHeight()}, pushed[0][0].getNativeType())};
         }
 
         RoiManager rm = RoiManager.getInstance();
@@ -73,7 +65,7 @@ public class PullToROIManager extends AbstractAssistantGUIPlugin {
         }
 
         rm.reset();
-        clijx.pullLabelsToROIManager(pushed[0], rm);
+        clijx.pullLabelsToROIManager(pushed[0][0], rm);
 
         ImagePlus view = null;
         if (choice != null) {
@@ -85,10 +77,10 @@ public class PullToROIManager extends AbstractAssistantGUIPlugin {
             }
         }
 
-        cleanup(my_source, pushed);
+        cleanup(my_sources, pushed);
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle("ROIs of " + my_source.getTitle());
+        my_target.setTitle("ROIs of " + my_sources[0].getTitle());
         rm.runCommand(my_target, "Show all");
         enhanceContrast();
 

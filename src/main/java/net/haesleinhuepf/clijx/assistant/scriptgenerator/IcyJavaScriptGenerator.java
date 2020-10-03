@@ -13,14 +13,19 @@ public class IcyJavaScriptGenerator extends JythonGenerator {
 
     @Override
     public String push(AssistantGUIPlugin plugin) {
-        ImagePlus source = plugin.getSource();
-        String image1 = makeImageID(source);
+        String program = "";
 
-        return "// get current image from Icy\n" +
-                "sequence = getSequence();\n" +
-                "\n" +
-                "// push image to GPU\n" +
-                image1 + " = clijx.pushSequence(sequence);";
+        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
+            ImagePlus source = plugin.getSource(s);
+
+            program = program +
+                    "// get current image from Icy\n" +
+                    "sequence = getSequence();\n" +
+                    "\n" +
+                    "// push image to GPU\n" +
+                    makeImageID(source) + " = clijx.pushSequence(sequence);";
+        }
+        return program;
     }
 
     @Override
