@@ -7,11 +7,14 @@ import ij.gui.Toolbar;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.plugins.Copy;
+import net.haesleinhuepf.clijx.assistant.scriptgenerator.MacroGenerator;
 import net.haesleinhuepf.clijx.gui.InteractiveWindowPosition;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.SuggestionService;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
+
+import java.io.File;
 
 @Plugin(type = AssistantGUIPlugin.class)
 public class AssistantGUIStartingPoint extends AbstractAssistantGUIPlugin {
@@ -36,6 +39,12 @@ public class AssistantGUIStartingPoint extends AbstractAssistantGUIPlugin {
         ImagePlus.addImageListener(this);
 
         ImagePlus imp = IJ.getImage();
+
+        if (!new File(new MacroGenerator().getFilename(imp)).exists()) {
+            IJ.saveAs(imp, "tif", System.getProperty("java.io.tmpdir") + "/temp" + System.currentTimeMillis() + ".tif");
+        }
+
+
         setSources(new ImagePlus[]{imp});
         former_t = imp.getT();
         former_c = imp.getC();
