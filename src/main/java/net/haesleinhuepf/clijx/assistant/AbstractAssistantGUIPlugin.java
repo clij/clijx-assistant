@@ -321,6 +321,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         }
     }
 
+    /*
     @Deprecated
     protected void executeCL(ClearCLBuffer[] whole_input, ClearCLBuffer[] whole_output) {
         if (plugin instanceof CLIJOpenCLProcessor) {
@@ -345,7 +346,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                 ((CLIJOpenCLProcessor) plugin).executeCL();
             }
         }
-    }
+    }*/
 
 
     protected void executeCL(ClearCLBuffer[][] whole_input, ClearCLBuffer[][] whole_output) {
@@ -382,11 +383,6 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                 for (int i = 0; i < whole.length; i++) {
                     args[i] = whole[i][0];
                 }
-
-                for (Object object: args) {
-                    System.out.println("O: " + object);
-                }
-
                 ((CLIJOpenCLProcessor) plugin).executeCL();
             }
         }
