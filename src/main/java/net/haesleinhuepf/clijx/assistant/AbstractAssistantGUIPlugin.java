@@ -521,7 +521,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         return name_array;
     }
 
-    protected void setSources(ImagePlus[] input) {
+    public void setSources(ImagePlus[] input) {
         my_sources = input;
         my_target = null;
     }
@@ -691,25 +691,25 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         // -------------------------------------------------------------------------------------------------------------
 
         Menu script = new Menu("Generate script");
-        addMenuAction(script, "ImageJ Macro", (a) -> {generateScript(new MacroGenerator());});
-        addMenuAction(script, "Human readable protocol", (a) -> {generateScript(new HumanReadibleProtocolGenerator());});
-        addMenuAction(script, "Export workflow as groovy (for re-loading)", (a) -> {generateScript(new AssistantGroovyGenerator());});
+        addMenuAction(script, "ImageJ Macro", (a) -> {generateScriptFile(new MacroGenerator());});
+        addMenuAction(script, "Human readable protocol", (a) -> {generateScriptFile(new HumanReadibleProtocolGenerator());});
         script.add("-");
-        addMenuAction(script, "Icy JavaScript", (a) -> {generateScript(new IcyJavaScriptGenerator());});
-        addMenuAction(script, "Matlab", (a) -> {generateScript(new MatlabGenerator());});
-        addMenuAction(script, "Fiji Groovy", (a) -> {generateScript(new GroovyGenerator());});
-        addMenuAction(script, "Fiji JavaScript", (a) -> {generateScript(new JavaScriptGenerator());});
-        addMenuAction(script, "Fiji Jython", (a) -> {generateScript(new JythonGenerator());});
+        addMenuAction(script, "Icy JavaScript", (a) -> {generateScriptFile(new IcyJavaScriptGenerator());});
+        addMenuAction(script, "Matlab", (a) -> {generateScriptFile(new MatlabGenerator());});
+        addMenuAction(script, "Fiji Groovy", (a) -> {generateScriptFile(new GroovyGenerator());});
+        addMenuAction(script, "Fiji JavaScript", (a) -> {generateScriptFile(new JavaScriptGenerator());});
+        addMenuAction(script, "Fiji Jython", (a) -> {generateScriptFile(new JythonGenerator());});
         script.add("-");
 
-        addMenuAction(script, "ImageJ Macro Markdown", (a) -> {generateScript(new MacroMarkdownGenerator());});
+        addMenuAction(script, "ImageJ Macro Markdown", (a) -> {generateScriptFile(new MacroMarkdownGenerator());});
+        addMenuAction(script, "Export workflow as groovy (for re-loading)", (a) -> {generateScriptFile(new AssistantGroovyGenerator());});
         addMenuAction(script, "CLIJx / Fiji plugin (Java)", (a) -> {new MavenJavaProjectGeneratorPlugin().generate(this);});
-        addMenuAction(script, "CLIJPy Python", (a) -> {generateScript(new CLIJPyGenerator());});
-        addMenuAction(script, "CluPath Groovy", (a) -> {generateScript(new CluPathGroovyGenerator());});
-        addMenuAction(script, "clEsperanto clic", (a) -> {generateScript(new ClicGenerator());});
-        addMenuAction(script, "clEsperanto ImageJ Macro", (a) -> {generateScript(new ClEsperantoMacroGenerator());});
-        addMenuAction(script, "clEsperanto Python", (a) -> {generateScript(new PyclesperantoGenerator(false));});
-        addMenuAction(script, "clEsperanto Python + Napari", (a) -> {generateScript(new PyclesperantoGenerator(true));});
+        addMenuAction(script, "CLIJPy Python", (a) -> {generateScriptFile(new CLIJPyGenerator());});
+        addMenuAction(script, "CluPath Groovy", (a) -> {generateScriptFile(new CluPathGroovyGenerator());});
+        addMenuAction(script, "clEsperanto clic", (a) -> {generateScriptFile(new ClicGenerator());});
+        addMenuAction(script, "clEsperanto ImageJ Macro", (a) -> {generateScriptFile(new ClEsperantoMacroGenerator());});
+        addMenuAction(script, "clEsperanto Python", (a) -> {generateScriptFile(new PyclesperantoGenerator(false));});
+        addMenuAction(script, "clEsperanto Python + Napari", (a) -> {generateScriptFile(new PyclesperantoGenerator(true));});
         menu.add(script);
 
         // -------------------------------------------------------------------------------------------------------------

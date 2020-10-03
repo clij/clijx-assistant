@@ -172,25 +172,21 @@ class AssistantGUIPluginRegistry {
         String result = "";
 
         for (AssistantGUIPlugin plugin : registeredPlugins) {
-            result = result + generator.overview(plugin);
-            result = result + generator.push(plugin);
-            result = result + script(generator, plugin) + "\n\n";
-            result = result + generator.finish();
+            //result = result + generator.overview(plugin);
+            for (int s = 0; s < plugin.getNumberOfSources(); s++) {
+                ImagePlus source = plugin.getSource(s);
+                if (!result.contains(generator.makeImageID(source) + " =") && !result.contains(generator.makeImageID(source) + ",") && !result.contains(generator.makeImageID(source) + ")")  && !result.contains(generator.makeImageID(source) + ":")) {
+                    result = result + generator.push(source);
+                }
+            }
+            result = result + generator.execute(plugin);
+            result = result + generator.pull(plugin);
         }
+        result = result + generator.finish();
 
         return result;
     }
 
-    private String script(ScriptGenerator generator, AssistantGUIPlugin plugin) {
-        String result = "\n";
-        result = result + generator.execute(plugin);
-        result = result + generator.pull(plugin);
-
-        //for (AssistantGUIPlugin followers : findFollowers(plugin)) {
-        //    result = result + script(generator, followers);
-        //}
-        return result;
-    }
 /*
     private ArrayList<AssistantGUIPlugin> findFollowers(AssistantGUIPlugin plugin) {
         ArrayList<AssistantGUIPlugin> list = new ArrayList<>();

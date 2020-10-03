@@ -22,7 +22,7 @@ public class MacroMarkdownGenerator extends MacroGenerator {
 
         for (int s = 0; s < plugin.getNumberOfSources(); s++) {
             program = program +
-                    "" + image1s[s] + ": \"" + plugin.getSource(s).getTitle() + "\"\n\n";
+                    "" + image1s[s] + ": \"" + plugin.getSource(s).getTitle() + "\";\n";
         }
         program = program +
                 "" + image2 + ": \"" + plugin.getTarget().getTitle() + "\"\n" +

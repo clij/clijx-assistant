@@ -19,21 +19,16 @@ public class PyclesperantoGenerator implements ScriptGenerator {
     }
 
     @Override
-    public String push(AssistantGUIPlugin plugin) {
-        String program = "\n"+
-                "from tifffile import imread\n\n";
+    public String push(ImagePlus source) {
+        String program = "\n";
+        String filename = getFilename(source);
 
-        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
-            ImagePlus source = plugin.getSource(s);
-            String filename = getFilename(source);
+        program = program +
+                "# Load image\n" +
+                "image = imread(\"" + filename.replace("\\", "/") + "\")\n\n" +
 
-            program = program +
-                    "# Load image\n" +
-                    "image = imread(\"" + filename.replace("\\", "/") + "\")\n\n" +
-
-                    "# Push " + source.getTitle() + " to GPU memory\n" +
-                    makeImageID(source) + " = cle.push(image)\n";
-        }
+                "# Push " + source.getTitle() + " to GPU memory\n" +
+                makeImageID(source) + " = cle.push(image)\n";
 
         program = program.replace("\n", "\n" + line_start );
         return program;
@@ -69,7 +64,7 @@ public class PyclesperantoGenerator implements ScriptGenerator {
 
         String[] image1s = makeImageIDs(plugin);
         String image2 = makeImageID(plugin.getTarget());
-        String program = "# " + AssistantUtilities.niceName(plugin.getName()) + "\n";
+        String program = "\n# " + AssistantUtilities.niceName(plugin.getName()) + "\n";
         //image1 + " = \"" + plugin.getSource().getTitle() + "\";\n" +
 
         program = program +
@@ -93,11 +88,11 @@ public class PyclesperantoGenerator implements ScriptGenerator {
             }
 
             program = program +
-                    "# show result\n\n" +
+                    "# show result\n" +
                     "viewer.add_image(cle.pull(" + image2 + "), scale=(" + scale + "))\n\n";
         } else {
             program = program +
-                    "# show result\n\n" +
+                    "# show result\n" +
                     "io.imshow(" + image2 + ")\n" +
                     "io.show()\n\n";
         }
@@ -128,7 +123,9 @@ public class PyclesperantoGenerator implements ScriptGenerator {
                 "# Furthermore, activate the scripting language Te Oki in Fijis script editor to run this script.\n\n" +
                 "# Stay tuned and check out http://clesperanto.net to learn more." +
                 "\n\n" +
-                "import pyclesperanto_prototype as cle\n";
+                "import pyclesperanto_prototype as cle\n" +
+                "from tifffile import imread\n\n";
+
         if (use_napari) {
             line_start = "    ";
             header = header +

@@ -1,5 +1,6 @@
 package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 
+import ij.ImagePlus;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 
 public class MatlabGenerator extends JythonGenerator {
@@ -10,8 +11,8 @@ public class MatlabGenerator extends JythonGenerator {
     }
 
     @Override
-    public String push(AssistantGUIPlugin plugin) {
-        return pyToMatlab(super.push(plugin));
+    public String push(ImagePlus source) {
+        return pyToMatlab(super.push(source));
     }
 
     @Override
@@ -20,8 +21,13 @@ public class MatlabGenerator extends JythonGenerator {
     }
 
     @Override
+    public String finish() {
+        return pyToMatlab(super.finish());
+    }
+
+    @Override
     public String fileEnding() {
-        return ".m";
+        return ".m.ijm";
     }
 
     @Override

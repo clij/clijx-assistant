@@ -12,11 +12,10 @@ public class GroovyGenerator extends JavaScriptGenerator {
         return  "// To make this script run in Fiji, please activate \n" +
                 "// the clij and clij2 update sites in your Fiji \n" +
                 "// installation. Read more: https://clij.github.io\n\n" +
-                "\n\n" +
                 "import ij.IJ;\n" +
                 "import ij.WindowManager;\n" +
                 "import net.haesleinhuepf.clijx.CLIJx;\n\n" +
                 "// Init GPU\n" +
-                "clijx = CLIJx.getInstance();\n";
+                "clijx = CLIJx.getInstance();\n\n";
     }
 }

@@ -7,9 +7,7 @@ import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 public class CluPathGroovyGenerator extends GroovyGenerator {
 
     @Override
-    public String push(AssistantGUIPlugin plugin) {
-
-        ImagePlus source = plugin.getSource(0);
+    public String push(ImagePlus source) {
         String image1 = makeImageID(source);
 
         return "// Read image and convert it to ImageJ\n" +

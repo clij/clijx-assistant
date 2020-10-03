@@ -10,20 +10,11 @@ import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 public class CLIJPyGenerator extends JythonGenerator {
 
     @Override
-    public String push(AssistantGUIPlugin plugin) {
+    public String push(ImagePlus source) {
+        String image1 = makeImageID(source);
+        String filename = getFilename(source);
 
-        String output = "" +
-            "from skimage import io\n" +
-            "import numpy as np\n";
-
-
-        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
-            ImagePlus source = plugin.getSource(s);
-            String image1 = makeImageID(source);
-            String filename = getFilename(source);
-
-
-            output = output +
+        String output =
                     "# Push " + source.getTitle() + " to GPU memory\n" +
                     "# load image data\n" +
                     "image = io.imread(\"" + filename.replace("\\", "/") + "\")\n" +
@@ -34,7 +25,6 @@ public class CLIJPyGenerator extends JythonGenerator {
                     "\n" +
                     "# push the image to the GPU\n" +
                     image1 + " = clijx.push(ij_img)\n\n";
-        }
         return output;
     }
 
@@ -44,10 +34,10 @@ public class CLIJPyGenerator extends JythonGenerator {
 
         String program = "";
         program = program + comment("consider calling these methods to retrieve the image");
-        program = program + comment("result_ij = clijx.pull(" + image1 + ")");
+        program = program + comment("result_ij = clijx.pull(" + image1 + ");");
         program = program + comment("result_np = ij.py.rai_to_numpy(result_ij);");
         program = program + comment("consider calling these methods to save the image");
-        program = program + comment("clijx.saveAsTif(" + image1 + ", 'filename.tif')");
+        program = program + comment("clijx.saveAsTif(" + image1 + ", 'filename.tif');") + "\n";
 
         return program;
 
@@ -122,6 +112,8 @@ public class CLIJPyGenerator extends JythonGenerator {
 
                 "# init pyimagej to get access to jar files\n" +
                 "import imagej\n" +
+                "from skimage import io\n" +
+                "import numpy as np\n" +
                 "ij = imagej.init('" + IJ.getDirectory("imagej").replace("\\", "/") + "')\n" +
                 "\n" +
                 "# init clijpy to get access to the GPU\n" +

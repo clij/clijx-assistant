@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 public interface ScriptGenerator {
 
-    String push(AssistantGUIPlugin source);
+    String push(ImagePlus source);
     String pull(AssistantGUIPlugin result);
 
     String comment(String name);

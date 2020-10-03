@@ -12,19 +12,13 @@ public class IcyJavaScriptGenerator extends JythonGenerator {
     }
 
     @Override
-    public String push(AssistantGUIPlugin plugin) {
-        String program = "";
+    public String push(ImagePlus source) {
+        String program =
+                "// get current image from Icy\n" +
+                "sequence = getSequence();\n" +
+                "// push image to GPU\n" +
+                makeImageID(source) + " = clijx.pushSequence(sequence);\n\n";
 
-        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
-            ImagePlus source = plugin.getSource(s);
-
-            program = program +
-                    "// get current image from Icy\n" +
-                    "sequence = getSequence();\n" +
-                    "\n" +
-                    "// push image to GPU\n" +
-                    makeImageID(source) + " = clijx.pushSequence(sequence);";
-        }
         return program;
     }
 
@@ -42,12 +36,11 @@ public class IcyJavaScriptGenerator extends JythonGenerator {
     public String header() {
         return  "// To make this script run in Icy Bioimaging, please install the clIcy plugin in Icy first. \n" +
                 "// Read more: http://icy.bioimageanalysis.org/plugin/clicy-blocks/\n\n" +
-                "\n\n" +
                 "importClass(Packages.icy.sequence.Sequence);\n" +
                 "importClass(net.haesleinhuepf.clicy.CLICY);\n" +
-                "importClass(Packages.icy.main.Icy);\n" +
+                "importClass(Packages.icy.main.Icy);\n\n" +
                 "// Init GPU\n" +
-                "clijx = CLICY.getInstance();\n";
+                "clijx = CLICY.getInstance();\n\n";
     }
 
 
@@ -57,6 +50,8 @@ public class IcyJavaScriptGenerator extends JythonGenerator {
     }
 
     protected String pyToJs(String text) {
-        return text.replace("#", "//").replace(")\n", ");\n");
+        return text.
+                replace("#", "//").
+                replace(")\n", ");\n");
     }
 }

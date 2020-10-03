@@ -9,27 +9,24 @@ import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 public class JythonGenerator implements ScriptGenerator {
 
     @Override
-    public String push(AssistantGUIPlugin plugin) {
+    public String push(ImagePlus source) {
         String output = "";
 
-
-        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
-            ImagePlus source = plugin.getSource(s);
-            String filename = getFilename(source);
+        String filename = getFilename(source);
 
 
-            if (filename != null && filename.length() > 0) {
-                output = output + "" +
-                        "# Load image from disc \n" +
-                        "imp = IJ.open(\"" + filename + "\")\n" +
-                        "# Push " + source.getTitle() + " to GPU memory\n" +
-                        makeImageID(source) + " = clijx.push(imp)\n";
-            } else {
-                output = output +
-                        "# Push " + source.getTitle() + " to GPU memory\n" +
-                        makeImageID(source) + " = clijx.push(WindowManager.getImage(\"" + source.getTitle() + "\"))\n";
-            }
+        if (filename != null && filename.length() > 0) {
+            output = output + "" +
+                    "# Load image from disc \n" +
+                    "imp = IJ.open(\"" + filename + "\")\n" +
+                    "# Push " + source.getTitle() + " to GPU memory\n" +
+                    makeImageID(source) + " = clijx.push(imp);\n\n";
+        } else {
+            output = output +
+                    "# Push " + source.getTitle() + " to GPU memory\n" +
+                    makeImageID(source) + " = clijx.push(WindowManager.getImage(\"" + source.getTitle() + "\"));\n\n";
         }
+
         return output;
     }
 
@@ -38,8 +35,8 @@ public class JythonGenerator implements ScriptGenerator {
         String image1 = makeImageID(result.getTarget());
 
         return "" +
-                "result = clijx.pull(" + image1 + "))\n" +
-                "result.show()";
+                "result = clijx.pull(" + image1 + ");\n" +
+                "result.show();\n\n";
     }
 
     @Override
@@ -77,17 +74,17 @@ public class JythonGenerator implements ScriptGenerator {
         ) {
             if ( target.getBitDepth() == source.getBitDepth()) {
                 program = program +
-                        image2 + " = clijx.create(" + image1s[0] + ")\n";
+                        image2 + " = clijx.create(" + image1s[0] + ");\n";
             } else {
                 program = program +
-                        image2 + " = clijx.create(" + image1s[0] + ".getDimensions(), clijx." + bitDepthToType(target.getBitDepth()) + " )\n";
+                        image2 + " = clijx.create(" + image1s[0] + ".getDimensions(), clijx." + bitDepthToType(target.getBitDepth()) + " );\n";
             }
         }else if (target.getNSlices() > 1) {
             program = program +
-                image2 + " = clijx.create([" + target.getWidth() + ", " + target.getHeight() + ", "  + target.getNSlices() + "], clijx." + bitDepthToType(target.getBitDepth()) + ")\n";
+                image2 + " = clijx.create([" + target.getWidth() + ", " + target.getHeight() + ", "  + target.getNSlices() + "], clijx." + bitDepthToType(target.getBitDepth()) + ");\n";
         } else {
             program = program +
-                    image2 + " = clijx.create([" + target.getWidth() + ", " + target.getHeight() + "], clijx." + bitDepthToType(target.getBitDepth()) + ")\n";
+                    image2 + " = clijx.create([" + target.getWidth() + ", " + target.getHeight() + "], clijx." + bitDepthToType(target.getBitDepth()) + ");\n";
         }
         String call = "";
 
@@ -96,9 +93,9 @@ public class JythonGenerator implements ScriptGenerator {
             String temp[] = parameters[i].trim().split(" ");
             String name = temp[temp.length - 1];
             call = call + ", " + name;
-            program = program + name + " = " + objectToString(plugin.getArgs()[i]) + "  \n";
+            program = program + name + " = " + objectToString(plugin.getArgs()[i]) + ";\n";
         }
-        program = program + methodName + "(" + namesToCommaSeparated(image1s) + ", " + image2 + call + ")\n";
+        program = program + methodName + "(" + namesToCommaSeparated(image1s) + ", " + image2 + call + ");\n";
 
         //program = program + comment("consider removing this line if you don't need to see that image");
         //program = program + "clijx.show(" + image2 + ", \"" + plugin.getTarget().getTitle() + "\")\n";
@@ -129,18 +126,17 @@ public class JythonGenerator implements ScriptGenerator {
         return  "# To make this script run in Fiji, please activate \n" +
                 "# the clij and clij2 update sites in your Fiji \n" +
                 "# installation. Read more: https://clij.github.io\n\n" +
-                "\n\n" +
-                "from ij import IJ\n" +
-                "from ij import WindowManager\n" +
-                "from net.haesleinhuepf.clijx import CLIJx\n\n" +
+                "from ij import IJ;\n" +
+                "from ij import WindowManager;\n" +
+                "from net.haesleinhuepf.clijx import CLIJx;\n\n" +
                 "# Init GPU\n" +
-                "clijx = CLIJx.getInstance()\n" +
-                "clijx.clear()\n\n";
+                "clijx = CLIJx.getInstance();\n" +
+                "clijx.clear();\n\n";
     }
 
     @Override
     public String finish() {
         return "# clean up memory \n" +
-                "clijx.clear()\n\n";
+                "clijx.clear();\n\n";
     }
 }

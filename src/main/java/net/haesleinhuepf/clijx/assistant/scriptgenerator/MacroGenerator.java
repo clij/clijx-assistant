@@ -9,27 +9,24 @@ import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 public class MacroGenerator implements ScriptGenerator {
 
     @Override
-    public String push(AssistantGUIPlugin plugin) {
+    public String push(ImagePlus source) {
         String output = "";
 
+        String filename = getFilename(source);
+        String imageID = makeImageID(source);
 
-        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
-            ImagePlus source = plugin.getSource(s);
-            String filename = getFilename(source);
-            String imageID = makeImageID(source);
-
-            if (filename != null && filename.length() > 0) {
-                output = output + "" +
-                        "// Load image from disc \n" +
-                        "open(\"" + filename + "\");\n" +
-                        imageID + " = getTitle();\n" +
-                        "Ext.CLIJ2_push(" + imageID + ");\n";
-            } else {
-                output = output + "" +
-                        imageID + " = \"" + source.getTitle() + "\";\n" +
-                        "Ext.CLIJ2_push(" + imageID + ");\n";
-            }
+        if (filename != null && filename.length() > 0) {
+            output = output + "" +
+                    "// Load image from disc \n" +
+                    "open(\"" + filename + "\");\n" +
+                    imageID + " = getTitle();\n" +
+                    "Ext.CLIJ2_push(" + imageID + ");\n";
+        } else {
+            output = output + "" +
+                    imageID + " = \"" + source.getTitle() + "\";\n" +
+                    "Ext.CLIJ2_push(" + imageID + ");\n";
         }
+
         return output;
     }
 
@@ -60,7 +57,7 @@ public class MacroGenerator implements ScriptGenerator {
 
         for (int s = 0; s < plugin.getNumberOfSources(); s++) {
             program = program +
-                    "" + image1s[s] + ": \"" + plugin.getSource(s).getTitle() + "\"\n\n";
+                    "// " + image1s[s] + " = \"" + plugin.getSource(s).getTitle() + "\";\n";
         }
         program = program +
                 "// " + image2 + " = \"" + plugin.getTarget().getTitle() + "\";\n";

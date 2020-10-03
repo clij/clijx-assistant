@@ -11,26 +11,24 @@ public class ClicGenerator implements ScriptGenerator {
     int call_count = 0;
 
     @Override
-    public String push(AssistantGUIPlugin plugin) {
+    public String push(ImagePlus imp) {
         String program = "";
 
-        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
-            ImagePlus imp = plugin.getSource(s);
-            String image1 = makeImageID(imp);
 
-            program = program +
-                    "// Push image \n";
+        String image1 = makeImageID(imp);
+        program = program +
+                "// Push image \n";
 
-            if (imp.getNSlices() > 1) {
-                program = program +
-                        "Image<" + bitDepthToType(imp.getBitDepth()) + "> raw_image (raw_data, " + imp.getWidth() + ", " + imp.getHeight() + ", " + imp.getNSlices() + ", \"" + bitDepthToType(imp.getBitDepth()) + "\"); \n";
-            } else {
-                program = program +
-                        "Image<" + bitDepthToType(imp.getBitDepth()) + "> raw_image (raw_data, " + imp.getWidth() + ", " + imp.getHeight() + ", \"" + bitDepthToType(imp.getBitDepth()) + "\"); \n";
-            }
+        if (imp.getNSlices() > 1) {
             program = program +
-                    "cle::Buffer " + image1 + " = gpu.Push<" + bitDepthToType(imp.getBitDepth()) + ">(raw_image); \n\n";
+                    "Image<" + bitDepthToType(imp.getBitDepth()) + "> raw_image (raw_data, " + imp.getWidth() + ", " + imp.getHeight() + ", " + imp.getNSlices() + ", \"" + bitDepthToType(imp.getBitDepth()) + "\"); \n";
+        } else {
+            program = program +
+                    "Image<" + bitDepthToType(imp.getBitDepth()) + "> raw_image (raw_data, " + imp.getWidth() + ", " + imp.getHeight() + ", \"" + bitDepthToType(imp.getBitDepth()) + "\"); \n";
         }
+        program = program +
+                "cle::Buffer " + image1 + " = gpu.Push<" + bitDepthToType(imp.getBitDepth()) + ">(raw_image); \n\n";
+
         return program;
     }
 

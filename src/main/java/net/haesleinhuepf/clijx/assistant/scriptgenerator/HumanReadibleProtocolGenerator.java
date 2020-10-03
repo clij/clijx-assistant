@@ -14,19 +14,12 @@ public class HumanReadibleProtocolGenerator implements ScriptGenerator {
     Random random = new Random();
 
     @Override
-    public String push(AssistantGUIPlugin plugin) {
-        ImagePlus source = plugin.getSource(0);
+    public String push(ImagePlus source) {
         String image1 = makeImageID(source);
 
         String output =
-                "We start by processing the image \"" + source.getTitle() + "\" for simplicity, we call it " + image1 + ".\n";
-        for (int s = 1; s < plugin.getNumberOfSources(); s++) {
-            source = plugin.getSource(s);
-            image1 = makeImageID(source);
+                    "We work with the image \"" + source.getTitle() + "\" for simplicity, we call it " + image1 + ".\n";
 
-            output = output +
-                    "Furthermore, we work with the image \"" + source.getTitle() + "\" for simplicity, we call it " + image1 + ".\n";
-        }
         return output;
     }
 

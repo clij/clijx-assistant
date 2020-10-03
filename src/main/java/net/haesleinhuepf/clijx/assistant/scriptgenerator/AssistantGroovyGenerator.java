@@ -9,27 +9,26 @@ import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 public class AssistantGroovyGenerator implements ScriptGenerator {
 
     @Override
-    public String push(AssistantGUIPlugin plugin) {
+    public String push(ImagePlus source) {
         String output = "";
-        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
-            ImagePlus source = plugin.getSource(s);
-            String image1 = makeImageID(source);
 
-            String filename = "";
-            if (source.getOriginalFileInfo() != null) {
-                filename = source.getOriginalFileInfo().directory + source.getOriginalFileInfo().fileName;
-            } else if (source.getFileInfo() != null) {
-                filename = source.getFileInfo().directory + source.getFileInfo().fileName;
-            }
+        String image1 = makeImageID(source);
 
-
-
-            output = output +
-                    "// Load image from disc \n" +
-                    image1 + " = IJ.openImage(\"" + filename.replace("\\", "/") + "\");\n" +
-                    image1 + ".setTitle(\"" + source.getTitle() + "\");\n" +
-                    image1 + ".show();\n";
+        String filename = "";
+        if (source.getOriginalFileInfo() != null) {
+            filename = source.getOriginalFileInfo().directory + source.getOriginalFileInfo().fileName;
+        } else if (source.getFileInfo() != null) {
+            filename = source.getFileInfo().directory + source.getFileInfo().fileName;
         }
+
+
+
+        output = output +
+                "// Load image from disc \n" +
+                image1 + " = IJ.openImage(\"" + filename.replace("\\", "/") + "\");\n" +
+                image1 + ".setTitle(\"" + source.getTitle() + "\");\n" +
+                image1 + ".show();\n";
+
         return output;
     }
 
@@ -58,7 +57,7 @@ public class AssistantGroovyGenerator implements ScriptGenerator {
         } else {
             output.append("node = new " + klass.getName() + "();\n");
         }
-        output.append(namesToCommaSeparated(makeImageIDs(plugin)));
+        output.append("node.setSources(" + namesToCommaSeparated(makeImageIDs(plugin)) + ");\n");
         output.append("node.run(\"\");\n");
 
         Object[] args = plugin.getArgs();
@@ -79,6 +78,7 @@ public class AssistantGroovyGenerator implements ScriptGenerator {
             output.append("window.setLocation(" + target.getWindow().getX() + ", " + target.getWindow().getY() + ");\n");
             output.append("window.setSize(" + target.getWindow().getWidth() + ", " + target.getWindow().getHeight() + ");\n");
         }
+        output.append("// Target: " + makeImageID(target) + ": " + target.getTitle() + "\n");
 
         output.append("\n");
         return output.toString();

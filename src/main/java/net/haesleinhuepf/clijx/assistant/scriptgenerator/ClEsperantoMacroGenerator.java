@@ -10,23 +10,21 @@ import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 public class ClEsperantoMacroGenerator implements ScriptGenerator {
 
     @Override
-    public String push(AssistantGUIPlugin plugin) {
+    public String push(ImagePlus source) {
         String output = "";
-        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
-            ImagePlus source = plugin.getSource(s);
-            String imageID = makeImageID(source);
-            //makeImageID
-            output = output +
-                    imageID + " = \"" + source.getTitle() + "\";\n" +
-                    "push(" + imageID + ");\n\n";
-        }
+        String imageID = makeImageID(source);
+        //makeImageID
+        output = output +
+                imageID + " = \"" + source.getTitle() + "\";\n" +
+                "push(" + imageID + ");\n\n";
+
         return output;
     }
 
     @Override
     public String pull(AssistantGUIPlugin result) {
         String imageID = makeImageID(result.getTarget());
-        return "pull(" + imageID + ");\n";
+        return "pull(" + imageID + ");\n\n";
     }
 
     @Override
@@ -50,7 +48,7 @@ public class ClEsperantoMacroGenerator implements ScriptGenerator {
 
         for (int s = 0; s < plugin.getNumberOfSources(); s++) {
             program = program +
-                    "" + image1s[s] + ": \"" + plugin.getSource(s).getTitle() + "\"\n\n";
+                    image1s[s] + " = \"" + plugin.getSource(s).getTitle() + "\";\n";
         }
         program = program +
                 image2 + " = \"" + plugin.getTarget().getTitle() + "\";\n";
