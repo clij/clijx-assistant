@@ -128,7 +128,7 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
         return gd;
     }
 
-
+/*
     @Override
     public void refresh() {
         CLIJx clijx = CLIJx.getInstance();
@@ -151,8 +151,8 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
             result = createOutputBufferFromSource(pushed[0]);
         }
         //args[1] = result[0]; // todo: potentially store the whole array here
-        args = new Object[]{image, labelmap, result[0], features, filename};
-        plugin.setArgs(args);
+        //args = new Object[]{image, labelmap, result[0], features, filename};
+        //plugin.setArgs(args);
 
         executeCL(pushed, new ClearCLBuffer[][]{result});
 
@@ -162,7 +162,7 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
         my_target.setTitle(AssistantUtilities.niceName(this.getName()) + " of " + my_sources[0].getTitle());
         enhanceContrast();
 
-    }
+    }*/
 
     private void readDialog() {
         if (dialog != null) {
