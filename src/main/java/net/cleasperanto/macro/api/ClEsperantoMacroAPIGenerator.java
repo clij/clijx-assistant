@@ -165,6 +165,8 @@ public class ClEsperantoMacroAPIGenerator {
         result = result.replace("Simple I T K", "SimpleITK");
         result = result.replace("CL IJ", "CLIJ");
         result = result.replace("R O I ", "ROI");
+        result = result.replace("F F T", "FFT");
+        result = result.replace("X Or", "XOr");
         return result.trim();
     }
 
