@@ -353,7 +353,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         for (int i = 0; i < whole_input.length; i ++) {
             whole[i] = whole_input[i];
         }
-        for (int i = 0; i < whole_input.length; i ++) {
+        for (int i = 0; i < whole_output.length; i ++) {
             whole[i + whole_input.length] = whole_output[i];
         }
         executeCL(whole);
@@ -379,6 +379,9 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                     args[i] = whole[i][0];
                 }
             } else {
+                for (int i = 0; i < whole.length; i++) {
+                    args[i] = whole[i][0];
+                }
 
                 for (Object object: args) {
                     System.out.println("O: " + object);
