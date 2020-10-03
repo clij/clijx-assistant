@@ -65,6 +65,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
     boolean auto_contrast = true;
     static boolean auto_position = true;
+    public static boolean show_connections = true;
 
     public AbstractAssistantGUIPlugin(CLIJMacroPlugin plugin) {
         setCLIJMacroPlugin(plugin);
@@ -807,6 +808,12 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             auto_position = !auto_position;
         });
         menu.add(auto_position_item);
+
+        MenuItem show_connections_item = new MenuItem("Visualize connections: " + (show_connections?"ON":"OFF"));
+        show_connections_item.addActionListener((a) -> {
+            show_connections = !show_connections;
+        });
+        menu.add(show_connections_item);
 
         addMenuAction(menu, "Duplicate and go ahead with ImageJ", (a) -> {
             new Duplicator().run(my_target, 1, my_target.getNChannels(), 1, my_target.getNSlices(),  1, my_target.getNFrames()).show();

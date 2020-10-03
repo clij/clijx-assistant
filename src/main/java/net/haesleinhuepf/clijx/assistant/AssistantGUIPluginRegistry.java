@@ -4,9 +4,15 @@ import ij.ImagePlus;
 import ij.gui.ImageWindow;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
+import net.imglib2.converter.AbstractConvertedRandomAccess;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.CubicCurve2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.RoundRectangle2D;
 import java.util.*;
+import java.util.Timer;
 
 class AssistantGUIPluginRegistry {
     Timer heartbeat = null;
@@ -45,7 +51,120 @@ class AssistantGUIPluginRegistry {
         }
     }
 
-    private void highlightCurrent() {
+    ArrayList<Frame> connection_tiles = new ArrayList<Frame>();
+    long former_time = 0;
+    long former_duration = 0;
+    private synchronized void highlightCurrent() {
+
+        try{
+            if (!AbstractAssistantGUIPlugin.show_connections) {
+                for (int i = this.connection_tiles.size(); i < this.connection_tiles.size(); i++) {
+                    Frame tile = this.connection_tiles.get(i);
+                    if (tile.isVisible()) {
+                        tile.setVisible(false);
+                    }
+                    tile.dispose();
+                }
+                this.connection_tiles.clear();
+                return;
+            }
+
+            ArrayList<Frame> connection_tiles = new ArrayList<Frame>();
+            long time = System.currentTimeMillis();
+            if (time - former_time < former_duration || time - former_time < 200 ) {
+                System.out.println("Leave because time");
+                return;
+            }
+            former_time = time;
+
+            long start_time = System.currentTimeMillis();
+            for (AssistantGUIPlugin plugin : registeredPlugins) {
+                ImagePlus target = plugin.getTarget();
+                if (target == null || target.getWindow() == null) {
+                    continue;
+                }
+                for (int s = 0; s < plugin.getNumberOfSources(); s++) {
+                    ImagePlus source = plugin.getSource(s);
+                    if (source == null || source.getWindow() == null) {
+                        continue;
+                    }
+
+                    Window source_window = source.getWindow();
+                    ImageWindow target_window = target.getWindow();
+
+                    int startX = source_window.getX() + source_window.getWidth() / 2;
+                    int startY = source_window.getY() + source_window.getHeight() / 2;
+                    int endX = target_window.getX() + target_window.getWidth() / 2;
+                    int endY = target_window.getY() + target_window.getHeight() / 2;
+
+                    int distance = (int) Math.sqrt(
+                            Math.pow(startX - endX, 2) +
+                            Math.pow(startY - endY, 2)
+                    );
+                    int tile_size = 10;
+                    int step_size = 12;
+                    int num_steps = distance / step_size;
+                    if (num_steps == 0) {
+                        continue;
+                    }
+                    double step_x = (endX - startX) / num_steps;
+                    double step_y = (endY - startY) / num_steps;
+
+                    double x = startX;
+                    double y = startY;
+
+
+                    for (int i = 0; i < num_steps; i++) {
+                        int color = 128 - 50 + (Math.abs(Math.abs((int)(time / 100 + i) % 100)));
+                        Color status = target_window.getBackground();
+
+
+                        if (! within(x, y, source_window) && ! within(x, y, target_window)) {
+                            Frame tile;
+                            if (this.connection_tiles.size() > connection_tiles.size()) {
+                                tile = this.connection_tiles.get(connection_tiles.size());
+                            } else {
+                                tile = new Frame();
+                                tile.setType(Window.Type.UTILITY);
+                            }
+                            tile.setLocation((int)(x - tile_size / 2), (int)(y - tile_size / 2));
+                            if (!tile.isUndecorated()) {
+                                tile.setUndecorated(true);
+                            }
+                            if (tile.getWidth() != tile_size || tile.getHeight() != tile_size) {
+                                tile.setSize(tile_size, tile_size);
+                            }
+                            //tile.setShape(new Ellipse2D.Float((int)(x - tile_size / 2), (int)(y - tile_size / 2), tile_size, tile_size));
+                            // System.out.println(color);
+                            tile.setBackground(new Color(
+                                    status.getRed() == 128?color:status.getRed(),
+                                    status.getGreen() == 128?color:status.getGreen(),
+                                    status.getBlue() == 128?color:status.getBlue()));
+                            if (!tile.isVisible()) {
+                                tile.setVisible(true);
+                            }
+                            connection_tiles.add(tile);
+                        }
+                        x += step_x;
+                        y += step_y;
+                    }
+                }
+            }
+
+
+            for (int i = connection_tiles.size(); i < this.connection_tiles.size(); i++) {
+                Frame tile = this.connection_tiles.get(i);
+                if (tile.isVisible()) {
+                    tile.setVisible(false);
+                }
+                connection_tiles.add(tile);
+                //this.connection_tiles.get(i).dispose();
+            }
+            this.connection_tiles = connection_tiles;
+
+            former_duration = System.currentTimeMillis() - start_time;
+            System.out.println("duration: " + former_duration);
+        } catch (ConcurrentModificationException e) {}
         /*
         try {
             for (AssistantGUIPlugin plugin : registeredPlugins) {
@@ -72,7 +191,16 @@ class AssistantGUIPluginRegistry {
             }
         } catch (ConcurrentModificationException e) {}
         */
+
+
     }
+
+    private boolean within(double x, double y, Window source_window) {
+        return
+                x > source_window.getX() && x < source_window.getX() + source_window.getWidth() &&
+                y > source_window.getY() && y < source_window.getY() + source_window.getHeight();
+    }
+
 
     private void setColor(ImagePlus current, Color color) {
         if (current != null) {
