@@ -245,7 +245,7 @@ public class AssistantUtilities {
         //blocklist.add(net.haesleinhuepf.clij2.plugins.Maximum3DBox.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.Scale3D.class);
         //blocklist.add(net.haesleinhuepf.clijx.plugins.LaplacianOfGaussian3D
-        blocklist.add(net.haesleinhuepf.clij2.plugins.ErodeBox.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.ErodeBox.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.MeanYProjection.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.MedianSliceBySliceSphere.class);
         blocklist.add(net.haesleinhuepf.clijx.plugins.LFRecon.class);
@@ -357,7 +357,7 @@ public class AssistantUtilities {
         blocklist.add(net.haesleinhuepf.clij2.plugins.GradientY.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.GradientZ.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.GradientX.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMaxima3DBox.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMaxima3DBox.class);
         blocklist.add(net.haesleinhuepf.clijx.tilor.implementations.TopHatSphere.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumYProjection.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.RotateClockwise
@@ -373,7 +373,7 @@ public class AssistantUtilities {
         blocklist.add(net.haesleinhuepf.clijx.plugins.TopHatOctagon.class);
         blocklist.add(net.haesleinhuepf.clij2.plugins.Mean2DSphere.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.RotateCounterClockwise
-        blocklist.add(net.haesleinhuepf.clij2.plugins.DilateBox.class);
+        //blocklist.add(net.haesleinhuepf.clij2.plugins.DilateBox.class);
         //blocklist.add(net.haesleinhuepf.clijx.plugins.LaplaceSphere
         //blocklist.add(net.haesleinhuepf.clij2.plugins.VoronoiOctagon.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.UndefinedToZero.class);
