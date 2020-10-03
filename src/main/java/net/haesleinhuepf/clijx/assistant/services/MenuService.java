@@ -240,6 +240,7 @@ public class MenuService {
                 "Label>Processing",
                 "Label>Measurement",
                 "Label>All",
+                "SimpleITK",
                 ALL_STRING
         };
     }
