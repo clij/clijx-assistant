@@ -57,7 +57,7 @@ public class AssistantGUIStartingPoint extends AbstractAssistantGUIPlugin {
         SuggestionService.getInstance();
     }
 
-    ClearCLBuffer[] result = null;
+    //ClearCLBuffer[] result = null;
 
     int former_refreshed_t = -1;
     public synchronized void refresh() {
