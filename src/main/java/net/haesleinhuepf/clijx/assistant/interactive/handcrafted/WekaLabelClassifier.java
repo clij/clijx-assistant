@@ -223,7 +223,7 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
             clij2.pullToResultsTable(featureImage, table);
             featureImage.close();
         }
-        input_image.close();
+        //input_image.close();
 
         String model_filename = ((TextField) dialog.getStringFields().get(1)).getText();
 
