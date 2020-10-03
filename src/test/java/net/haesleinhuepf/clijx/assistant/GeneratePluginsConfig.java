@@ -5,6 +5,7 @@ import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPluginService;
 import net.haesleinhuepf.clijx.assistant.services.MenuService;
+import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -34,6 +35,10 @@ public class GeneratePluginsConfig {
             category_count++;
             for (AssistantGUIPlugin plugin : MenuService.getInstance().getPluginsInCategory(category)) {
                 supported_plugins.add(plugin.getCLIJMacroPlugin());
+                if (category.compareTo("All") == 0 && AssistantUtilities.isIncubatablePlugin(plugin.getCLIJMacroPlugin())) {
+                    System.out.println("blocklist.add(" + plugin.getCLIJMacroPlugin().getClass().toString().replace("class ", "") + ".class);");
+                }
+
                 String niceName = niceName(plugin.getName());
                 String clijName = plugin.getCLIJMacroPlugin().getName();
 
