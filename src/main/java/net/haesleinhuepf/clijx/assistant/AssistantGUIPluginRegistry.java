@@ -40,7 +40,7 @@ class AssistantGUIPluginRegistry {
             heartbeat.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    highlightCurrent();
+                    highlightConnections();
                     regenerate();
                 }
             }, delay, delay);
@@ -54,18 +54,23 @@ class AssistantGUIPluginRegistry {
     ArrayList<Frame> connection_tiles = new ArrayList<Frame>();
     long former_time = 0;
     long former_duration = 0;
-    private synchronized void highlightCurrent() {
+
+    private synchronized void removeConnections() {
+        for (int i = this.connection_tiles.size(); i < this.connection_tiles.size(); i++) {
+            Frame tile = this.connection_tiles.get(i);
+            if (tile.isVisible()) {
+                tile.setVisible(false);
+            }
+            tile.dispose();
+        }
+        this.connection_tiles.clear();
+    }
+
+    private synchronized void highlightConnections() {
 
         try{
             if (!AbstractAssistantGUIPlugin.show_connections) {
-                for (int i = this.connection_tiles.size(); i < this.connection_tiles.size(); i++) {
-                    Frame tile = this.connection_tiles.get(i);
-                    if (tile.isVisible()) {
-                        tile.setVisible(false);
-                    }
-                    tile.dispose();
-                }
-                this.connection_tiles.clear();
+                removeConnections();
                 return;
             }
 
@@ -115,7 +120,7 @@ class AssistantGUIPluginRegistry {
 
 
                     for (int i = 0; i < num_steps; i++) {
-                        int color = 128 - 50 + (Math.abs(Math.abs((int)(time / 100 + i) % 100)));
+                        int color = 128 - 100 + (Math.abs(Math.abs((int)(time / 100 - i) % 10 * 20)));
                         Color status = target_window.getBackground();
 
 
@@ -215,8 +220,10 @@ class AssistantGUIPluginRegistry {
     public void unregister(AssistantGUIPlugin plugin) {
         registeredPlugins.remove(plugin);
         if (registeredPlugins.size() == 0) {
+
             heartbeat.cancel();
             heartbeat = null;
+            removeConnections();
         }
     }
 
@@ -427,8 +434,16 @@ class AssistantGUIPluginRegistry {
     }
 */
     public AssistantGUIPlugin[] getPathToRoot(AssistantGUIPlugin leaf) {
-        AssistantGUIPlugin[] array = new AssistantGUIPlugin[registeredPlugins.size()];
-        registeredPlugins.toArray(array);
+        ArrayList<AssistantGUIPlugin> list = new ArrayList<>();
+        for (AssistantGUIPlugin plugin : registeredPlugins) {
+            list.add(plugin);
+            if (leaf == plugin) {
+                break;
+            }
+        }
+
+        AssistantGUIPlugin[] array = new AssistantGUIPlugin[list.size()];
+        list.toArray(array);
         return array;
     }
 /*
