@@ -180,18 +180,19 @@ public class AssistantUtilities {
             //System.out.println("D");
             return false;
         }
-        if (!parameterdefintions[1].startsWith("ByRef Image ")) {
-            // second parameters is no output image
+        if (!parameterdefintions[1].startsWith("ByRef Image ") && !parameterdefintions[1].startsWith("Image ")) {
+            // second parameters is no image
             //System.out.println("E");
             return false;
         }
+        /*
         if (parameterdefintions.length > 2) {
             if (parameterdefintions[2].startsWith("Image ") || parameterdefintions[2].startsWith("ByRef Image ")) {
                 // second parameters is no output image
                 //System.out.println("E");
                 return false;
             }
-        }
+        }*/
         if (clijMacroPlugin.getClass().getName().contains(".clij2wrappers.")) {
             return false;
         }
