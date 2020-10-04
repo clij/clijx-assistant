@@ -2,6 +2,7 @@ package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 
 import ij.IJ;
 import ij.ImagePlus;
+import ij.WindowManager;
 import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
@@ -9,8 +10,9 @@ import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 public class AssistantGroovyGenerator implements ScriptGenerator {
 
     @Override
-    public String push(AssistantGUIPlugin plugin) {
-        ImagePlus source = plugin.getSource();
+    public String push(ImagePlus source) {
+        String output = "";
+
         String image1 = makeImageID(source);
 
         String filename = "";
@@ -21,9 +23,14 @@ public class AssistantGroovyGenerator implements ScriptGenerator {
         }
 
 
-        return ""+
-                "// Load image from disc \n"+
-                "IJ.open(\"" + filename.replace("\\", "/") +  "\");\n";
+
+        output = output +
+                "// Load image from disc \n" +
+                image1 + " = IJ.openImage(\"" + filename.replace("\\", "/") + "\");\n" +
+                image1 + ".setTitle(\"" + source.getTitle() + "\");\n" +
+                image1 + ".show();\n";
+
+        return output;
     }
 
     @Override
@@ -51,6 +58,7 @@ public class AssistantGroovyGenerator implements ScriptGenerator {
         } else {
             output.append("node = new " + klass.getName() + "();\n");
         }
+        output.append("node.setSources(" + namesToCommaSeparated(makeImageIDs(plugin)) + ");\n");
         output.append("node.run(\"\");\n");
 
         Object[] args = plugin.getArgs();
@@ -71,6 +79,7 @@ public class AssistantGroovyGenerator implements ScriptGenerator {
             output.append("window.setLocation(" + target.getWindow().getX() + ", " + target.getWindow().getY() + ");\n");
             output.append("window.setSize(" + target.getWindow().getWidth() + ", " + target.getWindow().getHeight() + ");\n");
         }
+        output.append(makeImageID(target) + " = WindowManager.getImage(\"" + target.getTitle() + "\");\n");
 
         output.append("\n");
         return output.toString();

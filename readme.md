@@ -1,6 +1,7 @@
 # CLIJx-Assistant
 [CLIJx-Assistant](https://clij.github.io/assistant) is an intuitive user interface for building custom GPU-accelerated image processing workflows using [CLIJ2](https://clij.github.io) in [Fiji](https://fiji.sc). 
-It suggests what to do next, optimizes parameters automatically and generates scripts and human readable protocols to facilitate reproducing workflows. These generated scripts also run in other platforms such as Matlab, Icy, Python and QuPath.
+It visualizes workflows while building them, suggests what to do next and generates scripts and human readable protocols to facilitate reproducible bio-image analysis. 
+These generated scripts also run in other platforms such as Matlab, Icy, Python and QuPath.
 
 CLIJx-Assistant is under development and is subject to change. 
 Please treat everything with care.
@@ -8,7 +9,7 @@ Do not use it for routine research yet.
 Planned release is early 2021. 
 Stay tuned.
 
-![Image](images/teaser1.png)
+![Image](images/visualized_connections.gif)
 
 
 ## Overview
@@ -16,7 +17,6 @@ Stay tuned.
   * [Installation](https://clij.github.io/assistant/installation)
   * [Building workflows](https://clij.github.io/assistant/getting_started)
   * [Saving and loading workflows](https://clij.github.io/assistant/save_and_load)
-  * [Parameter optimization](https://clij.github.io/assistant/parameter_optimization)
   * [Undo parameter changes](https://clij.github.io/assistant/undo)
   * [Reference](https://clij.github.io/assistant/reference)
 

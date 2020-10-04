@@ -22,7 +22,7 @@ public class ExtractChannel extends AbstractAssistantGUIPlugin {
 
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
-        GenericDialog gd = new GenericDialog(AssistantUtilities.niceName(this.getClass().getSimpleName()));
+        GenericDialog gd = new GenericDialog(AssistantUtilities.niceNameWithoutDimShape(this.getClass().getSimpleName()));
         gd.addNumericField("Channel (0-indexed)", 0);
         addPlusMinusPanel(gd, "channel");
 
@@ -34,7 +34,7 @@ public class ExtractChannel extends AbstractAssistantGUIPlugin {
     ClearCLBuffer[] result = null;
     public synchronized void refresh()
     {
-        ClearCLBuffer[] pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
+        ClearCLBuffer[][] pushed = CLIJxVirtualStack.imagePlusesToBuffers(my_sources);
         int channel = 0;
         if (channel_number != null) {
             try {
@@ -64,15 +64,15 @@ public class ExtractChannel extends AbstractAssistantGUIPlugin {
         plugin.setArgs(args);
 
         if (result == null) {
-            result = createOutputBufferFromSource(new ClearCLBuffer[]{pushed[0]});
+            result = createOutputBufferFromSource(pushed[0]);
         }
         args[1] = result[0];
         plugin.executeCL();
-        cleanup(my_source, pushed);
+        cleanup(my_sources, pushed);
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle("Extracted channel " + my_source.getTitle());
-        my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
+        my_target.setTitle("Extracted channel " + my_sources[0].getTitle());
+        my_target.setDisplayRange(my_sources[0].getDisplayRangeMin(), my_sources[0].getDisplayRangeMax());
         my_target.updateAndDraw();
         enhanceContrast();
     }

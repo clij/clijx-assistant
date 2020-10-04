@@ -31,20 +31,17 @@ package net.haesleinhuepf.clijx.assistant.search;
 
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
+import net.haesleinhuepf.clij2.utilities.HasAuthor;
+import net.haesleinhuepf.clij2.utilities.HasLicense;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
-import org.scijava.MenuEntry;
-import org.scijava.MenuPath;
-import org.scijava.UIDetails;
-import org.scijava.input.Accelerator;
-import org.scijava.module.ModuleInfo;
 import org.scijava.search.SearchResult;
-import org.scijava.search.module.ModuleSearcher;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.niceName;
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.distributionName;
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.jarFromClass;
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.niceNameWithoutDimShape;
 
 public class AssistantPluginSearchResult implements SearchResult {
 
@@ -60,13 +57,23 @@ public class AssistantPluginSearchResult implements SearchResult {
 		if (clijplugin != null) {
 			if (clijplugin instanceof OffersDocumentation){
 				props.put("Description", ((OffersDocumentation) clijplugin).getDescription());
+				props.put("available_for", ((OffersDocumentation) clijplugin).getAvailableForDimensions());
+			}
+			props.put("parameters", clijplugin.getParameterHelpText());
+			if (clijplugin instanceof HasAuthor) {
+				props.put("Author", ((HasAuthor) clijplugin).getAuthorName());
+			}
+			props.put("jar", jarFromClass(clijplugin.getClass()));
+			props.put("class", clijplugin.getClass().toString());
+			if (clijplugin instanceof HasLicense) {
+				props.put("License", ((HasLicense) clijplugin).getLicense());
 			}
 		}
 	}
 
 	@Override
 	public String name() {
-		return niceName(plugin.getName());
+		return niceNameWithoutDimShape(plugin.getName()) + "(" + distributionName(plugin.getCLIJMacroPlugin().getClass()) + ")";
 	}
 
 	@Override

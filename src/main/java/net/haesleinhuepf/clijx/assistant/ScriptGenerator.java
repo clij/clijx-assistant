@@ -6,9 +6,11 @@ import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 
 import java.util.HashMap;
 
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.distributionName;
+
 public interface ScriptGenerator {
 
-    String push(AssistantGUIPlugin source);
+    String push(ImagePlus source);
     String pull(AssistantGUIPlugin result);
 
     String comment(String name);
@@ -28,6 +30,27 @@ public interface ScriptGenerator {
         return image_map.get(target);
     }
 
+    default String[] makeImageIDs(AssistantGUIPlugin plugin) {
+        String[] result = new String[plugin.getNumberOfSources()];
+        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
+            ImagePlus source = plugin.getSource(s);
+            result[s] = makeImageID(source);
+        }
+        return result;
+    }
+
+    default String namesToCommaSeparated(String[] names) {
+        String names_concat = "";
+        for (int i = 0; i < names.length; i++) {
+            if (i > 0) {
+                names_concat = names_concat + ", ";
+            }
+            names_concat = names_concat + names[i];
+        }
+        return names_concat;
+    }
+
+
     default String overview(AssistantGUIPlugin plugin) {
         return comment("Overview\n" + overview(plugin, 0));
     }
@@ -38,7 +61,7 @@ public interface ScriptGenerator {
         for (int i = 0; i < level; i++) {
             text.append("  ");
         }
-        text.append(" * " + AssistantUtilities.niceName(plugin.getName()) + " \n");
+        text.append(" * " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName()) + " (" + distributionName(plugin.getClass()) + ")" + " \n");
         for (AssistantGUIPlugin child : AssistantGUIPluginRegistry.getInstance().getFollowers(plugin)) {
             text.append(overview(child, level + 1));
         }
@@ -55,7 +78,7 @@ public interface ScriptGenerator {
     }
 
     default String pythonize(String methodName) {
-        return AssistantUtilities.niceName(methodName).trim()
+        return AssistantUtilities.niceNameWithoutDimShape(methodName).trim()
                 .toLowerCase()
                 .replace(" ", "_")
                 .replace("clij2_", "")

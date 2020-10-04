@@ -17,19 +17,16 @@ public class PyclesperantoGenerator implements ScriptGenerator {
     }
 
     @Override
-    public String push(AssistantGUIPlugin plugin) {
-        ImagePlus source = plugin.getSource();
+    public String push(ImagePlus source) {
+        String program = "\n";
         String filename = getFilename(source);
 
-        String program = "\n"+
-                "from tifffile import imread\n\n" +
-
+        program = program +
                 "# Load image\n" +
-                "image = imread(\"" + filename.replace("\\", "/") + "\")\n\n"+
+                "image = imread(\"" + filename.replace("\\", "/") + "\")\n\n" +
 
                 "# Push " + source.getTitle() + " to GPU memory\n" +
                 makeImageID(source) + " = cle.push(image)\n";
-
 
         program = program.replace("\n", "\n" + line_start );
         return program;
@@ -52,24 +49,24 @@ public class PyclesperantoGenerator implements ScriptGenerator {
 
         CLIJMacroPlugin clijMacroPlugin = plugin.getCLIJMacroPlugin();
         if (clijMacroPlugin == null) {
-            return "# " + AssistantUtilities.niceName(plugin.getName());
+            return "# " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName());
         }
         Calibration calibration = plugin.getTarget().getCalibration();
 
         String methodName = clijMacroPlugin.getName();
-        methodName = methodName.substring(0,1).toLowerCase() + methodName.substring(1);
+        methodName = methodName.substring(0, 1).toLowerCase() + methodName.substring(1);
         String pakage = clijMacroPlugin.getClass().getPackage().getName();
 
         methodName = "cle." + pythonize(methodName);
 
 
-        String image1 = makeImageID(plugin.getSource());
+        String[] image1s = makeImageIDs(plugin);
         String image2 = makeImageID(plugin.getTarget());
-        String program = "# " + AssistantUtilities.niceName(plugin.getName()) + "\n";
-                //image1 + " = \"" + plugin.getSource().getTitle() + "\";\n" +
+        String program = "\n# " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName()) + "\n";
+        //image1 + " = \"" + plugin.getSource().getTitle() + "\";\n" +
 
         program = program +
-           image2 + " = cle.create_like(" + image1 + ");\n";
+                image2 + " = cle.create_like(" + image1s[0] + ");\n";
 
         String call = "";
 
@@ -80,7 +77,7 @@ public class PyclesperantoGenerator implements ScriptGenerator {
             call = call + ", " + name;
             program = program + name + " = " + objectToString(plugin.getArgs()[i]) + "\n";
         }
-        program = program + methodName + "(" + image1 + ", " + image2 + call + ")\n";
+        program = program + methodName + "(" + namesToCommaSeparated(image1s) + ", " + image2 + call + ")\n";
 
         if (use_napari) {
             String scale = calibration.pixelHeight + ", " + calibration.pixelWidth;
@@ -89,20 +86,19 @@ public class PyclesperantoGenerator implements ScriptGenerator {
             }
 
             program = program +
-                    "# show result\n\n" +
+                    "# show result\n" +
                     "viewer.add_image(cle.pull(" + image2 + "), scale=(" + scale + "))\n\n";
         } else {
             program = program +
-            "# show result\n\n" +
-            "io.imshow(" + image2 + ")\n" +
-            "io.show()\n\n";
+                    "# show result\n" +
+                    "io.imshow(" + image2 + ")\n" +
+                    "io.show()\n\n";
         }
 
-        program = line_start + program.replace("\n", "\n" + line_start );
+        program = line_start + program.replace("\n", "\n" + line_start);
 
         return program;
     }
-
 
     @Override
     public String fileEnding() {
@@ -125,7 +121,9 @@ public class PyclesperantoGenerator implements ScriptGenerator {
                 "# Furthermore, activate the scripting language Te Oki in Fijis script editor to run this script.\n\n" +
                 "# Stay tuned and check out http://clesperanto.net to learn more." +
                 "\n\n" +
-                "import pyclesperanto_prototype as cle\n";
+                "import pyclesperanto_prototype as cle\n" +
+                "from tifffile import imread\n\n";
+
         if (use_napari) {
             line_start = "    ";
             header = header +

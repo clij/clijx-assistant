@@ -31,6 +31,9 @@ Takes a label map, determines for every label the maximum distance of any pixel 
 * [Label Pixel Count Map](https://clij.github.io/clij2-docs/reference_labelPixelCountMap)
 Takes a label map, determines the number of pixels per label and replaces every label with the that number.
 
+* [Label Standard Deviation Intensity Map](https://clij.github.io/clij2-docs/reference_labelStandardDeviationIntensityMap)
+Takes an image and a corresponding label map, determines the standard deviation of the intensity per label and replaces every label with the that number.
+
 * [Local Maximum Average Distance Of N Closest Neighbors Map](https://clij.github.io/clij2-docs/reference_localMaximumAverageDistanceOfNClosestNeighborsMap)
 Takes a label map, determines distances between all centroids, the mean distance of the n closest points for every point
  and replaces every label with the maximum distance of touching labels.
@@ -99,9 +102,7 @@ Applies a pre-trained CLIJx-Weka model to an image and a corresponding label map
 
 
 
-27 operations listed.
+28 operations listed.
 
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
-
-[Imprint](https://clij.github.io/imprint)

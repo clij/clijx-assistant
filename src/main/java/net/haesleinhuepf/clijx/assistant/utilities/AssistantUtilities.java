@@ -3,18 +3,21 @@ package net.haesleinhuepf.clijx.assistant.utilities;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.Toolbar;
-import net.cleasperanto.macro.api.ClEsperantoMacroAPIGenerator;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
+import net.haesleinhuepf.clij2.plugins.ApplyVectorField2D;
+import net.haesleinhuepf.clij2.plugins.ApplyVectorField3D;
 import net.haesleinhuepf.clij2.plugins.PullToROIManager;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
-import net.haesleinhuepf.clijx.assistant.scriptgenerator.ClEsperantoMacroGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.gui.*;
-import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
+import net.haesleinhuepf.clijx.plugins.CrossCorrelation;
+import net.haesleinhuepf.clijx.weka.ApplyWekaModel;
 import net.haesleinhuepf.clijx.weka.WekaLabelClassifier;
+import net.haesleinhuepf.clijx.weka.autocontext.ApplyAutoContextWekaModel;
+import net.haesleinhuepf.clijx.weka.autocontext.TrainAutoContextWekaModel;
 import org.scijava.util.ProcessUtils;
 
 import java.awt.*;
@@ -26,8 +29,18 @@ import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 
 public class AssistantUtilities {
+    public static Comparator<? super String> niceNameComparator = new Comparator<String>() {
+        @Override
+        public int compare(String o1, String o2) {
+            o1 = niceName(o1);
+            o2 = niceName(o2);
+            return o1.compareTo(o2);
+        }
+    };
+
     public static String now() {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
@@ -89,12 +102,12 @@ public class AssistantUtilities {
     }
 
 
-    public static String niceName(String name) {
+    public static String niceNameWithoutDimShape(String name) {
 
         name = name.replace("3D", "");
         name = name.replace("Box", "");
 
-        return ClEsperantoMacroAPIGenerator.niceName(name);
+        return niceName(name);
     }
 
     public static void glasbey(ImagePlus imp) {
@@ -138,6 +151,7 @@ public class AssistantUtilities {
     public static boolean ignoreEvent = false;
 
 
+    static ArrayList<Class> blocklist = new ArrayList<>();
     public static boolean isIncubatablePlugin(CLIJMacroPlugin clijMacroPlugin) {
         if (clijMacroPlugin == null) {
             return false;
@@ -180,265 +194,540 @@ public class AssistantUtilities {
             //System.out.println("D");
             return false;
         }
-        if (!parameterdefintions[1].startsWith("ByRef Image ")) {
-            // second parameters is no output image
+        if (!parameterdefintions[1].startsWith("ByRef Image ") && !parameterdefintions[1].startsWith("Image ")) {
+            // second parameters is no image
             //System.out.println("E");
             return false;
         }
+        /*
         if (parameterdefintions.length > 2) {
             if (parameterdefintions[2].startsWith("Image ") || parameterdefintions[2].startsWith("ByRef Image ")) {
                 // second parameters is no output image
                 //System.out.println("E");
                 return false;
             }
-        }
+        }*/
         if (clijMacroPlugin.getClass().getName().contains(".clij2wrappers.")) {
             return false;
         }
         if (clijMacroPlugin.getClass().getName().contains(".tilor.")) {
             return false;
         }
+        if (clijMacroPlugin.getClass().getName().contains(".macro.")) { // clij1
+            return false;
+        }
+        if (clijMacroPlugin.getClass().getName().contains(".customconvolutionplugin.")) { // clij1
+            return false;
+        }
 
         // blacklist
-        ArrayList<Class> blocklist = new ArrayList<>();
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.AddImageAndScalar.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.MedianSliceBySliceBox.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.NonzeroMinimumDiamond.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.Crop3D.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.TopHatBox
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ExtendLabelingViaVoronoi
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Crop2D.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Rotate2D.class);
-        blocklist.add(net.haesleinhuepf.clijx.plugins.SubtractBackground3D.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdShanbhag
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.Rotate3D.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Minimum3DSphere.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumZProjectionBounded.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Blur3DSliceBySlice.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumZProjection
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.LabelSpots
-        blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMinimaBox.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.GaussianBlur3D
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Mean3DSphere.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.GaussianBlur2D.class);
-        blocklist.add(net.haesleinhuepf.clijx.plugins.LocalID.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsOnEdges
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.MeanXProjection.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMaximaSliceBySliceBox.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceBottom
-        blocklist.add(net.haesleinhuepf.clijx.plugins.SubtractBackground2D.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdMean
-        blocklist.add(net.haesleinhuepf.clij2.plugins.NonzeroMinimumBox.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.NonLocalMeans
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdHuang
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.Logarithm.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.MultiplyImageAndScalar.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.CountTouchingNeighbors.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.ImageToStack.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.TopHatSphere.class);
-        blocklist.add(net.haesleinhuepf.clijx.tilor.implementations.Maximum3DBox.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.Invert
-        blocklist.add(net.haesleinhuepf.clij2.plugins.BottomHatSphere.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumZProjectionThresholdedBounded.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Scale2D.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumZProjection
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.Maximum3DBox.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Scale3D.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.LaplacianOfGaussian3D
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ErodeBox.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.MeanYProjection.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.MedianSliceBySliceSphere.class);
-        blocklist.add(net.haesleinhuepf.clijx.plugins.LFRecon.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.RotateRight
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Histogram.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdMinError
-        blocklist.add(net.haesleinhuepf.clij2.plugins.LaplaceDiamond.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceTop
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumZProjectionBounded.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.OnlyzeroOverwriteMaximumBox.class);
-        blocklist.add(net.haesleinhuepf.clijx.plugins.Skeletonize.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceRight
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Maximum2DBox.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumOctagon.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ClosingBox.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.LabelledSpotsToPointList.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.Sobel
-        blocklist.add(net.haesleinhuepf.clij2.plugins.AdjacencyMatrixToTouchMatrix.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.SumXProjection.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.Flip3D
-        blocklist.add(net.haesleinhuepf.clijx.plugins.BlurSliceBySlice.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Maximum3DSphere.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.Mean3DBox
-        blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumOctagon.class);
-        blocklist.add(net.haesleinhuepf.clijx.plugins.StackToTiles.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryEdgeDetection
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.DetectLabelEdges
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumImageAndScalar
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdMaxEntropy
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdIsoData
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.SumZProjection
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.FindMaximaPlateaus
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Downsample3D.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.ConvertUInt8.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.DilateBoxSliceBySlice.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.EntropyBox
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Downsample2D.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.ReduceStack.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdTriangle
-        blocklist.add(net.haesleinhuepf.clij2.plugins.ErodeBoxSliceBySlice.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Flip2D.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.GreaterConstant
-        blocklist.add(net.haesleinhuepf.clij2.plugins.ReplaceIntensity.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdIJ_IsoData
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Paste3D.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.SpotsToPointList.class);
-        blocklist.add(net.haesleinhuepf.clijx.plugins.TopHatOctagonSliceBySlice.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Copy.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.NonzeroMaximumDiamond.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.MultiplyImageAndCoordinate.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Paste2D.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.PointlistToLabelledSpots.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdMinimum
-        blocklist.add(net.haesleinhuepf.clijx.plugins.ConvertRGBStackToGraySlice.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.DistanceMap.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceRadial.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.MeanSliceBySliceSphere.class);
-        blocklist.add(net.haesleinhuepf.clijx.tilor.implementations.GaussianBlur3D.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.SumImageSliceBySlice.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.Median3DBox
-        blocklist.add(net.haesleinhuepf.clijx.plugins.BinaryImageMoments3D.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.LabelToMask
-        blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceRadialTop.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Median3DSphere.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.NotEqualConstant
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Median2DBox.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.CloseIndexGapsInLabelMap.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.OpeningDiamond.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.ShortestDistances.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdYen
-        blocklist.add(net.haesleinhuepf.clij2.plugins.GenerateTouchMatrix.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdMoments
-        blocklist.add(net.haesleinhuepf.clij2.plugins.AverageDistanceOfNFarOffPoints.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.SmallerConstant
-        blocklist.add(net.haesleinhuepf.clij2.plugins.DilateSphereSliceBySlice.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMaxima2DBox.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.TouchMatrixToAdjacencyMatrix.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.WriteValuesToPositions.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.GreaterOrEqualConstant
-        blocklist.add(net.haesleinhuepf.clijx.plugins.BlurBuffers3D.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdOtsu
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.EqualizeMeanIntensitiesOfSlices
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.OpeningBox.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.NonzeroMaximumBox.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.FloodFillDiamond.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.MedianZProjection
-        blocklist.add(net.haesleinhuepf.clij2.plugins.DilateSphere.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.ClosingDiamond.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.Translate3D
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ConnectedComponentsLabelingBox
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.LabelVoronoiOctagon.class);
-        blocklist.add(net.haesleinhuepf.clijx.plugins.ReslicePolar.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Translate2D.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumImageAndScalar.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.Bilateral
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.SumYProjection.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.StandardDeviationZProjection
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.VoronoiLabeling.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Maximum2DSphere.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.AverageDistanceOfNClosestPoints.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.CountNonZeroPixelsSliceBySliceSphere.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.BottomHatBox.class);
-        blocklist.add(net.haesleinhuepf.clijx.tilor.implementations.TopHatBox.class);
-        blocklist.add(net.haesleinhuepf.clijx.plugins.BlurImages3D.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.Exponential.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdDefault
-        blocklist.add(net.haesleinhuepf.clij2.plugins.NClosestPoints.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Minimum2DSphere.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.GradientY.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.GradientZ.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.GradientX.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMaxima3DBox.class);
-        blocklist.add(net.haesleinhuepf.clijx.tilor.implementations.TopHatSphere.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumYProjection.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.RotateClockwise
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.MeanZProjection
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.Power
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Scale.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Mean2DBox.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.ConvertFloat.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumXProjection.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumSliceBySliceSphere.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.SubtractImageFromScalar.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Threshold.class);
-        blocklist.add(net.haesleinhuepf.clijx.plugins.TopHatOctagon.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Mean2DSphere.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.RotateCounterClockwise
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.DilateBox.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.LaplaceSphere
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.VoronoiOctagon.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.UndefinedToZero.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Blur2D.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Minimum2DBox.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.DownsampleSliceBySliceHalfMedian.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.ErodeSphere.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryFillHoles.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdIntermodes.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.CopySlice.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumSliceBySliceSphere.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.Minimum3DBox.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.CentroidsOfLabels.class);
-        blocklist.add(net.haesleinhuepf.clijx.tilor.implementations.Mean3DBox.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMinimaSliceBySliceBox.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumYProjection.class);
-        blocklist.add(net.haesleinhuepf.clijx.tilor.implementations.ConnectedComponentsLabelingBox.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryNot
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.EqualConstant
-        blocklist.add(net.haesleinhuepf.clij2.plugins.NeighborsOfNeighbors.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.MergeTouchingLabels
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Median2DSphere.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.OnlyzeroOverwriteMaximumDiamond.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMaximaBox.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.MeanZProjectionBounded.class);
-        blocklist.add(net.haesleinhuepf.clijx.plugins.Presign.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.RotateLeft.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.ConnectedComponentsLabelingDiamond.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumXProjection.class);
-        blocklist.add(net.haesleinhuepf.clijx.plugins.LocalExtremaBox.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMinima2DBox.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdPercentile
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.TransposeYZ
-        blocklist.add(net.haesleinhuepf.clijx.registration.TranslationTimelapseRegistration.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdLi
-        blocklist.add(net.haesleinhuepf.clij2.plugins.ErodeSphereSliceBySlice.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Resample.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.LaplaceBox
-        blocklist.add(net.haesleinhuepf.clij2.plugins.DifferenceOfGaussian2D.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.CountNonZeroVoxels3DSphere
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.DifferenceOfGaussian3D.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.TransposeXZ
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.TransposeXY
-        blocklist.add(net.haesleinhuepf.clij2.plugins.ConvertUInt16.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdRenyiEntropy
-        blocklist.add(net.haesleinhuepf.clij2.plugins.CountNonZeroPixels2DSphere.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceLeft
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.Absolute.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Blur3D.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.ConnectedComponentsLabeling.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMinima3DBox.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.GenerateTouchCountMatrix.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.SmallerOrEqualConstant.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.Watershed.class);
+        if (blocklist.size() == 0) {
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.AddImageAndScalar.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MedianSliceBySliceBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.NonzeroMinimumDiamond.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Crop3D.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.TopHatBox
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ExtendLabelingViaVoronoi
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Crop2D.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Rotate2D.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.SubtractBackground3D.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdShanbhag
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Rotate3D.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Minimum3DSphere.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumZProjectionBounded.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Blur3DSliceBySlice.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumZProjection
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.LabelSpots
+            blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMinimaBox.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.GaussianBlur3D
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Mean3DSphere.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.GaussianBlur2D.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.LocalID.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsOnEdges
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MeanXProjection.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMaximaSliceBySliceBox.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceBottom
+            blocklist.add(net.haesleinhuepf.clijx.plugins.SubtractBackground2D.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdMean
+            blocklist.add(net.haesleinhuepf.clij2.plugins.NonzeroMinimumBox.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.NonLocalMeans
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdHuang
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Logarithm.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MultiplyImageAndScalar.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.CountTouchingNeighbors.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ImageToStack.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.TopHatSphere.class);
+            blocklist.add(net.haesleinhuepf.clijx.tilor.implementations.Maximum3DBox.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Invert
+            blocklist.add(net.haesleinhuepf.clij2.plugins.BottomHatSphere.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumZProjectionThresholdedBounded.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Scale2D.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumZProjection
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Maximum3DBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Scale3D.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LaplacianOfGaussian3D
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ErodeBox.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MeanYProjection.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MedianSliceBySliceSphere.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.LFRecon.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.RotateRight
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Histogram.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdMinError
+            blocklist.add(net.haesleinhuepf.clij2.plugins.LaplaceDiamond.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceTop
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumZProjectionBounded.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.OnlyzeroOverwriteMaximumBox.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.Skeletonize.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceRight
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Maximum2DBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumOctagon.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ClosingBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.LabelledSpotsToPointList.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Sobel
+            blocklist.add(net.haesleinhuepf.clij2.plugins.AdjacencyMatrixToTouchMatrix.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.SumXProjection.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Flip3D
+            blocklist.add(net.haesleinhuepf.clijx.plugins.BlurSliceBySlice.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Maximum3DSphere.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Mean3DBox
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumOctagon.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.StackToTiles.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryEdgeDetection
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.DetectLabelEdges
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumImageAndScalar
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdMaxEntropy
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdIsoData
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.SumZProjection
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.FindMaximaPlateaus
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Downsample3D.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ConvertUInt8.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.DilateBoxSliceBySlice.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.EntropyBox
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Downsample2D.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ReduceStack.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdTriangle
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ErodeBoxSliceBySlice.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Flip2D.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.GreaterConstant
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ReplaceIntensity.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdIJ_IsoData
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Paste3D.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.SpotsToPointList.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.TopHatOctagonSliceBySlice.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Copy.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.NonzeroMaximumDiamond.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MultiplyImageAndCoordinate.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Paste2D.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.PointlistToLabelledSpots.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdMinimum
+            blocklist.add(net.haesleinhuepf.clijx.plugins.ConvertRGBStackToGraySlice.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.DistanceMap.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceRadial.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MeanSliceBySliceSphere.class);
+            blocklist.add(net.haesleinhuepf.clijx.tilor.implementations.GaussianBlur3D.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.SumImageSliceBySlice.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Median3DBox
+            blocklist.add(net.haesleinhuepf.clijx.plugins.BinaryImageMoments3D.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.LabelToMask
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceRadialTop.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Median3DSphere.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.NotEqualConstant
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Median2DBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.CloseIndexGapsInLabelMap.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.OpeningDiamond.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ShortestDistances.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdYen
+            blocklist.add(net.haesleinhuepf.clij2.plugins.GenerateTouchMatrix.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdMoments
+            blocklist.add(net.haesleinhuepf.clij2.plugins.AverageDistanceOfNFarOffPoints.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.SmallerConstant
+            blocklist.add(net.haesleinhuepf.clij2.plugins.DilateSphereSliceBySlice.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMaxima2DBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.TouchMatrixToAdjacencyMatrix.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.WriteValuesToPositions.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.GreaterOrEqualConstant
+            blocklist.add(net.haesleinhuepf.clijx.plugins.BlurBuffers3D.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdOtsu
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.EqualizeMeanIntensitiesOfSlices
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.OpeningBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.NonzeroMaximumBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.FloodFillDiamond.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MedianZProjection
+            blocklist.add(net.haesleinhuepf.clij2.plugins.DilateSphere.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ClosingDiamond.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Translate3D
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ConnectedComponentsLabelingBox
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.LabelVoronoiOctagon.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.ReslicePolar.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Translate2D.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumImageAndScalar.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.Bilateral
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.SumYProjection.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.StandardDeviationZProjection
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.VoronoiLabeling.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Maximum2DSphere.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.AverageDistanceOfNClosestPoints.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.CountNonZeroPixelsSliceBySliceSphere.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.BottomHatBox.class);
+            blocklist.add(net.haesleinhuepf.clijx.tilor.implementations.TopHatBox.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.BlurImages3D.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Exponential.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdDefault
+            blocklist.add(net.haesleinhuepf.clij2.plugins.NClosestPoints.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Minimum2DSphere.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.GradientY.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.GradientZ.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.GradientX.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMaxima3DBox.class);
+            blocklist.add(net.haesleinhuepf.clijx.tilor.implementations.TopHatSphere.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumYProjection.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.RotateClockwise
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MeanZProjection
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Power
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Scale.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Mean2DBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ConvertFloat.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumXProjection.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumSliceBySliceSphere.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.SubtractImageFromScalar.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Threshold.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.TopHatOctagon.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Mean2DSphere.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.RotateCounterClockwise
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.DilateBox.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LaplaceSphere
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.VoronoiOctagon.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.UndefinedToZero.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Blur2D.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Minimum2DBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.DownsampleSliceBySliceHalfMedian.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ErodeSphere.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryFillHoles.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdIntermodes.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.CopySlice.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumSliceBySliceSphere.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Minimum3DBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.CentroidsOfLabels.class);
+            blocklist.add(net.haesleinhuepf.clijx.tilor.implementations.Mean3DBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMinimaSliceBySliceBox.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumYProjection.class);
+            blocklist.add(net.haesleinhuepf.clijx.tilor.implementations.ConnectedComponentsLabelingBox.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryNot
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.EqualConstant
+            blocklist.add(net.haesleinhuepf.clij2.plugins.NeighborsOfNeighbors.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.MergeTouchingLabels
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Median2DSphere.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.OnlyzeroOverwriteMaximumDiamond.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMaximaBox.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MeanZProjectionBounded.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.Presign.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.RotateLeft.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ConnectedComponentsLabelingDiamond.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumXProjection.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.LocalExtremaBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMinima2DBox.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdPercentile
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.TransposeYZ
+            blocklist.add(net.haesleinhuepf.clijx.registration.TranslationTimelapseRegistration.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdLi
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ErodeSphereSliceBySlice.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Resample.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.LaplaceBox
+            blocklist.add(net.haesleinhuepf.clij2.plugins.DifferenceOfGaussian2D.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.CountNonZeroVoxels3DSphere
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.DifferenceOfGaussian3D.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.TransposeXZ
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.TransposeXY
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ConvertUInt16.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdRenyiEntropy
+            blocklist.add(net.haesleinhuepf.clij2.plugins.CountNonZeroPixels2DSphere.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceLeft
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Absolute.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Blur3D.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ConnectedComponentsLabeling.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMinima3DBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.GenerateTouchCountMatrix.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.SmallerOrEqualConstant.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.Watershed.class);
 
-        blocklist.add(net.haesleinhuepf.clij2.plugins.GenerateParametricImageFromResultsTableColumn.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.AffineTransform2D.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.AffineTransform.class);
-        blocklist.add(net.haesleinhuepf.clij2.plugins.AffineTransform3D.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.GenerateParametricImageFromResultsTableColumn.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.AffineTransform2D.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.AffineTransform.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.AffineTransform3D.class);
 
-        blocklist.add(net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfDiamond.class);
-        blocklist.add(net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfBox.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfDiamond.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfBox.class);
 
-        blocklist.add(net.haesleinhuepf.clijx.plugins.GreyLevelAtttributeFiltering.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.GreyLevelAtttributeFiltering.class);
 
+            blocklist.add(CrossCorrelation.class);
+            blocklist.add(TrainAutoContextWekaModel.class);
+            blocklist.add(ApplyAutoContextWekaModel.class);
+            blocklist.add(ApplyVectorField2D.class);
+            blocklist.add(ApplyVectorField3D.class);
+            blocklist.add(ApplyWekaModel.class);
+
+///
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Absolute.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.AbsoluteDifference.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.AddImageAndScalar.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.AddImages.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.AddImagesWeighted.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ArgMaximumZProjection.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.AutomaticThreshold.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.AverageDistanceOfNClosestNeighborsMap.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.AverageDistanceOfTouchingNeighbors.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.AverageNeighborDistanceMap.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.Bilateral.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryAnd.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryEdgeDetection.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryFillHoles.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.BinaryFillHolesSliceBySlice.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryIntersection.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryNot.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryOr.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.BinarySubtract.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryUnion.class);
+            //blocklist.add(net.haesleinhuepf.clijx.weka.BinaryWekaPixelClassifier.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryXOr.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.BottomHatBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.CentroidsOfBackgroundAndLabels.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ClosingBox.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.CombineHorizontally.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.CombineVertically.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ConcatenateStacks.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ConnectedComponentsLabelingBox.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Convolve.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.CopySlice.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.CountNonZeroVoxels3DSphere.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Crop3D.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.CustomBinaryOperation.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.CylinderTransform.class);
+            blocklist.add(net.haesleinhuepf.clijx.registration.DeformableRegistration2D.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.DepthColorProjection.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.DetectAndLabelMaxima.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.DetectAndLabelMaximaAboveThreshold.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.DetectLabelEdges.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMaxima3DBox.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.DifferenceOfGaussian3D.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.DilateBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.DistanceMap.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.DistanceMatrixToMesh.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.DivideByGaussianBackground.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.DivideImages.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.DrawDistanceMeshBetweenTouchingLabels.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.DrawMeshBetweenTouchingLabels.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.DrawTouchCountMeshBetweenTouchingLabels.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.DrawTouchPortionMeshBetweenTouchingLabels.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.DriftCorrectionByCenterOfMassFixation.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.DriftCorrectionByCentroidFixation.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.EntropyBox.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Equal.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.EqualConstant.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.EqualizeMeanIntensitiesOfSlices.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ErodeBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabels.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsOnEdges.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsOnSurface.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.ExcludeLabelsOutsideSizeRange.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsSubSurface.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsWithValuesOutOfRange.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsWithValuesWithinRange.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Exponential.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ExtendLabelingViaVoronoi.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.ExtendLabelsWithMaximumRadius.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.Extrema.class);
+            blocklist.add(net.haesleinhuepf.clijx.piv.FastParticleImageVelocimetry.class);
+            blocklist.add(net.haesleinhuepf.clijx.piv.FastParticleImageVelocimetry3D.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.FindAndLabelMaxima.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.FindMaxima.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.FindMaximaPlateaus.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Flip3D.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.GaussJordan.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.GaussianBlur3D.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.GenerateBinaryOverlapMatrix.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.GenerateDistanceMatrix.class);
+            blocklist.add(net.haesleinhuepf.clijx.weka.GenerateFeatureStack.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.GenerateGreyValueCooccurrenceMatrixBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.GenerateJaccardIndexMatrix.class);
+            blocklist.add(net.haesleinhuepf.clijx.weka.GenerateLabelFeatureImage.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.GenerateParametricImage.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.GetJaccardIndex.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.GetMeanOfMaskedPixels.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.GetMeanSquaredError.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.GetSorensenDiceCoefficient.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Greater.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.GreaterConstant.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.GreaterOrEqual.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.GreaterOrEqualConstant.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.IntensityCorrection.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.IntensityCorrectionAboveThresholdOtsu.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Invert.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.JaccardIndex.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LabelMaximumExtensionMap.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LabelMaximumExtensionRatioMap.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LabelPixelCountMap.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.LabelSpots.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LabelStandardDeviationIntensityMap.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.LabelToMask.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.LabelVoronoiOctagon.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LabelingWorkflowALX.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.LaplaceBox.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.LaplaceSphere.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LaplacianOfGaussian3D.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMaximumAverageDistanceOfNClosestNeighborsMap.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMaximumAverageNeighborDistanceMap.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMaximumTouchingNeighborCountMap.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMeanAverageDistanceOfNClosestNeighborsMap.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMeanAverageNeighborDistanceMap.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMeanTouchPortionMap.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMeanTouchingNeighborCountMap.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMedianAverageDistanceOfNClosestNeighborsMap.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMedianAverageNeighborDistanceMap.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMedianTouchingNeighborCountMap.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMinimumAverageDistanceOfNClosestNeighborsMap.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMinimumAverageNeighborDistanceMap.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMinimumTouchingNeighborCountMap.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalStandardDeviationAverageDistanceOfNClosestNeighborsMap.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalStandardDeviationAverageNeighborDistanceMap.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalStandardDeviationTouchingNeighborCountMap.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.LocalThreshold.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Logarithm.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.MakeIsotropic.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Mask.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MaskLabel.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MaskStackWithPlane.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MatrixEqual.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Maximum3DBox.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumImageAndScalar.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumImages.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumOfMaskedPixels.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumOfTouchingNeighbors.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumXProjection.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumYProjection.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumZProjection.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumZProjectionBounded.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Mean3DBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MeanClosestSpotDistance.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MeanOfMaskedPixels.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MeanOfTouchingNeighbors.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MeanSquaredError.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MeanXProjection.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MeanYProjection.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MeanZProjection.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.MeanZProjectionAboveThreshold.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Median3DBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MedianOfTouchingNeighbors.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MedianZProjection.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.MergeTouchingLabels.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Minimum3DBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumDistanceOfTouchingNeighbors.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumImageAndScalar.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumImages.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumOfMaskedPixels.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumOfTouchingNeighbors.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumXProjection.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumYProjection.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumZProjection.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MultiplyImageAndScalar.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MultiplyImages.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.MultiplyMatrix.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MultiplyStackWithPlane.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.NClosestDistances.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.NonLocalMeans.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.NotEqual.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.NotEqualConstant.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.OpeningBox.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.ParametricWatershed.class);
+            blocklist.add(net.haesleinhuepf.clijx.piv.ParticleImageVelocimetry.class);
+            blocklist.add(net.haesleinhuepf.clijx.piv.ParticleImageVelocimetryTimelapse.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.PointIndexListToMesh.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Power.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.PowerImages.class);
+            blocklist.add(net.haesleinhuepf.clijx.clij2wrappers.PullToROIManager.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.PullToROIManager.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ReplaceIntensities.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ReplacePixelsIfZero.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceBottom.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceLeft.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceRight.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceTop.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.RigidTransform.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Rotate3D.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.RotateClockwise.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.RotateCounterClockwise.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.RotateRight.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.SeededWatershed.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.SetNonZeroPixelsToPixelIndex.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.ShowGlasbeyOnGrey.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.ShowRGB.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Smaller.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.SmallerConstant.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.SmallerOrEqual.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Sobel.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.SorensenDiceCoefficient.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.SphereTransform.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.SquaredDifference.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.StandardDeviationOfMaskedPixels.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.StandardDeviationOfTouchingNeighbors.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.StandardDeviationZProjection.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.StatisticsOfBackgroundAndLabelledPixels.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.StatisticsOfLabelledPixels.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.SubtractGaussianBackground.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.SubtractImageFromScalar.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.SubtractImages.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.SumXProjection.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.SumYProjection.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.SumZProjection.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.tenengradfusion.TenengradFusion.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.tenengradfusion.TenengradFusionOf10.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.tenengradfusion.TenengradFusionOf11.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.tenengradfusion.TenengradFusionOf12.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.tenengradfusion.TenengradFusionOf2.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.tenengradfusion.TenengradFusionOf3.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.tenengradfusion.TenengradFusionOf4.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.tenengradfusion.TenengradFusionOf5.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.tenengradfusion.TenengradFusionOf6.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.tenengradfusion.TenengradFusionOf7.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.tenengradfusion.TenengradFusionOf8.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.tenengradfusion.TenengradFusionOf9.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdDefault.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.ThresholdDoG.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdHuang.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdIJ_IsoData.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdIntermodes.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdIsoData.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdLi.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdMaxEntropy.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdMean.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdMinError.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdMinimum.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdMoments.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdOtsu.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdPercentile.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdRenyiEntropy.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdShanbhag.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdTriangle.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdYen.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.TopHatBox.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.TouchMatrixToMesh.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.TouchingNeighborCountMap.class);
+            blocklist.add(net.haesleinhuepf.clijx.weka.TrainWekaModel.class);
+            blocklist.add(net.haesleinhuepf.clijx.weka.TrainWekaModelWithOptions.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Translate3D.class);
+            blocklist.add(net.haesleinhuepf.clijx.registration.TranslationRegistration.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.TransposeXY.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.TransposeXZ.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.TransposeYZ.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.UndefinedToZero.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.VarianceOfMaskedPixels.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.VoronoiLabeling.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.VoronoiOctagon.class);
+            //blocklist.add(net.haesleinhuepf.clijx.weka.WekaLabelClassifier.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.WithinIntensityRange.class);
+            blocklist.add(net.haesleinhuepf.clijx.io.WriteVTKLineListToDisc.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.Zoom.class);
+        }
 
         if (blocklist.contains(clijMacroPlugin.getClass())) {
             return false;
@@ -455,6 +744,9 @@ public class AssistantUtilities {
         ignoreEvent = true;
         //Toolbar.removeMacroTools();
 
+
+        Toolbar.addPlugInTool(new InteractiveZoom());
+        Toolbar.addPlugInTool(new InteractiveWindowPosition());
         Toolbar.addPlugInTool(new AnnotationTool());
         Toolbar.addPlugInTool(new AssistantStartingPointTool());
 
@@ -563,4 +855,117 @@ public class AssistantUtilities {
         }
     }
 
+    public static String jarFromClass(Class klass) {
+        return klass.getResource('/' + klass.getName().replace('.', '/') + ".class").toString().split("!")[0];
+    }
+
+    public static String distributionName(Class klass) {
+        String full_class_name = klass.toString().replace("class ", "");
+        //System.out.println("PKG " + full_class_name);
+        if (full_class_name.startsWith("net.clesperanto")) {
+            return "clEsperanto";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clij.")) {
+            return "CLIJ";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clij2.")) {
+            return "CLIJ2";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clijx.weka.")) {
+            return "CLIJxWEKA";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clijx.simpleitk.")) {
+            return "SimpleITK";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clijx.morpholibj.")) {
+            return "MorpholibJ";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clijx.imglib2.")) {
+            return "Imglib2";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clijx.imagej3dsuite.")) {
+            return "ImageJ 3D Suite";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clijx.imagej2.")) {
+            return "ImageJ";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clijx.bonej.")) {
+            return "BoneJ";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clijx.imagej.")) {
+            return "ImageJ";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clijx.")) {
+            return "CLIJx";
+        }
+        return "unknown";
+    }
+
+    public static String niceName(String name) {
+
+        //name = name.replace("3D", "");
+        //name = name.replace("Box", "");
+
+        String result = name;
+
+        result = result.replace("SimpleITK", "");
+        result = result.replace("MorphoLibJ", "");
+        result = result.replace("ImageJ3DSuite", "");
+        result = result.replace("BoneJ", "");
+        result = result.replace("simpleITK", "");
+        result = result.replace("morphoLibJ", "");
+        result = result.replace("imageJ3DSuite", "");
+        result = result.replace("boneJ", "");
+        result = result.replace("CLIJxWEKA", "");
+        result = result.replace("CLIJx", "");
+        result = result.replace("CLIJ2", "");
+        result = result.replace("CLIJ", "");
+        result = result.replace("_", " ");
+        result = result.replace("  ", " ");
+
+        result = result.trim();
+
+        name = result;
+        result = "";
+        for (int i = 0; i < name.length(); i++) {
+            String ch = name.substring(i,i+1);
+            if (!ch.toLowerCase().equals(ch)) {
+                result = result + " ";
+            }
+            result = result + ch;
+        }
+
+        result = result.replace("C L", "CL");
+        result = result.replace("2 D", "2D");
+        result = result.replace("3 D", "3D");
+        result = result.replace("X Y", "XY");
+        result = result.replace("X Z", "XZ");
+        result = result.replace("Y Z", "YZ");
+        //result = result.replace("_ ", " ");
+        result = result.replace("I J", "IJ");
+        result = result.replace("Do G", "DoG");
+        result = result.replace("Lo G", "LoG");
+        result = result.replace("Cl Esperanto", "clEsperanto");
+        result = result.replace("Morpho Lib J", "MorphoLibJ");
+        result = result.replace("Simple I T K", "SimpleITK");
+        result = result.replace("D Suite", "DSuite");
+        result = result.replace("Bone J", "BoneJ");
+        result = result.replace("CL IJ", "CLIJ");
+        result = result.replace("R O I ", "ROI");
+        result = result.replace("F F T", "FFT");
+        result = result.replace("X Or", "XOr");
+        result = result.replace("W E K A", "WEKA");
+
+        result = result.substring(0, 1).toUpperCase() + result.substring(1);
+
+        result = result.trim();
+
+        //System.out.println("Name out: " + result);
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(niceName("CLIJx_SimpleITKWhateverFilter"));
+    }
 }

@@ -36,7 +36,7 @@ public class SaveAssistantWorkflowPlugin implements PlugIn {
         }
 
         ScriptGenerator sg = new AssistantGroovyGenerator();
-        String filename = SaveDialog.getPath(plugin.getSource(), sg.fileEnding());
+        String filename = SaveDialog.getPath(plugin.getSource(0), sg.fileEnding());
         String script = plugin.generateScript(sg);
 
         File outputTarget = new File(filename);

@@ -106,6 +106,15 @@ public class CLIJxVirtualStack extends VirtualStack {
         }
         return imp;
     }
+
+    public static ClearCLBuffer[][] imagePlusesToBuffers(ImagePlus[] imps) {
+        ClearCLBuffer[][] result = new ClearCLBuffer[imps.length][];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = imagePlusToBuffer(imps[i]);
+        }
+        return result;
+    }
+
     public static ClearCLBuffer[] imagePlusToBuffer(ImagePlus imp) {
         CLIJx clijx = CLIJx.getInstance();
         ImageStack stack = imp.getStack();

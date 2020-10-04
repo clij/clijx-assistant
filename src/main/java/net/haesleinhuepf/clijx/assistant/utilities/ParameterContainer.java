@@ -8,9 +8,11 @@ public class ParameterContainer {
     public ParameterContainer(Object[][] parameters) {
         this.parameters = new Object[parameters.length][];
         for (int i = 0; i < this.parameters.length; i++) {
-            this.parameters[i] = new Object[parameters[i].length];
-            for (int j = 0; j < this.parameters[i].length; j++) {
-                this.parameters[i][j] = parameters[i][j];
+            if (parameters[i] != null) {
+                this.parameters[i] = new Object[parameters[i].length];
+                for (int j = 0; j < this.parameters[i].length; j++) {
+                    this.parameters[i][j] = parameters[i][j];
+                }
             }
         }
     }
@@ -25,12 +27,14 @@ public class ParameterContainer {
             return false;
         }
         for (int i = 0; i < this.parameters.length; i++) {
-            if (this.parameters[i].length != parameters[i].length) {
-                return false;
-            }
-            for (int j = 0; j < this.parameters[i].length; j++) {
-                if (this.parameters[i][j] != parameters[i][j]) {
+            if (this.parameters[i] != null && parameters[i] != null) {
+                if (this.parameters[i].length != parameters[i].length) {
                     return false;
+                }
+                for (int j = 0; j < this.parameters[i].length; j++) {
+                    if (this.parameters[i][j] != parameters[i][j]) {
+                        return false;
+                    }
                 }
             }
         }
@@ -39,8 +43,10 @@ public class ParameterContainer {
 
     public void copyTo(Object[][] parameters) {
         for (int i = 0; i < this.parameters.length; i++) {
-            for (int j = 0; j < this.parameters[i].length; j++) {
-                parameters[i][j] = this.parameters[i][j];
+            if (this.parameters[i] != null && parameters[i] != null) {
+                for (int j = 0; j < this.parameters[i].length; j++) {
+                    parameters[i][j] = this.parameters[i][j];
+                }
             }
         }
 

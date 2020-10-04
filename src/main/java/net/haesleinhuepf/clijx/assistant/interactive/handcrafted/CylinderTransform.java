@@ -1,6 +1,7 @@
 package net.haesleinhuepf.clijx.assistant.interactive.handcrafted;
 
 import ij.IJ;
+import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
@@ -37,7 +38,7 @@ public class CylinderTransform extends AbstractAssistantGUIPlugin {
             return false;
         }
 
-        setSource(IJ.getImage());
+        setSources(new ImagePlus[]{IJ.getImage()});
         number_of_angles = (int) gdp.getNextNumber();
         delta_angle_in_degrees = (float) gdp.getNextNumber();
 
@@ -78,21 +79,21 @@ public class CylinderTransform extends AbstractAssistantGUIPlugin {
             }
         }
 
-        ClearCLBuffer[] pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
+        ClearCLBuffer[][] pushed = CLIJxVirtualStack.imagePlusesToBuffers(my_sources);
 
         args = new Object[]{pushed[0], null, number_of_angles, delta_angle_in_degrees, relative_center_x, relative_center_z};
         net.haesleinhuepf.clijx.plugins.CylinderTransform plugin = (net.haesleinhuepf.clijx.plugins.CylinderTransform) getCLIJMacroPlugin();
         plugin.setArgs(args);
         if (result == null) {
-            result = createOutputBufferFromSource(pushed);
+            result = createOutputBufferFromSource(pushed[0]);
         }
         args[1] = result[0];
-        executeCL(pushed, result);
-        cleanup(my_source, pushed);
+        executeCL(pushed, new ClearCLBuffer[][]{result});
+        cleanup(my_sources, pushed);
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle("Cylinder transformed " + my_source.getTitle());
-        my_target.setDisplayRange(my_source.getDisplayRangeMin(), my_source.getDisplayRangeMax());
+        my_target.setTitle("Cylinder transformed " + my_sources[0].getTitle());
+        my_target.setDisplayRange(my_sources[0].getDisplayRangeMin(), my_sources[0].getDisplayRangeMax());
         my_target.updateAndDraw();
         enhanceContrast();
 

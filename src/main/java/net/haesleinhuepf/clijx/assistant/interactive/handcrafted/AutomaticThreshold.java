@@ -22,7 +22,7 @@ public class AutomaticThreshold extends AbstractAssistantGUIPlugin {
 
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
-        GenericDialog gd = new GenericDialog(AssistantUtilities.niceName(this.getClass().getSimpleName()));
+        GenericDialog gd = new GenericDialog(AssistantUtilities.niceNameWithoutDimShape(this.getClass().getSimpleName()));
         gd.addChoice("Threshold algorithm", AutoThresholderImageJ1.getMethods(), "Default" );
 
         choice = (Choice) gd.getChoices().get(0);
@@ -33,7 +33,7 @@ public class AutomaticThreshold extends AbstractAssistantGUIPlugin {
     ClearCLBuffer[] result = null;
     public synchronized void refresh()
     {
-        ClearCLBuffer[] pushed = CLIJxVirtualStack.imagePlusToBuffer(my_source);
+        ClearCLBuffer[][] pushed = CLIJxVirtualStack.imagePlusesToBuffers(my_sources);
         String algorithm = "";
         if (choice != null) {
             int index = choice.getSelectedIndex();
@@ -52,14 +52,14 @@ public class AutomaticThreshold extends AbstractAssistantGUIPlugin {
         plugin.setArgs(args);
 
         if (result == null) {
-            result = createOutputBufferFromSource(new ClearCLBuffer[]{pushed[0]});
+            result = createOutputBufferFromSource(pushed[0]);
         }
         args[1] = result[0];
-        executeCL(pushed, result);
-        cleanup(my_source, pushed);
+        executeCL(pushed, new ClearCLBuffer[][]{result});
+        cleanup(my_sources, pushed);
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle("Thresholded (" + algorithm + ") " + my_source.getTitle());
+        my_target.setTitle("Thresholded (" + algorithm + ") " + my_sources[0].getTitle());
         my_target.setDisplayRange(0, 1);
         my_target.updateAndDraw();
     }

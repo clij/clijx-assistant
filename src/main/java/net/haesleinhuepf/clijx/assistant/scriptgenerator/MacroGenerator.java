@@ -9,14 +9,12 @@ import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 public class MacroGenerator implements ScriptGenerator {
 
     @Override
-    public String push(AssistantGUIPlugin plugin) {
-        ImagePlus source = plugin.getSource();
-        String imageID = makeImageID(source);
-        //makeImageID
+    public String push(ImagePlus source) {
+        String output = "";
 
         String filename = getFilename(source);
+        String imageID = makeImageID(source);
 
-        String output = "";
         if (filename != null && filename.length() > 0) {
             output = output + "" +
                     "// Load image from disc \n" +
@@ -28,6 +26,7 @@ public class MacroGenerator implements ScriptGenerator {
                     imageID + " = \"" + source.getTitle() + "\";\n" +
                     "Ext.CLIJ2_push(" + imageID + ");\n";
         }
+
         return output;
     }
 
@@ -47,15 +46,20 @@ public class MacroGenerator implements ScriptGenerator {
 
         CLIJMacroPlugin clijMacroPlugin = plugin.getCLIJMacroPlugin();
         if (clijMacroPlugin == null) {
-            return "// " + AssistantUtilities.niceName(plugin.getClass().getName());
+            return "// " + AssistantUtilities.niceNameWithoutDimShape(plugin.getClass().getName());
         }
         String methodName = clijMacroPlugin.getName();
         methodName = "Ext." + methodName;
 
-        String image1 = makeImageID(plugin.getSource());
+        String[] image1s = makeImageIDs(plugin);
         String image2 = makeImageID(plugin.getTarget());
-        String program = "// " + AssistantUtilities.niceName(plugin.getName()) + "\n" +
-                "// " + image1 + " = \"" + plugin.getSource().getTitle() + "\";\n" +
+        String program = "// " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName()) + "\n";
+
+        for (int s = 0; s < plugin.getNumberOfSources(); s++) {
+            program = program +
+                    "// " + image1s[s] + " = \"" + plugin.getSource(s).getTitle() + "\";\n";
+        }
+        program = program +
                 "// " + image2 + " = \"" + plugin.getTarget().getTitle() + "\";\n";
 
         String call = "";
@@ -67,7 +71,7 @@ public class MacroGenerator implements ScriptGenerator {
             call = call + ", " + name;
             program = program + name + " = " + objectToString(plugin.getArgs()[i]) + ";\n";
         }
-        program = program + methodName + "(" + image1 + ", " + image2 + call + ");\n";
+        program = program + methodName + "(" + namesToCommaSeparated(image1s) + ", " + image2 + call + ");\n";
         //program = program + "Ext.CLIJ2_pull(" + image2 + "); // consider removing this line if you don't need to see that image\n";
 
         return program;

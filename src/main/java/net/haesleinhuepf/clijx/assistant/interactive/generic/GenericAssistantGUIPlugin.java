@@ -30,7 +30,7 @@ public class GenericAssistantGUIPlugin extends AbstractAssistantGUIPlugin {
     }
 
     public GenericAssistantGUIPlugin() {
-        super(new Copy()); //todo: not sure if this is ok
+        super(new Copy());
     }
 
     public GenericAssistantGUIPlugin(AbstractCLIJPlugin plugin) {

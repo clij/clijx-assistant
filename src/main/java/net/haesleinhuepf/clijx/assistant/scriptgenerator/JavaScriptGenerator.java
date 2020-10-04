@@ -1,5 +1,6 @@
 package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 
+import ij.ImagePlus;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 
 public class JavaScriptGenerator extends JythonGenerator {
@@ -10,8 +11,8 @@ public class JavaScriptGenerator extends JythonGenerator {
     }
 
     @Override
-    public String push(AssistantGUIPlugin plugin) {
-        return pyToJs(super.push(plugin));
+    public String push(ImagePlus source) {
+        return pyToJs(super.push(source));
     }
 
     @Override

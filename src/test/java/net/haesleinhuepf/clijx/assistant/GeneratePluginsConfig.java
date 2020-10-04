@@ -5,6 +5,7 @@ import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPluginService;
 import net.haesleinhuepf.clijx.assistant.services.MenuService;
+import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -16,7 +17,7 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import static net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin.online_documentation_link;
-import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.niceName;
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.niceNameWithoutDimShape;
 
 public class GeneratePluginsConfig {
     public static void main(String[] args) throws IOException {
@@ -34,7 +35,11 @@ public class GeneratePluginsConfig {
             category_count++;
             for (AssistantGUIPlugin plugin : MenuService.getInstance().getPluginsInCategory(category)) {
                 supported_plugins.add(plugin.getCLIJMacroPlugin());
-                String niceName = niceName(plugin.getName());
+                if (category.compareTo("All") == 0 && AssistantUtilities.isIncubatablePlugin(plugin.getCLIJMacroPlugin())) {
+                    System.out.println("blocklist.add(" + plugin.getCLIJMacroPlugin().getClass().toString().replace("class ", "") + ".class);");
+                }
+
+                String niceName = niceNameWithoutDimShape(plugin.getName());
                 String clijName = plugin.getCLIJMacroPlugin().getName();
 
                 menu_entries.add(
@@ -77,7 +82,7 @@ public class GeneratePluginsConfig {
 
             String link = online_documentation_link + "_" + methodName;
 
-            String new_entry = "* [" + niceName(methodName) + "](" + link + ")\n";
+            String new_entry = "* [" + niceNameWithoutDimShape(methodName) + "](" + link + ")\n";
             if (!link_to_docs.contains(new_entry)) {
                 link_to_docs.add(new_entry);
                 short_description.put(new_entry, description);

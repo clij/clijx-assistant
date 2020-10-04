@@ -11,23 +11,23 @@ public class ClicGenerator implements ScriptGenerator {
     int call_count = 0;
 
     @Override
-    public String push(AssistantGUIPlugin plugin) {
-        ImagePlus imp = plugin.getTarget();
-        String image1 = makeImageID(imp);
+    public String push(ImagePlus imp) {
         String program = "";
 
+
+        String image1 = makeImageID(imp);
         program = program +
                 "// Push image \n";
 
         if (imp.getNSlices() > 1) {
             program = program +
-                    "Image<" + bitDepthToType(imp.getBitDepth())  + "> raw_image (raw_data, " + imp.getWidth() + ", " + imp.getHeight() + ", " + imp.getNSlices() + ", \"" + bitDepthToType(imp.getBitDepth()) + "\"); \n";
+                    "Image<" + bitDepthToType(imp.getBitDepth()) + "> raw_image (raw_data, " + imp.getWidth() + ", " + imp.getHeight() + ", " + imp.getNSlices() + ", \"" + bitDepthToType(imp.getBitDepth()) + "\"); \n";
         } else {
             program = program +
-                    "Image<" + bitDepthToType(imp.getBitDepth())  + "> raw_image (raw_data, " + imp.getWidth() + ", " + imp.getHeight() + ", \"" + bitDepthToType(imp.getBitDepth()) + "\"); \n";
+                    "Image<" + bitDepthToType(imp.getBitDepth()) + "> raw_image (raw_data, " + imp.getWidth() + ", " + imp.getHeight() + ", \"" + bitDepthToType(imp.getBitDepth()) + "\"); \n";
         }
         program = program +
-                "cle::Buffer " + image1 + " = gpu.Push<" +  bitDepthToType(imp.getBitDepth()) + ">(raw_image); \n";
+                "cle::Buffer " + image1 + " = gpu.Push<" + bitDepthToType(imp.getBitDepth()) + ">(raw_image); \n\n";
 
         return program;
     }
@@ -60,7 +60,7 @@ public class ClicGenerator implements ScriptGenerator {
 
         CLIJMacroPlugin clijMacroPlugin = plugin.getCLIJMacroPlugin();
         if (clijMacroPlugin == null) {
-            return "# " + AssistantUtilities.niceName(plugin.getName());
+            return "# " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName());
         }
         String methodName = clijMacroPlugin.getName();
         methodName = methodName.replace("CLIJ2_", "").replace("CLIJx_", "");
@@ -68,9 +68,9 @@ public class ClicGenerator implements ScriptGenerator {
         methodName = pythonize(methodName);
 
 
-        String image1 = makeImageID(plugin.getSource());
+        String[] image1s = makeImageIDs(plugin);
         String image2 = makeImageID(plugin.getTarget());
-        String program = comment(" " + AssistantUtilities.niceName(plugin.getName()));
+        String program = comment(" " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName()));
 
         ImagePlus imp = plugin.getTarget();
         program = program +
@@ -96,7 +96,7 @@ public class ClicGenerator implements ScriptGenerator {
         }
 
         program = program + "cle::" + methodName + " operation" + call_count + "(gpu);\n" +
-        "operation" + call_count + ".Execute(" + image1 + ", " + image2 + call + ");\n\n";
+        "operation" + call_count + ".Execute(" + namesToCommaSeparated(image1s) + ", " + image2 + call + ");\n\n";
 
         call_count++;
 

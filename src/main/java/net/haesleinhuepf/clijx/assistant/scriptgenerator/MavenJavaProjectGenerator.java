@@ -4,6 +4,7 @@ import ij.IJ;
 import ij.ImageJ;
 import ij.ImagePlus;
 import ij.process.FloatProcessor;
+import net.haesleinhuepf.clij.clearcl.ClearCL;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.CLIJ2;
@@ -15,6 +16,7 @@ import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUI
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Zoom;
 import net.haesleinhuepf.clijx.assistant.optimize.Workflow;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
+import org.jocl.CL;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -23,6 +25,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.jarFromClass;
 
 class MavenJavaProjectGenerator {
 
@@ -78,22 +83,16 @@ class MavenJavaProjectGenerator {
         enter_value_parsers_here = "";
         enter_custom_dependencies_here = "";
 
-        /*
-        if (enter_parameters_here.length() > 0) {
-                    enter_parameters_here = enter_parameters_here + ",";
-                }
-                enter_parameters_here = enter_parameters_here + variableValueToCLIJParameterString(parameter_value, parameter_name + "_" + parameter_count);
-
-        */
-
-
         String clij2_jar = jarFromClass(CLIJ2.class);
         String clijx_jar = jarFromClass(CLIJx.class);
 
-        String current_image = "";
-        String next_image = "pushed";
         int plugin_index = 0;
         int parameter_count = 0;
+
+        String enter_image_parameters_here = "";
+        String enter_image_typed_parameters_here = "";
+        String enter_image_default_values_here = "";
+        String enter_image_value_parsers_here = "";
 
         ArrayList<CLIJMacroPlugin> plugins = workflow.getPlugins();
         for (int p = 0; p < plugins.size(); p++) {
@@ -103,6 +102,7 @@ class MavenJavaProjectGenerator {
             // determine call
             String jar = jarFromClass(plugin.getClass());
 
+            String after_call = "";
             String call = "";
             if (jar.compareTo(clij2_jar) == 0 || jar.compareTo(clijx_jar) == 0) {
                 call = "clijx." + validJavaFunctionName(plugin.getClass().getSimpleName()) + "(";
@@ -112,67 +112,126 @@ class MavenJavaProjectGenerator {
                 enter_custom_dependencies_here = enter_custom_dependencies_here + dependency(jar);
             }
 
-            // ---------------------------------------------------------------------------------------------------------
-            // determine parameters
-
-            // count image variables up
-            current_image = next_image;
-            next_image = "image" + (plugin_index + 1);
-            if (p == plugins.size() - 1) {
-                next_image = "result";
-            }
-
-            call = call + current_image + ", " + next_image;
-
-            Object[] args = workflow.getArgs()[plugin_index];
-            String[] parameters = plugin.getParameterHelpText().replace(", ", ",").split(",");
-
-            for (int a = 2; a < args.length; a++ ) {
-                parameter_count++;
-                Object parameter_value = args[a];
-                String parameter = parameters[a].replace("ByRef ", "");
-                String parameter_name = parameter.split(" ")[1].trim();
-
-                enter_parameters_here = enter_parameters_here + ", ";
-                enter_typed_parameters_here = enter_typed_parameters_here + ", ";
-                enter_default_values_here = enter_default_values_here + ", ";
-                enter_value_parsers_here = enter_value_parsers_here + ", ";
-
-                enter_parameters_here = enter_parameters_here + variableValueToCLIJParameterString(parameter_value, parameter_name) + "_" + parameter_count;
-                enter_typed_parameters_here = enter_typed_parameters_here + variableValueToJavaParameterNameString(parameter_value, parameter_name) + "_" + parameter_count;;
-                enter_default_values_here = enter_default_values_here + variableValueToJavaString(parameter_value);
-                enter_value_parsers_here = enter_value_parsers_here + variableValueToJavaParser(parameter_value, parameter_count + 1);
-
-                call = call + ", " + parameter_name + "_" + parameter_count;;
-            }
-
-            call = call + ");";
-
-            ClearCLBuffer input = (ClearCLBuffer) args[0];
-            ClearCLBuffer output = (ClearCLBuffer) args[1];
-
             // descriptive comment
             enter_code_here = enter_code_here +
                     "\n// " + plugin.getName() + "\n";
 
-            // only generate output image if not the last step
-            if (p < plugins.size() - 1) {
-                enter_code_here = enter_code_here +
-                       "ClearCLBuffer " + next_image + " = clijx.create(new long[]{" + bufferToDimensionsString(output, input, current_image) + "}, " + bufferToTypeString(output, input, current_image) + ");\n";
+            // ---------------------------------------------------------------------------------------------------------
+            // determine parameters
+
+            Object[] args = workflow.getArgs()[plugin_index];
+            String[] parameters = plugin.getParameterHelpText().replace(", ", ",").split(",");
+
+            ClearCLBuffer first_input_image = (ClearCLBuffer) args[0];
+            //ClearCLBuffer last_input_image = (ClearCLBuffer) args[0];
+            //int i = 0;
+            //while(i < args.length && args[i] instanceof ClearCLBuffer) {
+            //    last_input_image = (ClearCLBuffer) args[i];
+            //    i++;
+            //}
+
+            for (int a = 0; a < args.length; a++ ) {
+
+
+                parameter_count++;
+
+                Object parameter_value = args[a];
+                boolean byref = parameters[a].trim().startsWith("ByRef");
+                String parameter = parameters[a].replace("ByRef ", "");
+                String parameter_name = parameter.split(" ")[1].trim();
+
+                // if image parameter
+                if (parameter_value instanceof ClearCLBuffer) {
+                    boolean image_exists_already = idExists((ClearCLBuffer)parameter_value);
+                    String image_id = makeImageID((ClearCLBuffer) parameter_value);
+
+                    // if initial input image or final output image
+                    if (
+                            (!image_exists_already && !byref) ||  // input image parameters
+                            (p == plugins.size() -1 && byref) // output image parameters of last plugin
+                    ) {
+                        if (a > 0) {
+                            enter_image_parameters_here = enter_image_parameters_here + ", ";
+                            enter_image_typed_parameters_here = enter_image_typed_parameters_here + ", ";
+                            enter_image_default_values_here = enter_image_default_values_here + ", ";
+                            enter_image_value_parsers_here = enter_image_value_parsers_here + ", ";
+                        }
+
+                        System.out.println("--->");
+                        if (byref) {
+                            enter_image_parameters_here = enter_image_parameters_here + "ByRef ";
+                        }
+                        enter_image_parameters_here = enter_image_parameters_here + "Image " + image_id;
+
+                        enter_image_typed_parameters_here = enter_image_typed_parameters_here + "ClearCLBuffer " + image_id;
+                        enter_image_default_values_here = enter_image_default_values_here + "null";
+                        enter_image_value_parsers_here = enter_image_value_parsers_here + "(ClearCLBuffer) args[" + parameter_count + "]";
+                    } else { // any intermediate image
+                        if (
+                                !enter_code_here.contains("ClearCLBuffer " + image_id) &&
+                                !enter_image_typed_parameters_here.contains("ClearCLBuffer " + image_id)
+                        ) {
+                            enter_code_here = enter_code_here +
+                                    "ClearCLBuffer " + image_id + " = clijx.create(new long[]{" + bufferToDimensionsString((ClearCLBuffer) parameter_value, first_input_image, makeImageID(first_input_image)) + "}, " + bufferToTypeString((ClearCLBuffer) parameter_value, first_input_image, makeImageID(first_input_image)) + ");\n";
+                        }
+                    }
+                    if (a > 0) {
+                        call = call + ", ";
+                    }
+                    call = call + image_id;
+                    after_call = after_call + "// " + image_id + ".close;\n";
+                } else { // if parrameter of any type but image
+                    enter_parameters_here = enter_parameters_here + ", ";
+                    enter_typed_parameters_here = enter_typed_parameters_here + ", ";
+                    enter_default_values_here = enter_default_values_here + ", ";
+                    enter_value_parsers_here = enter_value_parsers_here + ", ";
+                    call = call + ", ";
+
+                    enter_parameters_here = enter_parameters_here + variableValueToCLIJParameterString(parameter_value, parameter_name) + "_" + parameter_count;
+                    enter_typed_parameters_here = enter_typed_parameters_here + variableValueToJavaParameterNameString(parameter_value, parameter_name) + "_" + parameter_count;
+                    enter_default_values_here = enter_default_values_here + variableValueToJavaString(parameter_value);
+                    enter_value_parsers_here = enter_value_parsers_here + variableValueToJavaParser(parameter_value, parameter_count + 1);
+                    call = call + parameter_name + "_" + parameter_count;
+                }
             }
+
+            call = call + ");";
 
             enter_code_here = enter_code_here +
-                    call + "\n";
+                    call + "\n" +
+                    after_call + "\n";
 
-
-            if (plugin_index > 0) {
-                enter_code_here = enter_code_here +
-                        current_image + ".close();\n";
-            }
             enter_code_here = enter_code_here +
                     "\n";
 
             plugin_index ++;
+        }
+
+        enter_parameters_here = enter_image_parameters_here + enter_parameters_here;
+        enter_typed_parameters_here = enter_image_typed_parameters_here + enter_typed_parameters_here;
+        enter_default_values_here = enter_image_default_values_here + enter_default_values_here;
+        enter_value_parsers_here = enter_image_value_parsers_here + enter_value_parsers_here;
+
+        // fix order of parameters when parsing
+        String[] temp1 = enter_value_parsers_here.split("\\[");
+        enter_value_parsers_here = "";
+        for (int i = 0; i < temp1.length; i++) {
+            if (i == 0) {
+                enter_value_parsers_here = temp1[i];
+            } else {
+                enter_value_parsers_here = enter_value_parsers_here + "[" + (i - 1) + "]" + temp1[i].split("\\]")[1];
+            }
+        }
+
+        // release temporary memory
+        String parameters = ", " + enter_typed_parameters_here;
+        for (ClearCLBuffer buffer : image_map.keySet()) {
+            String image_id = image_map.get(buffer);
+            String[] temp = enter_code_here.split("// " + image_id + ".close;\n");
+            if (!parameters.contains(", ClearCLBuffer " + image_id)) {
+                temp[temp.length - 1] = image_id + ".close();\n" + temp[temp.length - 1];
+            }
+            enter_code_here = String.join("", temp);
         }
 
         enter_code_here = ("\n" + enter_code_here).replace("\n", "\n        ");
@@ -192,7 +251,7 @@ class MavenJavaProjectGenerator {
         "\t\t\t<groupId>..</groupId>\n" +
         "\t\t\t<version>1</version>\n" +
         "\t\t\t<scope>system</scope>\n" +
-        "\t\t\t<systemPath>" + jar + "</systemPath>\n" +
+        "\t\t\t<systemPath>" + jar.replace("file:/", "").replace("jar:", "") + "</systemPath>\n" +
         "\t\t</dependency>";
     }
 
@@ -258,10 +317,6 @@ class MavenJavaProjectGenerator {
         }
     }
 
-    private String jarFromClass(Class klass) {
-        return klass.getResource('/' + klass.getName().replace('.', '/') + ".class").toString().split("!")[0];
-    }
-
     private String validJavaText(String text) {
         return text.replace("\"", "\\\"");
     }
@@ -325,10 +380,10 @@ class MavenJavaProjectGenerator {
         content = content.replace("EnterClassNameHere", EnterClassNameHere);
         content = content.replace("enter_date_here", enter_date_here);
         content = content.replace("enter_code_here", enter_code_here);
-        content = content.replace(", enter_parameters_here", enter_parameters_here);
-        content = content.replace(", Float enter_typed_parameters_here", enter_typed_parameters_here);
-        content = content.replace(", 1/*enter_default_values_here*/", enter_default_values_here);
-        content = content.replace(", 1f /*enter_value_parsers_here*/", enter_value_parsers_here);
+        content = content.replace("Image input, ByRef Image destination, enter_parameters_here", enter_parameters_here);
+        content = content.replace("ClearCLBuffer pushed, ClearCLBuffer result, Float enter_typed_parameters_here", enter_typed_parameters_here);
+        content = content.replace("null, null, 1/*enter_default_values_here*/", enter_default_values_here);
+        content = content.replace("(ClearCLBuffer) args[0], (ClearCLBuffer) args[1], 1f /*enter_value_parsers_here*/", enter_value_parsers_here);
         content = content.replace("enter_function_name_here", enter_function_name_here);
         content = content.replace("<!-- enter_custom_dependencies_here -->", enter_custom_dependencies_here);
 
@@ -376,4 +431,14 @@ class MavenJavaProjectGenerator {
     }
 
 
+    HashMap<ClearCLBuffer, String> image_map = new HashMap<>();
+    private String makeImageID(ClearCLBuffer target) {
+        if (!image_map.keySet().contains(target)) {
+            image_map.put(target, "image" + (image_map.size() + 1));
+        }
+        return image_map.get(target);
+    }
+    private boolean idExists(ClearCLBuffer target) {
+        return image_map.keySet().contains(target);
+    }
 }
