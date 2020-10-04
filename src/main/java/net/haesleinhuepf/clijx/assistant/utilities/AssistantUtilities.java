@@ -744,6 +744,9 @@ public class AssistantUtilities {
         ignoreEvent = true;
         //Toolbar.removeMacroTools();
 
+
+        Toolbar.addPlugInTool(new InteractiveZoom());
+        Toolbar.addPlugInTool(new InteractiveWindowPosition());
         Toolbar.addPlugInTool(new AnnotationTool());
         Toolbar.addPlugInTool(new AssistantStartingPointTool());
 

@@ -181,6 +181,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             } catch (Exception e) {
             }
         });
+        button.setFocusable(false);
         panel.add(button);
 
     }
