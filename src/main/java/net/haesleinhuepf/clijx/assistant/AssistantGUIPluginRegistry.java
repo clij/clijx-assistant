@@ -77,7 +77,7 @@ class AssistantGUIPluginRegistry {
             ArrayList<Frame> connection_tiles = new ArrayList<Frame>();
             long time = System.currentTimeMillis();
             if (time - former_time < former_duration || time - former_time < 200 ) {
-                System.out.println("Leave because time");
+                //System.out.println("Leave because time");
                 return;
             }
             former_time = time;
@@ -168,7 +168,7 @@ class AssistantGUIPluginRegistry {
             this.connection_tiles = connection_tiles;
 
             former_duration = System.currentTimeMillis() - start_time;
-            System.out.println("duration: " + former_duration);
+            //System.out.println("duration: " + former_duration);
         } catch (ConcurrentModificationException e) {}
         /*
         try {
