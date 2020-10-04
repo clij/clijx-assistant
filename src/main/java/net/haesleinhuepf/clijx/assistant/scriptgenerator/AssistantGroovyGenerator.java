@@ -2,6 +2,7 @@ package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 
 import ij.IJ;
 import ij.ImagePlus;
+import ij.WindowManager;
 import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
@@ -78,7 +79,7 @@ public class AssistantGroovyGenerator implements ScriptGenerator {
             output.append("window.setLocation(" + target.getWindow().getX() + ", " + target.getWindow().getY() + ");\n");
             output.append("window.setSize(" + target.getWindow().getWidth() + ", " + target.getWindow().getHeight() + ");\n");
         }
-        output.append("// Target: " + makeImageID(target) + ": " + target.getTitle() + "\n");
+        output.append(makeImageID(target) + " = WindowManager.getImage(\"" + target.getTitle() + "\");\n");
 
         output.append("\n");
         return output.toString();
