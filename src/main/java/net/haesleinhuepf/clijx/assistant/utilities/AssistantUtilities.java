@@ -3,7 +3,6 @@ package net.haesleinhuepf.clijx.assistant.utilities;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.Toolbar;
-import net.cleasperanto.macro.api.ClEsperantoMacroAPIGenerator;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.plugins.ApplyVectorField2D;
@@ -12,10 +11,8 @@ import net.haesleinhuepf.clij2.plugins.PullToROIManager;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
-import net.haesleinhuepf.clijx.assistant.scriptgenerator.ClEsperantoMacroGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.gui.*;
-import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.plugins.CrossCorrelation;
 import net.haesleinhuepf.clijx.weka.ApplyWekaModel;
 import net.haesleinhuepf.clijx.weka.WekaLabelClassifier;
@@ -32,8 +29,18 @@ import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 
 public class AssistantUtilities {
+    public static Comparator<? super String> niceNameComparator = new Comparator<String>() {
+        @Override
+        public int compare(String o1, String o2) {
+            o1 = niceName(o1);
+            o2 = niceName(o2);
+            return o1.compareTo(o2);
+        }
+    };
+
     public static String now() {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
@@ -95,12 +102,12 @@ public class AssistantUtilities {
     }
 
 
-    public static String niceName(String name) {
+    public static String niceNameWithoutDimShape(String name) {
 
         name = name.replace("3D", "");
         name = name.replace("Box", "");
 
-        return ClEsperantoMacroAPIGenerator.niceName(name);
+        return niceName(name);
     }
 
     public static void glasbey(ImagePlus imp) {
@@ -845,4 +852,117 @@ public class AssistantUtilities {
         }
     }
 
+    public static String jarFromClass(Class klass) {
+        return klass.getResource('/' + klass.getName().replace('.', '/') + ".class").toString().split("!")[0];
+    }
+
+    public static String distributionName(Class klass) {
+        String full_class_name = klass.toString().replace("class ", "");
+        //System.out.println("PKG " + full_class_name);
+        if (full_class_name.startsWith("net.clesperanto")) {
+            return "clEsperanto";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clij.")) {
+            return "CLIJ";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clij2.")) {
+            return "CLIJ2";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clijx.weka.")) {
+            return "CLIJxWEKA";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clijx.simpleitk.")) {
+            return "SimpleITK";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clijx.morpholibj.")) {
+            return "MorpholibJ";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clijx.imglib2.")) {
+            return "Imglib2";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clijx.imagej3dsuite.")) {
+            return "ImageJ 3D Suite";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clijx.imagej2.")) {
+            return "ImageJ";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clijx.bonej.")) {
+            return "BoneJ";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clijx.imagej.")) {
+            return "ImageJ";
+        }
+        if (full_class_name.startsWith("net.haesleinhuepf.clijx.")) {
+            return "CLIJx";
+        }
+        return "unknown";
+    }
+
+    public static String niceName(String name) {
+
+        //name = name.replace("3D", "");
+        //name = name.replace("Box", "");
+
+        String result = name;
+
+        result = result.replace("SimpleITK", "");
+        result = result.replace("MorphoLibJ", "");
+        result = result.replace("ImageJ3DSuite", "");
+        result = result.replace("BoneJ", "");
+        result = result.replace("simpleITK", "");
+        result = result.replace("morphoLibJ", "");
+        result = result.replace("imageJ3DSuite", "");
+        result = result.replace("boneJ", "");
+        result = result.replace("CLIJxWEKA", "");
+        result = result.replace("CLIJx", "");
+        result = result.replace("CLIJ2", "");
+        result = result.replace("CLIJ", "");
+        result = result.replace("_", " ");
+        result = result.replace("  ", " ");
+
+        result = result.trim();
+
+        name = result;
+        result = "";
+        for (int i = 0; i < name.length(); i++) {
+            String ch = name.substring(i,i+1);
+            if (!ch.toLowerCase().equals(ch)) {
+                result = result + " ";
+            }
+            result = result + ch;
+        }
+
+        result = result.replace("C L", "CL");
+        result = result.replace("2 D", "2D");
+        result = result.replace("3 D", "3D");
+        result = result.replace("X Y", "XY");
+        result = result.replace("X Z", "XZ");
+        result = result.replace("Y Z", "YZ");
+        //result = result.replace("_ ", " ");
+        result = result.replace("I J", "IJ");
+        result = result.replace("Do G", "DoG");
+        result = result.replace("Lo G", "LoG");
+        result = result.replace("Cl Esperanto", "clEsperanto");
+        result = result.replace("Morpho Lib J", "MorphoLibJ");
+        result = result.replace("Simple I T K", "SimpleITK");
+        result = result.replace("D Suite", "DSuite");
+        result = result.replace("Bone J", "BoneJ");
+        result = result.replace("CL IJ", "CLIJ");
+        result = result.replace("R O I ", "ROI");
+        result = result.replace("F F T", "FFT");
+        result = result.replace("X Or", "XOr");
+        result = result.replace("W E K A", "WEKA");
+
+        result = result.substring(0, 1).toUpperCase() + result.substring(1);
+
+        result = result.trim();
+
+        //System.out.println("Name out: " + result);
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(niceName("CLIJx_SimpleITKWhateverFilter"));
+    }
 }

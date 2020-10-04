@@ -49,7 +49,7 @@ public class JythonGenerator implements ScriptGenerator {
 
         CLIJMacroPlugin clijMacroPlugin = plugin.getCLIJMacroPlugin();
         if (clijMacroPlugin == null) {
-            return "# " + AssistantUtilities.niceName(plugin.getName());
+            return "# " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName());
         }
         String methodName = clijMacroPlugin.getName();
         methodName = methodName.replace("CLIJ2_", "").replace("CLIJx_", "");
@@ -61,7 +61,7 @@ public class JythonGenerator implements ScriptGenerator {
 
         String[] image1s = makeImageIDs(plugin);
         String image2 = makeImageID(plugin.getTarget());
-        String program = "# " + AssistantUtilities.niceName(plugin.getName()) + "\n";
+        String program = "# " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName()) + "\n";
 
         ImagePlus target = plugin.getTarget();
         ImagePlus source = plugin.getSource(0);
@@ -113,7 +113,7 @@ public class JythonGenerator implements ScriptGenerator {
     }
 
     public String pythonize(String methodName) {
-        return methodName; // AssistantUtilities.niceName(methodName).trim().replace(" ", "_").toLowerCase();
+        return methodName; // AssistantUtilities.niceNameWithoutDimShape(methodName).trim().replace(" ", "_").toLowerCase();
     }
 
     @Override

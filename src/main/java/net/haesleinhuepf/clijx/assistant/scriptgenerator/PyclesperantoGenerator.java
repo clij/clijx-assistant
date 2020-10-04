@@ -7,8 +7,6 @@ import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 
-import java.util.Arrays;
-
 public class PyclesperantoGenerator implements ScriptGenerator {
 
     private String line_start = "";
@@ -51,7 +49,7 @@ public class PyclesperantoGenerator implements ScriptGenerator {
 
         CLIJMacroPlugin clijMacroPlugin = plugin.getCLIJMacroPlugin();
         if (clijMacroPlugin == null) {
-            return "# " + AssistantUtilities.niceName(plugin.getName());
+            return "# " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName());
         }
         Calibration calibration = plugin.getTarget().getCalibration();
 
@@ -64,7 +62,7 @@ public class PyclesperantoGenerator implements ScriptGenerator {
 
         String[] image1s = makeImageIDs(plugin);
         String image2 = makeImageID(plugin.getTarget());
-        String program = "\n# " + AssistantUtilities.niceName(plugin.getName()) + "\n";
+        String program = "\n# " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName()) + "\n";
         //image1 + " = \"" + plugin.getSource().getTitle() + "\";\n" +
 
         program = program +

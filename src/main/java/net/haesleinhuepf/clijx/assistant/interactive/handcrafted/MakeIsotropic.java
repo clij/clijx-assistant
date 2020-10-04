@@ -44,7 +44,7 @@ public class MakeIsotropic extends AbstractAssistantGUIPlugin {
 
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
-        GenericDialog gd = new GenericDialog(AssistantUtilities.niceName(this.getClass().getSimpleName()));
+        GenericDialog gd = new GenericDialog(AssistantUtilities.niceNameWithoutDimShape(this.getClass().getSimpleName()));
         return gd;
     }
 

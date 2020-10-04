@@ -1,14 +1,11 @@
 package net.haesleinhuepf.clijx.assistant.interactive.handcrafted;
 
 import ij.IJ;
-import ij.ImagePlus;
-import ij.WindowManager;
 import ij.gui.GenericDialog;
 import ij.gui.Toolbar;
 import ij.measure.ResultsTable;
 import ij.plugin.frame.RoiManager;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
-import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
@@ -25,12 +22,6 @@ import org.scijava.plugin.Plugin;
 import org.scijava.util.VersionUtils;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Paths;
 import java.util.HashMap;
 
 import static net.haesleinhuepf.clijx.assistant.interactive.handcrafted.BinaryWekaPixelClassifier.loadFeatures;
@@ -58,7 +49,7 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
 
-        GenericDialog gd = new GenericDialog(AssistantUtilities.niceName(this.getName()));
+        GenericDialog gd = new GenericDialog(AssistantUtilities.niceNameWithoutDimShape(this.getName()));
         dialog = gd;
 
         String temp = loadFeatures(filename + ".features.txt");
@@ -159,7 +150,7 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
         cleanup(my_sources, pushed);
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle(AssistantUtilities.niceName(this.getName()) + " of " + my_sources[0].getTitle());
+        my_target.setTitle(AssistantUtilities.niceNameWithoutDimShape(this.getName()) + " of " + my_sources[0].getTitle());
         enhanceContrast();
 
     }*/

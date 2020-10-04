@@ -6,6 +6,8 @@ import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 
 import java.util.HashMap;
 
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.distributionName;
+
 public interface ScriptGenerator {
 
     String push(ImagePlus source);
@@ -59,7 +61,7 @@ public interface ScriptGenerator {
         for (int i = 0; i < level; i++) {
             text.append("  ");
         }
-        text.append(" * " + AssistantUtilities.niceName(plugin.getName()) + " \n");
+        text.append(" * " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName()) + " (" + distributionName(plugin.getClass()) + ")" + " \n");
         for (AssistantGUIPlugin child : AssistantGUIPluginRegistry.getInstance().getFollowers(plugin)) {
             text.append(overview(child, level + 1));
         }
@@ -76,7 +78,7 @@ public interface ScriptGenerator {
     }
 
     default String pythonize(String methodName) {
-        return AssistantUtilities.niceName(methodName).trim()
+        return AssistantUtilities.niceNameWithoutDimShape(methodName).trim()
                 .toLowerCase()
                 .replace(" ", "_")
                 .replace("clij2_", "")

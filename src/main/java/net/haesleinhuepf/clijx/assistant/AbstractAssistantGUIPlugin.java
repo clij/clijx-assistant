@@ -41,6 +41,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.distributionName;
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.*;
 
 public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugIn, AssistantGUIPlugin {
@@ -92,7 +93,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         }
         AssistantGUIPluginRegistry.getInstance().register(this);
         ImagePlus.addImageListener(this);
-        IJ.showStatus("Running " + AssistantUtilities.niceName(this.getName()) + "...");
+        IJ.showStatus("Running " + AssistantUtilities.niceNameWithoutDimShape(this.getName())  + " (" + distributionName(plugin.getClass()) + ")" + "...");
         refresh();
         IJ.showStatus("");
 
@@ -103,7 +104,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     }
 
     protected GenericDialog buildNonModalDialog(Frame parent) {
-        GenericDialog gd = new GenericDialog(AssistantUtilities.niceName(this.getName()));
+        GenericDialog gd = new GenericDialog(AssistantUtilities.niceNameWithoutDimShape(this.getName()) + " (" + distributionName(plugin.getClass()) + ")");
         if (plugin == null) {
             return gd;
         }
@@ -276,7 +277,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         cleanup(my_sources, pushed);
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
-        my_target.setTitle(AssistantUtilities.niceName(this.getName()) + " of " + my_sources[0].getTitle());
+        my_target.setTitle(AssistantUtilities.niceNameWithoutDimShape(this.getName()) + " of " + my_sources[0].getTitle());
         enhanceContrast();
 
     }
@@ -443,7 +444,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         if (names_sources.length == 1) {
             setSources(new ImagePlus[]{IJ.getImage()});
         } else {
-            MyGenericDialogPlus gd = new MyGenericDialogPlus(niceName(this.getName()));
+            MyGenericDialogPlus gd = new MyGenericDialogPlus(niceNameWithoutDimShape(this.getName()) + " (" + distributionName(plugin.getClass()) + ")");
             for (int s = 0; s < names_sources.length; s++) {
                 gd.addImageChoice(names_sources[s], IJ.getImage().getTitle());
             }
@@ -619,7 +620,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     protected PopupMenu buildPopup(MouseEvent e) {
         PopupMenu menu = new PopupMenu("CLIncubator");
 
-        addMenuAction(menu, "CLIJx " + AssistantUtilities.niceName(this.getName()) + " (experimental)", (a) -> {
+        addMenuAction(menu, AssistantUtilities.niceNameWithoutDimShape(this.getName())  + " (" + distributionName(plugin.getClass()) + ", experimental)", (a) -> {
             if (registered_dialog != null) {
                 registered_dialog.show();
             }
@@ -647,11 +648,12 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         ArrayList<String> suggestedNames = new ArrayList<>();
         suggestedNames.addAll(suggestions.keySet());
 
-        Collections.sort(suggestedNames);
+        Collections.sort(suggestedNames, AssistantUtilities.niceNameComparator);
 
         for (String name : suggestedNames ) {
             Class klass = suggestions.get(name);
-            addMenuAction(suggestedFollowers, AssistantUtilities.niceName(name.replace("CLIJ2_", "").replace("CLIJx_", "")), (a) -> {
+            Class pluginClass = CLIJMacroPluginService.getInstance().getService().getCLIJMacroPlugin(name).getClass();
+            addMenuAction(suggestedFollowers, AssistantUtilities.niceNameWithoutDimShape(name.replace("CLIJ2_", "").replace("CLIJx_", ""))  + " (" + distributionName(pluginClass) + ")", (a) -> {
                 my_target.show();
                 try {
                     AssistantGUIPlugin plugin = (AssistantGUIPlugin) klass.newInstance();
@@ -675,9 +677,9 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             category_count ++;
 
             int menu_count = 0;
-            Menu moreOptions = new Menu(category_count + " " + AssistantUtilities.niceName(category));
+            Menu moreOptions = new Menu(category_count + " " + AssistantUtilities.niceNameWithoutDimShape(category));
             for (AssistantGUIPlugin plugin : MenuService.getInstance().getPluginsInCategory(category)) {
-                addMenuAction(moreOptions, AssistantUtilities.niceName(plugin.getName()), (a) -> {
+                addMenuAction(moreOptions, AssistantUtilities.niceNameWithoutDimShape(plugin.getName())  + " (" + distributionName(plugin.getCLIJMacroPlugin().getClass()) + ")", (a) -> {
                     plugin.run("");
                 });
                 menu_count ++;
@@ -824,7 +826,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         //String documentation_link =
         //        ((plugin != null) ?online_documentation_link + "_" + plugin.getName().replace("CLIJ2_", "").replace("CLIJx_", ""):online_website_link);
 
-        addMenuAction(menu,"Documentation for " + AssistantUtilities.niceName(getName()), (a) -> {
+        addMenuAction(menu,"Documentation for " + AssistantUtilities.niceNameWithoutDimShape(getName())  + " (" + distributionName(plugin.getClass()) + ")", (a) -> {
             String documentation = "";
             if (plugin instanceof HasAuthor) {
                 documentation = documentation + "By" + ((HasAuthor) plugin).getAuthorName() + "\n";

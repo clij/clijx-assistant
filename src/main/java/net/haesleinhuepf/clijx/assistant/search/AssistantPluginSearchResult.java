@@ -34,21 +34,14 @@ import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
 import net.haesleinhuepf.clij2.utilities.HasAuthor;
 import net.haesleinhuepf.clij2.utilities.HasLicense;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
-import org.scijava.MenuEntry;
-import org.scijava.MenuPath;
-import org.scijava.UIDetails;
-import org.scijava.input.Accelerator;
-import org.scijava.module.ModuleInfo;
 import org.scijava.search.SearchResult;
-import org.scijava.search.module.ModuleSearcher;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static net.cleasperanto.macro.api.ClEsperantoMacroAPIGenerator.distributionName;
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.distributionName;
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.jarFromClass;
-import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.niceName;
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.niceNameWithoutDimShape;
 
 public class AssistantPluginSearchResult implements SearchResult {
 
@@ -80,7 +73,7 @@ public class AssistantPluginSearchResult implements SearchResult {
 
 	@Override
 	public String name() {
-		return niceName(plugin.getName()) + "(" + distributionName(plugin.getClass()) + ")";
+		return niceNameWithoutDimShape(plugin.getName()) + "(" + distributionName(plugin.getCLIJMacroPlugin().getClass()) + ")";
 	}
 
 	@Override

@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.jarFromClass;
+
 class MavenJavaProjectGenerator {
 
     static String TEMPLATE_REPOSITORY = //"C:/structure/code/clijx-assistant-plugin-generator-template/";
@@ -249,7 +251,7 @@ class MavenJavaProjectGenerator {
         "\t\t\t<groupId>..</groupId>\n" +
         "\t\t\t<version>1</version>\n" +
         "\t\t\t<scope>system</scope>\n" +
-        "\t\t\t<systemPath>" + jar + "</systemPath>\n" +
+        "\t\t\t<systemPath>" + jar.replace("file:/", "").replace("jar:", "") + "</systemPath>\n" +
         "\t\t</dependency>";
     }
 
@@ -313,10 +315,6 @@ class MavenJavaProjectGenerator {
         } else {
             return "0 /* WARNING: unsupported parameter type (" + variable.getClass().getSimpleName() + ") " + variable + "*/";
         }
-    }
-
-    private String jarFromClass(Class klass) {
-        return klass.getResource('/' + klass.getName().replace('.', '/') + ".class").toString().split("!")[0];
     }
 
     private String validJavaText(String text) {

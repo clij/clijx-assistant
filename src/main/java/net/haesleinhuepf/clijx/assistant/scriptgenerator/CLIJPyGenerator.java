@@ -3,7 +3,6 @@ package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 import ij.IJ;
 import ij.ImagePlus;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
-import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 
@@ -53,7 +52,7 @@ public class CLIJPyGenerator extends JythonGenerator {
 
         CLIJMacroPlugin clijMacroPlugin = plugin.getCLIJMacroPlugin();
         if (clijMacroPlugin == null) {
-            return "# " + AssistantUtilities.niceName(plugin.getName());
+            return "# " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName());
         }
         String methodName = clijMacroPlugin.getName();
         methodName = methodName.replace("CLIJ2_", "").replace("CLIJx_", "");
@@ -65,7 +64,7 @@ public class CLIJPyGenerator extends JythonGenerator {
 
         String[] image1s = makeImageIDs(plugin);
         String image2 = makeImageID(plugin.getTarget());
-        String program = "# " + AssistantUtilities.niceName(plugin.getName()) + "\n";
+        String program = "# " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName()) + "\n";
 
         ImagePlus imp = plugin.getTarget();
         if (imp.getNSlices() > 1) {

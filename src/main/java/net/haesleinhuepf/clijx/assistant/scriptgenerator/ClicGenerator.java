@@ -60,7 +60,7 @@ public class ClicGenerator implements ScriptGenerator {
 
         CLIJMacroPlugin clijMacroPlugin = plugin.getCLIJMacroPlugin();
         if (clijMacroPlugin == null) {
-            return "# " + AssistantUtilities.niceName(plugin.getName());
+            return "# " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName());
         }
         String methodName = clijMacroPlugin.getName();
         methodName = methodName.replace("CLIJ2_", "").replace("CLIJx_", "");
@@ -70,7 +70,7 @@ public class ClicGenerator implements ScriptGenerator {
 
         String[] image1s = makeImageIDs(plugin);
         String image2 = makeImageID(plugin.getTarget());
-        String program = comment(" " + AssistantUtilities.niceName(plugin.getName()));
+        String program = comment(" " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName()));
 
         ImagePlus imp = plugin.getTarget();
         program = program +

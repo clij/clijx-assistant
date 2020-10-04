@@ -10,7 +10,7 @@ public class MacroMarkdownGenerator extends MacroGenerator {
         CLIJMacroPlugin clijMacroPlugin = plugin.getCLIJMacroPlugin();
         if (clijMacroPlugin == null) {
             return "/*\n" +
-                    "## " + AssistantUtilities.niceName(plugin.getClass().getName()) + "\n*/\n";
+                    "## " + AssistantUtilities.niceNameWithoutDimShape(plugin.getClass().getName()) + "\n*/\n";
         }
         String methodName = clijMacroPlugin.getName();
         methodName = "Ext." + methodName;
@@ -18,7 +18,7 @@ public class MacroMarkdownGenerator extends MacroGenerator {
         String[] image1s = makeImageIDs(plugin);
         String image2 = makeImageID(plugin.getTarget());
         String program = "/*\n" +
-                "## " + AssistantUtilities.niceName(plugin.getName()) + "\n";
+                "## " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName()) + "\n";
 
         for (int s = 0; s < plugin.getNumberOfSources(); s++) {
             program = program +

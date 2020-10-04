@@ -6,7 +6,6 @@ import ij.WindowManager;
 import ij.gui.GenericDialog;
 import ij.plugin.frame.RoiManager;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
-import net.haesleinhuepf.clij2.plugins.AutoThresholderImageJ1;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
@@ -29,7 +28,7 @@ public class PullToROIManager extends AbstractAssistantGUIPlugin {
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
         titles = WindowManager.getImageTitles();
-        GenericDialog gd = new GenericDialog(AssistantUtilities.niceName(this.getClass().getSimpleName()));
+        GenericDialog gd = new GenericDialog(AssistantUtilities.niceNameWithoutDimShape(this.getClass().getSimpleName()));
         gd.addChoice("", titles, titles[titles.length - 1] );
 
         choice = (Choice) gd.getChoices().get(0);

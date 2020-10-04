@@ -22,7 +22,7 @@ public class AutomaticThreshold extends AbstractAssistantGUIPlugin {
 
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
-        GenericDialog gd = new GenericDialog(AssistantUtilities.niceName(this.getClass().getSimpleName()));
+        GenericDialog gd = new GenericDialog(AssistantUtilities.niceNameWithoutDimShape(this.getClass().getSimpleName()));
         gd.addChoice("Threshold algorithm", AutoThresholderImageJ1.getMethods(), "Default" );
 
         choice = (Choice) gd.getChoices().get(0);

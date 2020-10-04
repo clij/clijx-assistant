@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import static net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin.online_documentation_link;
-import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.niceName;
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.niceNameWithoutDimShape;
 
 public class GeneratePluginsConfig {
     public static void main(String[] args) throws IOException {
@@ -39,7 +39,7 @@ public class GeneratePluginsConfig {
                     System.out.println("blocklist.add(" + plugin.getCLIJMacroPlugin().getClass().toString().replace("class ", "") + ".class);");
                 }
 
-                String niceName = niceName(plugin.getName());
+                String niceName = niceNameWithoutDimShape(plugin.getName());
                 String clijName = plugin.getCLIJMacroPlugin().getName();
 
                 menu_entries.add(
@@ -82,7 +82,7 @@ public class GeneratePluginsConfig {
 
             String link = online_documentation_link + "_" + methodName;
 
-            String new_entry = "* [" + niceName(methodName) + "](" + link + ")\n";
+            String new_entry = "* [" + niceNameWithoutDimShape(methodName) + "](" + link + ")\n";
             if (!link_to_docs.contains(new_entry)) {
                 link_to_docs.add(new_entry);
                 short_description.put(new_entry, description);

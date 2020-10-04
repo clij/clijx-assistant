@@ -46,14 +46,14 @@ public class MacroGenerator implements ScriptGenerator {
 
         CLIJMacroPlugin clijMacroPlugin = plugin.getCLIJMacroPlugin();
         if (clijMacroPlugin == null) {
-            return "// " + AssistantUtilities.niceName(plugin.getClass().getName());
+            return "// " + AssistantUtilities.niceNameWithoutDimShape(plugin.getClass().getName());
         }
         String methodName = clijMacroPlugin.getName();
         methodName = "Ext." + methodName;
 
         String[] image1s = makeImageIDs(plugin);
         String image2 = makeImageID(plugin.getTarget());
-        String program = "// " + AssistantUtilities.niceName(plugin.getName()) + "\n";
+        String program = "// " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName()) + "\n";
 
         for (int s = 0; s < plugin.getNumberOfSources(); s++) {
             program = program +

@@ -1,24 +1,12 @@
 package net.cleasperanto.macro.api;
 
-import ij.IJ;
-import net.haesleinhuepf.clij.CLIJ;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.CLIJMacroPluginService;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
-import net.haesleinhuepf.clij2.CLIJ2;
-import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import org.scijava.Context;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class ClEsperantoMacroAPIGenerator {
 
@@ -117,7 +105,7 @@ public class ClEsperantoMacroAPIGenerator {
 
 
     public static String pythonize(String methodName) {
-        String new_name = niceName(methodName).trim()
+        String new_name = AssistantUtilities.niceName(methodName).trim()
                 .toLowerCase()
                 .replace(" ", "_")
                 .replace("clij2_", "")
@@ -132,44 +120,5 @@ public class ClEsperantoMacroAPIGenerator {
 
         return new_name;
     }
-
-    public static String niceName(String name) {
-
-        //name = name.replace("3D", "");
-        //name = name.replace("Box", "");
-
-        String result = "";
-
-        for (int i = 0; i < name.length(); i++) {
-            String ch = name.substring(i,i+1);
-            if (!ch.toLowerCase().equals(ch)) {
-                result = result + " ";
-            }
-            result = result + ch;
-        }
-
-        result = result.substring(0, 1).toUpperCase() + result.substring(1);
-
-        result = result.replace("C L", "CL");
-        result = result.replace("2 D", "2D");
-        result = result.replace("3 D", "3D");
-        result = result.replace("X Y", "XY");
-        result = result.replace("X Z", "XZ");
-        result = result.replace("Y Z", "YZ");
-        result = result.replace("_ ", " ");
-        result = result.replace("I J", "IJ");
-        result = result.replace("Do G", "DoG");
-        result = result.replace("Lo G", "LoG");
-        result = result.replace("Cl Esperanto", "clEsperanto");
-        result = result.replace("Morpho Lib J", "MorphoLibJ");
-        result = result.replace("Simple I T K", "SimpleITK");
-        result = result.replace("CL IJ", "CLIJ");
-        result = result.replace("R O I ", "ROI");
-        result = result.replace("F F T", "FFT");
-        result = result.replace("X Or", "XOr");
-        return result.trim();
-    }
-
-
 
 }

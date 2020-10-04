@@ -22,7 +22,7 @@ public class ExtractChannel extends AbstractAssistantGUIPlugin {
 
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
-        GenericDialog gd = new GenericDialog(AssistantUtilities.niceName(this.getClass().getSimpleName()));
+        GenericDialog gd = new GenericDialog(AssistantUtilities.niceNameWithoutDimShape(this.getClass().getSimpleName()));
         gd.addNumericField("Channel (0-indexed)", 0);
         addPlusMinusPanel(gd, "channel");
 

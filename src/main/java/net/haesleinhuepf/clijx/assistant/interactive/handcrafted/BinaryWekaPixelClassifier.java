@@ -15,7 +15,6 @@ import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import net.haesleinhuepf.clijx.assistant.utilities.IJLogger;
 import net.haesleinhuepf.clijx.assistant.utilities.Logger;
 import net.haesleinhuepf.clijx.weka.GenerateFeatureStack;
-import net.haesleinhuepf.clijx.weka.GenerateLabelFeatureImage;
 import net.haesleinhuepf.clijx.weka.TrainWekaModelWithOptions;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
@@ -45,7 +44,7 @@ public class BinaryWekaPixelClassifier extends AbstractAssistantGUIPlugin {
 
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
-        GenericDialog gd = new GenericDialog(AssistantUtilities.niceName(this.getName()));
+        GenericDialog gd = new GenericDialog(AssistantUtilities.niceNameWithoutDimShape(this.getName()));
         dialog = gd;
 
         features = (String)((net.haesleinhuepf.clijx.weka.BinaryWekaPixelClassifier)(getCLIJMacroPlugin())).getDefaultValues()[2];
