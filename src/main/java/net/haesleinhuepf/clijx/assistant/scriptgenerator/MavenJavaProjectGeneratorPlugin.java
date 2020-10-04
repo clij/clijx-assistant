@@ -7,7 +7,9 @@ import ij.gui.GenericDialog;
 import ij.gui.WaitForUserDialog;
 import ij.plugin.PlugIn;
 import net.haesleinhuepf.clij2.plugins.GaussianBlur3D;
+import net.haesleinhuepf.clij2.plugins.MaximumImages;
 import net.haesleinhuepf.clij2.plugins.MaximumZProjection;
+import net.haesleinhuepf.clij2.plugins.Mean3DBox;
 import net.haesleinhuepf.clijx.assistant.AssistantGUIStartingPoint;
 import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Zoom;
@@ -36,9 +38,17 @@ public class MavenJavaProjectGeneratorPlugin implements PlugIn {
         new AssistantGUIStartingPoint().run("");
 
         new GenericAssistantGUIPlugin(new GaussianBlur3D()).run("");
-        new Zoom().run("");
+        new GenericAssistantGUIPlugin(new Mean3DBox()).run("");
+
+        new GenericAssistantGUIPlugin(new MaximumImages()).run("");
+
+        //new Zoom().run("");
         GenericAssistantGUIPlugin plugin = new GenericAssistantGUIPlugin(new MaximumZProjection());
         plugin.run("");
+
+        //GenericAssistantGUIPlugin plugin1 = new GenericAssistantGUIPlugin(new MaximumZProjection());
+        //plugin1.run("");
+
 
         new MavenJavaProjectGeneratorPlugin().run("");
     }
