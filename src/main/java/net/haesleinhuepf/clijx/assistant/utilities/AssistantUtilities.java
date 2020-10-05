@@ -745,10 +745,10 @@ public class AssistantUtilities {
         //Toolbar.removeMacroTools();
 
 
+        Toolbar.addPlugInTool(new AssistantStartingPointTool());
         Toolbar.addPlugInTool(new InteractiveZoom());
         Toolbar.addPlugInTool(new InteractiveWindowPosition());
         Toolbar.addPlugInTool(new AnnotationTool());
-        Toolbar.addPlugInTool(new AssistantStartingPointTool());
 
         ignoreEvent = false;
 
