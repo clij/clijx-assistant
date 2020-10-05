@@ -17,9 +17,9 @@ public class MacroMarkdownGenerator extends MacroGenerator {
         String methodName = clijMacroPlugin.getName();
         methodName = "Ext." + methodName;
 
-        String[] image1s = makeImageIDs(plugin);
-        String image2 = makeImageID(plugin.getTarget());
-        String program = "/*\n" +
+//        String[] image1s = makeImageIDs(plugin);
+  //      String image2 = makeImageID(plugin.getTarget());
+        String program = "\n/*\n" +
                 "## " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName()) + "\n";
 
         //for (int s = 0; s < plugin.getNumberOfSources(); s++) {
