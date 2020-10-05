@@ -1,6 +1,7 @@
 package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 
 import ij.ImagePlus;
+import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
@@ -18,7 +19,7 @@ public class JythonGenerator implements ScriptGenerator {
         if (filename != null && filename.length() > 0) {
             output = output + "" +
                     "# Load image from disc \n" +
-                    "imp = IJ.open(\"" + filename + "\")\n" +
+                    "imp = IJ.openImage(\"" + filename + "\")\n" +
                     "# Push " + source.getTitle() + " to GPU memory\n" +
                     makeImageID(source) + " = clijx.push(imp);\n\n";
         } else {
@@ -36,7 +37,10 @@ public class JythonGenerator implements ScriptGenerator {
 
         return "" +
                 "result = clijx.pull(" + image1 + ");\n" +
+                "result.setDisplayRange(" + result.getTarget().getDisplayRangeMin() + ", " + result.getTarget().getDisplayRangeMax() + ");\n" +
                 "result.show();\n\n";
+
+
     }
 
     @Override
@@ -54,7 +58,7 @@ public class JythonGenerator implements ScriptGenerator {
         String methodName = clijMacroPlugin.getName();
         methodName = methodName.replace("CLIJ2_", "").replace("CLIJx_", "");
         methodName = methodName.substring(0,1).toLowerCase() + methodName.substring(1);
-        String pakage = clijMacroPlugin.getClass().getPackage().getName();
+        //String pakage = clijMacroPlugin.getClass().getPackage().getName();
 
         methodName = "clijx." + pythonize(methodName);
 
@@ -89,13 +93,22 @@ public class JythonGenerator implements ScriptGenerator {
         String call = "";
 
         String[] parameters = clijMacroPlugin.getParameterHelpText().split(",");
-        for (int i = 2; i < parameters.length; i++) {
+        for (int i = 0; i < parameters.length; i++) {
             String temp[] = parameters[i].trim().split(" ");
             String name = temp[temp.length - 1];
-            call = call + ", " + name;
-            program = program + name + " = " + objectToString(plugin.getArgs()[i]) + ";\n";
+            //call = call + ", " + name;
+            //program = program + name + " = " + objectToString(plugin.getArgs()[i]) + ";\n";
+            if (i > 0) {
+                call = call + ", ";
+            }
+            if (plugin.getArgs()[i] instanceof ClearCLBuffer || plugin.getArgs()[i] instanceof ClearCLBuffer[]) {
+                call = call + objectToString(plugin.getArgs()[i]);
+            } else {
+                call = call + name;
+                program = program + name + " = " + objectToString(plugin.getArgs()[i]) + ";\n";
+            }
         }
-        program = program + methodName + "(" + namesToCommaSeparated(image1s) + ", " + image2 + call + ");\n";
+        program = program + methodName + "(" + call + ");\n";
 
         //program = program + comment("consider removing this line if you don't need to see that image");
         //program = program + "clijx.show(" + image2 + ", \"" + plugin.getTarget().getTitle() + "\")\n";

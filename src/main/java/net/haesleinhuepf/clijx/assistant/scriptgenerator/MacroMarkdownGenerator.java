@@ -43,7 +43,7 @@ public class MacroMarkdownGenerator extends MacroGenerator {
                 call = call + objectToString(plugin.getArgs()[i]);
             } else {
                 call = call + name;
-                program = program + name + " = " + objectToString(plugin.getArgs()[i]) + "; //\n";
+                program = program + name + " = " + objectToString(plugin.getArgs()[i]) + ";\n";
             }
         }
         program = program + methodName + "(" + call + ");\n";

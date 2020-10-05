@@ -11,8 +11,25 @@ public class MatlabGenerator extends JythonGenerator {
     }
 
     @Override
-    public String push(ImagePlus source) {
-        return pyToMatlab(super.push(source));
+    public String push(ImagePlus source){
+        String output = "";
+
+        String filename = getFilename(source);
+
+
+        if (filename != null && filename.length() > 0) {
+            output = output + "" +
+                    "% Load image from disc \n" +
+                    "image = imread(\"" + filename + "\");\n" +
+                    "% Push " + source.getTitle() + " to GPU memory\n" +
+                    makeImageID(source) + " = clijx.push(image);\n\n";
+        } else {
+            output = output +
+                    "% Push " + source.getTitle() + " to GPU memory\n" +
+                    makeImageID(source) + " = ...;\n\n";
+        }
+        return output;
+
     }
 
     @Override
