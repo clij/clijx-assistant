@@ -54,8 +54,8 @@ public class PyclesperantoGenerator implements ScriptGenerator {
         Calibration calibration = plugin.getTarget().getCalibration();
 
         String methodName = clijMacroPlugin.getName();
-        methodName = methodName.substring(0, 1).toLowerCase() + methodName.substring(1);
-        String pakage = clijMacroPlugin.getClass().getPackage().getName();
+        //methodName = methodName.substring(0, 1).toLowerCase() + methodName.substring(1);
+        //String pakage = clijMacroPlugin.getClass().getPackage().getName();
 
         methodName = "cle." + pythonize(methodName);
 
@@ -68,16 +68,20 @@ public class PyclesperantoGenerator implements ScriptGenerator {
         program = program +
                 image2 + " = cle.create_like(" + image1s[0] + ");\n";
 
+
         String call = "";
 
         String[] parameters = clijMacroPlugin.getParameterHelpText().split(",");
-        for (int i = 2; i < parameters.length; i++) {
+        for (int i = 0; i < parameters.length; i++) {
             String temp[] = parameters[i].trim().split(" ");
             String name = temp[temp.length - 1];
-            call = call + ", " + name;
+            if (i > 0) {
+                call = call + ", ";
+            }
+            call = call + name;
             program = program + name + " = " + objectToString(plugin.getArgs()[i]) + "\n";
         }
-        program = program + methodName + "(" + namesToCommaSeparated(image1s) + ", " + image2 + call + ")\n";
+        program = program + methodName + "(" + call + ")\n";
 
         if (use_napari) {
             String scale = calibration.pixelHeight + ", " + calibration.pixelWidth;

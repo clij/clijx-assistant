@@ -1,8 +1,12 @@
 package net.haesleinhuepf.clijx.assistant;
 
 import ij.ImagePlus;
+import ij.VirtualStack;
+import net.haesleinhuepf.clij.clearcl.ClearCL;
+import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
+import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 
 import java.util.HashMap;
 
@@ -70,7 +74,30 @@ public interface ScriptGenerator {
     }
 
     default String objectToString(Object arg) {
-        if (arg instanceof String) {
+        if (arg instanceof ClearCLBuffer[]) {
+            ClearCLBuffer[] imagelist = (ClearCLBuffer[]) arg;
+            for (ClearCLBuffer buffer : imagelist) {
+                String str = objectToString(buffer);
+                if (str != null) {
+                    return str;
+                }
+            }
+            return null;
+        } else if (arg instanceof ClearCLBuffer) {
+            for (ImagePlus image : image_map.keySet()) {
+                if (image.getStack() instanceof CLIJxVirtualStack) {
+                    CLIJxVirtualStack cvs = (CLIJxVirtualStack) image.getStack();
+                    for (int c = 0; c < cvs.getNumberOfChannels(); c++) {
+                        if (arg == cvs.getBuffer(c)) {
+                            return objectToString(image);
+                        }
+                    }
+                }
+            }
+            return null;
+        } else if (arg instanceof ImagePlus) {
+            return makeImageID((ImagePlus)arg);
+        } else if (arg instanceof String) {
             return "\"" + arg + "\"";
         } else {
             return arg.toString();
@@ -78,13 +105,13 @@ public interface ScriptGenerator {
     }
 
     default String pythonize(String methodName) {
+        methodName = methodName
+                .replace("CLIJx_", "")
+                .replace("CLIJ2_", "");
+
         return AssistantUtilities.niceNameWithoutDimShape(methodName).trim()
                 .toLowerCase()
-                .replace(" ", "_")
-                .replace("clij2_", "")
-                .replace("clij_", "")
-                .replace("clijx_", "")
-                ;
+                .replace(" ", "_");
     }
 
     default String getFilename(ImagePlus source)
