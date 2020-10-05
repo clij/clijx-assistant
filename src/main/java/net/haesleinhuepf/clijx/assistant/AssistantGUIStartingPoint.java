@@ -82,6 +82,9 @@ public class AssistantGUIStartingPoint extends AbstractAssistantGUIPlugin {
         }
         result = CLIJxVirtualStack.imagePlusToBuffer(my_sources[0]);
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
+
+        args = new Object[]{my_sources[0], result};
+
         my_target.setTitle("CLIJx Image of " + my_sources[0].getTitle());
         refreshView();
     }
