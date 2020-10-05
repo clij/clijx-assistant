@@ -66,7 +66,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
     boolean auto_contrast = true;
     static boolean auto_position = true;
-    public static boolean show_connections = true;
+    public static boolean show_connections = false;
 
     public AbstractAssistantGUIPlugin(CLIJMacroPlugin plugin) {
         setCLIJMacroPlugin(plugin);
