@@ -13,6 +13,8 @@ import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.nic
 
 public class MenuService {
     ArrayList<String> names = new ArrayList<>();
+    ArrayList<String> names_and_tags = new ArrayList<>();
+
 
     private MenuService() {
         AssistantGUIPluginService assistantGUIPluginService = AssistantGUIPluginService.getInstance();
@@ -22,13 +24,19 @@ public class MenuService {
             Class incubatorPluginClass = assistantGUIPluginService.getIncubatorPluginClassFromCLIJ2Plugin(clijMacroPluginService.getCLIJMacroPlugin(name));
             if (incubatorPluginClass != null) {
                 names.add(name);
+                CLIJMacroPlugin plugin = clijMacroPluginService.getCLIJMacroPlugin(name);
+                String tags = "";
+                if (plugin instanceof IsCategorized) {
+                    tags = ((IsCategorized) plugin).getCategories();
+                }
+                names_and_tags.add(name + "," + tags);
             }
         }
 
         Collections.sort(names, AssistantUtilities.niceNameComparator);
-        for (String name : names) {
-            System.out.println(niceName(name));
-        }
+        //for (String name : names) {
+        //    System.out.println(niceName(name));
+        //}
     }
 
     private static MenuService instance = null;
@@ -64,6 +72,11 @@ public class MenuService {
     public String[] getNames() {
         String[] output = new String[names.size()];
         names.toArray(output);
+        return output;
+    }
+    public String[] getNamesAndTags() {
+        String[] output = new String[names_and_tags.size()];
+        names_and_tags.toArray(output);
         return output;
     }
 

@@ -72,10 +72,10 @@ public class AssistantPluginSearcher implements Searcher {
 
 		MenuService service = MenuService.getInstance();
 
-		String[] names = service.getNames();
+		String[] names_and_tags = service.getNamesAndTags();
 		String[] search_items = text.toLowerCase().trim().split(" ");
-		for (String name : names) {
-			String name_lower = name.toLowerCase();
+		for (String name_and_tags : names_and_tags) {
+			String name_lower = name_and_tags.toLowerCase();
 			boolean ok = true;
 			for (String search_item : search_items) {
 				if (!name_lower.contains(search_item)) {
@@ -84,7 +84,7 @@ public class AssistantPluginSearcher implements Searcher {
 				}
 			}
 			if (ok) {
-				list.add(new AssistantPluginSearchResult(service.getPluginByName(name)));
+				list.add(new AssistantPluginSearchResult(service.getPluginByName(name_and_tags.split(",")[0])));
 			}
 		}
 
