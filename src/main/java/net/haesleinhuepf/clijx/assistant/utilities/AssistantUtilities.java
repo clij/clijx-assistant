@@ -5,8 +5,6 @@ import ij.ImagePlus;
 import ij.gui.Toolbar;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
-import net.haesleinhuepf.clij2.plugins.ApplyVectorField2D;
-import net.haesleinhuepf.clij2.plugins.ApplyVectorField3D;
 import net.haesleinhuepf.clij2.plugins.PullToROIManager;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.CLIJx;
@@ -453,7 +451,7 @@ public class AssistantUtilities {
             blocklist.add(net.haesleinhuepf.clij2.plugins.GenerateParametricImageFromResultsTableColumn.class);
             blocklist.add(net.haesleinhuepf.clij2.plugins.AffineTransform2D.class);
             blocklist.add(net.haesleinhuepf.clij2.plugins.AffineTransform.class);
-            blocklist.add(net.haesleinhuepf.clij2.plugins.AffineTransform3D.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.AffineTransform3D.class);
 
             blocklist.add(net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfDiamond.class);
             blocklist.add(net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfBox.class);
@@ -463,8 +461,8 @@ public class AssistantUtilities {
             blocklist.add(CrossCorrelation.class);
             blocklist.add(TrainAutoContextWekaModel.class);
             blocklist.add(ApplyAutoContextWekaModel.class);
-            blocklist.add(ApplyVectorField2D.class);
-            blocklist.add(ApplyVectorField3D.class);
+            //blocklist.add(ApplyVectorField2D.class);
+            //blocklist.add(ApplyVectorField3D.class);
             blocklist.add(ApplyWekaModel.class);
 
 ///
@@ -528,9 +526,9 @@ public class AssistantUtilities {
             //blocklist.add(net.haesleinhuepf.clij2.plugins.ErodeBox.class);
             blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabels.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsOnEdges.class);
-            blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsOnSurface.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsOnSurface.class);
             //blocklist.add(net.haesleinhuepf.clijx.plugins.ExcludeLabelsOutsideSizeRange.class);
-            blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsSubSurface.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsSubSurface.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsWithValuesOutOfRange.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsWithValuesWithinRange.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.Exponential.class);
@@ -638,7 +636,7 @@ public class AssistantUtilities {
             //blocklist.add(net.haesleinhuepf.clij2.plugins.NotEqual.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.NotEqualConstant.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.OpeningBox.class);
-            blocklist.add(net.haesleinhuepf.clijx.plugins.ParametricWatershed.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.ParametricWatershed.class);
             blocklist.add(net.haesleinhuepf.clijx.piv.ParticleImageVelocimetry.class);
             blocklist.add(net.haesleinhuepf.clijx.piv.ParticleImageVelocimetryTimelapse.class);
             blocklist.add(net.haesleinhuepf.clij2.plugins.PointIndexListToMesh.class);
