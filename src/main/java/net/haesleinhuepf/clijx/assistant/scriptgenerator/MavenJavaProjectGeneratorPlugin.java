@@ -64,10 +64,6 @@ public class MavenJavaProjectGeneratorPlugin implements PlugIn {
             new WaitForUserDialog("Error: Only CLIJx-Assistant plugins allow generating CLIJx/Fiji plugins.");
         }
 
-        if (IJ.isWindows() && MAVEN_EXECUTABLE.compareTo("mvn") == 0) {
-            MAVEN_EXECUTABLE = "mvn.cmd";
-        }
-
         Workflow workflow = plugin.getWorkflow();
 
         String temp_folder = IJ.getDirectory("temp") + "/temp" + System.currentTimeMillis() + "/";
@@ -84,9 +80,6 @@ public class MavenJavaProjectGeneratorPlugin implements PlugIn {
         dialog.addStringField("Author", author_name, 20);
         dialog.addStringField("Author ID", author_id, 20);
         dialog.addStringField("Working directory", temp_folder, 20);
-        dialog.addStringField("Maven executable", MAVEN_EXECUTABLE, 20);
-        dialog.addStringField("JDK home folder", JDK_HOME, 20);
-        dialog.addStringField("Git executab;e", GIT_EXECUTABLE, 20);
 
         dialog.showDialog();
         if (dialog.wasCanceled()) {
@@ -98,9 +91,6 @@ public class MavenJavaProjectGeneratorPlugin implements PlugIn {
         author_name = dialog.getNextString();
         author_id = dialog.getNextString();
         temp_folder = dialog.getNextString();
-        MAVEN_EXECUTABLE = dialog.getNextString();
-        JDK_HOME = dialog.getNextString();
-        GIT_EXECUTABLE = dialog.getNextString();
 
         generate(workflow, temp_folder, plugin_name, plugin_description, author_name, author_id);
     }

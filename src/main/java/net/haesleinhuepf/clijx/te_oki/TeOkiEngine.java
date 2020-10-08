@@ -30,6 +30,7 @@
 package net.haesleinhuepf.clijx.te_oki;
 
 import ij.IJ;
+import net.haesleinhuepf.clijx.assistant.options.AssistantOptions;
 import net.imagej.legacy.IJ1Helper;
 import net.imagej.legacy.plugin.IJ1MacroEngine;
 import org.scijava.ui.swing.script.TextEditor;
@@ -52,9 +53,6 @@ import java.nio.file.Paths;
 public class TeOkiEngine extends IJ1MacroEngine {
 
 	public static String teOkiDirectory = null;
-	//public static String conda_directory = "";
-	public static String conda_env = "te_oki";
-
 
 	public TeOkiEngine(IJ1Helper ij1Helper) {
 		super(ij1Helper);
@@ -83,11 +81,11 @@ public class TeOkiEngine extends IJ1MacroEngine {
 
 				if (isWindows) {
 					conda_code = //"call " + conda_directory + "\\Scripts\\activate.bat " + conda_directory + "\n" +
-							"call conda activate " + conda_env + "\n" +
+							"call " + AssistantOptions.getInstance().getCondaPath() + "conda activate " + AssistantOptions.getInstance().getCondaEnv() + "\n" +
 							"cd " + directory + "\n" +
 							"ipython --gui=qt temp.py";
 				} else {
-					conda_code = "conda activate " + conda_env + "\n" +
+					conda_code = AssistantOptions.getInstance().getCondaPath() + "conda activate " + AssistantOptions.getInstance().getCondaEnv() + "\n" +
 							"cd " + directory + "\n" +
 							"ipython --gui=qt  temp.py";
 				}
@@ -132,36 +130,6 @@ public class TeOkiEngine extends IJ1MacroEngine {
 					e.printStackTrace();
 				}
 
-				/*
-				Process process;
-				try {
-
-					Files.write(Paths.get(directory + "/temp.py"), macro.getBytes());
-					if (isWindows) {
-						System.out.println("Writing to " + directory + "/temp.bat");
-						Files.write(Paths.get(directory + "/temp.bat"), conda_code.getBytes());
-						process = Runtime.getRuntime()
-								.exec("rundll32 SHELL32.DLL,ShellExec_RunDLL " + directory + "/temp.bat");
-								//.exec("rundll32 SHELL32.DLL,ShellExec_RunDLL " + directory + "/temp.bat");
-					} else {
-						Files.write(Paths.get(directory + "/temp.sh"), conda_code.getBytes());
-						process = Runtime.getRuntime()
-								.exec(directory + "/temp.sh");
-					}
-					process.waitFor();
-					System.out.println("Returned");
-
-					byte[] error = new byte[1024];
-					process.getErrorStream().read(error);
-					IJ.log(new String(error));
-
-				} catch (IOException e) {
-					e.printStackTrace();
-					//} catch (InterruptedException e) {
-					//	e.printStackTrace();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}*/
 				IJ.log("Te Oki: Bye.");
 			}
 		}).start();

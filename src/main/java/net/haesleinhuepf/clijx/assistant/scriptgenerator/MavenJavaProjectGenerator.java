@@ -15,6 +15,7 @@ import net.haesleinhuepf.clijx.assistant.AssistantGUIStartingPoint;
 import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Zoom;
 import net.haesleinhuepf.clijx.assistant.optimize.Workflow;
+import net.haesleinhuepf.clijx.assistant.options.AssistantOptions;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import org.jocl.CL;
 
@@ -33,9 +34,7 @@ class MavenJavaProjectGenerator {
 
     static String TEMPLATE_REPOSITORY = //"C:/structure/code/clijx-assistant-plugin-generator-template/";
                                         "https://github.com/clij/clijx-assistant-plugin-generator-template";
-    static String GIT_EXECUTABLE = "git";
-    static String MAVEN_EXECUTABLE = "mvn";
-    static String JDK_HOME = "C:/Program Files/Java/jdk1.8.0_202/";
+
 
     String enter_lower_case_plugin_name_here = "";
     String enter_plugin_name_here = "";
@@ -402,12 +401,12 @@ class MavenJavaProjectGenerator {
     }
 
     public static void git_clone(String url, String target_directory) {
-        String[] command = {GIT_EXECUTABLE, "clone", url, target_directory.replace(" ", "\\ ")};
+        String[] command = {AssistantOptions.getInstance().getGitExecutable(), "clone", url, target_directory.replace(" ", "\\ ")};
         AssistantUtilities.execute(target_directory, command);
     }
 
     public static void mvn_package(String target_directory) {
-        String[] command = {MAVEN_EXECUTABLE, "-Dmaven.compiler.fork=true", "-Dmaven.compiler.executable=" + JDK_HOME + "bin/javac", "package"};
+        String[] command = {AssistantOptions.getInstance().getMavenExecutable(), "-Dmaven.compiler.fork=true", "-Dmaven.compiler.executable=" + AssistantOptions.getInstance().getJdkHome() + "bin/javac", "package"};
         AssistantUtilities.execute(target_directory, command);
 
     }

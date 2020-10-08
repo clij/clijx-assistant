@@ -9,6 +9,7 @@ import net.haesleinhuepf.clij2.plugins.PullToROIManager;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
+import net.haesleinhuepf.clijx.assistant.options.AssistantOptions;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.gui.*;
 import net.haesleinhuepf.clijx.plugins.CrossCorrelation;
@@ -24,6 +25,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -965,5 +968,75 @@ public class AssistantUtilities {
 
     public static void main(String[] args) {
         System.out.println(niceName("CLIJx_SimpleITKWhateverFilter"));
+    }
+
+    public static void openJupyterNotebook(String file) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                boolean isWindows = System.getProperty("os.name")
+                        .toLowerCase().startsWith("windows");
+
+                String teOkiDirectory = IJ.getDirectory("imagej");
+                System.out.println(teOkiDirectory);
+                File directory = new File(teOkiDirectory);
+
+                String conda_code;
+
+                if (isWindows) {
+                    conda_code = //"call " + conda_directory + "\\Scripts\\activate.bat " + conda_directory + "\n" +
+                            "call " + AssistantOptions.getInstance().getCondaPath() + "conda activate " + AssistantOptions.getInstance().getCondaEnv() + "\n" +
+                                    "cd " + directory + "\n" +
+                                    "jupyter notebook " + file;
+                } else {
+                    conda_code = AssistantOptions.getInstance().getCondaPath() + "conda activate " + AssistantOptions.getInstance().getCondaEnv() + "\n" +
+                            "cd " + directory + "\n" +
+                            "jupyter notebook " + file;
+                }
+
+                System.out.println(conda_code);
+
+                PrintStream out = new PrintStream(new OutputStream() {
+                    @Override
+                    public void write(int b) throws IOException {
+                        //IJ.log("" + b);
+                    }
+
+                    @Override
+                    public void write(byte[] b) throws IOException {
+                        //IJ.log(new String(b));
+                    }
+
+                    @Override
+                    public void write(byte[] b, int off, int len) throws IOException {
+                        byte[] a = new byte[len];
+                        System.arraycopy(b, off, a, 0, len);
+                        //IJ.log("" + len);
+                        if (a.length > 2) {
+                            IJ.log(new String(a));
+                        }
+                    }
+                });
+                try {
+                    Files.write(Paths.get(directory + "/temp.bat"), conda_code.getBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                //parent.getTab().showErrors();
+                try {
+                    //String exec = ProcessUtils.exec(directory, out, out, "conda activate " + conda_env, "ipython --gui=qt  temp.py");
+                    ProcessUtils.exec(directory, out, out, directory + "/temp.bat");
+                    //IJ.log(exec);
+                    //parent.errorHandler = handler.errorHandler;
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
+                }
+
+                IJ.log("Te Oki: Bye.");
+            }
+        }).start();
+
     }
 }
