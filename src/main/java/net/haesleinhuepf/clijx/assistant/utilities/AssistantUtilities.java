@@ -988,7 +988,8 @@ public class AssistantUtilities {
                     conda_code = //"call " + conda_directory + "\\Scripts\\activate.bat " + conda_directory + "\n" +
                             "call " + AssistantOptions.getInstance().getCondaPath() + "conda activate " + AssistantOptions.getInstance().getCondaEnv() + "\n" +
                                     "cd " + directory + "\n" +
-                                    "jupyter notebook " + file;
+                                    "jupyter nbconvert --execute --to notebook " + file + "\n" +
+                                    "jupyter notebook " + file.replace(".ipynb", ".nbconvert.ipynb") + "\n";
                 } else {
                     conda_code = AssistantOptions.getInstance().getCondaPath() + "conda activate " + AssistantOptions.getInstance().getCondaEnv() + "\n" +
                             "cd " + directory + "\n" +
