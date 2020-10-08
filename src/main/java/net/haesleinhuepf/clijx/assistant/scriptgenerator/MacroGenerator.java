@@ -52,8 +52,8 @@ public class MacroGenerator implements ScriptGenerator {
         String methodName = clijMacroPlugin.getName();
         methodName = "Ext." + methodName;
 
-    //    String[] image1s = makeImageIDs(plugin);
-      //  String image2 = makeImageID(plugin.getTarget());
+        makeImageIDs(plugin);
+        makeImageID(plugin.getTarget());
         String program = "\n// " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName()) + "\n";
 
         //for (int s = 0; s < plugin.getNumberOfSources(); s++) {
@@ -69,10 +69,16 @@ public class MacroGenerator implements ScriptGenerator {
         for (int i = 0; i < parameters.length; i++) {
             String temp[] = parameters[i].trim().split(" ");
             String name = temp[temp.length - 1];
+
             if (i > 0) {
                 call = call + ", ";
             }
-            if (plugin.getArgs()[i] instanceof ClearCLBuffer || plugin.getArgs()[i] instanceof ClearCLBuffer[]) {
+
+            if (plugin.getArgs()[i] instanceof ClearCLBuffer ||
+                    plugin.getArgs()[i] instanceof ClearCLBuffer[] ||
+                    plugin.getArgs()[i] instanceof ClearCLBuffer[][] ||
+                    plugin.getArgs()[i] instanceof ImagePlus
+            ) {
                 call = call + objectToString(plugin.getArgs()[i]);
             } else {
                 call = call + name;

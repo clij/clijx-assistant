@@ -1,5 +1,6 @@
 package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 
+import ij.ImagePlus;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clijx.assistant.annotation.ClassificationClass;
@@ -17,8 +18,8 @@ public class MacroMarkdownGenerator extends MacroGenerator {
         String methodName = clijMacroPlugin.getName();
         methodName = "Ext." + methodName;
 
-//        String[] image1s = makeImageIDs(plugin);
-  //      String image2 = makeImageID(plugin.getTarget());
+        makeImageIDs(plugin);
+        makeImageID(plugin.getTarget());
         String program = "\n/*\n" +
                 "## " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName()) + "\n";
 
@@ -39,7 +40,13 @@ public class MacroMarkdownGenerator extends MacroGenerator {
             if (i > 0) {
                 call = call + ", ";
             }
-            if (plugin.getArgs()[i] instanceof ClearCLBuffer || plugin.getArgs()[i] instanceof ClearCLBuffer[]) {
+
+            if (plugin.getArgs()[i] instanceof ClearCLBuffer ||
+                    plugin.getArgs()[i] instanceof ClearCLBuffer[] ||
+                    plugin.getArgs()[i] instanceof ClearCLBuffer[][] ||
+                    plugin.getArgs()[i] instanceof ImagePlus
+            ) {
+
                 call = call + objectToString(plugin.getArgs()[i]);
             } else {
                 call = call + name;

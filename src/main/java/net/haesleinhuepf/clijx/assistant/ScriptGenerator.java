@@ -74,7 +74,20 @@ public interface ScriptGenerator {
     }
 
     default String objectToString(Object arg) {
-        if (arg instanceof ClearCLBuffer[]) {
+
+        if (arg instanceof ClearCLBuffer[][]) {
+            ClearCLBuffer[][] arrgs = (ClearCLBuffer[][]) arg;
+            for (ClearCLBuffer[] arrg : arrgs) {
+                ClearCLBuffer[] imagelist = (ClearCLBuffer[]) arrg;
+                for (ClearCLBuffer buffer : imagelist) {
+                    String str = objectToString(buffer);
+                    if (str != null) {
+                        return str;
+                    }
+                }
+            }
+            return null;
+        } else if (arg instanceof ClearCLBuffer[]) {
             ClearCLBuffer[] imagelist = (ClearCLBuffer[]) arg;
             for (ClearCLBuffer buffer : imagelist) {
                 String str = objectToString(buffer);

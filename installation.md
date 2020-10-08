@@ -74,6 +74,11 @@ https://forum.image.sc/t/ijm-macro-crashes-after-a-few-loops/40130/17).
 ## Linux specific installation
 Also under linux, installation of drivers from the vendors website is necessary ([AMD](https://www.amd.com/en/support), [NVidia](https://www.nvidia.com/Download/index.aspx)). Furthermore, when working with Intel graphics, it might be necessary to install packages such as "ocl-icd-devel" to make Fiji / CLIJ discover the right GPU devices.
 
+<a name="ijmmd"></a>
+## Optional: ImageJ Macro Markdown Installation
+If you want to export your workflows notebook style with [ImageJ Macro Markdown](https://github.com/haesleinhuepf/imagejmacromarkdown), 
+please also activate the "IJMMD" update site in Fiji.
+
 <a name="maven"></a>
 ## Optional: Plugin generator Installation
 In order to build Fiji plugins, you need to install and Java Development kit, version 8 or higher, e.g. [OpenJDK](https://openjdk.java.net/).
