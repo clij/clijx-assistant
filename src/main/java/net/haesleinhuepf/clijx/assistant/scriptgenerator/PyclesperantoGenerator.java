@@ -95,8 +95,8 @@ public class PyclesperantoGenerator implements ScriptGenerator {
         } else {
             program = program +
                     "# show result\n" +
-                    "io.imshow(" + image2 + ")\n" +
-                    "io.show()\n\n";
+                    "plt.imshow(" + image2 + ")\n" +
+                    "plt.show()\n\n";
         }
 
         program = line_start + program.replace("\n", "\n" + line_start);
@@ -113,11 +113,11 @@ public class PyclesperantoGenerator implements ScriptGenerator {
     public String header() {
         String header = "# This is an experimentally generated python script. Not all commands are supposed to be executable yet.\n" +
                 "# If you want to give it a try, create conda environment named te_oki:\n" +
-                "#  > conda create --name te_oki \n" +
+                "#   `conda create --name te_oki` \n" +
                 "# activate the environment: \n" +
-                "#  > conda activate te_oki \n" +
+                "#   `conda activate te_oki` \n" +
                 "# install dependencies: \n" +
-                "#  > pip install pyopencl napari ipython matplotlib numpy pyclesperanto_prototype scikit-image \n" +
+                "#   `pip install pyopencl napari ipython matplotlib numpy pyclesperanto_prototype scikit-image` \n" +
                 "# Also make sure conda is part of the PATH variable.\n" +
                 "# \n" +
                 "# If you want to run it from Fiji and you're using a different conda environment, you can configure it in Fijis main menu \n" +
@@ -138,7 +138,7 @@ public class PyclesperantoGenerator implements ScriptGenerator {
         } else {
             line_start = "";
             header = header +
-                    "from skimage import io\n\n";
+                    "import matplotlib.pyplot as plt\n\n";
         }
 
         return header;
