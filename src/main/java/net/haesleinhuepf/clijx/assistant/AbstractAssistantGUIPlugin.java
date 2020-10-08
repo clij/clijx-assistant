@@ -713,6 +713,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         addMenuAction(script, "clEsperanto clic", (a) -> {generateScriptFile(new ClicGenerator());});
         addMenuAction(script, "clEsperanto ImageJ Macro", (a) -> {generateScriptFile(new ClEsperantoMacroGenerator());});
         addMenuAction(script, "clEsperanto Python", (a) -> {generateScriptFile(new PyclesperantoGenerator(false));});
+        addMenuAction(script, "clEsperanto Python Jupyter Notebook", (a) -> {generateScriptFile(new PyclesperantoJupyterNotebookGenerator());});
         addMenuAction(script, "clEsperanto Python + Napari", (a) -> {generateScriptFile(new PyclesperantoGenerator(true));});
         menu.add(script);
 
@@ -921,8 +922,13 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         } catch (IOException e) {
             e.printStackTrace();
         }
-        IJ.open(outputTarget.getAbsolutePath());
 
+        String file = outputTarget.getAbsolutePath();
+        if (file.endsWith("ipynb")) {
+            AssistantUtilities.openJupyterNotebook(file);
+        } else {
+            IJ.open(file);
+        }
     }
 
     public String generateScript(ScriptGenerator generator) {
