@@ -526,9 +526,9 @@ public class AssistantUtilities {
             //blocklist.add(net.haesleinhuepf.clij2.plugins.ErodeBox.class);
             blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabels.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsOnEdges.class);
-            //blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsOnSurface.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsOnSurface.class);
             //blocklist.add(net.haesleinhuepf.clijx.plugins.ExcludeLabelsOutsideSizeRange.class);
-            //blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsSubSurface.class);
+            blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsSubSurface.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsWithValuesOutOfRange.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.ExcludeLabelsWithValuesWithinRange.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.Exponential.class);
