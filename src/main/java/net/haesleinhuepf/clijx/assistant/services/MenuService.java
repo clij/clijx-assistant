@@ -243,14 +243,13 @@ public class MenuService {
                 "Filter>Noise removal",
                 "Filter>Background removal",
                 "Filter>Edges",
-                "Filter>All",
+                "Filter>Math",
                 "Transform",
                 "Projection",
                 "Binary",
                 "Label>Segmentation",
                 "Label>Processing",
                 "Label>Measurement",
-                "Label>All",
                 ALL_STRING
         };
     }
