@@ -5,6 +5,7 @@ import ij.ImageJ;
 import ij.ImagePlus;
 import ij.gui.Toolbar;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij.clearcl.util.StringUtils;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
 import net.haesleinhuepf.clij2.plugins.ConnectedComponentsLabelingBox;
@@ -16,8 +17,10 @@ import net.haesleinhuepf.clijx.assistant.AssistantGUIStartingPoint;
 import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
 import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.options.AssistantOptions;
+import net.haesleinhuepf.clijx.assistant.scriptgenerator.PyclesperantoGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.MenuService;
+import net.haesleinhuepf.clijx.assistant.services.SuggestionService;
 import net.haesleinhuepf.clijx.gui.*;
 import net.haesleinhuepf.clijx.plugins.CrossCorrelation;
 import net.haesleinhuepf.clijx.weka.ApplyWekaModel;
@@ -28,10 +31,7 @@ import org.scijava.util.ProcessUtils;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -912,7 +912,20 @@ public class AssistantUtilities {
         return klass.getResource('/' + klass.getName().replace('.', '/') + ".class").toString().split("!")[0];
     }
 
+    private static String cle_compatible = null;
+
+    public static boolean isCleCompatible(String function_name)
+    {
+        if (cle_compatible == null) {
+            InputStream resourceAsStream = SuggestionService.class.getClassLoader().getResourceAsStream("cle_compatibility.config");
+            cle_compatible = "\n" + StringUtils.streamToString(resourceAsStream, "UTF-8") + "\n";
+        }
+        //System.out.println("Checking " + function_name + " = " + new PyclesperantoGenerator(false).pythonize(function_name));
+        return cle_compatible.contains("\n" + new PyclesperantoGenerator(false).pythonize(function_name) + "\n");
+    }
+
     public static String distributionName(Class klass) {
+
         String full_class_name = klass.toString().replace("class ", "");
         //System.out.println("PKG " + full_class_name);
         if (full_class_name.startsWith("net.clesperanto")) {

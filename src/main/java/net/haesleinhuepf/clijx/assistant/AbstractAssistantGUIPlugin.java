@@ -621,7 +621,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     protected PopupMenu buildPopup(MouseEvent e) {
         PopupMenu menu = new PopupMenu("CLIncubator");
 
-        addMenuAction(menu, AssistantUtilities.niceNameWithoutDimShape(this.getName())  + " (" + distributionName(plugin.getClass()) + ", experimental)", (a) -> {
+        addMenuAction(menu, AssistantUtilities.niceNameWithoutDimShape(this.getName()) + " (" + distributionName(plugin.getClass())+ (isCleCompatible(this.getName())?", CLE":"") + ", experimental)", (a) -> {
             if (registered_dialog != null) {
                 registered_dialog.show();
             }
@@ -652,12 +652,13 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         Collections.sort(suggestedNames, AssistantUtilities.niceNameComparator);
 
         for (String name : suggestedNames ) {
+            System.out.println("Suggested: " + name);
             Class klass = suggestions.get(name);
 
             CLIJMacroPlugin clijPlugin = CLIJMacroPluginService.getInstance().getService().getCLIJMacroPlugin(name);
             if (isSuitable(clijPlugin, this)) {
                 Class pluginClass = plugin.getClass();
-                addMenuAction(suggestedFollowers, AssistantUtilities.niceName(name.replace("CLIJ2_", "").replace("CLIJx_", "")) + " (" + distributionName(pluginClass) + ")", (a) -> {
+                addMenuAction(suggestedFollowers, AssistantUtilities.niceName(name.replace("CLIJ2_", "").replace("CLIJx_", "")) + " (" + distributionName(pluginClass)+ (isCleCompatible(name)?", CLE":"") + ")", (a) -> {
                     my_target.show();
                     try {
                         AssistantGUIPlugin plugin = (AssistantGUIPlugin) klass.newInstance();
@@ -688,7 +689,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             for (AssistantGUIPlugin plugin : MenuService.getInstance().getPluginsInCategory(category, this.getCLIJMacroPlugin())) {
                 CLIJMacroPlugin clijPlugin = plugin.getCLIJMacroPlugin();
                 if (category_count == categories.length || isSuitable(clijPlugin, this)) {
-                    addMenuAction(menuCategory, AssistantUtilities.niceName(plugin.getName()) + " (" + distributionName(plugin.getCLIJMacroPlugin().getClass()) + ")", (a) -> {
+                    addMenuAction(menuCategory, AssistantUtilities.niceName(plugin.getName()) + " (" + distributionName(plugin.getCLIJMacroPlugin().getClass())+ (isCleCompatible(plugin.getName())?", CLE":"") + ")", (a) -> {
                         plugin.run("");
                     });
                     menu_count ++;
