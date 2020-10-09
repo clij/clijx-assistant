@@ -653,20 +653,24 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
         for (String name : suggestedNames ) {
             Class klass = suggestions.get(name);
-            Class pluginClass = CLIJMacroPluginService.getInstance().getService().getCLIJMacroPlugin(name).getClass();
-            addMenuAction(suggestedFollowers, AssistantUtilities.niceNameWithoutDimShape(name.replace("CLIJ2_", "").replace("CLIJx_", ""))  + " (" + distributionName(pluginClass) + ")", (a) -> {
-                my_target.show();
-                try {
-                    AssistantGUIPlugin plugin = (AssistantGUIPlugin) klass.newInstance();
-                    plugin.setCLIJMacroPlugin(CLIJMacroPluginService.getInstance().getService().getCLIJMacroPlugin(name));
-                    plugin.run(null);
-                } catch (InstantiationException ex) {
+
+            CLIJMacroPlugin clijPlugin = CLIJMacroPluginService.getInstance().getService().getCLIJMacroPlugin(name);
+            if (isSuitable(clijPlugin, this)) {
+                Class pluginClass = plugin.getClass();
+                addMenuAction(suggestedFollowers, AssistantUtilities.niceNameWithoutDimShape(name.replace("CLIJ2_", "").replace("CLIJx_", "")) + " (" + distributionName(pluginClass) + ")", (a) -> {
+                    my_target.show();
+                    try {
+                        AssistantGUIPlugin plugin = (AssistantGUIPlugin) klass.newInstance();
+                        plugin.setCLIJMacroPlugin(CLIJMacroPluginService.getInstance().getService().getCLIJMacroPlugin(name));
+                        plugin.run(null);
+                    } catch (InstantiationException ex) {
 
 
-                } catch (IllegalAccessException ex) {
-                    ex.printStackTrace();
-                }
-            });
+                    } catch (IllegalAccessException ex) {
+                        ex.printStackTrace();
+                    }
+                });
+            }
         }
         menu.add(suggestedFollowers);
         menu.add("-");
@@ -674,19 +678,24 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         // -------------------------------------------------------------------------------------------------------------
 
         int category_count = 0;
-        for (String category : MenuService.getInstance().getCategories()) {
+
+        String[] categories = MenuService.getInstance().getCategories();
+        for (String category : categories) {
             category_count ++;
 
             int menu_count = 0;
-            Menu moreOptions = new Menu(category_count + " " + AssistantUtilities.niceNameWithoutDimShape(category));
+            Menu menuCategory = new Menu(category_count + " " + AssistantUtilities.niceNameWithoutDimShape(category));
             for (AssistantGUIPlugin plugin : MenuService.getInstance().getPluginsInCategory(category)) {
-                addMenuAction(moreOptions, AssistantUtilities.niceNameWithoutDimShape(plugin.getName())  + " (" + distributionName(plugin.getCLIJMacroPlugin().getClass()) + ")", (a) -> {
-                    plugin.run("");
-                });
+                CLIJMacroPlugin clijPlugin = plugin.getCLIJMacroPlugin();
+                if (category_count == categories.length || isSuitable(clijPlugin, this)) {
+                    addMenuAction(menuCategory, AssistantUtilities.niceNameWithoutDimShape(plugin.getName()) + " (" + distributionName(plugin.getCLIJMacroPlugin().getClass()) + ")", (a) -> {
+                        plugin.run("");
+                    });
+                }
                 menu_count ++;
             }
             if (menu_count > 0) {
-                menu.add(moreOptions);
+                menu.add(menuCategory);
             }
         }
         menu.add("-");
@@ -859,6 +868,8 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         });
         return menu;
     }
+
+
 
     protected void addMoreActions(Menu more_actions) {
         if (AssistantUtilities.resultIsBinaryImage(this)) {
