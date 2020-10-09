@@ -135,9 +135,9 @@ public class OptimizationUtilities {
         return output;
     }
     public static Object[][] getParameterArraysFromIncubatorPlugins(AssistantGUIPlugin[] input) {
-        Object[][] output = new Object[input.length - 1][];
-        for (int i = 1; i < input.length; i++) {
-            output[i - 1] = input[i].getArgs();
+        Object[][] output = new Object[input.length][];
+        for (int i = 0; i < input.length; i++) {
+            output[i] = input[i].getArgs();
         }
         return output;
     }
