@@ -6,6 +6,7 @@ import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
+import org.scijava.script.ScriptService;
 
 public class PyclesperantoGenerator implements ScriptGenerator {
 
@@ -102,6 +103,10 @@ public class PyclesperantoGenerator implements ScriptGenerator {
         program = line_start + program.replace("\n", "\n" + line_start);
 
         return program;
+    }
+
+    public String pythonize(String methodName) {
+        return ScriptGenerator.super.pythonize(methodName.replace("2D", "").replace("3D", ""));
     }
 
     @Override
