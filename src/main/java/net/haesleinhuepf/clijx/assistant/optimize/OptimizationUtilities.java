@@ -128,9 +128,9 @@ public class OptimizationUtilities {
 
 
     public static CLIJMacroPlugin[] getCLIJMacroPluginsFromIncubatorPlugins(AssistantGUIPlugin[] input) {
-        CLIJMacroPlugin[] output = new CLIJMacroPlugin[input.length - 1];
-        for (int i = 1; i < input.length; i++) {
-            output[i - 1] = input[i].getCLIJMacroPlugin();
+        CLIJMacroPlugin[] output = new CLIJMacroPlugin[input.length];
+        for (int i = 0; i < input.length; i++) {
+            output[i] = input[i].getCLIJMacroPlugin();
         }
         return output;
     }

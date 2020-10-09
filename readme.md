@@ -17,13 +17,13 @@ Stay tuned.
   * [Installation](https://clij.github.io/assistant/installation)
   * [Building workflows](https://clij.github.io/assistant/getting_started)
   * [Saving and loading workflows](https://clij.github.io/assistant/save_and_load)
+  * [Optimize parameters](https://clij.github.io/assistant/parameter_optimization)
   * [Undo parameter changes](https://clij.github.io/assistant/undo)
   * [Reference](https://clij.github.io/assistant/reference)
 
 * Filtering / correction
   * [Image filtering](https://clij.github.io/assistant/filtering)
   * [Drift correction](https://clij.github.io/assistant/drift_correction)
-  * Intensity correction
 
 * Transformation
   * [Maximum projection](https://clij.github.io/assistant/intensity_projection)

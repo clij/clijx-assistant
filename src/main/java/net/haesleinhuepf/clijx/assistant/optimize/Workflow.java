@@ -4,6 +4,7 @@ import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.CLIJOpenCLProcessor;
 import net.haesleinhuepf.clij2.CLIJ2;
+import net.haesleinhuepf.clij2.plugins.Copy;
 import net.haesleinhuepf.clij2.plugins.GaussianBlur2D;
 import net.haesleinhuepf.clij2.plugins.GreaterConstant;
 
@@ -68,10 +69,12 @@ public class Workflow {
 
 
     public void compute() {
+        int count = 0;
         for (CLIJMacroPlugin plugin : plugins) {
-            if (plugin instanceof CLIJOpenCLProcessor) {
+            if (plugin instanceof CLIJOpenCLProcessor && (count > 0 || !(plugin instanceof Copy))) { // special case: don't execute initial copy (Starting point)
                 ((CLIJOpenCLProcessor) plugin).executeCL();
             }
+            count ++;
         }
     }
 

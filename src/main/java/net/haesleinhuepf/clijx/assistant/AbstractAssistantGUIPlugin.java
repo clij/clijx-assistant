@@ -878,7 +878,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
     protected void addMoreActions(Menu more_actions) {
         if (AssistantUtilities.resultIsBinaryImage(this)) {
-            /*addMenuAction(more_actions, "Optimize parameters", (a) -> {
+            addMenuAction(more_actions, "Optimize parameters", (a) -> {
                 optimize(new SimplexOptimizer(), new IJLogger(), false);
             });
             addMenuAction(more_actions, "Optimize parameters (gradient descent)", (a) -> {
@@ -890,7 +890,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             });
             addMenuAction(more_actions, "Optimize parameters (gradient descent, configurable)", (a) -> {
                 optimize(new GradientDescentOptimizer((int)IJ.getNumber( "Range",6 )), new IJLogger(), true);
-            });*/
+            });
         }
 
     }
