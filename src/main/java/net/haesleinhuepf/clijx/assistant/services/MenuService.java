@@ -2,21 +2,80 @@ package net.haesleinhuepf.clijx.assistant.services;
 
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
+import net.haesleinhuepf.clij2.utilities.HasClassifiedInputOutput;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.niceName;
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.resultIsBinaryImage;
 
 public class MenuService {
     ArrayList<String> names = new ArrayList<>();
     ArrayList<String> names_and_tags = new ArrayList<>();
 
+    HashMap<String, Comparator<HasClassifiedInputOutput>> categories = new HashMap<>();
+    ArrayList<String> category_names = new ArrayList();
+    String[] category_names_array;
+
+    private void addCategory(String name, Comparator<HasClassifiedInputOutput>  comparator) {
+        categories.put(name, comparator);
+        category_names.add(name);
+    }
 
     private MenuService() {
+        addCategory("Filter", (a,b) -> {
+            return b instanceof IsCategorized && ((IsCategorized) b).isInCategory("Filter") &&
+                    a.getOutputType().equals("Image") &&
+                    a.getInputType().equals("Image") &&
+                    b.getOutputType().equals("Image")?1:0;
+        });
+        addCategory("Math", (a,b) -> {
+            return b instanceof IsCategorized && ((IsCategorized) b).isInCategory("Math") &&
+                    a.getOutputType().equals("Image")&&
+                    b.getOutputType().equals("Image")?1:0;
+        });
+        addCategory("Transform", (a,b) -> {
+            return b instanceof IsCategorized && ((IsCategorized) b).isInCategory("Transform")?1:0;
+        });
+        addCategory("Projection", (a,b) -> {
+            return b instanceof IsCategorized && ((IsCategorized) b).isInCategory("Project")?1:0;
+        });
+        addCategory("Binarize", (a,b) -> {
+            return (!a.getOutputType().equals("Binary Image")) &&
+                    a.getOutputType().equals(b.getInputType()) &&
+                    b.getOutputType().equals("Binary Image")?1:0;
+        });
+        addCategory("Binary Processing", (a,b) -> {
+            return a.getOutputType().equals(b.getInputType()) &&
+                    b.getInputType().contains("Binary Image") &&
+                    b.getOutputType().equals("Binary Image")?1:0;
+        });
+        addCategory("Label", (a,b) -> {
+            return a.getOutputType().equals(b.getInputType()) &&
+                    (!b.getInputType().contains("Label Image")) &&
+                    b.getOutputType().equals("Label Image")?1:0;
+        });
+        addCategory("Label Processing", (a,b) -> {
+            return a.getOutputType().equals(b.getInputType()) &&
+                    b.getInputType().contains("Label Image")&&
+                    b.getOutputType().equals("Label Image")?1:0;
+        });
+        addCategory("Label Measurements", (a,b) -> {
+            return a.getOutputType().equals(b.getInputType()) &&
+                    b.getInputType().contains("Label Image")&&
+                    b.getOutputType().equals("Image")?1:0;
+        });
+        addCategory("All", (a,b) -> 1);
+
+        category_names_array = new String[category_names.size()];
+        category_names.toArray(category_names_array);
+
+
         AssistantGUIPluginService assistantGUIPluginService = AssistantGUIPluginService.getInstance();
         net.haesleinhuepf.clij.macro.CLIJMacroPluginService clijMacroPluginService = CLIJMacroPluginService.getInstance().getService();
 
@@ -80,44 +139,55 @@ public class MenuService {
         return output;
     }
 
-    final static String ALL_STRING = "All";
+    //final static String ALL_STRING = "All";
 
-    public ArrayList<AssistantGUIPlugin> getPluginsInCategory(String search_string) {
+
+    public ArrayList<AssistantGUIPlugin> getPluginsInCategory(String search_string, CLIJMacroPlugin plugin) {
         net.haesleinhuepf.clij.macro.CLIJMacroPluginService service = CLIJMacroPluginService.getInstance().getService();
 
         ArrayList<AssistantGUIPlugin> result = new ArrayList<>();
 
-        if (search_string.compareTo(ALL_STRING) == 0) {
-            search_string = "";
-        }
+        Comparator<HasClassifiedInputOutput> comparator = categories.get(search_string);
+
+        //if (search_string.compareTo(ALL_STRING) == 0) {
+        ///    search_string = "";
+        //}
+        boolean all = (search_string.compareTo("All") == 0);
 
         for (String entry : getNames()) {
-            String name = entry;
-            String description = "";
-            String categories = "";
-            String available_for_dimensions = "";
-            String parameter_help_text = "";
+            //String name = entry;
+            //String description = "";
+            //String categories = "";
+            //String available_for_dimensions = "";
+            //String parameter_help_text = "";
 
             CLIJMacroPlugin macroPlugin = service.getCLIJMacroPlugin(entry);
-            if ( AssistantUtilities.isIncubatablePlugin(macroPlugin)) {
-                if (macroPlugin instanceof OffersDocumentation) {
-                    description = ((OffersDocumentation) macroPlugin).getDescription();
-                    available_for_dimensions = available_for_dimensions;
-                }
-                if (macroPlugin instanceof IsCategorized) {
-                    categories = ((IsCategorized) macroPlugin).getCategories();
-                }
-                parameter_help_text = macroPlugin.getParameterHelpText();
-
-                if (isInCategory(name, macroPlugin.getClass().getName(), description, parameter_help_text, available_for_dimensions, categories, search_string)) {
-                    result.add(getPluginByCLIJPlugin(macroPlugin));
-                }
+            if (all || (
+                    plugin instanceof HasClassifiedInputOutput &&
+                            macroPlugin instanceof HasClassifiedInputOutput &&
+                comparator.compare((HasClassifiedInputOutput)plugin, (HasClassifiedInputOutput)macroPlugin) == 1)) {
+                result.add(getPluginByCLIJPlugin(macroPlugin));
             }
+//            if ( AssistantUtilities.isIncubatablePlugin(macroPlugin)) {
+//                if (macroPlugin instanceof OffersDocumentation) {
+//                    description = ((OffersDocumentation) macroPlugin).getDescription();
+//                    available_for_dimensions = ((OffersDocumentation) macroPlugin).getAvailableForDimensions();
+//                }
+//                if (macroPlugin instanceof IsCategorized) {
+//                    categories = ((IsCategorized) macroPlugin).getCategories();
+//                }
+//                parameter_help_text = macroPlugin.getParameterHelpText();
+//
+//                if (isInCategory(name, macroPlugin.getClass().getName(), description, parameter_help_text, available_for_dimensions, categories, search_string)) {
+//                    result.add(getPluginByCLIJPlugin(macroPlugin));
+//                }
+//            }
         }
 
         return result;
     }
 
+    /*
     public static boolean isInCategory(String name, String class_name, String description, String parameter_help_text, String available_for_dimensions, String categories, String search_string) {
         if (search_string.length() == 0) {
             return true;
@@ -126,7 +196,19 @@ public class MenuService {
 
         search_string = search_string.toLowerCase();
 
-        String major = search_string.split(">")[0];
+        //String major = search_string.split(">")[0];
+        String search_in = categories.toLowerCase();
+        for (String search_for : search_string.split(">")) {
+            search_for = search_for.split(" ")[0]; // ignore "removal"
+
+            if (!search_in.contains(search_for)) {
+                return false;
+            }
+        }
+        return true;
+      */  /*
+
+
         String minor = "";
         if (search_string.contains(">")) {
             minor = search_string.split(">")[1];
@@ -214,8 +296,10 @@ public class MenuService {
         }
 
         return true;
-    }
+        */
+    /*}*/
 
+    /*
     private static boolean containsAll(String search_in, String[] search_for) {
         for (String search : search_for) {
             if (search.length() > 0) {
@@ -237,26 +321,15 @@ public class MenuService {
         }
         return false;
     }
+*/
 
     public String[] getCategories() {
-        return new String[] {
-                "Filter>Noise removal",
-                "Filter>Background removal",
-                "Filter>Edges",
-                "Filter>Math",
-                "Transform",
-                "Projection",
-                "Binary",
-                "Label>Segmentation",
-                "Label>Processing",
-                "Label>Measurement",
-                ALL_STRING
-        };
+        return category_names_array;
     }
 
-    public static void main(String[] args) {
-        System.out.println(MenuService.getInstance().getPluginsInCategory("Binary"));
-    }
+    //public static void main(String[] args) {
+    //    System.out.println(MenuService.getInstance().getPluginsInCategory("Binary"));
+    //}
 }
 
 

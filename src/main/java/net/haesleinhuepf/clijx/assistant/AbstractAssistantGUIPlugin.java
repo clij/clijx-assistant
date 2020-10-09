@@ -657,7 +657,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             CLIJMacroPlugin clijPlugin = CLIJMacroPluginService.getInstance().getService().getCLIJMacroPlugin(name);
             if (isSuitable(clijPlugin, this)) {
                 Class pluginClass = plugin.getClass();
-                addMenuAction(suggestedFollowers, AssistantUtilities.niceNameWithoutDimShape(name.replace("CLIJ2_", "").replace("CLIJx_", "")) + " (" + distributionName(pluginClass) + ")", (a) -> {
+                addMenuAction(suggestedFollowers, AssistantUtilities.niceName(name.replace("CLIJ2_", "").replace("CLIJx_", "")) + " (" + distributionName(pluginClass) + ")", (a) -> {
                     my_target.show();
                     try {
                         AssistantGUIPlugin plugin = (AssistantGUIPlugin) klass.newInstance();
@@ -684,15 +684,15 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             category_count ++;
 
             int menu_count = 0;
-            Menu menuCategory = new Menu(category_count + " " + AssistantUtilities.niceNameWithoutDimShape(category));
-            for (AssistantGUIPlugin plugin : MenuService.getInstance().getPluginsInCategory(category)) {
+            Menu menuCategory = new Menu(AssistantUtilities.niceName(category).replace(">", " > " ));
+            for (AssistantGUIPlugin plugin : MenuService.getInstance().getPluginsInCategory(category, this.getCLIJMacroPlugin())) {
                 CLIJMacroPlugin clijPlugin = plugin.getCLIJMacroPlugin();
                 if (category_count == categories.length || isSuitable(clijPlugin, this)) {
-                    addMenuAction(menuCategory, AssistantUtilities.niceNameWithoutDimShape(plugin.getName()) + " (" + distributionName(plugin.getCLIJMacroPlugin().getClass()) + ")", (a) -> {
+                    addMenuAction(menuCategory, AssistantUtilities.niceName(plugin.getName()) + " (" + distributionName(plugin.getCLIJMacroPlugin().getClass()) + ")", (a) -> {
                         plugin.run("");
                     });
+                    menu_count ++;
                 }
-                menu_count ++;
             }
             if (menu_count > 0) {
                 menu.add(menuCategory);

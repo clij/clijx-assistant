@@ -1,17 +1,23 @@
 package net.haesleinhuepf.clijx.assistant.utilities;
 
 import ij.IJ;
+import ij.ImageJ;
 import ij.ImagePlus;
 import ij.gui.Toolbar;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
-import net.haesleinhuepf.clij2.plugins.PullToROIManager;
+import net.haesleinhuepf.clij2.plugins.ConnectedComponentsLabelingBox;
+import net.haesleinhuepf.clij2.plugins.Mean2DBox;
+import net.haesleinhuepf.clij2.plugins.ThresholdOtsu;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.clijx.assistant.AssistantGUIStartingPoint;
 import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
+import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.options.AssistantOptions;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.services.MenuService;
 import net.haesleinhuepf.clijx.gui.*;
 import net.haesleinhuepf.clijx.plugins.CrossCorrelation;
 import net.haesleinhuepf.clijx.weka.ApplyWekaModel;
@@ -30,6 +36,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 
@@ -104,10 +111,11 @@ public class AssistantUtilities {
     }
 
 
+    @Deprecated // use niceName instead
     public static String niceNameWithoutDimShape(String name) {
 
-        name = name.replace("3D", "");
-        name = name.replace("Box", "");
+        //name = name.replace("3D", "");
+        //name = name.replace("Box", "");
 
         return niceName(name);
     }
@@ -167,12 +175,14 @@ public class AssistantUtilities {
             boolean operationTakes2DImages = supportedDimensionality.compareTo("3D->2D") != 0 &&
                                              supportedDimensionality.contains("2D");
 
-            if (operationTakes3DImages && !imageIs3D ||
-                operationTakes2DImages && imageIs3D) {
-                return false; // image has wrong dimensionality
+            if ((!operationTakes2DImages) || (!operationTakes3DImages)) {
+                if (operationTakes3DImages && !imageIs3D ||
+                        operationTakes2DImages && imageIs3D) {
+                    return false; // image has wrong dimensionality
+                }
             }
         }
-
+/*
         if (clijPlugin instanceof IsCategorized) {
             String categories = ((IsCategorized) clijPlugin).getCategories().toLowerCase();
 
@@ -184,12 +194,12 @@ public class AssistantUtilities {
             }
 
             // check binary
-            if (resultIsLabelImage(plugin)) {
-                if (!categories.contains("binary") && categories.contains("threshold")) {
+            if (resultIsBinaryImage(plugin)) {
+                if (!categories.contains("binary") || categories.contains("threshold") || categories.contains("segmentation")) {
                     return false;
                 }
             }
-        }
+        }*/
         return true;
     }
 
@@ -225,7 +235,9 @@ public class AssistantUtilities {
 
         String[] parameterdefintions = parameters.split(",");
         if (parameterdefintions.length < 2) {
-            if (clijMacroPlugin instanceof PullToROIManager) {
+            if (!(clijMacroPlugin instanceof net.haesleinhuepf.clijx.clij2wrappers.PullToROIManager) &&
+                    (clijMacroPlugin instanceof net.haesleinhuepf.clij2.plugins.PullToROIManager)
+            ) {
                 return true;
             }
             return false;
@@ -482,7 +494,7 @@ public class AssistantUtilities {
             //blocklist.add(net.haesleinhuepf.clij2.plugins.TransposeXY
             blocklist.add(net.haesleinhuepf.clij2.plugins.ConvertUInt16.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdRenyiEntropy
-            blocklist.add(net.haesleinhuepf.clij2.plugins.CountNonZeroPixels2DSphere.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.CountNonZeroPixels2DSphere.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceLeft
             //blocklist.add(net.haesleinhuepf.clij2.plugins.Absolute.class);
             blocklist.add(net.haesleinhuepf.clij2.plugins.Blur3D.class);
@@ -687,9 +699,8 @@ public class AssistantUtilities {
             //blocklist.add(net.haesleinhuepf.clij2.plugins.Power.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.PowerImages.class);
             blocklist.add(net.haesleinhuepf.clijx.clij2wrappers.PullToROIManager.class);
-            //blocklist.add(net.haesleinhuepf.clij2.plugins.PullToROIManager.class);
             blocklist.add(net.haesleinhuepf.clij2.plugins.ReplaceIntensities.class);
-            blocklist.add(net.haesleinhuepf.clij2.plugins.ReplacePixelsIfZero.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ReplacePixelsIfZero.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceBottom.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceLeft.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceRight.class);
@@ -1008,7 +1019,27 @@ public class AssistantUtilities {
     }
 
     public static void main(String[] args) {
-        System.out.println(niceName("CLIJx_SimpleITKWhateverFilter"));
+        //System.out.println(niceName("CLIJx_SimpleITKWhateverFilter"));
+
+
+        new ImageJ();
+        CLIJx.getInstance("RTX");
+
+        ImagePlus imp = IJ.openImage("C:/structure/data/blobs.tif");
+        imp.show();
+
+        AssistantGUIPlugin agp = new GenericAssistantGUIPlugin(new ThresholdOtsu());
+        agp.run("");
+
+
+
+        System.out.println(isSuitable(new ConnectedComponentsLabelingBox(), agp));
+
+/*
+        for (AssistantGUIPlugin p : MenuService.getInstance().getPluginsInCategory("Binary")) {
+            System.out.println(p.getName());
+        }
+ */
     }
 
     public static void openJupyterNotebook(String file) {
