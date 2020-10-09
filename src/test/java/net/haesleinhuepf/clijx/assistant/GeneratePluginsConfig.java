@@ -21,6 +21,7 @@ import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.nic
 
 public class GeneratePluginsConfig {
     public static void main(String[] args) throws IOException {
+        /*
         AssistantGUIPluginService service = AssistantGUIPluginService.getInstance();
 
         ArrayList<CLIJMacroPlugin> supported_plugins = new ArrayList<>();
@@ -48,6 +49,7 @@ public class GeneratePluginsConfig {
                 );
             }
         }
+         */
 
         /*
         Collections.sort(menu_entries);
@@ -64,6 +66,7 @@ public class GeneratePluginsConfig {
         */
 
 
+        /*
         ArrayList<String> link_to_docs = new ArrayList<>();
         ArrayList<String> link_to_docs_label_measurements = new ArrayList<>();
 
@@ -111,7 +114,7 @@ public class GeneratePluginsConfig {
                 link_to_docs_label_measurements,
                 short_description
         );
-
+        */
     }
 
     private static void writeFunctionList(String filename, String header, ArrayList<String> link_to_docs, HashMap<String, String> short_description) throws IOException {
