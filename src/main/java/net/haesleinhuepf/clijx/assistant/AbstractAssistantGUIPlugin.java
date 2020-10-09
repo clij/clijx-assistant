@@ -794,6 +794,30 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         info.add(history);
         info.add("-");
 
+
+        // -------------------------------------------------------------------------------------------------------------
+
+        MenuItem auto_contrast_item = new MenuItem("Auto Brightness & Contrast: " + (auto_contrast?"ON":"OFF"));
+        auto_contrast_item.addActionListener((a) -> {
+            auto_contrast = !auto_contrast;
+            enhanceContrast();
+        });
+        info.add(auto_contrast_item);
+
+        MenuItem auto_position_item = new MenuItem("Auto Window Position: " + (auto_position?"ON":"OFF"));
+        auto_position_item.addActionListener((a) -> {
+            auto_position = !auto_position;
+        });
+        info.add(auto_position_item);
+
+        MenuItem show_connections_item = new MenuItem("Visualize connections: " + (show_connections?"ON":"OFF"));
+        show_connections_item.addActionListener((a) -> {
+            show_connections = !show_connections;
+        });
+        info.add(show_connections_item);
+
+        info.add("-");
+
         // -------------------------------------------------------------------------------------------------------------
 
         addMenuAction(info,"GPU: " + CLIJx.getInstance().getGPUName(), (a) -> {
@@ -808,25 +832,6 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
         // -------------------------------------------------------------------------------------------------------------
         menu.add("-");
-
-        MenuItem auto_contrast_item = new MenuItem("Auto Brightness & Contrast: " + (auto_contrast?"ON":"OFF"));
-        auto_contrast_item.addActionListener((a) -> {
-            auto_contrast = !auto_contrast;
-            enhanceContrast();
-        });
-        menu.add(auto_contrast_item);
-
-        MenuItem auto_position_item = new MenuItem("Auto Window Position: " + (auto_position?"ON":"OFF"));
-        auto_position_item.addActionListener((a) -> {
-            auto_position = !auto_position;
-        });
-        menu.add(auto_position_item);
-
-        MenuItem show_connections_item = new MenuItem("Visualize connections: " + (show_connections?"ON":"OFF"));
-        show_connections_item.addActionListener((a) -> {
-            show_connections = !show_connections;
-        });
-        menu.add(show_connections_item);
 
         addMenuAction(menu, "Duplicate and go ahead with ImageJ", (a) -> {
             new Duplicator().run(my_target, 1, my_target.getNChannels(), 1, my_target.getNSlices(),  1, my_target.getNFrames()).show();
