@@ -27,7 +27,7 @@ public class PyclesperantoGenerator implements ScriptGenerator {
                 "image = imread(\"" + filename.replace("\\", "/") + "\")\n\n" +
 
                 "# Push " + source.getTitle() + " to GPU memory\n" +
-                makeImageID(source) + " = cle.push(image)\n";
+                makeImageID(source) + " = cle.push_zyx(image)\n";
 
         program = program.replace("\n", "\n" + line_start );
         return program;
@@ -92,12 +92,20 @@ public class PyclesperantoGenerator implements ScriptGenerator {
 
             program = program +
                     "# show result\n" +
-                    "viewer.add_image(cle.pull(" + image2 + "), scale=(" + scale + "))\n\n";
+                    "viewer.add_image(cle.pull_zyx(" + image2 + "), scale=(" + scale + "))\n\n";
         } else {
             program = program +
-                    "# show result\n" +
-                    "plt.imshow(" + image2 + ")\n" +
-                    "plt.show()\n\n";
+                    "# show result\n";
+
+            if (plugin.getTarget().getNSlices() > 1) {
+                program = program +
+                        "plt.imshow(" + image2 + "[" + (plugin.getTarget().getZ()-1) + "])\n";
+            } else {
+                program = program +
+                        "plt.imshow(" + image2 + ")\n";
+            }
+            program = program +
+                "plt.show()\n\n";
         }
 
         program = line_start + program.replace("\n", "\n" + line_start);
