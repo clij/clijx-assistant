@@ -27,6 +27,9 @@ public class AssistantGroovyGenerator implements ScriptGenerator {
         output = output +
                 "// Load image from disc \n" +
                 image1 + " = IJ.openImage(\"" + filename.replace("\\", "/") + "\");\n" +
+                image1 + ".setC(" + source.getC() + ");\n" +
+                image1 + ".setZ(" + source.getZ() + ");\n" +
+                image1 + ".setT(" + source.getT() + ");\n" +
                 image1 + ".setTitle(\"" + source.getTitle() + "\");\n" +
                 image1 + ".show();\n";
 
@@ -81,6 +84,9 @@ public class AssistantGroovyGenerator implements ScriptGenerator {
             output.append("window.getCanvas().setMagnification(" + target.getWindow().getCanvas().getMagnification() + ");\n");
         }
         output.append(makeImageID(target) + " = node.getTarget();\n");
+        output.append(
+                "IJ.run(\"In [+]\");\n" +
+                "IJ.run(\"Out [-]\");\n");
 
         output.append("\n");
         return output.toString();
