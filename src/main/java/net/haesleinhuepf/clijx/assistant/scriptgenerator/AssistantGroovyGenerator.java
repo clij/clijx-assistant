@@ -78,8 +78,9 @@ public class AssistantGroovyGenerator implements ScriptGenerator {
             output.append("window = node.getTarget().getWindow();\n");
             output.append("window.setLocation(" + target.getWindow().getX() + ", " + target.getWindow().getY() + ");\n");
             output.append("window.setSize(" + target.getWindow().getWidth() + ", " + target.getWindow().getHeight() + ");\n");
+            output.append("window.getCanvas().setMagnification(" + target.getWindow().getCanvas().getMagnification() + ");\n");
         }
-        output.append(makeImageID(target) + " = WindowManager.getImage(\"" + target.getTitle() + "\");\n");
+        output.append(makeImageID(target) + " = node.getTarget();\n");
 
         output.append("\n");
         return output.toString();
@@ -101,7 +102,6 @@ public class AssistantGroovyGenerator implements ScriptGenerator {
                 "// Read more: https://clij.github.io/assistant/save_and_load\n\n" +
                 "\n\n" +
                 "import ij.IJ;\n" +
-                "import ij.WindowManager;\n" +
                 "import net.haesleinhuepf.clijx.CLIJx;\n\n" +
                 "// clean up first\n" +
                 "IJ.run(\"Close All\");\n\n" +
