@@ -8,9 +8,7 @@ import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.clearcl.util.StringUtils;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
-import net.haesleinhuepf.clij2.plugins.ConnectedComponentsLabelingBox;
-import net.haesleinhuepf.clij2.plugins.Mean2DBox;
-import net.haesleinhuepf.clij2.plugins.ThresholdOtsu;
+import net.haesleinhuepf.clij2.plugins.*;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.AssistantGUIStartingPoint;
@@ -23,6 +21,7 @@ import net.haesleinhuepf.clijx.assistant.services.MenuService;
 import net.haesleinhuepf.clijx.assistant.services.SuggestionService;
 import net.haesleinhuepf.clijx.gui.*;
 import net.haesleinhuepf.clijx.plugins.CrossCorrelation;
+import net.haesleinhuepf.clijx.plugins.SeededWatershed;
 import net.haesleinhuepf.clijx.weka.ApplyWekaModel;
 import net.haesleinhuepf.clijx.weka.WekaLabelClassifier;
 import net.haesleinhuepf.clijx.weka.autocontext.ApplyAutoContextWekaModel;
@@ -224,12 +223,14 @@ public class AssistantUtilities {
         }
         if (parameters.contains(",ByRef String ")) {
             // contains String output parameters
-            //System.out.println("B");
+            return false;
+        }
+        if (parameters.contains(",ByRef Number ")) {
+            // contains numberic output parameters
             return false;
         }
         if (parameters.contains(",Array ") || parameters.contains(",ByRef Array ")) {
-            // contains String parameters
-            //System.out.println("C");
+            // contains array parameters
             return false;
         }
 
@@ -387,7 +388,7 @@ public class AssistantUtilities {
             blocklist.add(net.haesleinhuepf.clij2.plugins.Median3DSphere.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.NotEqualConstant
             blocklist.add(net.haesleinhuepf.clij2.plugins.Median2DBox.class);
-            blocklist.add(net.haesleinhuepf.clij2.plugins.CloseIndexGapsInLabelMap.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.CloseIndexGapsInLabelMap.class);
             blocklist.add(net.haesleinhuepf.clij2.plugins.OpeningDiamond.class);
             blocklist.add(net.haesleinhuepf.clij2.plugins.ShortestDistances.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdYen
@@ -559,7 +560,7 @@ public class AssistantUtilities {
             //blocklist.add(net.haesleinhuepf.clijx.plugins.CylinderTransform.class);
             blocklist.add(net.haesleinhuepf.clijx.registration.DeformableRegistration2D.class);
             blocklist.add(net.haesleinhuepf.clij2.plugins.DepthColorProjection.class);
-            blocklist.add(net.haesleinhuepf.clijx.plugins.DetectAndLabelMaxima.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.DetectAndLabelMaxima.class);
             blocklist.add(net.haesleinhuepf.clijx.plugins.DetectAndLabelMaximaAboveThreshold.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.DetectLabelEdges.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMaxima3DBox.class);
@@ -595,7 +596,7 @@ public class AssistantUtilities {
             blocklist.add(net.haesleinhuepf.clijx.piv.FastParticleImageVelocimetry3D.class);
             blocklist.add(net.haesleinhuepf.clijx.plugins.FindAndLabelMaxima.class);
             blocklist.add(net.haesleinhuepf.clijx.plugins.FindMaxima.class);
-            blocklist.add(net.haesleinhuepf.clijx.plugins.FindMaximaPlateaus.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.FindMaximaPlateaus.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.Flip3D.class);
             blocklist.add(net.haesleinhuepf.clijx.plugins.GaussJordan.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.GaussianBlur3D.class);
@@ -1034,6 +1035,7 @@ public class AssistantUtilities {
     public static void main(String[] args) {
         //System.out.println(niceName("CLIJx_SimpleITKWhateverFilter"));
 
+        System.out.println(isIncubatablePlugin(new SeededWatershed()));
 
         new ImageJ();
         CLIJx.getInstance("RTX");
@@ -1041,12 +1043,10 @@ public class AssistantUtilities {
         ImagePlus imp = IJ.openImage("C:/structure/data/blobs.tif");
         imp.show();
 
-        AssistantGUIPlugin agp = new GenericAssistantGUIPlugin(new ThresholdOtsu());
+        AssistantGUIPlugin agp = new GenericAssistantGUIPlugin(new GaussianBlur2D());
         agp.run("");
 
-
-
-        System.out.println(isSuitable(new ConnectedComponentsLabelingBox(), agp));
+        System.out.println(isSuitable(new SeededWatershed(), agp));
 
 /*
         for (AssistantGUIPlugin p : MenuService.getInstance().getPluginsInCategory("Binary")) {
