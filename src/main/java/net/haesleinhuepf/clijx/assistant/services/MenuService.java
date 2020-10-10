@@ -28,6 +28,19 @@ public class MenuService {
     }
 
     private MenuService() {
+        addCategory("Filter (Noise removal)", (a,b) -> {
+            return b instanceof IsCategorized && ((IsCategorized) b).isInCategory("filter") && ((IsCategorized) b).isInCategory("noise") &&
+                    a.getOutputType().equals("Image") &&
+                    a.getInputType().equals("Image") &&
+                    b.getOutputType().equals("Image")?1:0;
+        });
+        addCategory("Filter (Background removal)", (a,b) -> {
+            return b instanceof IsCategorized && ((IsCategorized) b).isInCategory("filter") && ((IsCategorized) b).isInCategory("background") &&
+                    a.getOutputType().equals("Image") &&
+                    a.getInputType().equals("Image") &&
+                    b.getOutputType().equals("Image")?1:0;
+        });
+
         addCategory("Filter", (a,b) -> {
             return b instanceof IsCategorized && ((IsCategorized) b).isInCategory("Filter") &&
                     a.getOutputType().equals("Image") &&
