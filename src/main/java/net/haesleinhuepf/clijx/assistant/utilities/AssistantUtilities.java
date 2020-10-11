@@ -1067,21 +1067,33 @@ public class AssistantUtilities {
                 System.out.println(teOkiDirectory);
                 File directory = new File(teOkiDirectory);
 
-                String conda_code;
+                String conda_code_attempt1;
+                String conda_code_attempt2;
 
                 if (isWindows) {
-                    conda_code = //"call " + conda_directory + "\\Scripts\\activate.bat " + conda_directory + "\n" +
+                    conda_code_attempt1 = //"call " + conda_directory + "\\Scripts\\activate.bat " + conda_directory + "\n" +
                             "call " + AssistantOptions.getInstance().getCondaPath() + "conda activate " + AssistantOptions.getInstance().getCondaEnv() + "\n" +
                                     "cd " + directory + "\n" +
                                     "jupyter nbconvert --execute --to notebook " + file + "\n" +
                                     "jupyter notebook " + file.replace(".ipynb", ".nbconvert.ipynb") + "\n";
+
+                    conda_code_attempt2 =
+                            "call " + AssistantOptions.getInstance().getCondaPath() + "conda activate " + AssistantOptions.getInstance().getCondaEnv() + "\n" +
+                                    "cd " + directory + "\n" +
+                                    "jupyter notebook " + file.replace(".ipynb", ".nbconvert.ipynb") + "\n";
                 } else {
-                    conda_code = AssistantOptions.getInstance().getCondaPath() + "conda activate " + AssistantOptions.getInstance().getCondaEnv() + "\n" +
+                    conda_code_attempt1 = AssistantOptions.getInstance().getCondaPath() + "conda activate " + AssistantOptions.getInstance().getCondaEnv() + "\n" +
+                            "cd " + directory + "\n" +
+                            "jupyter nbconvert --execute --to notebook " + file + "\n" +
+                            "jupyter notebook " + file;
+
+                    conda_code_attempt2 = AssistantOptions.getInstance().getCondaPath() + "conda activate " + AssistantOptions.getInstance().getCondaEnv() + "\n" +
                             "cd " + directory + "\n" +
                             "jupyter notebook " + file;
+
                 }
 
-                System.out.println(conda_code);
+                System.out.println(conda_code_attempt1);
 
                 PrintStream out = new PrintStream(new OutputStream() {
                     @Override
@@ -1104,25 +1116,89 @@ public class AssistantUtilities {
                         }
                     }
                 });
-                try {
-                    Files.write(Paths.get(directory + "/temp.bat"), conda_code.getBytes());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
-                //parent.getTab().showErrors();
+                boolean failed = false;
                 try {
-                    //String exec = ProcessUtils.exec(directory, out, out, "conda activate " + conda_env, "ipython --gui=qt  temp.py");
+                    Files.write(Paths.get(directory + "/temp.bat"), conda_code_attempt1.getBytes());
                     ProcessUtils.exec(directory, out, out, directory + "/temp.bat");
                     //IJ.log(exec);
                     //parent.errorHandler = handler.errorHandler;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    failed = true;
                 } catch (RuntimeException e) {
                     e.printStackTrace();
+                    failed = true;
+                }
+
+                if (failed) {
+                    try {
+                        Files.write(Paths.get(directory + "/temp.bat"), conda_code_attempt2.getBytes());
+                        ProcessUtils.exec(directory, out, out, directory + "/temp.bat");
+                        //IJ.log(exec);
+                        //parent.errorHandler = handler.errorHandler;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        failed = true;
+                    } catch (RuntimeException e) {
+                        e.printStackTrace();
+                        failed = true;
+                    }
                 }
 
                 IJ.log("Te Oki: Bye.");
             }
         }).start();
 
+    }
+
+    public static void openIcyProtocol(String protocol_filename) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                boolean isWindows = System.getProperty("os.name")
+                        .toLowerCase().startsWith("windows");
+
+                PrintStream out = new PrintStream(new OutputStream() {
+                    @Override
+                    public void write(int b) throws IOException {
+                        //IJ.log("" + b);
+                    }
+
+                    @Override
+                    public void write(byte[] b) throws IOException {
+                        //IJ.log(new String(b));
+                    }
+
+                    @Override
+                    public void write(byte[] b, int off, int len) throws IOException {
+                        byte[] a = new byte[len];
+                        System.arraycopy(b, off, a, 0, len);
+                        //IJ.log("" + len);
+                        if (a.length > 2) {
+                            IJ.log(new String(a));
+                        }
+                    }
+                });
+
+                File directory = new File(protocol_filename).getParentFile();
+
+                try {
+                    ProcessUtils.exec(directory, out, out, AssistantOptions.getInstance().getIcyExecutable(), protocol_filename);
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public static File getNewSelfDeletingTempDir() {
+        String location = System.getProperty("java.io.tmpdir") + "/temp" + System.currentTimeMillis() + "/";
+        File dir = new File(location);
+        dir.mkdirs();
+        dir.deleteOnExit();
+
+        return dir;
     }
 }
