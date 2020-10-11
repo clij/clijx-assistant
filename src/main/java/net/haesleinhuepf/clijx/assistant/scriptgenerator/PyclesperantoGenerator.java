@@ -3,6 +3,7 @@ package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 import ij.ImagePlus;
 import ij.measure.Calibration;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
+import net.haesleinhuepf.clij2.utilities.HasClassifiedInputOutput;
 import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
@@ -66,9 +67,31 @@ public class PyclesperantoGenerator implements ScriptGenerator {
         String program = "\n# " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName()) + "\n";
         //image1 + " = \"" + plugin.getSource().getTitle() + "\";\n" +
 
-        program = program +
-                image2 + " = cle.create_like(" + image1s[0] + ");\n";
-
+        ImagePlus source = plugin.getSource(0);
+        ImagePlus target = plugin.getTarget();
+        /*if (
+            source.getWidth() == target.getWidth() &&
+            source.getHeight() == target.getHeight() &&
+            source.getNSlices() > 1 &&
+            target.getNSlices() == 1
+        ) { // projection
+            program = program +
+                    image2 + " = cle.create_2d_xy(" + image1s[0] + ");\n";
+        } else */ // TODO: Implement create_2d_yx on python side
+        if (source.getWidth() == target.getWidth() &&
+                source.getHeight() == target.getHeight() &&
+                source.getNSlices() == target.getNSlices()) {
+            program = program +
+                    image2 + " = cle.create_like(" + image1s[0] + ");\n";
+        } else {
+            if (target.getNSlices() == 1) { // 2D
+                program = program +
+                        image2 + " = cle.create_like([" + target.getHeight() + ", " + target.getWidth() + "]);\n";
+            } else { // 3D
+                program = program +
+                        image2 + " = cle.create_like([" + target.getNSlices() + ", " + target.getHeight() + ", " + target.getWidth() + "]);\n";
+            }
+        }
 
         String call = "";
 
@@ -97,12 +120,20 @@ public class PyclesperantoGenerator implements ScriptGenerator {
             program = program +
                     "# show result\n";
 
+            String lut = "";
+            if (clijMacroPlugin instanceof HasClassifiedInputOutput) {
+                if (((HasClassifiedInputOutput) clijMacroPlugin).getOutputType().contains("Label Image")) {
+                    program = program + "cmap = matplotlib.colors.ListedColormap ( np.random.rand ( 256,3))\n";
+                    lut = ", cmap = cmap";
+                }
+            }
+
             if (plugin.getTarget().getNSlices() > 1) {
                 program = program +
-                        "plt.imshow(" + image2 + "[" + (plugin.getTarget().getZ()-1) + "])\n";
+                        "plt.imshow(" + image2 + "[" + (plugin.getTarget().getZ()-1) + "]" + lut + ")\n";
             } else {
                 program = program +
-                        "plt.imshow(" + image2 + ")\n";
+                        "plt.imshow(" + image2 + lut + ")\n";
             }
             program = program +
                 "plt.show()\n\n";
@@ -151,6 +182,8 @@ public class PyclesperantoGenerator implements ScriptGenerator {
         } else {
             line_start = "";
             header = header +
+                    "import numpy as np\n" +
+                    "import matplotlib\n" +
                     "import matplotlib.pyplot as plt\n\n";
         }
 
