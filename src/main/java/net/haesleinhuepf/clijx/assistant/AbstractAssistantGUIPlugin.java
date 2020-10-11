@@ -709,6 +709,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         addMenuAction(script, "Human readable protocol", (a) -> {generateScriptFile(new HumanReadibleProtocolGenerator());});
         script.add("-");
         addMenuAction(script, "Icy JavaScript", (a) -> {generateScriptFile(new IcyJavaScriptGenerator());});
+        addMenuAction(script, "Icy Protocol", (a) -> {generateScriptFile(new IcyProtocolGenerator());});
         addMenuAction(script, "Matlab", (a) -> {generateScriptFile(new MatlabGenerator());});
         addMenuAction(script, "Fiji Groovy", (a) -> {generateScriptFile(new GroovyGenerator());});
         addMenuAction(script, "Fiji JavaScript", (a) -> {generateScriptFile(new JavaScriptGenerator());});
@@ -926,11 +927,11 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
 
     int script_count = 0;
-    private void generateScriptFile(ScriptGenerator generator) {
+    public void generateScriptFile(ScriptGenerator generator) {
         String script = generateScript(generator);
 
         script_count++;
-        File outputTarget = new File(System.getProperty("java.io.tmpdir") + "/new" + script_count + generator.fileEnding());
+        File outputTarget = new File(AssistantUtilities.getNewSelfDeletingTempDir() + "/new" + script_count + generator.fileEnding());
 
         try {
             FileWriter writer = new FileWriter(outputTarget);
@@ -943,6 +944,9 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         String file = outputTarget.getAbsolutePath();
         if (file.endsWith("ipynb")) {
             AssistantUtilities.openJupyterNotebook(file);
+        } else if (file.endsWith(".protocol")) {
+            AssistantUtilities.openIcyProtocol(file);
+            //IJ.open(file);
         } else {
             IJ.open(file);
         }

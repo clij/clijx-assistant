@@ -1153,6 +1153,7 @@ public class AssistantUtilities {
     }
 
     public static void openIcyProtocol(String protocol_filename) {
+        System.out.println("Opening ICY: " + protocol_filename);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -1185,7 +1186,8 @@ public class AssistantUtilities {
                 File directory = new File(protocol_filename).getParentFile();
 
                 try {
-                    ProcessUtils.exec(directory, out, out, AssistantOptions.getInstance().getIcyExecutable(), protocol_filename);
+                    ProcessUtils.exec(directory, out, out, AssistantOptions.getInstance().getIcyExecutable(),
+                            "-x", "plugins.adufour.protocols.Protocols", "protocol=" + protocol_filename);
                 } catch (RuntimeException e) {
                     e.printStackTrace();
                 }
