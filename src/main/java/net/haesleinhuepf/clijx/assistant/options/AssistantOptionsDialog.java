@@ -12,6 +12,7 @@ public class AssistantOptionsDialog implements PlugIn {
 
         GenericDialogPlus gdp = new GenericDialogPlus("Build and run options");
 
+        gdp.addFileField("Icy executable", ao.getIcyExecutable());
         gdp.addDirectoryField("Conda directory", ao.getCondaPath());
         gdp.addStringField("Conda environment", ao.getCondaEnv());
         gdp.addFileField("git executable", ao.getGitExecutable());
@@ -24,6 +25,7 @@ public class AssistantOptionsDialog implements PlugIn {
             return;
         }
 
+        ao.setIcyExecutable(gdp.getNextString());
         ao.setCondaPath(gdp.getNextString());
         ao.setCondaEnv(gdp.getNextString());
 
