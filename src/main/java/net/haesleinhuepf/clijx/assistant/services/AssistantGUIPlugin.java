@@ -31,4 +31,5 @@ public interface AssistantGUIPlugin extends SciJavaPlugin {
 
     Workflow getWorkflow();
     String generateScript(ScriptGenerator generator);
+    void generateScriptFile(ScriptGenerator generator);
 }

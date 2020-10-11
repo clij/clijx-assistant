@@ -946,7 +946,6 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             AssistantUtilities.openJupyterNotebook(file);
         } else if (file.endsWith(".protocol")) {
             AssistantUtilities.openIcyProtocol(file);
-            //IJ.open(file);
         } else {
             IJ.open(file);
         }
