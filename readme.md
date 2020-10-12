@@ -9,8 +9,8 @@ Do not use it for routine research yet.
 Planned release is early 2021. 
 Stay tuned.
 
-![Image](images/visualized_connections.gif)
-
+<iframe src="images/clijxa_teaser1_fast.mp4" width="800" height="640"></iframe>
+[Download slower version of the video](images/clijxa_teaser1.mp4) [Image data source: Daniela Vorkel, Myers lab, CSBD / MPI CBG]
 
 ## Overview
 * Introduction
@@ -41,7 +41,7 @@ Stay tuned.
 
 * Analysis
   * [Cell neighbor analysis](https://clij.github.io/assistant/neighbor_analysis_generated)
-  * [Distance analysis using MorholibJ](https://clij.github.io/assistant/morpholibj_chamfer_distance_map)
+  * [Distance analysis using MorholibJ extension](https://clij.github.io/assistant/morpholibj_chamfer_distance_map)
   * [Label classifier (Weka)](https://clij.github.io/assistant/clijx_weka_label_classifier)
 
 * Reproducibility / interoperability
@@ -61,25 +61,7 @@ Stay tuned.
   * [CLIJ2 ImageJ 3D Suite example plugin](https://github.com/clij/clijx-assistant-imagej3dsuite)
   * [CLIJ2 SimpleITK example plugin](https://github.com/clij/clijx-assistant-simpleitk)
 
-
-## Instant feedback
-You can fine tune parameters of your workflow while inspecting different z-planes or time points of your data set and see results instantly.
-<iframe src="images/incubator_segmentation_intro.mp4" width="500" height="800"></iframe>
-[Download video](images/incubator_segmentation_intro.mp4) [Image data source: Daniela Vorkel, Myers lab, CSBD / MPI CBG]
-
-## Generate CLIJx / Fiji plugins from windows on screen
-After a workflow has been set up, you can generate a new CLIJx / Fiji plugin and use it to spare steps in future workflows.
-<iframe src="images/generate_clijx_plugins3_acc.mp4" width="500" height="250"></iframe>
-[Download video](images/generate_clijx_plugins3_acc.mp4)
-
-
-## Wish list and known issues
-* Add menu entry for "Apply to all time points"
-* If a plugin has three parameters, e.g. "sigma_x", "sigma_y" and "sigma_z", allow to change these three together with one click.
-* Make dialogs use physical units in general or switchable between pixel units and physical units.
-
-Also have an idea for improving CLIJx-Assistant? Let me know! I'm eager to receiving feedback: rhaase at mpi minus cbg dot de
-
-
+## Feedback welcome!
+I'm eager to receiving feedback: rhaase at mpi minus cbg dot de
 
 [Imprint](https://clij.github.io/imprint)

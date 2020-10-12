@@ -10,9 +10,11 @@ Do not use it for routine research yet. Planned release is early 2021. Stay tune
 ![Image](images/install_fiji_menu.png)
 
 * Click on "Manage update sites" and activate the two updates sites "clij" and "clij2". Furthermore, please click on 
-"Add update site" and enter another "CLIJx-Assistant" update site with the URL "https://sites.imagej.net/clincubator/"
+"Add update site" and enter another "CLIJx-Assistant" update site with the URL "https://sites.imagej.net/clijx-assistant/"
 
 ![Image](images/installation.png)
+
+![Image](images/installation2.png)
 
 * Click on "Close"
 * Click on "Apply Changes"
@@ -26,10 +28,10 @@ Installation was successful if you find the CLIJx-Assistant starting point butto
 ## Installation in ImageJ
 Download and upack [ImageJ](https://imagej.nih.gov/ij/download.html) and some jar-files:
  
-* [clij2-imagej_-2.1.4.7-jar-with-dependencies.jar](https://github.com/clij/clij2-imagej1/releases/download/2.1.4.7/clij2-imagej_-2.1.4.7-jar-with-dependencies.jar)
-* [clijx-weka_-0.29.4.7.jar](https://github.com/clij/clijx/releases/download/0.29.4.7/clijx-weka_-0.29.4.7.jar)
-* [clijx_-0.29.4.7.jar](https://github.com/clij/clijx/releases/download/0.29.4.7/clijx_-0.29.4.7.jar)
-* [clijx-assistant_-0.2.4.7.jar](https://github.com/clij/assistant/releases/download/0.2.4.7/clijx-assistant_-0.2.4.7.jar)
+* [clij2-imagej_-2.1.5.1-jar-with-dependencies.jar](https://github.com/clij/clij2-imagej1/releases/download/2.1.5.1/clij2-imagej_-2.1.5.1-jar-with-dependencies.jar)
+* [clijx-weka_-0.29.5.2.jar](https://github.com/clij/clijx/releases/download/0.29.5.2/clijx-weka_-0.29.5.2.jar)
+* [clijx_-0.29.5.2.jar](https://github.com/clij/clijx/releases/download/0.29.5.2/clijx_-0.29.5.2.jar)
+* [clijx-assistant_-0.3.5.3.jar](https://github.com/clij/assistant/releases/download/0.3.5.3/clijx-assistant_-0.3.5.3.jar)
 
 Please put these jar files in the `plugins` sub-directory of ImageJ:
 
@@ -44,10 +46,10 @@ If a window with a green frame appears, it worked!
 ## Installation in MicroManager 2
 Download and install [MicroManager 2](https://micro-manager.org/wiki/Download_Micro-Manager_Latest_Release) and some jar files:
 
-* [clij2-imagej_-2.1.4.7-jar-with-dependencies.jar](https://github.com/clij/clij2-imagej1/releases/download/2.1.4.7/clij2-imagej_-2.1.4.7-jar-with-dependencies.jar)
-* [clijx-weka_-0.29.4.7.jar](https://github.com/clij/clijx/releases/download/0.29.4.7/clijx-weka_-0.29.4.7.jar)
-* [clijx_-0.29.4.7.jar](https://github.com/clij/clijx/releases/download/0.29.4.7/clijx_-0.29.4.7.jar)
-* [clijx-assistant_-0.2.4.7.jar](https://github.com/clij/assistant/releases/download/0.2.4.7/clijx-assistant_-0.2.4.7.jar)
+* [clij2-imagej_-2.1.5.1-jar-with-dependencies.jar](https://github.com/clij/clij2-imagej1/releases/download/2.1.5.1/clij2-imagej_-2.1.5.1-jar-with-dependencies.jar)
+* [clijx-weka_-0.29.5.2.jar](https://github.com/clij/clijx/releases/download/0.29.5.2/clijx-weka_-0.29.5.2.jar)
+* [clijx_-0.29.5.2.jar](https://github.com/clij/clijx/releases/download/0.29.5.2/clijx_-0.29.5.2.jar)
+* [clijx-assistant_-0.3.5.3.jar](https://github.com/clij/assistant/releases/download/0.3.5.3/clijx-assistant_-0.3.5.3.jar)
 
 Please put these jar files in the `plugins\Micro-Manager` sub-directory of MicroManager:
 ![Image](images/installation_mm.png)
@@ -103,7 +105,7 @@ conda activate te_oki
 ```
 Install dependencies, either via conda install or
 ```
-pip install pyopencl napari ipython matplotlib numpy pyclesperanto_prototype scikit-image
+pip install pyopencl napari ipython matplotlib numpy pyclesperanto_prototype scikit-image jupyter
 ```
 Within this environment you can run generated [clEsperanto](https://clesperanto.github.io/) python scripts.
 
