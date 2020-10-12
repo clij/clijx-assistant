@@ -1,6 +1,6 @@
 # CLIJx-Assistant installation instructions
 CLIJx-Assistant is under development. Please install it only in a separate Fiji installation. 
-Do not use it for routine research yet. Planned release is early 2021. Stay tuned.
+Do not use it for routine research yet. Planned release is summer 2021. Stay tuned.
 
 <a name="fiji"></a>
 ## Installation in Fiji
