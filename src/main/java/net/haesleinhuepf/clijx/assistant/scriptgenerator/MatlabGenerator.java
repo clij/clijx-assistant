@@ -38,8 +38,13 @@ public class MatlabGenerator extends JythonGenerator {
     }
 
     @Override
-    public String finish() {
-        return pyToMatlab(super.finish());
+    public String finish(String all) {
+        return pyToMatlab(super.finish(all));
+    }
+
+    @Override
+    public String close(String image) {
+        return pyToMatlab(super.close(image));
     }
 
     @Override
@@ -55,7 +60,7 @@ public class MatlabGenerator extends JythonGenerator {
                 "% Init GPU\n" +
                 "\n" +
                 "% initialize CLATLAB\n" +
-                "clij2 = init_clatlab();\n";
+                "clijx = init_clatlab();\n";
     }
 
     protected String pyToMatlab(String text) {

@@ -191,7 +191,12 @@ public class PyclesperantoGenerator extends AbstractScriptGenerator {
     }
 
     @Override
-    public String finish() {
+    public String finish(String all) {
+        return all;
+    }
+
+    @Override
+    public String close(String image) {
         return "";
     }
 }

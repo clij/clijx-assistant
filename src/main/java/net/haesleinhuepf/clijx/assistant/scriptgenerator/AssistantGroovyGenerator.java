@@ -122,11 +122,16 @@ public class AssistantGroovyGenerator extends AbstractScriptGenerator {
     }
 
     @Override
-    public String finish() {
-        return
+    public String finish(String all) {
+        return all +
                 "// reset auto-positioning\n" +
                 "IJ.wait(500);\n" +
                 "net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin.setAutoPosition(was_auto_position);\n\n";
+    }
+
+    @Override
+    public String close(String image) {
+        return "";
     }
 
 }

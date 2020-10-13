@@ -278,7 +278,12 @@ public class IcyProtocolGenerator extends AbstractScriptGenerator {
     }
 
     @Override
-    public String finish() {
+    public String close(String image) {
+        return "";
+    }
+
+    @Override
+    public String finish(String all) {
 
         for (ImagePlus imp : last_used_image) {
             String block_id = newID();

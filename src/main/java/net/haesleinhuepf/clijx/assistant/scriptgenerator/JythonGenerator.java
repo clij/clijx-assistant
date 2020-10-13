@@ -9,6 +9,8 @@ import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 
 public class JythonGenerator extends AbstractScriptGenerator {
 
+    boolean clijx_used = false;
+
     @Override
     public String push(ImagePlus source) {
         String output = "";
@@ -38,7 +40,8 @@ public class JythonGenerator extends AbstractScriptGenerator {
         return "" +
                 "result = clijx.pull(" + image1 + ");\n" +
                 "result.setDisplayRange(" + result.getTarget().getDisplayRangeMin() + ", " + result.getTarget().getDisplayRangeMax() + ");\n" +
-                "result.show();\n\n";
+                "result.show()\n" +
+                close(image1) + "\n\n";
 
 
     }
@@ -56,6 +59,9 @@ public class JythonGenerator extends AbstractScriptGenerator {
             return "# " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName());
         }
         String methodName = clijMacroPlugin.getName();
+        if (methodName.contains("CLIJx")) {
+            clijx_used = true;
+        }
         methodName = methodName.replace("CLIJ2_", "").replace("CLIJx_", "");
         methodName = methodName.substring(0,1).toLowerCase() + methodName.substring(1);
         //String pakage = clijMacroPlugin.getClass().getPackage().getName();
@@ -91,6 +97,7 @@ public class JythonGenerator extends AbstractScriptGenerator {
                     image2 + " = clijx.create([" + target.getWidth() + ", " + target.getHeight() + "], clijx." + bitDepthToType(target.getBitDepth()) + ");\n";
         }
         String call = "";
+        String after_call = "";
 
         String[] parameters = clijMacroPlugin.getParameterHelpText().split(",");
         for (int i = 0; i < parameters.length; i++) {
@@ -102,13 +109,16 @@ public class JythonGenerator extends AbstractScriptGenerator {
                 call = call + ", ";
             }
             if (plugin.getArgs()[i] instanceof ClearCLBuffer || plugin.getArgs()[i] instanceof ClearCLBuffer[]) {
-                call = call + objectToString(plugin.getArgs()[i]);
+                String image_id = objectToString(plugin.getArgs()[i]);
+                call = call + image_id;
+                after_call = after_call + close(image_id) + "\n";
             } else {
                 call = call + name;
                 program = program + name + " = " + objectToString(plugin.getArgs()[i]) + ";\n";
             }
         }
-        program = program + methodName + "(" + call + ");\n";
+        program = program + methodName + "(" + call + ");\n" +
+                after_call + "\n";
 
         //program = program + comment("consider removing this line if you don't need to see that image");
         //program = program + "clijx.show(" + image2 + ", \"" + plugin.getTarget().getTitle() + "\")\n";
@@ -130,6 +140,11 @@ public class JythonGenerator extends AbstractScriptGenerator {
     }
 
     @Override
+    public String close(String image) {
+        return image + ".close()";
+    }
+
+    @Override
     public String fileEnding() {
         return ".py";
     }
@@ -143,13 +158,19 @@ public class JythonGenerator extends AbstractScriptGenerator {
                 "from ij import WindowManager;\n" +
                 "from net.haesleinhuepf.clijx import CLIJx;\n\n" +
                 "# Init GPU\n" +
-                "clijx = CLIJx.getInstance();\n" +
-                "clijx.clear();\n\n";
+                "clijx = CLIJx.getInstance();\n\n";
     }
 
     @Override
-    public String finish() {
-        return "# clean up memory \n" +
-                "clijx.clear();\n\n";
+    public String finish(String all) {
+        String output = super.finish(all);
+        if (!clijx_used) {
+            output = output.replace("CLIJx.getInstance", "CLIJ2.getInstance");
+            output = output.replace("net.haesleinhuepf.clijx.CLIJx", "net.haesleinhuepf.clij2.CLIJ2");
+            output = output.replace("from net.haesleinhuepf.clijx import CLIJx", "from net.haesleinhuepf.clij2 import CLIJ2");
+            output = output.replace("clijx", "clij2");
+            output = output.replace("CLIJx", "CLIJ2");
+        }
+        return output;
     }
 }

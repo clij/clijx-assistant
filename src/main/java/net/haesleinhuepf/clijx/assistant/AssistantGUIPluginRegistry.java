@@ -304,7 +304,7 @@ class AssistantGUIPluginRegistry {
 
 
     public String generateScript(ScriptGenerator generator) {
-        String result = "";
+        String result = generator.header();
 
         for (AssistantGUIPlugin plugin : registeredPlugins) {
             //result = result + generator.overview(plugin);
@@ -323,7 +323,7 @@ class AssistantGUIPluginRegistry {
             result = result + generator.execute(plugin);
             result = result + generator.pull(plugin);
         }
-        result = result + generator.finish();
+        result = generator.finish(result);
 
         return result;
     }

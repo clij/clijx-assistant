@@ -972,8 +972,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     }
 
     public String generateScript(ScriptGenerator generator) {
-        return generator.header() +
-                AssistantGUIPluginRegistry.getInstance().generateScript(generator);
+        return AssistantGUIPluginRegistry.getInstance().generateScript(generator);
     }
 
 

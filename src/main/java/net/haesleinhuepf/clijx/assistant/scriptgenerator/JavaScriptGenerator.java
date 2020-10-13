@@ -39,8 +39,8 @@ public class JavaScriptGenerator extends JythonGenerator {
     }
 
     @Override
-    public String finish() {
-        return pyToJs(super.finish());
+    public String finish(String all) {
+        return pyToJs(super.finish(all));
     }
 
     protected String pyToJs(String text) {

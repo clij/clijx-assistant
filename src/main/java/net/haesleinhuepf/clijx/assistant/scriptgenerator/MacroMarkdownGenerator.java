@@ -32,6 +32,7 @@ public class MacroMarkdownGenerator extends MacroGenerator {
                 "*/\n";
 
         String call = "";
+        String after_call = "";
 
         String[] parameters = clijMacroPlugin.getParameterHelpText().split(",");
         for (int i = 0; i < parameters.length; i++) {
@@ -47,13 +48,16 @@ public class MacroMarkdownGenerator extends MacroGenerator {
                     plugin.getArgs()[i] instanceof ImagePlus
             ) {
 
-                call = call + objectToString(plugin.getArgs()[i]);
+                String image_id = objectToString(plugin.getArgs()[i]);
+                call = call + image_id;
+                after_call = after_call + close(image_id) + "\n";
             } else {
                 call = call + name;
                 program = program + name + " = " + objectToString(plugin.getArgs()[i]) + ";\n";
             }
         }
-        program = program + methodName + "(" + call + ");\n";
+        program = program + methodName + "(" + call + ");\n" +
+                after_call + "";
         //program = program + "Ext.CLIJ2_pull(" + image2 + "); // consider removing this line if you don't need to see that image\n";
 
         return program;

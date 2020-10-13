@@ -34,7 +34,8 @@ public class MacroGenerator extends AbstractScriptGenerator {
     @Override
     public String pull(AssistantGUIPlugin result) {
         String imageID = makeImageID(result.getTarget());
-        return "Ext.CLIJ2_pull(" + imageID + ");\n";
+        return "Ext.CLIJ2_pull(" + imageID + ");\n" +
+                close(imageID) + "\n";
     }
 
     @Override
@@ -64,7 +65,7 @@ public class MacroGenerator extends AbstractScriptGenerator {
         //        "// " + image2 + " = \"" + plugin.getTarget().getTitle() + "\";\n";
 
         String call = "";
-
+        String after_call = "";
         String[] parameters = clijMacroPlugin.getParameterHelpText().split(",");
         for (int i = 0; i < parameters.length; i++) {
             String temp[] = parameters[i].trim().split(" ");
@@ -79,13 +80,16 @@ public class MacroGenerator extends AbstractScriptGenerator {
                     plugin.getArgs()[i] instanceof ClearCLBuffer[][] ||
                     plugin.getArgs()[i] instanceof ImagePlus
             ) {
-                call = call + objectToString(plugin.getArgs()[i]);
+                String image_id = objectToString(plugin.getArgs()[i]);
+                call = call + image_id;
+                after_call = after_call + close(image_id) + "\n";
             } else {
                 call = call + name;
                 program = program + name + " = " + objectToString(plugin.getArgs()[i]) + ";\n";
             }
         }
-        program = program + methodName + "(" + call + ");\n";
+        program = program + methodName + "(" + call + ");\n" +
+                after_call + "";
         //program = program + "Ext.CLIJ2_pull(" + image2 + "); // consider removing this line if you don't need to see that image\n";
 
         return program;
@@ -107,7 +111,8 @@ public class MacroGenerator extends AbstractScriptGenerator {
     }
 
     @Override
-    public String finish() {
-        return "";
+    public String close(String image) {
+        return  "Ext.CLIJ2_release(" + image + ");";
     }
+
 }

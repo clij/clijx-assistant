@@ -50,8 +50,8 @@ public class PyclesperantoJupyterNotebookGenerator extends PyclesperantoGenerato
     }
 
     @Override
-    public String finish() {
-        return super.finish() + "" +
+    public String finish(String all) {
+        return super.finish(all) + "" +
                 "],\n" +
                 " \"metadata\": {\n" +
                 "  \"kernelspec\": {\n" +

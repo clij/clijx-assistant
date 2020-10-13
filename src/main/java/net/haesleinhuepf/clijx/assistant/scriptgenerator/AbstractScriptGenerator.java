@@ -71,4 +71,40 @@ public abstract class AbstractScriptGenerator implements ScriptGenerator {
         }
     }
 
+
+    @Override
+    public String finish(String all ) {
+        String output = all;
+
+        for (ImagePlus imp : image_map.keySet()) {
+            String name = image_map.get(imp);
+            String replace_with = close(name);
+            String search_for = replace_with.replace("(", "\\(").replace(")", "\\)");
+
+            System.out.println("Splitting by " + search_for);
+            if (search_for.length() == 0) {
+                System.out.println("Leave 1");
+                continue;
+            }
+
+            String[] temp = output.split(search_for);
+            if (temp.length == 1) {
+                System.out.println("Leave 2");
+                continue;
+            }
+            output = "";
+            for (int i = 0; i < temp.length; i++) {
+                if (i == temp.length - 1) {
+                    output = output + replace_with;
+                }
+                output = output + temp[i];
+            }
+        }
+
+        output = output.replace("\n;\n", "\n\n");
+        while (output.contains("\n\n\n")) {
+            output = output.replace("\n\n\n", "\n\n");
+        }
+        return output;
+    }
 }

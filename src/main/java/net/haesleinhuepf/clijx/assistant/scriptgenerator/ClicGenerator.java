@@ -131,7 +131,12 @@ public class ClicGenerator extends AbstractScriptGenerator {
     }
 
     @Override
-    public String finish() {
-        return "\n";
+    public String finish(String all) {
+        return all + "\n";
+    }
+
+    @Override
+    public String close(String image) {
+        return image + ".Close();";
     }
 }

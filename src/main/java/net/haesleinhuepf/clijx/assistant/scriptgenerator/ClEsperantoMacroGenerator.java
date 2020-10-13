@@ -88,7 +88,12 @@ public class ClEsperantoMacroGenerator extends AbstractScriptGenerator {
     }
 
     @Override
-    public String finish() {
-        return "";
+    public String close(String image) {
+        return "release(" + image + ");";
+    }
+
+    @Override
+    public String finish(String all) {
+        return all;
     }
 }

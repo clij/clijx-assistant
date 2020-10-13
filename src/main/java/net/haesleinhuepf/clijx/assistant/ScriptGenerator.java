@@ -66,7 +66,7 @@ public interface ScriptGenerator {
                 .replace("CLIJx_", "")
                 .replace("CLIJ2_", "");
 
-        return AssistantUtilities.niceNameWithoutDimShape(methodName).trim()
+        return AssistantUtilities.niceName(methodName).trim()
                 .toLowerCase()
                 .replace(" ", "_");
     }
@@ -82,6 +82,8 @@ public interface ScriptGenerator {
         return filename.replace("\\", "/");
     }
 
-    String finish();
+    String finish(String all);
+
+    String close(String image);
 
 }

@@ -140,9 +140,10 @@ public class HumanReadibleProtocolGenerator extends AbstractScriptGenerator {
     }
 
     @Override
-    public String finish() {
+    public String finish(String all) {
 
         StringBuilder builder = new StringBuilder();
+        builder.append(all);
         builder.append("\nUsed images");
 
         ArrayList<String> names = new ArrayList<>();
@@ -158,5 +159,10 @@ public class HumanReadibleProtocolGenerator extends AbstractScriptGenerator {
         }
 
         return builder.toString();
+    }
+
+    @Override
+    public String close(String image) {
+        return "";
     }
 }
