@@ -7,7 +7,7 @@ import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 
-public class AssistantGroovyGenerator implements ScriptGenerator {
+public class AssistantGroovyGenerator extends AbstractScriptGenerator {
 
     @Override
     public String push(ImagePlus source) {

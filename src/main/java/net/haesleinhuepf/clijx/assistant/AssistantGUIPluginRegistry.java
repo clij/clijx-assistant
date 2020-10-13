@@ -310,7 +310,13 @@ class AssistantGUIPluginRegistry {
             //result = result + generator.overview(plugin);
             for (int s = 0; s < plugin.getNumberOfSources(); s++) {
                 ImagePlus source = plugin.getSource(s);
-                if (!result.contains(generator.makeImageID(source) + " =") && !result.contains(generator.makeImageID(source) + ",") && !result.contains(generator.makeImageID(source) + ")")  && !result.contains(generator.makeImageID(source) + ":")) {
+
+                if (!result.contains(generator.makeImageID(source) + " =") &&
+                    !result.contains(generator.makeImageID(source) + ",") &&
+                    !result.contains(generator.makeImageID(source) + ")")  &&
+                    !result.contains(generator.makeImageID(source) + ":") &&
+                    !result.contains(generator.makeImageID(source) + ".")
+                ) {
                     result = result + generator.push(source);
                 }
             }

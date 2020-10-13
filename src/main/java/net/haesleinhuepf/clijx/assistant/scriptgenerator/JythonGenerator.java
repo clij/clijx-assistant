@@ -7,7 +7,7 @@ import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 
-public class JythonGenerator implements ScriptGenerator {
+public class JythonGenerator extends AbstractScriptGenerator {
 
     @Override
     public String push(ImagePlus source) {

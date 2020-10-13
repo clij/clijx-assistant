@@ -6,7 +6,7 @@ import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 
-public class ClicGenerator implements ScriptGenerator {
+public class ClicGenerator extends AbstractScriptGenerator {
 
     int call_count = 0;
 

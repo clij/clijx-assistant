@@ -1,15 +1,18 @@
 package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 
 import ij.ImagePlus;
+import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.utilities.HasAuthor;
 import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
-public class HumanReadibleProtocolGenerator implements ScriptGenerator {
+public class HumanReadibleProtocolGenerator extends AbstractScriptGenerator {
 
     Random random = new Random();
 
@@ -18,7 +21,7 @@ public class HumanReadibleProtocolGenerator implements ScriptGenerator {
         String image1 = makeImageID(source);
 
         String output =
-                    "We work with the image \"" + source.getTitle() + "\" for simplicity, we call it " + image1 + ".\n";
+                    "We start our image data flow with " + image1 + ".\n";
 
         return output;
     }
@@ -43,7 +46,7 @@ public class HumanReadibleProtocolGenerator implements ScriptGenerator {
 
         String text = "\n" + startings[random.nextInt(startings.length)] +
                 "we applied \"" +
-                AssistantUtilities.niceNameWithoutDimShape(plugin.getName()) + "\"";
+                AssistantUtilities.niceName(plugin.getName()) + "\"";
 
         if (clijMacroPlugin instanceof HasAuthor) {
             text = text +
@@ -52,35 +55,77 @@ public class HumanReadibleProtocolGenerator implements ScriptGenerator {
 
         text = text +
                 " on " + namesToCommaSeparated(image1s) +
-                " and got a new image out, \n" + image2 + ", also titled \"" + plugin.getTarget().getTitle() + "\".\n";
+                ", and got a new image out, " + image2 + ".\n";
 
         String[] midparts = {"In order to do so, ", "Therefore, ", "In detail, ", "While doing that, "};
 
         if (clijMacroPlugin != null) {
             String[] parameters = clijMacroPlugin.getParameterHelpText().split(",");
 
-            if (parameters.length > 2) {
-                text = text + midparts[random.nextInt(midparts.length)] +
-                        " we used the parameter" + ((parameters.length > 3) ? "s" : "") + " ";
-
-                for (int i = 2; i < parameters.length; i++) {
+            boolean first_parameter_set = false;
+            for (int i = 0; i < parameters.length; i++) {
+                if (! (
+                        plugin.getArgs()[i] instanceof ClearCLBuffer ||
+                                plugin.getArgs()[i] instanceof ClearCLBuffer[]
+                ) ) {
                     String temp[] = parameters[i].trim().split(" ");
                     String name = temp[temp.length - 1];
-                    if (i > 2) {
+                    if (first_parameter_set) {
                         if (i == parameters.length - 1) {
                             text = text + " and ";
                         } else {
                             text = text + ", ";
                         }
+                    } else {
+                        text = text + midparts[random.nextInt(midparts.length)] +
+                                "we used the parameters ";
                     }
+                    first_parameter_set = true;
                     text = text + name + " = " + plugin.getArgs()[i] + "";
                 }
-                text = text + ".";
             }
+            if (first_parameter_set) {
+                text = text + ".\n";
+            }
+
         }
-        return text;
+        return insertLineBreaks(text, 65);
     }
 
+    private String insertLineBreaks(String text, int max_line_length) {
+        StringBuilder builder = new StringBuilder();
+        int line_length = 0;
+        for (String entry : text.split(" ")) {
+            line_length = line_length + entry.length() + 1;
+            if (line_length > max_line_length) {
+                builder.append("\n");
+                line_length = 0;
+            } else {
+                builder.append(" ");
+            }
+            if (entry.contains("\n")) {
+                line_length = 0;
+            }
+            builder.append(entry);
+        }
+
+        return builder.toString();
+    }
+
+    public String namesToCommaSeparated(String[] names) {
+        String names_concat = "";
+        for (int i = 0; i < names.length; i++) {
+            if (i > 0) {
+                if ( i < names.length - 1) {
+                    names_concat = names_concat + ", ";
+                } else {
+                    names_concat = names_concat + " and ";
+                }
+            }
+            names_concat = names_concat + names[i];
+        }
+        return names_concat;
+    }
 
 
     @Override
@@ -90,12 +135,28 @@ public class HumanReadibleProtocolGenerator implements ScriptGenerator {
 
     @Override
     public String header() {
-        return  "This protocol documents an image processing workflow using CLIJx-Incubator.\n" +
-                "Read more about it online: https://clij.github.io/incubator/ \n\n";
+        return  "This protocol documents an image data flow using CLIJx-Assistant.\n" +
+                "Read more about it online: https://clij.github.io/assistant/ \n\n";
     }
 
     @Override
     public String finish() {
-        return "";
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("\nUsed images");
+
+        ArrayList<String> names = new ArrayList<>();
+        for (ImagePlus imp : image_map.keySet()) {
+            String name = image_map.get(imp);
+            names.add("\n * " + name + ": " + imp.getTitle());
+        }
+
+        Collections.sort(names);
+
+        for (String name : names) {
+            builder.append(name);
+        }
+
+        return builder.toString();
     }
 }

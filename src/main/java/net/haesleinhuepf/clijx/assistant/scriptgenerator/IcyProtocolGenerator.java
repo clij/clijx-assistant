@@ -13,15 +13,12 @@ import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.AssistantGUIStartingPoint;
 import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Crop;
-import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Zoom;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
-import net.haesleinhuepf.clijx.gui.MemoryDisplay;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class IcyProtocolGenerator implements ScriptGenerator {
+public class IcyProtocolGenerator extends AbstractScriptGenerator {
 
     private StringBuilder blocks = new StringBuilder();
     private StringBuilder links = new StringBuilder();

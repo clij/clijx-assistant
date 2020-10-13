@@ -9,7 +9,7 @@ import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import org.scijava.script.ScriptService;
 
-public class PyclesperantoGenerator implements ScriptGenerator {
+public class PyclesperantoGenerator extends AbstractScriptGenerator {
 
     private String line_start = "";
     private boolean use_napari;
@@ -145,7 +145,7 @@ public class PyclesperantoGenerator implements ScriptGenerator {
     }
 
     public String pythonize(String methodName) {
-        return ScriptGenerator.super.pythonize(methodName.replace("2D", "").replace("3D", ""));
+        return super.pythonize(methodName.replace("2D", "").replace("3D", ""));
     }
 
     @Override

@@ -7,7 +7,7 @@ import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 
-public class ClEsperantoMacroGenerator implements ScriptGenerator {
+public class ClEsperantoMacroGenerator extends AbstractScriptGenerator {
 
     @Override
     public String push(ImagePlus source) {
