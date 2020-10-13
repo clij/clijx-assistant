@@ -51,20 +51,20 @@ public class ExtractChannel extends AbstractAssistantGUIPlugin {
 
         net.haesleinhuepf.clij2.plugins.Copy plugin = (net.haesleinhuepf.clij2.plugins.Copy) getCLIJMacroPlugin();
 
-        if (channel >= pushed.length) {
-            channel = pushed.length - 1;
+        if (channel >= pushed[0].length) {
+            channel = pushed[0].length - 1;
             channel_number.setText("" + channel);
             return;
         }
 
         args = new Object[] {
-                pushed[channel],
+                pushed[0][channel],
                 null
         };
         plugin.setArgs(args);
 
         if (result == null) {
-            result = createOutputBufferFromSource(pushed[0]);
+            result = createOutputBufferFromSource(new ClearCLBuffer[]{pushed[0][0]});
         }
         args[1] = result[0];
         plugin.executeCL();

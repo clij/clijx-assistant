@@ -6,10 +6,8 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.Roi;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
-import net.haesleinhuepf.clij2.plugins.Crop3D;
 import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
 
@@ -19,7 +17,7 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 
 @Plugin(type = AssistantGUIPlugin.class)
-public class Crop extends AbstractAssistantGUIPlugin {
+public class Crop3D extends AbstractAssistantGUIPlugin {
 
     private GenericDialog dialog = null;
 
@@ -31,7 +29,7 @@ public class Crop extends AbstractAssistantGUIPlugin {
     int y_in_pixels = 0;
     int z_in_pixels = 0;
 
-    public Crop() {
+    public Crop3D() {
         super(new net.haesleinhuepf.clij2.plugins.Crop3D());
     }
 
@@ -124,7 +122,7 @@ public class Crop extends AbstractAssistantGUIPlugin {
 
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
 
-        my_target.setTitle("Crop of " + my_sources[0].getTitle());
+        my_target.setTitle("Crop3D of " + my_sources[0].getTitle());
         //ImagePlus.addImageListener(new MyImageListener());
         my_sources[0].getWindow().getCanvas().addMouseListener(new MyListener());
 
@@ -159,7 +157,7 @@ public class Crop extends AbstractAssistantGUIPlugin {
         ImagePlus imp = IJ.openImage("C:/structure/data/t1-head.tif");
         imp.show();
 
-        new Crop().run("");
+        new Crop3D().run("");
     }
 
 }
