@@ -6,14 +6,9 @@ import ij.ImagePlus;
 import ij.gui.Toolbar;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
-import net.haesleinhuepf.clij2.plugins.ConnectedComponentsLabelingBox;
-import net.haesleinhuepf.clij2.plugins.GaussianBlur3D;
-import net.haesleinhuepf.clij2.plugins.MaximumZProjection;
-import net.haesleinhuepf.clij2.plugins.ThresholdOtsu;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
-import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Crop;
+import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Crop3D;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Zoom;
 import net.haesleinhuepf.clijx.gui.MemoryDisplay;
 import net.haesleinhuepf.clijx.assistant.AssistantGUIStartingPoint;
@@ -52,7 +47,7 @@ public class AssistantPlayground implements PlugInFilter {
         new AssistantGUIStartingPoint().run("");
         //new AssistantPlayground().run(null);
 
-        new Crop().run("");
+        new Crop3D().run("");
         new Zoom().run("");
 
 

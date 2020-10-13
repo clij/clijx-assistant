@@ -56,6 +56,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     final static Color INVALID_COLOR = new Color(205, 128, 128);
     final static Color VALID_COLOR = new Color(128, 205, 128);
 
+    private Boolean input_output_sizes_equal = null;
 
     protected ImagePlus[] my_sources = null;
 
@@ -269,6 +270,17 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
         args[0] = pushed[0]; // todo: potentially store the whole array here
         plugin.setArgs(args);
+        if (input_output_sizes_equal != null && result != null) {
+            long[] new_dimensions = null;
+            if (my_sources[0].getNSlices() > 1) {
+                new_dimensions = new long[]{result[0].getWidth(), result[0].getHeight(), result[0].getDepth()};
+            } else {
+                new_dimensions = new long[]{result[0].getWidth(), result[0].getHeight()};
+            }
+            System.out.println("Size: " + Arrays.toString(new_dimensions));
+
+            invalidateResultsIfDimensionsChanged(new_dimensions);
+        }
         if (result == null) {
             result = createOutputBufferFromSource(pushed[0]);
         }
@@ -289,13 +301,15 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             long[] result_dimensions = first.getDimensions();
 
 
-            boolean equal_dimensions = true;
-            for (int d = 0; d < new_dimensions.length; d++) {
-                System.out.println("" + new_dimensions[d] + " != " + result_dimensions[d]);
-                if (new_dimensions[d] != result_dimensions[d]) {
-                    System.out.println("!");
-                    equal_dimensions = false;
-                    break;
+            boolean equal_dimensions = result_dimensions.length == new_dimensions.length;
+            if (equal_dimensions) {
+                for (int d = 0; d < new_dimensions.length; d++) {
+                    System.out.println("" + new_dimensions[d] + " != " + result_dimensions[d]);
+                    if (new_dimensions[d] != result_dimensions[d]) {
+                        System.out.println("!");
+                        equal_dimensions = false;
+                        break;
+                    }
                 }
             }
 
@@ -395,12 +409,18 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     protected ClearCLBuffer[] createOutputBufferFromSource(ClearCLBuffer[] pushed) {
         CLIJx clijx = CLIJx.getInstance();
         ClearCLBuffer result = plugin.createOutputBufferFromSource(pushed[0]);
+        if (input_output_sizes_equal == null) {
+            input_output_sizes_equal =
+                    pushed[0].getWidth() == result.getWidth() &&
+                    pushed[0].getHeight() == result.getHeight();
+        }
         if (pushed.length > 1) {
             ClearCLBuffer[] output = new ClearCLBuffer[pushed.length];
             output[0] = result;
             for (int i = 1; i < pushed.length; i ++) {
                 output[i] = clijx.create(output[0]);
             }
+
             return output;
         } else {
             return new ClearCLBuffer[] {result};
