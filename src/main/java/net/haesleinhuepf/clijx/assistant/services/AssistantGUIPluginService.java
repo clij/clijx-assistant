@@ -33,7 +33,7 @@ public class AssistantGUIPluginService extends AbstractPTService<AssistantGUIPlu
 
         Class[] klasses = {
                 AutomaticThreshold.class,
-                Crop.class,
+                Crop3D.class,
                 CylinderTransform.class,
                 ExtractChannel.class,
                 LabelingWorkflowALX.class,
