@@ -65,15 +65,15 @@ public class UsageAnalyser {
                     //System.out.println(plugin);
                     String[] parameterDefinitions = plugin.getParameterHelpText().replace(",", ", ").replace("  ", " ").replace("  ", " ").split(",");
 
-                    //System.out.println("Parameters: " + parameterDefinitions.length);
+                    System.out.println("Parameters: " + parameterDefinitions.length);
                     //System.out.println("Parameters values: " + parameters.length);
 
                     if (parameterDefinitions.length == parameters.length) {
                         for (int p = 0; p < parameters.length; p++) {
                             parameters[p] = parameters[p].trim();
                             if (!isNumeric(parameters[p])) {
-                                if (parameterDefinitions[p].toLowerCase().contains("byref")) {
-                                    //System.out.println("Producer: " + method + " -> " + parameters[p]);
+                                if (parameterDefinitions[p].toLowerCase().contains("byref") || parameterDefinitions[p].toLowerCase().contains("destination") || method.contains("_push")) {
+                                    System.out.println("Producer: " + method + " -> " + parameters[p]);
 
                                     ArrayList<String> methods = producers.containsKey(parameters[p]) ? producers.get(parameters[p]) : new ArrayList<>();
                                     methods.add(method);
@@ -83,7 +83,7 @@ public class UsageAnalyser {
 
                                     ArrayList<String> methods = consumers.containsKey(parameters[p]) ? consumers.get(parameters[p]) : new ArrayList<>();
                                     methods.add(method);
-                                    //System.out.println("Consumer: " + method + " <- " + parameters[p]);
+                                    System.out.println("Consumer: " + method + " <- " + parameters[p]);
                                     consumers.put(parameters[p], methods);
                                 }
                                 count++;
@@ -103,11 +103,11 @@ public class UsageAnalyser {
                     for (String consumer : consumers.get(data)) {
                         //System.out.println("Consumer: "+ consumer);
 
-                        if (producer.compareTo("push") != 0 && producer.compareTo("copy") != 0 && !consumer.startsWith("pull")) {
-                            //System.out.println("Followers: " + producer + " > " + consumer);
-                            addToMap(followers, consumer, producer);
-                            addToMap(following, producer, consumer);
-                        }
+                        //if (producer.compareTo("push") != 0 && producer.compareTo("copy") != 0 && !consumer.startsWith("pull")) {
+                        //System.out.println("Followers: " + producer + " > " + consumer);
+                        addToMap(followers, consumer, producer);
+                        addToMap(following, producer, consumer);
+                        //}
                     }
                 }
             }
@@ -116,7 +116,7 @@ public class UsageAnalyser {
 
     private void addToMap(HashMap<String, Integer> followers, String consumer, String producer) {
         String key = producer + " > " + consumer;
-        int count = 1;
+        int count = 0;
         if (followers.containsKey(key)) {
             count = followers.get(key);
             followers.remove(key);
