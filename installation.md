@@ -9,12 +9,9 @@ Do not use it for routine research yet. Planned release is summer 2021. Stay tun
 
 ![Image](images/install_fiji_menu.png)
 
-* Click on "Manage update sites" and activate the two updates sites "clij" and "clij2". Furthermore, please click on 
-"Add update site" and enter another "CLIJx-Assistant" update site with the URL "https://sites.imagej.net/clijx-assistant/"
+* Click on "Manage update sites" and activate the _three_ updates sites "clij", "clij2" and "clijx-assistant".
 
 ![Image](images/installation.png)
-
-![Image](images/installation2.png)
 
 * Click on "Close"
 * Click on "Apply Changes"
