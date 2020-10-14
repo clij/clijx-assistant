@@ -31,7 +31,6 @@ public class ExtractChannel extends AbstractAssistantGUIPlugin {
         return gd;
     }
 
-    ClearCLBuffer[] result = null;
     public synchronized void refresh()
     {
         ClearCLBuffer[][] pushed = CLIJxVirtualStack.imagePlusesToBuffers(my_sources);
@@ -62,7 +61,9 @@ public class ExtractChannel extends AbstractAssistantGUIPlugin {
                 null
         };
         plugin.setArgs(args);
-
+        System.out.println("Check result: " + result);
+        checkResult();
+        System.out.println("Checked result: " + result);
         if (result == null) {
             result = createOutputBufferFromSource(new ClearCLBuffer[]{pushed[0][0]});
         }

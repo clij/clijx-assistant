@@ -270,17 +270,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
         args[0] = pushed[0]; // todo: potentially store the whole array here
         plugin.setArgs(args);
-        if (input_output_sizes_equal != null && result != null) {
-            long[] new_dimensions = null;
-            if (my_sources[0].getNSlices() > 1) {
-                new_dimensions = new long[]{result[0].getWidth(), result[0].getHeight(), result[0].getDepth()};
-            } else {
-                new_dimensions = new long[]{result[0].getWidth(), result[0].getHeight()};
-            }
-            System.out.println("Size: " + Arrays.toString(new_dimensions));
-
-            invalidateResultsIfDimensionsChanged(new_dimensions);
-        }
+        checkResult();
         if (result == null) {
             result = createOutputBufferFromSource(pushed[0]);
         }
@@ -295,15 +285,31 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
     }
 
+    protected void checkResult() {
+        if (input_output_sizes_equal != null && result != null) {
+            long[] new_dimensions = null;
+            ImagePlus source = my_sources[0];
+            if (source.getNSlices() > 1) {
+                new_dimensions = new long[]{source.getWidth(), source.getHeight(), source.getNSlices()};
+            } else {
+                new_dimensions = new long[]{source.getWidth(), source.getHeight()};
+            }
+            System.out.println("Size: " + Arrays.toString(new_dimensions));
+
+            invalidateResultsIfDimensionsChanged(new_dimensions);
+
+        }
+    }
+
     protected void invalidateResultsIfDimensionsChanged(long[] new_dimensions) {
         if (result != null) {
             ClearCLBuffer first = result[0];
             long[] result_dimensions = first.getDimensions();
 
 
-            boolean equal_dimensions = result_dimensions.length == new_dimensions.length;
+            boolean equal_dimensions = true; //result_dimensions.length == new_dimensions.length;
             if (equal_dimensions) {
-                for (int d = 0; d < new_dimensions.length; d++) {
+                for (int d = 0; d < new_dimensions.length && d < result_dimensions.length; d++) {
                     System.out.println("" + new_dimensions[d] + " != " + result_dimensions[d]);
                     if (new_dimensions[d] != result_dimensions[d]) {
                         System.out.println("!");
@@ -319,6 +325,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                 }
                 System.out.println("Make a new result");
                 result = null;
+                input_output_sizes_equal = null;
             }
         }
     }

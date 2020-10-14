@@ -6,8 +6,11 @@ import ij.ImagePlus;
 import ij.gui.Toolbar;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+import net.haesleinhuepf.clij2.plugins.GaussianBlur3D;
+import net.haesleinhuepf.clij2.plugins.MaximumZProjection;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
+import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Crop3D;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Zoom;
 import net.haesleinhuepf.clijx.gui.MemoryDisplay;
@@ -28,7 +31,8 @@ public class AssistantPlayground implements PlugInFilter {
         //ImagePlus imp = IJ.openImage("C:/structure/data/spim_TL18_Angle0-1.tif");
         //ImagePlus imp = IJ.openImage("D:/structure/data/Irene/ISB200714_well5_1pos_3h_MyosinGFP-small.tif");
         //ImagePlus imp = IJ.openImage("C:/structure/data/mitosis.tif");
-        ImagePlus imp = IJ.openImage("C:/structure/data/blobs.tif");
+        //ImagePlus imp = IJ.openImage("C:/structure/data/blobs.tif");
+        ImagePlus imp = IJ.openImage("C:/structure/data/t1-head.tif");
         imp.show();
 
         //ImagePlus imp1 = IJ.openImage("C:\\structure\\teaching\\lecture_applied_bioimage_analysis_2020\\12_Volumetric_image_data\\data\\000200.raw.tif");
@@ -48,17 +52,17 @@ public class AssistantPlayground implements PlugInFilter {
         //new AssistantPlayground().run(null);
 
         new Crop3D().run("");
-        new Zoom().run("");
+        //new Zoom().run("");
 
 
-        //new GenericAssistantGUIPlugin(new GaussianBlur3D()).run("");
+        new GenericAssistantGUIPlugin(new GaussianBlur3D()).run("");
         //new GenericAssistantGUIPlugin(new ThresholdOtsu()).run("");
         //new GenericAssistantGUIPlugin(new ConnectedComponentsLabelingBox()).run("");
 
         //new WekaLabelClassifier().run("");
 
 
-        //new GenericAssistantGUIPlugin(new MaximumZProjection()).run("");
+        new GenericAssistantGUIPlugin(new MaximumZProjection()).run("");
 
 
         Toolbar.addPlugInTool(new AnnotationTool());
