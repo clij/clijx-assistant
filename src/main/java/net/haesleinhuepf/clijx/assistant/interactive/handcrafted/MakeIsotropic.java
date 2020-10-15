@@ -1,10 +1,8 @@
 package net.haesleinhuepf.clijx.assistant.interactive.handcrafted;
 
-import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.measure.Calibration;
-import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
@@ -12,6 +10,7 @@ import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
 
 import java.awt.*;
+import java.util.Arrays;
 
 @Plugin(type = AssistantGUIPlugin.class)
 public class MakeIsotropic extends AbstractAssistantGUIPlugin {
@@ -22,33 +21,38 @@ public class MakeIsotropic extends AbstractAssistantGUIPlugin {
         super(new net.haesleinhuepf.clijx.plugins.MakeIsotropic());
     }
 
-    protected boolean configure() {
-        String unit = "unit";
-        if (my_sources != null) {
-            unit = my_sources[0].getCalibration().getUnit();
-        }
-        GenericDialog gdp = new GenericDialog("Make isotropic");
-        gdp.addNumericField("Future voxel size (in " + unit + ")", 1.0, 1);
-        gdp.showDialog();
+    GenericDialog dialog = null;
 
-        System.out.println("First dialog done");
-        if (gdp.wasCanceled()) {
-            System.out.println("First dialog cancelled");
-            return false;
-        }
-
-        setSources(new ImagePlus[]{IJ.getImage()});
-        new_voxel_size_in_microns = (float) gdp.getNextNumber();
-        return true;
-    }
+    //protected boolean configure() {
 
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
-        GenericDialog gd = new GenericDialog(AssistantUtilities.niceNameWithoutDimShape(this.getClass().getSimpleName()));
-        return gd;
+        String unit = "unit";
+        float current_avg_voxel_size = 1;
+        if (my_sources != null) {
+            unit = my_sources[0].getCalibration().getUnit();
+
+            current_avg_voxel_size = (float)
+                    (
+                        my_sources[0].getCalibration().pixelWidth +
+                        my_sources[0].getCalibration().pixelHeight +
+                        my_sources[0].getCalibration().pixelDepth
+                    ) / 3;
+
+            if (new_voxel_size_in_microns / current_avg_voxel_size > 1.1 || new_voxel_size_in_microns / current_avg_voxel_size < 0.9) {
+                new_voxel_size_in_microns = current_avg_voxel_size;
+            }
+        }
+        if (new_voxel_size_in_microns == 0) {
+            new_voxel_size_in_microns = 1;
+        }
+
+        dialog = new GenericDialog("Make isotropic");
+        dialog.addNumericField("Future voxel size (in " + unit + ")", 1.0, 1);
+
+        return dialog;
     }
 
-    ClearCLBuffer[] result = null;
     public synchronized void refresh()
     {
         Calibration calib = my_sources[0].getCalibration();
@@ -58,6 +62,20 @@ public class MakeIsotropic extends AbstractAssistantGUIPlugin {
         System.out.println("voxel size x: " + original_voxel_size_x);
         System.out.println("voxel size y: " + original_voxel_size_y);
         System.out.println("voxel size z: " + original_voxel_size_z);
+
+
+
+
+        if (dialog != null) {
+            try {
+                new_voxel_size_in_microns = Float.parseFloat(((TextField) dialog.getNumericFields().get(0)).getText());
+            } catch (Exception e) {
+                System.out.println("Error parsing text (ExtractChannel)");
+            }
+        }
+        if (new_voxel_size_in_microns == 0) {
+            return;
+        }
 
         ClearCLBuffer[][] pushed = CLIJxVirtualStack.imagePlusesToBuffers(my_sources);
 
@@ -72,6 +90,25 @@ public class MakeIsotropic extends AbstractAssistantGUIPlugin {
         };
         plugin.setArgs(args);
 
+        System.out.println("Check result: " + result);
+
+        long[] new_dimensions = null;
+        ImagePlus source = my_sources[0];
+
+        float scale1X = (float) (original_voxel_size_x / new_voxel_size_in_microns);
+        float scale1Y = (float) (original_voxel_size_y / new_voxel_size_in_microns);
+        float scale1Z = (float) (original_voxel_size_z / new_voxel_size_in_microns);
+
+        if (source.getNSlices() > 1) {
+            new_dimensions = new long[]{(long)(source.getWidth() * scale1X), (long)(source.getHeight() * scale1Y), (long)(source.getNSlices() * scale1Z)};
+        } else {
+            new_dimensions = new long[]{(long)(source.getWidth() * scale1X), (long)(source.getHeight() * scale1Y)};
+        }
+        System.out.println("Size: " + Arrays.toString(new_dimensions));
+
+        invalidateResultsIfDimensionsChanged(new_dimensions);
+
+        System.out.println("Checked result: " + result);
         if (result == null) {
             result = createOutputBufferFromSource(pushed[0]);
         }
