@@ -165,7 +165,7 @@ public class PyclesperantoGenerator extends AbstractScriptGenerator {
                 "# Also make sure conda is part of the PATH variable.\n" +
                 "# \n" +
                 "# If you want to run it from Fiji and you're using a different conda environment, you can configure it in Fijis main menu \n" +
-                "# Plugins > ImageJ on GPU (CLIJx-Incubator) > Options >Conda configuration (Te Oki) \n" +
+                "# Plugins > ImageJ on GPU (CLIJx-Assistant) > Options >Conda configuration (Te Oki) \n" +
                 "# Furthermore, activate the scripting language Te Oki in Fijis script editor to run this script.\n\n" +
                 "# Stay tuned and check out http://clesperanto.net to learn more." +
                 "\n\n" +
