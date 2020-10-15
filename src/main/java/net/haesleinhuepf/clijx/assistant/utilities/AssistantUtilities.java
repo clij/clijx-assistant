@@ -862,6 +862,9 @@ public class AssistantUtilities {
         if (parameterName.toLowerCase().contains("micron")) {
             return small_step ? 0.1 : 5;
         }
+        if (parameterName.toLowerCase().contains("angles")) {
+            return small_step ? 15 : 90;
+        }
         if (parameterName.toLowerCase().contains("degree")) {
             return small_step ? 15 : 90;
         }
@@ -880,6 +883,7 @@ public class AssistantUtilities {
         if (parameterName.toLowerCase().contains("error")) {
             return small_step ? 0.01 : 0.1;
         }
+
         return small_step ? 1 : 10;
     }
 
