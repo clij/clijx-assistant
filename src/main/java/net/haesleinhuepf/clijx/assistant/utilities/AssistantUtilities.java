@@ -9,6 +9,7 @@ import net.haesleinhuepf.clij.clearcl.util.StringUtils;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
 import net.haesleinhuepf.clij2.plugins.*;
+import net.haesleinhuepf.clij2.utilities.HasClassifiedInputOutput;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.AssistantGUIStartingPoint;
@@ -820,6 +821,10 @@ public class AssistantUtilities {
     }
 
     public static boolean resultIsBinaryImage(AssistantGUIPlugin abstractAssistantGUIPlugin) {
+        if (abstractAssistantGUIPlugin.getCLIJMacroPlugin() instanceof HasClassifiedInputOutput) {
+            ((HasClassifiedInputOutput) abstractAssistantGUIPlugin.getCLIJMacroPlugin()).getOutputType().contains("Binary Image");
+        }
+
         String name = abstractAssistantGUIPlugin.getName().toLowerCase();
         if (abstractAssistantGUIPlugin.getCLIJMacroPlugin() != null && abstractAssistantGUIPlugin.getCLIJMacroPlugin() instanceof IsCategorized) {
             name = name + "," + ((IsCategorized) abstractAssistantGUIPlugin.getCLIJMacroPlugin()).getCategories().toLowerCase();
@@ -835,6 +840,10 @@ public class AssistantUtilities {
     }
 
     public static boolean resultIsLabelImage(AssistantGUIPlugin abstractAssistantGUIPlugin) {
+        if (abstractAssistantGUIPlugin.getCLIJMacroPlugin() instanceof HasClassifiedInputOutput) {
+            ((HasClassifiedInputOutput) abstractAssistantGUIPlugin.getCLIJMacroPlugin()).getOutputType().contains("Label Image");
+        }
+
         String name = abstractAssistantGUIPlugin.getName().toLowerCase();
         if (abstractAssistantGUIPlugin.getCLIJMacroPlugin() != null && abstractAssistantGUIPlugin.getCLIJMacroPlugin() instanceof IsCategorized) {
             name = name + "," + ((IsCategorized) abstractAssistantGUIPlugin.getCLIJMacroPlugin()).getCategories().toLowerCase();
@@ -864,6 +873,9 @@ public class AssistantUtilities {
         }
         if (parameterName.toLowerCase().contains("zoom")) {
             return small_step ? 0.1 : 1;
+        }
+        if (parameterName.toLowerCase().contains("size")) {
+            return small_step ? 0.05 : 0.1;
         }
         if (parameterName.toLowerCase().contains("error")) {
             return small_step ? 0.01 : 0.1;
