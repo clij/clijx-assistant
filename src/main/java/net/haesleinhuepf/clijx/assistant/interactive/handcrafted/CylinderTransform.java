@@ -10,6 +10,7 @@ import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
 
 import java.awt.*;
+import java.util.Arrays;
 
 @Plugin(type = AssistantGUIPlugin.class)
 public class CylinderTransform extends AbstractAssistantGUIPlugin {
@@ -19,6 +20,8 @@ public class CylinderTransform extends AbstractAssistantGUIPlugin {
     float relative_center_x = 0.5f;
     float relative_center_z = 0.5f;
 
+    private TextField num_angles_slider;
+    private TextField angle_step_in_degrees_slider;
     private TextField center_x_slider;
     private TextField center_z_slider;
 
@@ -26,29 +29,15 @@ public class CylinderTransform extends AbstractAssistantGUIPlugin {
         super(new net.haesleinhuepf.clijx.plugins.CylinderTransform());
     }
 
-    protected boolean configure() {
-        GenericDialog gdp = new GenericDialog("Cylinder transform");
-        gdp.addNumericField("Number_of_angles", number_of_angles);
-        gdp.addNumericField("Angle_step_in_degrees",  delta_angle_in_degrees);
-        gdp.showDialog();
-
-        System.out.println("First dialog done");
-        if (gdp.wasCanceled()) {
-            System.out.println("First dialog cancelled");
-            return false;
-        }
-
-        setSources(new ImagePlus[]{IJ.getImage()});
-        number_of_angles = (int) gdp.getNextNumber();
-        delta_angle_in_degrees = (float) gdp.getNextNumber();
-
-        return true;
-    }
-
-
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
         GenericDialog gdp = new GenericDialog("Cylinder transform");
+        gdp.addNumericField("Number_of_angles", number_of_angles);
+        addPlusMinusPanel(gdp, "Number_of_angles");
+
+        gdp.addNumericField("Angle_step_in_degrees",  delta_angle_in_degrees);
+        addPlusMinusPanel(gdp, "Angle_step_in_degrees");
+
         gdp.addNumericField("Relative_center_x (0...1)", relative_center_x);
         addPlusMinusPanel(gdp, "relative_center_x");
 
@@ -56,8 +45,10 @@ public class CylinderTransform extends AbstractAssistantGUIPlugin {
         addPlusMinusPanel(gdp, "relative_center_z");
 
 
-        center_x_slider = (TextField) gdp.getNumericFields().get(0);
-        center_z_slider = (TextField) gdp.getNumericFields().get(1);
+        num_angles_slider = (TextField) gdp.getNumericFields().get(0);
+        angle_step_in_degrees_slider = (TextField) gdp.getNumericFields().get(1);
+        center_x_slider = (TextField) gdp.getNumericFields().get(2);
+        center_z_slider = (TextField) gdp.getNumericFields().get(3);
 
         return gdp;
     }
@@ -66,15 +57,17 @@ public class CylinderTransform extends AbstractAssistantGUIPlugin {
     @Override
     public void refreshView() {}
 
-
-    ClearCLBuffer[] result = null;
     public synchronized void refresh()
     {
         if (center_z_slider != null) {
             try {
+                number_of_angles = (int)Float.parseFloat(num_angles_slider.getText());
+                delta_angle_in_degrees = Float.parseFloat(angle_step_in_degrees_slider.getText());
                 relative_center_x = Float.parseFloat(center_x_slider.getText());
                 relative_center_z = Float.parseFloat(center_z_slider.getText());
             } catch (Exception e) {
+                e.printStackTrace();
+
                 return;
             }
         }
@@ -84,6 +77,14 @@ public class CylinderTransform extends AbstractAssistantGUIPlugin {
         args = new Object[]{pushed[0], null, number_of_angles, delta_angle_in_degrees, relative_center_x, relative_center_z};
         net.haesleinhuepf.clijx.plugins.CylinderTransform plugin = (net.haesleinhuepf.clijx.plugins.CylinderTransform) getCLIJMacroPlugin();
         plugin.setArgs(args);
+
+        //
+        int radius = (int) Math.sqrt(Math.pow(pushed[0][0].getWidth() / 2, 2) + Math.pow(pushed[0][0].getDepth() / 2, 2));
+
+        long[] new_dimensions = {number_of_angles, pushed[0][0].getHeight(), radius};
+        System.out.println("new dims " + Arrays.toString(new_dimensions));
+        invalidateResultsIfDimensionsChanged(new_dimensions);
+
         if (result == null) {
             result = createOutputBufferFromSource(pushed[0]);
         }
