@@ -49,6 +49,7 @@ public class MakeIsotropic extends AbstractAssistantGUIPlugin {
 
         dialog = new GenericDialog("Make isotropic");
         dialog.addNumericField("Future voxel size (in " + unit + ")", 1.0, 1);
+        addPlusMinusPanel(dialog, "voxel size");
 
         return dialog;
     }
