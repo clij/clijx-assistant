@@ -36,7 +36,6 @@ public class PullToROIManager extends AbstractAssistantGUIPlugin {
         return gd;
     }
 
-    ClearCLBuffer[] result = null;
     public synchronized void refresh()
     {
         ClearCLBuffer[][] pushed = CLIJxVirtualStack.imagePlusesToBuffers(my_sources);
@@ -53,6 +52,9 @@ public class PullToROIManager extends AbstractAssistantGUIPlugin {
 
 
         CLIJx clijx = CLIJx.getInstance();
+
+
+        checkResult();
 
         if (result == null) {
             result = new ClearCLBuffer[]{clijx.create(new long[]{pushed[0][0].getWidth(), pushed[0][0].getHeight()}, pushed[0][0].getNativeType())};
