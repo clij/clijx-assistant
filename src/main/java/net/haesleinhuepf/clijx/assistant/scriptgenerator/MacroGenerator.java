@@ -1,5 +1,6 @@
 package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 
+import ij.IJ;
 import ij.ImagePlus;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
@@ -81,6 +82,9 @@ public class MacroGenerator extends AbstractScriptGenerator {
                     plugin.getArgs()[i] instanceof ImagePlus
             ) {
                 String image_id = objectToString(plugin.getArgs()[i]);
+                if (image_id == null && i < plugin.getNumberOfSources()) {
+                    image_id = objectToString(plugin.getSource(i));
+                }
                 call = call + image_id;
                 after_call = after_call + close(image_id) + "\n";
             } else {

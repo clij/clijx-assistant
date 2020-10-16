@@ -49,6 +49,9 @@ public class MacroMarkdownGenerator extends MacroGenerator {
             ) {
 
                 String image_id = objectToString(plugin.getArgs()[i]);
+                if (image_id == null && i < plugin.getNumberOfSources()) {
+                    image_id = objectToString(plugin.getSource(i));
+                }
                 call = call + image_id;
                 after_call = after_call + close(image_id) + "\n";
             } else {
