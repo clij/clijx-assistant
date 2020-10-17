@@ -6,6 +6,7 @@ import ij.gui.GenericDialog;
 import ij.gui.Toolbar;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
+import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clij2.plugins.Copy;
 import net.haesleinhuepf.clijx.assistant.scriptgenerator.MacroGenerator;
 import net.haesleinhuepf.clijx.gui.InteractiveWindowPosition;
@@ -83,7 +84,9 @@ public class AssistantGUIStartingPoint extends AbstractAssistantGUIPlugin {
         result = CLIJxVirtualStack.imagePlusToBuffer(my_sources[0]);
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
 
-        args = new Object[]{my_sources[0], result};
+        ClearCLBuffer input = CLIJ2.getInstance().create(result[0]);
+        input.close();
+        args = new Object[]{input, result[0]};
 
         my_target.setTitle("CLIJx Image of " + my_sources[0].getTitle());
         refreshView();
@@ -92,15 +95,15 @@ public class AssistantGUIStartingPoint extends AbstractAssistantGUIPlugin {
     @Override
     public void imageUpdated(ImagePlus imp) {
         if (imp == my_sources[0]) {
-            System.out.println("Source updated");
+            //System.out.println("Source updated");
             if (imp.getT() != former_t) {
-                System.out.println("Target invalidated");
+                //System.out.println("Target invalidated");
                 setTargetInvalid();
 
                 former_t = imp.getT(); }
 
             if (imp.getZ() != former_z || imp.getC() != former_c) {
-                System.out.println("Calling refresh view");
+                //System.out.println("Calling refresh view");
                 refreshView();
                 former_z = imp.getZ();
                 former_c = imp.getC();

@@ -96,18 +96,23 @@ public class MavenJavaProjectGeneratorPlugin implements PlugIn {
     }
 
     public static void generate(Workflow workflow, String temp_folder, String plugin_name, String plugin_description, String author_name, String author_id) {
+        IJ.log("Cloning...");
+        IJ.log("Template: " + TEMPLATE_REPOSITORY);
         MavenJavaProjectGenerator.git_clone(TEMPLATE_REPOSITORY, temp_folder);
 
+        IJ.log("Generating Java...");
         MavenJavaProjectGenerator generator = new MavenJavaProjectGenerator(workflow, plugin_name, plugin_description, author_name, author_id);
-
+        IJ.log("Parsing project folder...");
         generator.parseSubFolders(new File(temp_folder));
 
+        IJ.log("Run maven...");
         MavenJavaProjectGenerator.mvn_package(temp_folder);
 
+        IJ.log("Installing plugin...");
         if (generator.installTo(temp_folder, IJ.getDir("imagej"))) {
-            IJ.log("\nBuild successful.");
+            IJ.log("\nBuild & installation successful.");
             IJ.log("\nThe compiled version is saved to your Fiji/plugins/" + generator.getJarFilename());
-            IJ.log("The source code is saved to " + temp_folder);
+            IJ.log("The source code was saved to \n" + temp_folder);
             IJ.log("Make sure to make a copy before closing Fiji.");
             IJ.log("\nPlease restart Fiji to try out your new Plugin.");
             String dependencies = generator.getDependencies();
@@ -115,9 +120,9 @@ public class MavenJavaProjectGeneratorPlugin implements PlugIn {
                 IJ.log("If you plan to ship this plugin to others, you also need to ship these dependencies:\n" + dependencies);
             }
         } else {
-            IJ.log("\nBuild failed.");
-            IJ.log("\nThis typically happens if not all plugins in your workflow are supported for code generation.");
-            IJ.log("The source code is saved to " + temp_folder);
+            IJ.log("\nInstallation failed.");
+            IJ.log("\nIf build succeeded, check if a plugin with the same name exists already.");
+            IJ.log("The source code was saved to \n" + temp_folder);
             IJ.log("\nIf you need assistance, please provide the error message above and the source code to @haesleinhuepf on https://image.sc .");
         }
 

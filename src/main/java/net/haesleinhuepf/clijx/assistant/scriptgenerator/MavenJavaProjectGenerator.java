@@ -121,7 +121,13 @@ class MavenJavaProjectGenerator {
             Object[] args = workflow.getArgs()[plugin_index];
             String[] parameters = plugin.getParameterHelpText().replace(", ", ",").split(",");
 
-            ClearCLBuffer first_input_image = (ClearCLBuffer) args[0];
+            ClearCLBuffer first_input_image;
+            if ( args[0] instanceof ClearCLBuffer) {
+                first_input_image = (ClearCLBuffer) args[0];
+            } else { // if (args[0] instanceof ImagePlus){
+                first_input_image = CLIJ2.getInstance().push(args[0]);
+                first_input_image.close();
+            }
             //ClearCLBuffer last_input_image = (ClearCLBuffer) args[0];
             //int i = 0;
             //while(i < args.length && args[i] instanceof ClearCLBuffer) {
@@ -138,6 +144,10 @@ class MavenJavaProjectGenerator {
                 boolean byref = parameters[a].trim().startsWith("ByRef");
                 String parameter = parameters[a].replace("ByRef ", "");
                 String parameter_name = parameter.split(" ")[1].trim();
+
+                if (parameter_value instanceof ClearCLBuffer[]) {
+                    parameter_value = ((ClearCLBuffer[])parameter_value)[0];
+                }
 
                 // if image parameter
                 if (parameter_value instanceof ClearCLBuffer) {
@@ -156,7 +166,7 @@ class MavenJavaProjectGenerator {
                             enter_image_value_parsers_here = enter_image_value_parsers_here + ", ";
                         }
 
-                        System.out.println("--->");
+                        //System.out.println("--->");
                         if (byref) {
                             enter_image_parameters_here = enter_image_parameters_here + "ByRef ";
                         }
@@ -215,6 +225,7 @@ class MavenJavaProjectGenerator {
         String[] temp1 = enter_value_parsers_here.split("\\[");
         enter_value_parsers_here = "";
         for (int i = 0; i < temp1.length; i++) {
+            System.out.println("Text: " + temp1[i]);
             if (i == 0) {
                 enter_value_parsers_here = temp1[i];
             } else {
@@ -338,8 +349,10 @@ class MavenJavaProjectGenerator {
             }
             //System.out.println(file);
             if (file.isDirectory()) {
+                IJ.log("Parsing directory... " + file);
                 parseSubFolders(file);
             } else {
+                IJ.log("Parsing file... " + file);
                 parseFile(file);
             }
         }
@@ -421,12 +434,14 @@ class MavenJavaProjectGenerator {
 
         String jar_source_file = project_dir + "target/" + getJarFilename();
         String jar_target_file = imagej_dir + "plugins/" + getJarFilename();
+        IJ.log("Source: " + jar_source_file);
+        IJ.log("Target: " + jar_target_file);
 
         return new File(jar_source_file).renameTo(new File(jar_target_file));
     }
 
-    public String getJarFilename() {
-        return "clijx-assistant-" + enter_lower_case_plugin_name_here + "_-0.1.0.0.jar";
+    public String getJarFilename() { // TODO: Derive version number automatically
+        return "clijx-assistant-" + enter_lower_case_plugin_name_here + "_-0.1.5.1.jar";
     }
 
 
