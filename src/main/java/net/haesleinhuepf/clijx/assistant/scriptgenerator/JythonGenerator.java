@@ -110,6 +110,9 @@ public class JythonGenerator extends AbstractScriptGenerator {
             }
             if (plugin.getArgs()[i] instanceof ClearCLBuffer || plugin.getArgs()[i] instanceof ClearCLBuffer[]) {
                 String image_id = objectToString(plugin.getArgs()[i]);
+                if (image_id == null && i < plugin.getNumberOfSources()) {
+                    image_id = objectToString(plugin.getSource(i));
+                }
                 call = call + image_id;
                 after_call = after_call + close(image_id) + "\n";
             } else {
