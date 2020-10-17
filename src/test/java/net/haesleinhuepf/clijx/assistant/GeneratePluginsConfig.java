@@ -21,20 +21,20 @@ import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.nic
 
 public class GeneratePluginsConfig {
     public static void main(String[] args) throws IOException {
-        /*
+
         AssistantGUIPluginService service = AssistantGUIPluginService.getInstance();
 
         ArrayList<CLIJMacroPlugin> supported_plugins = new ArrayList<>();
 
         ArrayList<String> menu_entries = new ArrayList<>();
 
-        String[] order = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q"};
+        //String[] order = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q"};
 
         int category_count = 0;
         for (String category : MenuService.getInstance().getCategories()) {
 
             category_count++;
-            for (AssistantGUIPlugin plugin : MenuService.getInstance().getPluginsInCategory(category)) {
+            for (AssistantGUIPlugin plugin : MenuService.getInstance().getPluginsInCategory(category, null)) {
                 supported_plugins.add(plugin.getCLIJMacroPlugin());
                 if (category.compareTo("All") == 0 && AssistantUtilities.isIncubatablePlugin(plugin.getCLIJMacroPlugin())) {
                     System.out.println("blocklist.add(" + plugin.getCLIJMacroPlugin().getClass().toString().replace("class ", "") + ".class);");
@@ -49,7 +49,6 @@ public class GeneratePluginsConfig {
                 );
             }
         }
-         */
 
         /*
         Collections.sort(menu_entries);
@@ -66,11 +65,11 @@ public class GeneratePluginsConfig {
         */
 
 
-        /*
+
         ArrayList<String> link_to_docs = new ArrayList<>();
         ArrayList<String> link_to_docs_label_measurements = new ArrayList<>();
 
-        ArrayList<AssistantGUIPlugin> pluginsInCategory = MenuService.getInstance().getPluginsInCategory("Label>Measurement");
+        //ArrayList<AssistantGUIPlugin> pluginsInCategory = MenuService.getInstance().getPluginsInCategory("Label>Measurement");
 
 
         HashMap<String, String> short_description = new HashMap<>();
@@ -90,9 +89,9 @@ public class GeneratePluginsConfig {
                 link_to_docs.add(new_entry);
                 short_description.put(new_entry, description);
 
-                if (contains(pluginsInCategory, plugin)) {
+                //if (contains(pluginsInCategory, plugin)) {
                     link_to_docs_label_measurements.add(new_entry);
-                }
+                //}
 
             }
         }
@@ -102,7 +101,7 @@ public class GeneratePluginsConfig {
                 "reference.md",
                 "## CLIIJx-Assistant operations\n" +
                         "This is the list of currently supported [CLIJ2](https://clij.github.io/) and [CLIJx](https://clij.github.io/clijx) operations.\n\n" +
-                        "Please note: CLIJx-Incubator is under development. Hence, this list is subject to change.\n\n",
+                        "Please note: CLIJx-Assitant is under development. Hence, this list is subject to change.\n\n",
                 link_to_docs,
                 short_description
         );
@@ -114,7 +113,7 @@ public class GeneratePluginsConfig {
                 link_to_docs_label_measurements,
                 short_description
         );
-        */
+
     }
 
     private static void writeFunctionList(String filename, String header, ArrayList<String> link_to_docs, HashMap<String, String> short_description) throws IOException {
