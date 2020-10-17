@@ -28,13 +28,13 @@ public class MenuService {
     }
 
     private MenuService() {
-        addCategory("Filter (Noise removal)", (a,b) -> {
+        addCategory("Filter (noise removal)", (a,b) -> {
             return b instanceof IsCategorized && ((IsCategorized) b).isInCategory("filter") && ((IsCategorized) b).isInCategory("noise") &&
                     a.getOutputType().equals("Image") &&
                     a.getInputType().equals("Image") &&
                     b.getOutputType().equals("Image")?1:0;
         });
-        addCategory("Filter (Background removal)", (a,b) -> {
+        addCategory("Filter (background removal)", (a,b) -> {
             return b instanceof IsCategorized && ((IsCategorized) b).isInCategory("filter") && ((IsCategorized) b).isInCategory("background") &&
                     a.getOutputType().equals("Image") &&
                     a.getInputType().equals("Image") &&
@@ -63,7 +63,7 @@ public class MenuService {
                     a.getOutputType().equals(b.getInputType()) &&
                     b.getOutputType().equals("Binary Image")?1:0;
         });
-        addCategory("Binary Processing", (a,b) -> {
+        addCategory("Binary processing", (a,b) -> {
             return a.getOutputType().equals(b.getInputType()) &&
                     b.getInputType().contains("Binary Image") &&
                     b.getOutputType().equals("Binary Image")?1:0;
@@ -73,15 +73,28 @@ public class MenuService {
                     (!b.getInputType().contains("Label Image")) &&
                     b.getOutputType().equals("Label Image")?1:0;
         });
-        addCategory("Label Processing", (a,b) -> {
+        addCategory("Label processing", (a,b) -> {
             return a.getOutputType().equals(b.getInputType()) &&
                     b.getInputType().contains("Label Image")&&
                     b.getOutputType().equals("Label Image")?1:0;
         });
-        addCategory("Label Measurements", (a,b) -> {
-            return a.getOutputType().equals(b.getInputType()) &&
-                    b.getInputType().contains("Label Image")&&
-                    b.getOutputType().equals("Image")?1:0;
+        addCategory("Label measurements", (a,b) -> {
+            return a.getOutputType().contains("Label Image") &&
+                    b.getInputType().contains("Label Image") &&
+                    b.getOutputType().equals("Image") &&
+                    b instanceof IsCategorized &&
+                    (!((IsCategorized) b).isInCategory("Graph")) &&
+                    ((IsCategorized) b).isInCategory("Measurement")
+                    ?1:0;
+        });
+        addCategory("Label neighbor graph based measurements", (a,b) -> {
+            return a.getOutputType().contains("Label Image") &&
+                    b.getInputType().contains("Label Image") &&
+                    b.getOutputType().equals("Image") &&
+                    b instanceof IsCategorized &&
+                    ((IsCategorized) b).isInCategory("Graph") &&
+                    ((IsCategorized) b).isInCategory("Measurement")
+                    ?1:0;
         });
         addCategory("All", (a,b) -> 1);
 
