@@ -81,12 +81,22 @@ please also activate the "IJMMD" update site in Fiji.
 <a name="maven"></a>
 ## Optional: Plugin generator Installation
 In order to build Fiji plugins, you need to install and Java Development kit, version 8 or higher, e.g. [OpenJDK](https://openjdk.java.net/).
-Furthermore, you need [git](https://git-scm.com/) and [maven](https://maven.apache.org/). To make it work easily, it is recommended to add the git and maven  
+Furthermore, you need [git](https://git-scm.com/) and [maven](https://maven.apache.org/). 
+To make it work easily, it is recommended to add the git and maven  
 installation directories to the PATH variable of your environment (How to: 
 [Windows](https://answers.microsoft.com/en-us/windows/forum/windows_10-other_settings/adding-path-variable/97300613-20cb-4d85-8d0e-cc9d3549ba23)
 [Linux](https://opensource.com/article/17/6/set-path-linux)
 [MacOS](https://support.apple.com/guide/terminal/use-environment-variables-apd382cc5fa-4f58-4449-b20a-41c53c006f8f/mac)
 ).
+
+After installing git, maven and the JDK, please enter appropriate paths under `Plugins > ImageJ on GPU (CLIJx-Assistant) > Options > Build and Run options`
+
+![Image](images/build_and_run_options.png)
+
+<a name="icy"></a>
+## Optional: Icy Protocol bridge
+For exporting workflows to Icy Protocols, it might be handy to start Icy from ImageJ. Therefore, [download and install Icy](http://icy.bioimageanalysis.org/download/) 
+and enter its location under `Plugins > ImageJ on GPU (CLIJx-Assistant) > Options > Build and Run options`.
 
 <a name="te_oki"></a>
 ## Optional: Te Oki / Python Installation
@@ -105,6 +115,8 @@ Install dependencies, either via conda install or
 pip install pyopencl napari ipython matplotlib numpy pyclesperanto_prototype scikit-image jupyter
 ```
 Within this environment you can run generated [clEsperanto](https://clesperanto.github.io/) python scripts.
+
+If the name of your conda environment differs, please configure it under `Plugins > ImageJ on GPU (CLIJx-Assistant) > Options > Build and Run options`
 
 <a name="clijpy"></a>
 ## Optional: CLIJPY / PyImageJ / Python Installation
