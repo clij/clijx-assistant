@@ -108,6 +108,16 @@ public class Crop2D extends AbstractAssistantGUIPlugin {
 
         cleanup(my_sources, pushed);
 
+        // save correct config for script generators
+        args = new Object[] {
+                pushed[0],
+                null,
+                x_in_pixels,
+                y_in_pixels,
+                width_in_pixels,
+                height_in_pixels
+        };
+
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
 
         my_target.setTitle("Crop2D of " + my_sources[0].getTitle());
