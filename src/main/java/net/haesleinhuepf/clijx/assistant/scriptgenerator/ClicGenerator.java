@@ -1,6 +1,7 @@
 package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 
 import ij.ImagePlus;
+import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
@@ -28,6 +29,7 @@ public class ClicGenerator extends AbstractScriptGenerator {
         }
         program = program +
                 "cle::Buffer " + image1 + " = gpu.Push<" + bitDepthToType(imp.getBitDepth()) + ">(raw_image); \n\n";
+
 
         return program;
     }
@@ -81,22 +83,26 @@ public class ClicGenerator extends AbstractScriptGenerator {
                     "std::array<unsigned int, 3> dimensions = {" + imp.getWidth() + ", " + imp.getHeight() + ", " + imp.getNSlices() + "}; \n";
         } else {
             program = program +
-                    "std::array<unsigned int, 3> dimensions = {" + imp.getWidth() + ", " + imp.getHeight() + "}; \n";
+                    "std::array<unsigned int, 2> dimensions = {" + imp.getWidth() + ", " + imp.getHeight() + "}; \n";
         }
         program = program +
                 "cle::Buffer " + image2 + " = gpu.Create<" +  bitDepthToType(imp.getBitDepth()) + ">(dimensions.data(), \"" + bitDepthToType(imp.getBitDepth()) + "\"); \n";
         String call = "";
 
         String[] parameters = clijMacroPlugin.getParameterHelpText().split(",");
-        for (int i = 2; i < parameters.length; i++) {
-            String temp[] = parameters[i].trim().split(" ");
-            String name = temp[temp.length - 1];
-            call = call + ", " + name;
-            program = program + name + " = " + objectToString(plugin.getArgs()[i]) + "; \n";
+        for (int i = 0; i < parameters.length; i++) {
+            if (plugin.getArgs()[i] instanceof ClearCLBuffer || plugin.getArgs()[i] instanceof ClearCLBuffer[]) {
+
+            } else {
+                String temp[] = parameters[i].trim().split(" ");
+                String name = temp[temp.length - 1];
+                call = call + ", " + name;
+                program = program + name + " = " + objectToString(plugin.getArgs()[i]) + "; \n";
+            }
         }
 
-        program = program + "cle::" + methodName + " operation" + call_count + "(gpu);\n" +
-        "operation" + call_count + ".Execute(" + namesToCommaSeparated(image1s) + ", " + image2 + call + ");\n\n";
+        program = program +
+                "cle." + methodName +  "(" + namesToCommaSeparated(image1s) + ", " + image2 + call + ");\n\n";
 
         call_count++;
 
@@ -125,9 +131,11 @@ public class ClicGenerator extends AbstractScriptGenerator {
                 "// The project is work in progress. Stay tuned!" +
                 "//" +
                 "\n" +
-                "// Initialise device, context, and CQ.\n" +
+                "// Initialise GPU information.\n" +
                 "cle::GPU gpu;\n" +
-                "gpu.Initialisation();\n\n";
+                "cle::CLE cle(gpu);\n\n";
+
+
     }
 
     @Override
