@@ -23,6 +23,18 @@ public class IcyJavaScriptGenerator extends JythonGenerator {
     }
 
     @Override
+    public String pull(AssistantGUIPlugin result) {
+        String image1 = makeImageID(result.getTarget());
+
+        return "// pull result back from GPU\n" +
+                "output = clij2.pullSequence(" + image1 + ");\n" +
+                close(image1) + ";\n" +
+                "\n" +
+                "// Show result\n" +
+                "Icy.addSequence(output);\n";
+    }
+
+    @Override
     public String execute(AssistantGUIPlugin plugin) {
         return pyToJs(super.execute(plugin));
     }

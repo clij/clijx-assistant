@@ -31,6 +31,7 @@ public class CluPathGroovyGenerator extends GroovyGenerator {
         return "// pull back result and turn it into a QuPath ROI\n" +
                 "imp = clijx.pull(" + image1 + ");\n" +
                 "roi = clijx.pullAsROI(" + image1 + ");\n" +
+                close(image1) + ";\n" +
                 "imagePlane = IJTools.getImagePlane(roi, imp)\n" +
                 "roi = IJTools.convertToROI(roi, -request.getX() / downsample, -request.getY() / downsample, downsample, imagePlane)\n" +
                 "\n" +
