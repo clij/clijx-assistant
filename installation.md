@@ -80,10 +80,11 @@ please also activate the "IJMMD" update site in Fiji.
 
 <a name="maven"></a>
 ## Optional: Plugin generator Installation
-In order to build Fiji plugins, you need to install and Java Development kit, version 8 or higher, e.g. [OpenJDK](https://openjdk.java.net/).
-Furthermore, you need [git](https://git-scm.com/) and [maven](https://maven.apache.org/). 
-To make it work easily, it is recommended to add the git and maven  
-installation directories to the PATH variable of your environment (How to: 
+In order to build Fiji plugins, please to install and Java Development kit, version 8 or higher, e.g. [OpenJDK](https://openjdk.java.net/).
+Furthermore, please download and install [git](https://git-scm.com/) and [maven](https://maven.apache.org/). 
+For technical reasons, the `/bin/` folder of the `git` installation must be added to the PATH of the operating system. 
+Furthermore, it is recommended to add maven to the path as well.   
+(How to: 
 [Windows](https://answers.microsoft.com/en-us/windows/forum/windows_10-other_settings/adding-path-variable/97300613-20cb-4d85-8d0e-cc9d3549ba23)
 [Linux](https://opensource.com/article/17/6/set-path-linux)
 [MacOS](https://support.apple.com/guide/terminal/use-environment-variables-apd382cc5fa-4f58-4449-b20a-41c53c006f8f/mac)
@@ -92,6 +93,9 @@ installation directories to the PATH variable of your environment (How to:
 After installing git, maven and the JDK, please enter appropriate paths under `Plugins > ImageJ on GPU (CLIJx-Assistant) > Options > Build and Run options`
 
 ![Image](images/build_and_run_options.png)
+
+The above mentioned tools allow you to compile Fiji plugins. In order to edit the code conveniently, 
+it is recommended to install an Integrated Development Environment (IDE) such as IntelliJ or Eclipse.
 
 <a name="icy"></a>
 ## Optional: Icy Protocol bridge
