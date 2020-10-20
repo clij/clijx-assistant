@@ -1,5 +1,6 @@
 package net.haesleinhuepf.clijx.assistant;
 
+import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.ImageWindow;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
@@ -56,7 +57,7 @@ class AssistantGUIPluginRegistry {
     long former_duration = 0;
 
     private synchronized void removeConnections() {
-        for (int i = this.connection_tiles.size(); i < this.connection_tiles.size(); i++) {
+        for (int i = 0; i < this.connection_tiles.size(); i++) {
             Frame tile = this.connection_tiles.get(i);
             if (tile.isVisible()) {
                 tile.setVisible(false);
