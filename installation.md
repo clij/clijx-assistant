@@ -21,6 +21,10 @@ Installation was successful if you find the CLIJx-Assistant starting point butto
 
 ![Image](images/installation_ok.png)
 
+<a name="extensions"></a>
+## Optional: Extensions
+If you want to use the assistant extensions (e.g. for [SimpleITK](https://simpleitk.org/)), please also activate the "clijx-assistant-extensions" update site.
+
 <a name="imagej"></a>
 ## Installation in ImageJ
 Download and upack [ImageJ](https://imagej.nih.gov/ij/download.html) and some jar-files:
