@@ -63,12 +63,16 @@ public class SphereTransform extends AbstractAssistantGUIPlugin {
         ClearCLBuffer[][] pushed = CLIJxVirtualStack.imagePlusesToBuffers(my_sources);
 
         if (center_y_slider != null) {
-            number_of_angles = (int)Float.parseFloat(num_angles_slider.getText());
-            delta_angle_in_degrees = Float.parseFloat(angle_step_in_degrees_slider.getText());
+            try {
+                number_of_angles = (int)Float.parseFloat(num_angles_slider.getText());
+                delta_angle_in_degrees = Float.parseFloat(angle_step_in_degrees_slider.getText());
 
-            relative_center_x = Float.parseFloat(center_x_slider.getText());
-            relative_center_y = Float.parseFloat(center_y_slider.getText());
-            relative_center_z = Float.parseFloat(center_z_slider.getText());
+                relative_center_x = Float.parseFloat(center_x_slider.getText());
+                relative_center_y = Float.parseFloat(center_y_slider.getText());
+                relative_center_z = Float.parseFloat(center_z_slider.getText());
+            } catch (Exception e) {
+                System.out.println("Error parsing text (ExtractChannel)");
+            }
         }
 
         args = new Object[]{pushed[0], null, number_of_angles, delta_angle_in_degrees, relative_center_x * pushed[0][0].getWidth(), relative_center_y * pushed[0][0].getHeight(), relative_center_z * pushed[0][0].getDepth()};
