@@ -11,8 +11,8 @@ After entering some parameters, such as plugin name, description, author and mav
 https://github.com/clij/clijx-assistant-plugin-generator-template
 Afterwards, some placeholders in this [ImageJ/Fiji/CLIJ maven project](https://imagej.net/Maven) are replaced before it is compiled and the resulting .jar file is installed to your Fijis `/plugins/` folder.
 
-<iframe src="images/generate_clijx_plugins.mp4" width="540" height="540"></iframe>
-[Download video](images/generate_clijx_plugins.mp4) 
+<iframe src="images/generate_clijx_plugins3_acc.mp4" width="600" height="300"></iframe>
+[Download video](images/generate_clijx_plugins3_acc.mp4) 
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
 
