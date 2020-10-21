@@ -23,7 +23,8 @@ Installation was successful if you find the CLIJx-Assistant starting point butto
 
 <a name="extensions"></a>
 ## Optional: Extensions
-If you want to use the assistant extensions (e.g. for [SimpleITK](https://simpleitk.org/)), please also activate the "clijx-assistant-extensions" update site.
+If you want to use the assistant extensions (e.g. for [SimpleITK](https://github.com/clij/clijx-assistant-simpleitk)), 
+please also activate the "clijx-assistant-extensions" update site.
 
 <a name="imagej"></a>
 ## Installation in ImageJ
