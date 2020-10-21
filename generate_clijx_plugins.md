@@ -4,7 +4,7 @@ It generates a .jar file which you can ship to collaborators and ask them to ins
 directory of their Fiji installation.
 
 ## Installation
-In order to build Fiji plugins, please follow the instructions [here](https://clij.github.io/assistant/installation#maven).
+If you're about to generate Fiji plugins for the first time, please follow the installation instructions [here](https://clij.github.io/assistant/installation#maven) first.
 
 ## How does it work?
 After entering some parameters, such as plugin name, description, author and maven/java/git installation folders, a template is downloaded from here:
