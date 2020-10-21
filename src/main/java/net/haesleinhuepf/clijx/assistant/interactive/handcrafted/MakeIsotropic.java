@@ -54,6 +54,14 @@ public class MakeIsotropic extends AbstractAssistantGUIPlugin {
         return dialog;
     }
 
+
+    public void refreshDialogFromArguments() {
+        if ( args == null || args.length < 6) {
+            return;
+        }
+        ((TextField) dialog.getNumericFields().get(0)).setText("" + args[5]);
+    }
+
     public synchronized void refresh()
     {
         Calibration calib = my_sources[0].getCalibration();
