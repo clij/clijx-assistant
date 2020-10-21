@@ -441,7 +441,7 @@ class MavenJavaProjectGenerator {
     }
 
     public String getJarFilename() { // TODO: Derive version number automatically
-        return "clijx-assistant-" + enter_lower_case_plugin_name_here + "_-0.1.5.8.jar";
+        return "clijx-assistant-" + enter_lower_case_plugin_name_here + "_-0.1.5.11.jar";
     }
 
 
