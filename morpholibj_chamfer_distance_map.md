@@ -5,14 +5,14 @@ Assuming one wants to analyse distances of cells towards a common structures suc
 ![Image](images/morpholibj_distance_map.png)
 
 ### Installation
-Activate the "IJPB-plugins" update site in Fiji.
+In order to use the MorphoLibJ extension, please follow the corresponding [installation instructions](https://clij.github.io/assistant/installation#extensions).
 
 ### Application
  * Starting point: Intensity image showing nuclei 
    * Threshold Otsu 
      * Connected Components Labeling 
        * Pull To ROIManager 
- * Starting point: Binary image representing vessels... 
+ * Starting point: Binary image representing vessels for example
    * Binary Not 
      * Morpho Lib J Chamfer Distance Map 
 

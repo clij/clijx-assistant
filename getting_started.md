@@ -29,10 +29,9 @@ You can use ImageJs `Duplicate...` menu or the built in menu:
 
 ![Image](images/interoperability_imagej.png)
 
-
 ## The assistant in action
-<iframe src="images/window_positioning.mp4" width="540" height="540"></iframe>
-[Download video](images/window_positioning.mp4)
+<iframe src="images/basic_usage.mp4" width="600" height="300"></iframe>
+[Download video](images/basic_usage.mp4)
 
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)

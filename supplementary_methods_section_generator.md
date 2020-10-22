@@ -1,4 +1,4 @@
-## Supplementary Methods Section generator
+## Export human readable protocols
 Just like [generating scripts](https://clij.github.io/assistant/macro_export), one can also
 generate human readable protocols of workflows. Just click the right-click menu `Generate Script > Human readable protocol`.
 

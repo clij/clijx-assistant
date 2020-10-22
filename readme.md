@@ -1,13 +1,13 @@
 # CLIJx-Assistant
 [CLIJx-Assistant](https://clij.github.io/assistant) is an intuitive user interface for building custom GPU-accelerated image processing workflows using [CLIJ2](https://clij.github.io) in [Fiji](https://fiji.sc). 
-It visualizes workflows while building them, suggests what to do next and generates scripts and human readable protocols to facilitate reproducible bio-image analysis. 
-These generated scripts also run in other platforms such as Matlab, Icy, Python and QuPath.
+It visualizes workflows as image date flow graphs while building them. 
+It suggests what to do next and generates scripts and human readable protocols to facilitate reproducible bio-image analysis. 
+These generated scripts also be executed in other platforms such as Matlab, Icy, Python and QuPath.
 
 CLIJx-Assistant is under development and is subject to change. 
-Please treat everything with care.
-Do not use it for routine research yet. 
-Planned release is early 2021. 
-Stay tuned.
+Give it a try and let us know what you think!
+Do not use it for routine research yet.  
+Provide feedback and stay tuned.
 
 <iframe src="images/clijxa_teaser1_fast.mp4" width="800" height="640"></iframe>
 [Download slower version of the video](images/clijxa_teaser1.mp4) [Image data source: Daniela Vorkel, Myers lab, CSBD / MPI CBG]
@@ -17,9 +17,7 @@ Stay tuned.
   * [Installation](https://clij.github.io/assistant/installation)
   * [Building workflows](https://clij.github.io/assistant/getting_started)
   * [Saving and loading workflows](https://clij.github.io/assistant/save_and_load)
-  * [Optimize parameters](https://clij.github.io/assistant/parameter_optimization)
   * [Undo parameter changes](https://clij.github.io/assistant/undo)
-  * [Reference](https://clij.github.io/assistant/reference)
 
 * Filtering / correction
   * [Image filtering](https://clij.github.io/assistant/filtering)
@@ -33,11 +31,10 @@ Stay tuned.
   * [Sphere projection](https://clij.github.io/assistant/sphere_projection)
 
 * Regionalisation
-  * Spot detection
-  * Cell segmentation
-    * [Nuclei segmentation](https://clij.github.io/assistant/segmentation_nuclei)
-    * [Cell segmentation based on membranes](https://clij.github.io/assistant/segmentation_cells)
-    * [Pixel classifier (Weka)](https://clij.github.io/assistant/clijx_weka_pixel_classifier)
+  * [Nuclei segmentation](https://clij.github.io/assistant/segmentation_nuclei)
+  * [Cell segmentation based on membranes](https://clij.github.io/assistant/segmentation_cells)
+  * [Optimize parameters for binarization](https://clij.github.io/assistant/parameter_optimization)
+  * [Pixel classifier (Weka)](https://clij.github.io/assistant/clijx_weka_pixel_classifier)
 
 * Analysis
   * [Cell neighbor analysis](https://clij.github.io/assistant/neighbor_analysis_generated)
@@ -46,20 +43,23 @@ Stay tuned.
 
 * Reproducibility / interoperability
   * [Export workflows as ImageJ Script](https://clij.github.io/assistant/macro_export)
-  * [Supplementary methods section generator](https://clij.github.io/assistant/supplementary_methods_section_generator)
+  * [Export human readable protocols and ImageJ Macro Markdown notebooks](https://clij.github.io/assistant/supplementary_methods_section_generator)
   * [Generate CLIJx / Fiji plugins](https://clij.github.io/assistant/generate_clijx_plugins)
+  * [Export as Icy Protocol](https://clij.github.io/assistant/icy_protocol_export)
   * [Export Groovy Script for QuPath](https://clij.github.io/assistant/export_to_clupath)
   * [Export workflows as Python script using clEsperanto and Napari](https://clij.github.io/assistant/te_oki_export)
 
+* [Reference](https://clij.github.io/assistant/reference)
+
 * Extensibility
   * [CLIJ2 Plugin template](https://github.com/clij/clij2-plugin-template)
-  * [CLIJ2 imglib2 example plugin](https://github.com/clij/clijx-assistant-imglib2)
-  * [CLIJ2 ImageJ example plugin](https://github.com/clij/clijx-assistant-imagej)
-  * [CLIJ2 ImageJ2 example plugin](https://github.com/clij/clijx-assistant-imagej2)
-  * [CLIJ2 BoneJ example plugin](https://github.com/clij/clijx-assistant-bonej)
-  * [CLIJ2 MorphoLibJ example plugin](https://github.com/clij/clijx-assistant-morpholibj)
-  * [CLIJ2 ImageJ 3D Suite example plugin](https://github.com/clij/clijx-assistant-imagej3dsuite)
-  * [CLIJ2 SimpleITK example plugin](https://github.com/clij/clijx-assistant-simpleitk)
+  * [CLIJ2 imglib2 extensions](https://github.com/clij/clijx-assistant-imglib2)
+  * [CLIJ2 ImageJ extensions](https://github.com/clij/clijx-assistant-imagej)
+  * [CLIJ2 ImageJ2 extensions](https://github.com/clij/clijx-assistant-imagej2)
+  * [CLIJ2 BoneJ extensions](https://github.com/clij/clijx-assistant-bonej)
+  * [CLIJ2 MorphoLibJ extensions](https://github.com/clij/clijx-assistant-morpholibj)
+  * [CLIJ2 ImageJ 3D Suite extensions](https://github.com/clij/clijx-assistant-imagej3dsuite)
+  * [CLIJ2 SimpleITK extensions](https://github.com/clij/clijx-assistant-simpleitk)
 
 ## Feedback welcome!
 I'm eager to receiving feedback: rhaase at mpi minus cbg dot de

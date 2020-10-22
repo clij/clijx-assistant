@@ -1,12 +1,4 @@
-# Parameter optimization
-
----
-Note: Parameter optimization is deactivated at the moment for technical reasons. Stay tuned.
----
-
-
-
-
+# Parameter optimization for binarization operations
 If a workflow results in a binary image and some annotations are availabe, its parameters can be automatically optimized.
 To prepare the optimization, draw Freehand or Polyline ROIs and store them in the ROI Manager. 
 Name the positive annotations "p" and the negative annotations "n" (background).
