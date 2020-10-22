@@ -33,6 +33,10 @@ You can use ImageJs `Duplicate...` menu or the built in menu:
 <iframe src="images/basic_usage.mp4" width="600" height="300"></iframe>
 [Download video](images/basic_usage.mp4)
 
+If you want to keep an eye on memory usage in the GPU, 
+the menu `Plugins > ImageJ on GPU (CLIJx) > Memory Display` allows you to overview available memory and memory consumption while building your workflow.
+
+![Image](images/memory_display.png)
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
 
