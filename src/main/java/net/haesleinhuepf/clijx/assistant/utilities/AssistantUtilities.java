@@ -809,6 +809,7 @@ public class AssistantUtilities {
 
         IJ.setTool(tool);
 
+        /*
         new java.util.Timer().schedule(
                 new java.util.TimerTask() {
                     @Override
@@ -818,6 +819,8 @@ public class AssistantUtilities {
                 },
                 1000
         );
+      
+         */
     }
 
     public static boolean resultIsBinaryImage(AssistantGUIPlugin abstractAssistantGUIPlugin) {
