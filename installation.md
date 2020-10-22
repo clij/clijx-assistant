@@ -102,6 +102,11 @@ After installing git, maven and the JDK, please enter appropriate paths under `P
 The above mentioned tools allow you to compile Fiji plugins. In order to edit the code conveniently, 
 it is recommended to install an Integrated Development Environment (IDE) such as IntelliJ or Eclipse.
 
+<a name="clic"></a>
+## Optional: C++ compilation (CLIc / clEsperanto)
+If you want to implement workflows using CLIc in C++, please follow the installation instructions [here](https://github.com/clEsperanto/CLIc_prototype).
+
+
 <a name="icy"></a>
 ## Optional: Icy Protocol bridge
 For exporting workflows to Icy Protocols, it might be handy to start Icy from ImageJ. Therefore, [download and install Icy](http://icy.bioimageanalysis.org/download/) 
