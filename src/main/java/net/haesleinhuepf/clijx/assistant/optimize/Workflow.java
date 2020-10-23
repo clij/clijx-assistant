@@ -71,7 +71,7 @@ public class Workflow {
     public void compute() {
         int count = 0;
         for (CLIJMacroPlugin plugin : plugins) {
-            if (plugin instanceof CLIJOpenCLProcessor && (count > 0 || !(plugin instanceof Copy))) { // special case: don't execute initial copy (Starting point)
+            if (plugin instanceof CLIJOpenCLProcessor && (count > 0)) { // special cases: don't execute initial step (Starting point)
                 ((CLIJOpenCLProcessor) plugin).executeCL();
             }
             count ++;
