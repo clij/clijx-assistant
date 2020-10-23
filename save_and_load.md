@@ -1,6 +1,8 @@
 ## Saving and loaging workflows
 Workflows can be saved as groovy scripts. These scripts allow you to re-open an earlier created workflow and continue to
-work on it. Just save the script to disc and re-open it with Fijis script editor.
+work on it. 
+Just click the right click menut `Generate Script > Export workflow as groovy (for re-loading)`, 
+save the script to disc and re-open it with Fijis script editor.
 
 <iframe src="images/assistant_save_and_load.mp4" width="540" height="540"></iframe>
 [Download video](images/assistant_save_and_load.mp4)

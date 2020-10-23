@@ -23,8 +23,18 @@ Installation was successful if you find the CLIJx-Assistant starting point butto
 
 <a name="extensions"></a>
 ## Optional: Extensions
-If you want to use the assistant extensions (e.g. for [SimpleITK](https://github.com/clij/clijx-assistant-simpleitk)), 
-please also activate the "clijx-assistant-extensions" update site.
+Available extensions, e.g. for 
+[BoneJ](https://bonej.org),
+[ImageJ](https://imagej.nih.gov/ij/index.html), 
+[ImageJ2](https://imagej.net), 
+[ImageJ 3D Suite](https://imagejdocu.tudor.lu/plugin/stacks/3d_ij_suite/start), 
+[Imglib2](https://github.com/imglib/imglib2/), 
+[MorphoLibJ](https://github.com/ijpb/MorphoLibJ) and 
+[SimpleITK](https://simpleitk.org).
+please also activate the "clijx-assistant-extensions" update site. Furthermore, activate these update sites:
+* 3D ImageJ Suite
+* BoneJ
+* IJPB-Plugins
 
 <a name="imagej"></a>
 ## Installation in ImageJ

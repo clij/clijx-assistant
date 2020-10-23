@@ -26,7 +26,6 @@ Provide feedback and stay tuned.
 * Transformation
   * [Maximum projection](https://clij.github.io/assistant/intensity_projection)
   * [Crop, Pan & zoom](https://clij.github.io/assistant/crop_pan_zoom)
-  * [Multi-channel image visualisation](https://clij.github.io/assistant/multi_channel_support)
   * [Cylinder projection](https://clij.github.io/assistant/cylinder_projection)
   * [Sphere projection](https://clij.github.io/assistant/sphere_projection)
 
@@ -60,6 +59,41 @@ Provide feedback and stay tuned.
   * [CLIJ2 MorphoLibJ extensions](https://github.com/clij/clijx-assistant-morpholibj)
   * [CLIJ2 ImageJ 3D Suite extensions](https://github.com/clij/clijx-assistant-imagej3dsuite)
   * [CLIJ2 SimpleITK extensions](https://github.com/clij/clijx-assistant-simpleitk)
+
+## Acknowledgements
+We would like to thank everybody who helped developing, testing and motivating this project. In particular thanks go to 
+Akanksha Jain (EPFL Basel),
+Bert Nitzsche (PoL TU Dresden),
+Bradley Lowekamp (NIAID Washington),
+Bruno C. Vellutini (MPI CBG Dresden),  
+Christian Tischer (EMBL Heidelberg),
+Daniela Vorkel (MPI CBG Dresden), 
+Eugene W. Myers (MPI CBG Dresden)
+Florian Jug (MPI CBG Dresden), 
+Gayathri Nadar (MPI CBG Dresden),
+Irene Seijo Barandiaran (MPI CBG Dresden),
+Johannes Girstmair (MPI CBG Dresden),
+Juan Nunes-Iglesias (Monash University Melbourne),
+Marion Louveaux (Institut Pasteur Paris),
+Matthias Arzt (MPI CBG Dresden),
+Noreen Walker (MPI CBG Dresden),
+Pavel Tomancak (MPI CBG Dresden),
+Pete Bankhead (University of Edinburgh),
+Pradeep Rajasekhar (Monash University Melbourne),
+Romain Guiet (EPFL Lausanne),
+Sebastian Munck (VIB Leuven),
+St\'{e}phane Dallongeville (Institut Pasteur)
+St\'{e}phane~Rigaud (Institut Pasteur Paris),
+Talley J. Lambert (Harvard Medical School Boston),
+Theresa Suckert (OncoRay, TU Dresden),
+
+
+
+
+
+Furthermore, the constant support by the Image Science and the NEUBIAS communities is acknowledged.
+ 
+This work was supported by the German Federal Ministry of Research and Education (BMBF) under the code 031L0044 (Sysbio II).
 
 ## Feedback welcome!
 I'm eager to receiving feedback: rhaase at mpi minus cbg dot de

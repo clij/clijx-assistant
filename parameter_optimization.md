@@ -1,5 +1,8 @@
 # Parameter optimization for binarization operations
 If a workflow results in a binary image and some annotations are availabe, its parameters can be automatically optimized.
+![Image](images/optimize.png)
+
+
 To prepare the optimization, draw Freehand or Polyline ROIs and store them in the ROI Manager. 
 Name the positive annotations "p" and the negative annotations "n" (background).
 If the ROI manager doesn't contain any annotations, it will open and start the annotation tool which is very similar to ImageJs Freehand tool.
@@ -8,7 +11,7 @@ If you hold CTRL while drawing, they will be stored as negative/background annot
 
 When annotations are ready, click the "Optimize parameters" button:
 
-<iframe src="images/optimize.mp4" width="540" height="540"></iframe>
+<iframe src="images/optimize.mp4" width="600" height="300"></iframe>
 [Download video](images/optimize.mp4) [Image data source: Broad BioImage Benchmark collection](https://bbbc.broadinstitute.org/BBBC008)
 
 If optimization doesn't work so well, consider using a configurable optimizer:
