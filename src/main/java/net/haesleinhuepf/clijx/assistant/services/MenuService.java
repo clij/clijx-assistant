@@ -2,6 +2,8 @@ package net.haesleinhuepf.clijx.assistant.services;
 
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
+import net.haesleinhuepf.clij2.plugins.BinaryNot;
+import net.haesleinhuepf.clij2.plugins.GaussianBlur2D;
 import net.haesleinhuepf.clij2.utilities.HasClassifiedInputOutput;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
@@ -59,22 +61,24 @@ public class MenuService {
             return b instanceof IsCategorized && ((IsCategorized) b).isInCategory("Project")?1:0;
         });
         addCategory("Binarize", (a,b) -> {
-            return (!a.getOutputType().equals("Binary Image")) &&
-                    a.getOutputType().equals(b.getInputType()) &&
+            return (!a.getOutputType().contains("Binary Image")) &&
+                    b.getInputType().contains(a.getOutputType()) &&
+                    (!b.getInputType().contains("Binary Image")) &&
                     b.getOutputType().equals("Binary Image")?1:0;
         });
         addCategory("Binary processing", (a,b) -> {
-            return a.getOutputType().equals(b.getInputType()) &&
+            return a.getOutputType().contains("Binary Image") &&
                     b.getInputType().contains("Binary Image") &&
                     b.getOutputType().equals("Binary Image")?1:0;
         });
         addCategory("Label", (a,b) -> {
-            return a.getOutputType().equals(b.getInputType()) &&
+            return b.getInputType().contains(a.getOutputType()) &&
+                    (!a.getOutputType().contains("Label Image")) &&
                     (!b.getInputType().contains("Label Image")) &&
                     b.getOutputType().equals("Label Image")?1:0;
         });
         addCategory("Label processing", (a,b) -> {
-            return a.getOutputType().equals(b.getInputType()) &&
+            return a.getOutputType().contains("Label Image") &&
                     b.getInputType().contains("Label Image")&&
                     b.getOutputType().equals("Label Image")?1:0;
         });
@@ -188,6 +192,12 @@ public class MenuService {
             //String parameter_help_text = "";
 
             CLIJMacroPlugin macroPlugin = service.getCLIJMacroPlugin(entry);
+            if (macroPlugin == null) {
+                System.out.println("Warning: CLIJ Plugin " + entry + " might not be installed properly. Try to reinstall it.");
+                continue;
+            }
+            System.out.println(entry);
+
             if (all || (
                     plugin instanceof HasClassifiedInputOutput &&
                             macroPlugin instanceof HasClassifiedInputOutput &&
@@ -353,9 +363,16 @@ public class MenuService {
         return category_names_array;
     }
 
-    //public static void main(String[] args) {
-    //    System.out.println(MenuService.getInstance().getPluginsInCategory("Binary"));
-    //}
+    public static void main(String[] args) {
+        //System.out.println(MenuService.getInstance().getPluginsInCategory("Binary"));
+        HasClassifiedInputOutput a = new GaussianBlur2D();
+        HasClassifiedInputOutput b = new BinaryNot();
+
+        System.out.println((!a.getOutputType().contains("Binary Image")) &&
+                    b.getInputType().contains(a.getOutputType()) &&
+                    b.getOutputType().equals("Binary Image")?1:0);
+
+    }
 }
 
 
