@@ -10,6 +10,7 @@ Do not use it for routine research yet.
 Provide feedback and stay tuned.
 
 ![Image](images/script_export.png)
+[Image data source: Daniela Vorkel, Myers lab, CSBD / MPI CBG]
 
 ## Overview
 * Introduction
@@ -81,7 +82,7 @@ St\'{e}phane~Rigaud (Institut Pasteur Paris),
 Talley J. Lambert (Harvard Medical School Boston),
 Theresa Suckert (OncoRay, TU Dresden),
 
-Furthermore, the constant support by the Image Science and the NEUBIAS communities is acknowledged.
+Furthermore, the constant support by the Image Science and the NEUBIAS communities is fantastic.
  
 This work was supported by the German Federal Ministry of Research and Education (BMBF) under the code 031L0044 (Sysbio II).
 
