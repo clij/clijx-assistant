@@ -33,12 +33,6 @@ Provide feedback and stay tuned.
   * [Nuclei segmentation](https://clij.github.io/assistant/segmentation_nuclei)
   * [Cell segmentation based on membranes](https://clij.github.io/assistant/segmentation_cells)
   * [Optimize parameters for binarization](https://clij.github.io/assistant/parameter_optimization)
-  * [Pixel classifier (Weka)](https://clij.github.io/assistant/clijx_weka_pixel_classifier)
-
-* Analysis
-  * [Cell neighbor analysis](https://clij.github.io/assistant/neighbor_analysis_generated)
-  * [Distance analysis using MorholibJ extension](https://clij.github.io/assistant/morpholibj_chamfer_distance_map)
-  * [Label classifier (Weka)](https://clij.github.io/assistant/clijx_weka_label_classifier)
 
 * Reproducibility / interoperability
   * [Export workflows as ImageJ Script](https://clij.github.io/assistant/macro_export)

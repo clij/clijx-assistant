@@ -17,23 +17,22 @@ Open your time lapse data set. [Start the CLIJx-Assistant](https://clij.github.i
           * Cylinder transform
             * Maximum Z projection
 
-<iframe src="images/incubator_rigid_cylinder_max.mp4" width="540" height="540"></iframe>
-[Download video](images/incubator_rigid_cylinder_max.mp4) [Image data source: Daniela Vorkel, Myers lab, CSBD / MPI CBG]
+<iframe src="images/cylinder_transform_drosophila.mp4" width="540" height="540"></iframe>
+[Download video](images/cylinder_transform_drosophila.mp4)
 
 ## Half-cylinder projection
 If just half of a sample was imaged, you may want to apply a half-cylinder projection. 
-You can do this by entering 
-* number of angles: 360 and
-* delta angle in degrees: 0.5
-which results in a projection over 180 degrees. 
+In the maximum projection, full-cylinder projections of half-embryos also look suspicious:
 
-![Image](images/half_cylinder_projection.png)
+![Image](images/cylinder_half_tribolium1.png)
 
-In this case, you may also want to move the projection center to 0.  
+You can turn a full-cylinder projection by changing the center of the transform and the number of angles to 180 or the angle step to 0.5 degrees.
 
-![Image](images/half_cylinder_projection1.png)
+![Image](images/cylinder_half_tribolium2.png)
 
-A flip operation may also make sense in advance to reverse the order of the image in the stack.
+The detailed procedure is shown in this video:
+<iframe src="images/cylinder_half_tribolium.mp4" width="600" height="300"></iframe>
+[Download video](images/cylinder_half_tribolium.mp4) [Image data source: Daniela Vorkel, Myers lab, CSBD / MPI CBG]
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
 
