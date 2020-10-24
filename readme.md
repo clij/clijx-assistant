@@ -9,7 +9,7 @@ Give it a try and let us know what you think!
 Do not use it for routine research yet.  
 Provide feedback and stay tuned.
 
-![Image](images/script_export.png)
+![Image](images/teaser_landscape.gif)
 [Image data source: Daniela Vorkel, Myers lab, CSBD / MPI CBG]
 
 ## Overview
