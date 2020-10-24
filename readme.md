@@ -9,8 +9,7 @@ Give it a try and let us know what you think!
 Do not use it for routine research yet.  
 Provide feedback and stay tuned.
 
-<iframe src="images/clijxa_teaser1_fast.mp4" width="800" height="640"></iframe>
-[Download slower version of the video](images/clijxa_teaser1.mp4) [Image data source: Daniela Vorkel, Myers lab, CSBD / MPI CBG]
+![Image](images/script_export.png)
 
 ## Overview
 * Introduction
@@ -68,6 +67,7 @@ Gayathri Nadar (MPI CBG Dresden),
 Irene Seijo Barandiaran (MPI CBG Dresden),
 Johannes Girstmair (MPI CBG Dresden),
 Juan Nunes-Iglesias (Monash University Melbourne),
+Kisha Sivanathan (Harvard Medical School Boston),
 Marion Louveaux (Institut Pasteur Paris),
 Matthias Arzt (MPI CBG Dresden),
 Noreen Walker (MPI CBG Dresden),
@@ -80,10 +80,6 @@ St\'{e}phane Dallongeville (Institut Pasteur)
 St\'{e}phane~Rigaud (Institut Pasteur Paris),
 Talley J. Lambert (Harvard Medical School Boston),
 Theresa Suckert (OncoRay, TU Dresden),
-
-
-
-
 
 Furthermore, the constant support by the Image Science and the NEUBIAS communities is acknowledged.
  

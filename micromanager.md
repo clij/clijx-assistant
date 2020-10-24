@@ -17,7 +17,6 @@ As soon as you started acquisition, execute these two menus:
 * 
 * 
 
-![Image](images/script_export.png)
 
 <iframe src="images/incubator_generate_macro.mp4" width="540" height="260"></iframe>
 [Download video](images/incubator_generate_macro.mp4) [Image data source: Daniela Vorkel, Myers lab, CSBD / MPI CBG]
