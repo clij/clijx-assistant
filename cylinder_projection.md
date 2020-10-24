@@ -17,7 +17,7 @@ Open your time lapse data set. [Start the CLIJx-Assistant](https://clij.github.i
           * Cylinder transform
             * Maximum Z projection
 
-<iframe src="images/cylinder_transform_drosophila.mp4" width="540" height="540"></iframe>
+<iframe src="images/cylinder_transform_drosophila.mp4" width="600" height="300"></iframe>
 [Download video](images/cylinder_transform_drosophila.mp4)
 
 ## Half-cylinder projection
