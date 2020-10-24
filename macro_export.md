@@ -1,11 +1,11 @@
 # Exporting workflows as ImageJ Macro
 After you finished designing your image analysis workflow, you can export an ImageJ script and apply it to image sequences systematically.
 
-Several languages are supported:
+Several languages are supported. Furthermore, you can export a script in multiple languages and compare:
 
-![Image](images/script_export.png)
+![Image](images/script_language_comparison.png)
 
-<iframe src="images/incubator_generate_macro.mp4" width="540" height="260"></iframe>
+<iframe src="images/incubator_generate_macro.mp4" width="600" height="300"></iframe>
 [Download video](images/incubator_generate_macro.mp4) [Image data source: Daniela Vorkel, Myers lab, CSBD / MPI CBG]
 
 # Exporting as ImageJ Macro Markdown notebook
