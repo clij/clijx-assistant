@@ -859,6 +859,9 @@ public class AssistantUtilities {
         if (parameterName.toLowerCase().contains("sigma")) {
             return small_step ? 0.5 : 2;
         }
+        if (parameterName.toLowerCase().contains("gamma")) {
+            return small_step ? 0.1 : 1;
+        }
         if (parameterName.toLowerCase().contains("relative")) {
             return small_step ? 0.05 : 0.2;
         }
@@ -944,6 +947,27 @@ public class AssistantUtilities {
         return cle_compatible.contains("\n" + new PyclesperantoGenerator(false).pythonize(function_name) + "\n");
     }
 
+
+    private static String clic_compatible = null;
+
+    public static boolean isClicCompatible(String function_name)
+    {
+        if (clic_compatible == null) {
+            InputStream resourceAsStream = SuggestionService.class.getClassLoader().getResourceAsStream("clic_compatibility.config");
+            clic_compatible = "\n" + StringUtils.streamToString(resourceAsStream, "UTF-8") + "\n";
+        }
+        //System.out.println(clic_compatible);
+        //System.out.println("Checking " + function_name + " = " + new PyclesperantoGenerator(false).pythonize(function_name));
+        return clic_compatible.contains("\n" + new PyclesperantoGenerator(false).pythonize(function_name) + "\n") ||
+                clic_compatible.contains("\r\n" + new PyclesperantoGenerator(false).pythonize(function_name) + "\r\n");
+    }
+
+    public static String getCompatibilityString(String function_name) {
+        return "java,ijm" +
+                (isCleCompatible(function_name)?",py":"") +
+                (isClicCompatible(function_name)?",c++":"");
+    }
+
     public static String distributionName(Class klass) {
 
         String full_class_name = klass.toString().replace("class ", "");
@@ -995,6 +1019,8 @@ public class AssistantUtilities {
         String result = name;
 
         result = result.replace("SimpleITK", "");
+        result = result.replace("ImageJ2", "");
+        result = result.replace("imageJ2", "");
         result = result.replace("MorphoLibJ", "");
         result = result.replace("ImageJ3DSuite", "");
         result = result.replace("BoneJ", "");
@@ -1006,6 +1032,7 @@ public class AssistantUtilities {
         result = result.replace("CLIJx", "");
         result = result.replace("CLIJ2", "");
         result = result.replace("CLIJ", "");
+        result = result.replace("ImageJ", "");
         result = result.replace("_", " ");
         result = result.replace("  ", " ");
 
@@ -1053,7 +1080,8 @@ public class AssistantUtilities {
 
     public static void main(String[] args) {
         //System.out.println(niceName("CLIJx_SimpleITKWhateverFilter"));
-
+        System.out.println(isClicCompatible("addImageAndScalar"));
+        /*
         System.out.println(isIncubatablePlugin(new SeededWatershed()));
 
         new ImageJ();
@@ -1066,7 +1094,7 @@ public class AssistantUtilities {
         agp.run("");
 
         System.out.println(isSuitable(new SeededWatershed(), agp));
-
+*/
 /*
         for (AssistantGUIPlugin p : MenuService.getInstance().getPluginsInCategory("Binary")) {
             System.out.println(p.getName());

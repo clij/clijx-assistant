@@ -50,6 +50,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.getCompatibilityString;
+
 @Plugin(type = Searcher.class)
 public class AssistantPluginSearcher implements Searcher {
 

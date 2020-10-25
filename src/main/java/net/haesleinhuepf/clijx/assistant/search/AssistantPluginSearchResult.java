@@ -39,9 +39,7 @@ import org.scijava.search.SearchResult;
 import java.util.HashMap;
 import java.util.Map;
 
-import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.distributionName;
-import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.jarFromClass;
-import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.niceNameWithoutDimShape;
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.*;
 
 public class AssistantPluginSearchResult implements SearchResult {
 
@@ -68,12 +66,13 @@ public class AssistantPluginSearchResult implements SearchResult {
 			if (clijplugin instanceof HasLicense) {
 				props.put("License", ((HasLicense) clijplugin).getLicense());
 			}
+			props.put("clEsperanto compatibilty",getCompatibilityString(clijplugin.getName()));
 		}
 	}
 
 	@Override
 	public String name() {
-		return niceNameWithoutDimShape(plugin.getName()) + "(" + distributionName(plugin.getCLIJMacroPlugin().getClass()) + ")";
+		return niceName(plugin.getName()) + "(" + distributionName(plugin.getCLIJMacroPlugin().getClass()) + ", " +  getCompatibilityString(plugin.getName())  + ")";
 	}
 
 	@Override

@@ -13,8 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
-import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.niceName;
-import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.resultIsBinaryImage;
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.*;
 
 public class MenuService {
     ArrayList<String> names = new ArrayList<>();
@@ -42,7 +41,6 @@ public class MenuService {
                     a.getInputType().equals("Image") &&
                     b.getOutputType().equals("Image")?1:0;
         });
-
         addCategory("Filter", (a,b) -> {
             return b instanceof IsCategorized && ((IsCategorized) b).isInCategory("Filter") &&
                     a.getOutputType().equals("Image") &&
@@ -118,7 +116,7 @@ public class MenuService {
                 if (plugin instanceof IsCategorized) {
                     tags = ((IsCategorized) plugin).getCategories();
                 }
-                names_and_tags.add(name + "," + tags);
+                names_and_tags.add(name + "," + tags + "," + getCompatibilityString(name));
             }
         }
 
