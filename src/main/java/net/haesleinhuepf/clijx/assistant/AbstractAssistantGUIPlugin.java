@@ -68,6 +68,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     boolean auto_contrast = true;
     static boolean auto_position = true;
     public static boolean show_connections = false;
+    public static boolean show_compatibility = false;
 
     public AbstractAssistantGUIPlugin(CLIJMacroPlugin plugin) {
         setCLIJMacroPlugin(plugin);
@@ -656,7 +657,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     protected PopupMenu buildPopup(MouseEvent e) {
         PopupMenu menu = new PopupMenu("CLIncubator");
 
-        addMenuAction(menu, AssistantUtilities.niceNameWithoutDimShape(this.getName()) + " (" + distributionName(plugin.getClass())+ (getCompatibilityString(this.getName())) + ", experimental)", (a) -> {
+        addMenuAction(menu, AssistantUtilities.niceNameWithoutDimShape(this.getName()) + " (" + distributionName(plugin.getClass()) + (show_compatibility?(", " + (getCompatibilityString(this.getName()))):"") + ", experimental)", (a) -> {
             if (registered_dialog != null) {
                 registered_dialog.show();
             }
@@ -693,7 +694,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             CLIJMacroPlugin clijPlugin = CLIJMacroPluginService.getInstance().getService().getCLIJMacroPlugin(name);
             if (isSuitable(clijPlugin, this)) {
                 Class pluginClass = plugin.getClass();
-                addMenuAction(suggestedFollowers, AssistantUtilities.niceName(name.replace("CLIJ2_", "").replace("CLIJx_", "")) + " (" + distributionName(pluginClass)+ (getCompatibilityString(name)) + ")", (a) -> {
+                addMenuAction(suggestedFollowers, AssistantUtilities.niceName(name.replace("CLIJ2_", "").replace("CLIJx_", "")) + " (" + distributionName(pluginClass) + (show_compatibility?(", " + (getCompatibilityString(this.getName()))):"") + ")", (a) -> {
                     my_target.show();
                     try {
                         AssistantGUIPlugin plugin = (AssistantGUIPlugin) klass.newInstance();
@@ -724,7 +725,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             for (AssistantGUIPlugin plugin : MenuService.getInstance().getPluginsInCategory(category, this.getCLIJMacroPlugin())) {
                 CLIJMacroPlugin clijPlugin = plugin.getCLIJMacroPlugin();
                 if (category_count == categories.length || isSuitable(clijPlugin, this)) {
-                    addMenuAction(menuCategory, AssistantUtilities.niceName(plugin.getName()) + " (" + distributionName(plugin.getCLIJMacroPlugin().getClass())+ (getCompatibilityString(plugin.getName())) + ")", (a) -> {
+                    addMenuAction(menuCategory, AssistantUtilities.niceName(plugin.getName()) + " (" + distributionName(plugin.getCLIJMacroPlugin().getClass())  + (show_compatibility?(", " + (getCompatibilityString(this.getName()))):"") + ")", (a) -> {
                         plugin.run("");
                     });
                     menu_count ++;
@@ -852,6 +853,12 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             show_connections = !show_connections;
         });
         info.add(show_connections_item);
+
+        MenuItem show_compatibility_item = new MenuItem("Show compatibility in menus: " + (show_compatibility?"ON":"OFF"));
+        show_compatibility_item.addActionListener((a) -> {
+            show_compatibility = !show_compatibility;
+        });
+        info.add(show_compatibility_item);
 
         info.add("-");
 
