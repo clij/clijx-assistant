@@ -963,9 +963,9 @@ public class AssistantUtilities {
     }
 
     public static String getCompatibilityString(String function_name) {
-        return "java,ijm" +
-                (isCleCompatible(function_name)?",py":"") +
-                (isClicCompatible(function_name)?",c++":"");
+        return "java, ijm" +
+                (isCleCompatible(function_name)?", py":"") +
+                (isClicCompatible(function_name)?", c++":"");
     }
 
     public static String distributionName(Class klass) {
