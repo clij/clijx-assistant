@@ -10,6 +10,9 @@ CLIJx-Assistant comes with filters for
 * mixed
   * Difference of Gaussian (DoG)
   * Laplacien of Gaussian (LoG)
+* Intensity correction
+  * [Gamma correction](https://clij.github.io/assistant/gamma_correction)
+  * Intensity correction
   
 ... and more
   

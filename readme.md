@@ -21,13 +21,15 @@ Provide feedback and stay tuned.
 
 * Filtering / correction
   * [Image filtering](https://clij.github.io/assistant/filtering)
+  * [Gamma correction](https://clij.github.io/assistant/gamma_correction)
   * [Drift correction](https://clij.github.io/assistant/drift_correction)
 
 * Transformation
-  * [Maximum projection](https://clij.github.io/assistant/intensity_projection)
+  * [Intensity projection](https://clij.github.io/assistant/intensity_projection)
   * [Crop, Pan & zoom](https://clij.github.io/assistant/crop_pan_zoom)
   * [Cylinder projection](https://clij.github.io/assistant/cylinder_projection)
   * [Sphere projection](https://clij.github.io/assistant/sphere_projection)
+  * [Drift correction](https://clij.github.io/assistant/drift_correction)
 
 * Regionalisation
   * [Nuclei segmentation](https://clij.github.io/assistant/segmentation_nuclei)
