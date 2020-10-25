@@ -210,10 +210,11 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         int boolean_count = 0;
         int number_count = 0;
         int string_count = 0;
+        int result_index = -1;
 
         if (parameters.length > 0 && parameters[0].length() > 0) {
             // skip first two parameters because they are images
-            for (int i = 2; i < parameters.length; i++) {
+            for (int i = 0; i < parameters.length; i++) {
                 String[] parameterParts = parameters[i].trim().split(" ");
                 String parameterType = parameterParts[0];
                 String parameterName = parameterParts[1];
@@ -226,6 +227,11 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
                 if (parameterType.compareTo("Image") == 0) {
                     // no choice
+                    if (byRef || parameterName.contains("destination")) {
+                        result_index = i;
+                    } else {
+                        args[i] = pushed[i][0]; // todo: potentially store the whole array here
+                    }
                 } else if (parameterType.compareTo("String") == 0) {
                     if (registered_dialog == null) {
                         if (default_values != null) {
@@ -268,13 +274,13 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             }
         }
 
-        args[0] = pushed[0]; // todo: potentially store the whole array here
+
         plugin.setArgs(args);
         checkResult();
         if (result == null) {
             result = createOutputBufferFromSource(pushed[0]);
         }
-        args[1] = result[0]; // todo: potentially store the whole array here
+        args[result_index] = result[0]; // todo: potentially store the whole array here
 
         executeCL(pushed, new ClearCLBuffer[][]{result});
         cleanup(my_sources, pushed);
@@ -415,6 +421,8 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
     protected ClearCLBuffer[] createOutputBufferFromSource(ClearCLBuffer[] pushed) {
         CLIJx clijx = CLIJx.getInstance();
+        System.out.println("PUSHED[0]: " + pushed[0]);
+        System.out.println("PUSHED[0] class: " + pushed[0].getClass());
         ClearCLBuffer result = plugin.createOutputBufferFromSource(pushed[0]);
         if (input_output_sizes_equal == null) {
             input_output_sizes_equal =
@@ -648,7 +656,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     protected PopupMenu buildPopup(MouseEvent e) {
         PopupMenu menu = new PopupMenu("CLIncubator");
 
-        addMenuAction(menu, AssistantUtilities.niceNameWithoutDimShape(this.getName()) + " (" + distributionName(plugin.getClass())+ (isCleCompatible(this.getName())?", CLE":"") + ", experimental)", (a) -> {
+        addMenuAction(menu, AssistantUtilities.niceNameWithoutDimShape(this.getName()) + " (" + distributionName(plugin.getClass())+ (getCompatibilityString(this.getName())) + ", experimental)", (a) -> {
             if (registered_dialog != null) {
                 registered_dialog.show();
             }
@@ -685,7 +693,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             CLIJMacroPlugin clijPlugin = CLIJMacroPluginService.getInstance().getService().getCLIJMacroPlugin(name);
             if (isSuitable(clijPlugin, this)) {
                 Class pluginClass = plugin.getClass();
-                addMenuAction(suggestedFollowers, AssistantUtilities.niceName(name.replace("CLIJ2_", "").replace("CLIJx_", "")) + " (" + distributionName(pluginClass)+ (isCleCompatible(name)?", CLE":"") + ")", (a) -> {
+                addMenuAction(suggestedFollowers, AssistantUtilities.niceName(name.replace("CLIJ2_", "").replace("CLIJx_", "")) + " (" + distributionName(pluginClass)+ (getCompatibilityString(name)) + ")", (a) -> {
                     my_target.show();
                     try {
                         AssistantGUIPlugin plugin = (AssistantGUIPlugin) klass.newInstance();
@@ -716,7 +724,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             for (AssistantGUIPlugin plugin : MenuService.getInstance().getPluginsInCategory(category, this.getCLIJMacroPlugin())) {
                 CLIJMacroPlugin clijPlugin = plugin.getCLIJMacroPlugin();
                 if (category_count == categories.length || isSuitable(clijPlugin, this)) {
-                    addMenuAction(menuCategory, AssistantUtilities.niceName(plugin.getName()) + " (" + distributionName(plugin.getCLIJMacroPlugin().getClass())+ (isCleCompatible(plugin.getName())?", CLE":"") + ")", (a) -> {
+                    addMenuAction(menuCategory, AssistantUtilities.niceName(plugin.getName()) + " (" + distributionName(plugin.getCLIJMacroPlugin().getClass())+ (getCompatibilityString(plugin.getName())) + ")", (a) -> {
                         plugin.run("");
                     });
                     menu_count ++;
