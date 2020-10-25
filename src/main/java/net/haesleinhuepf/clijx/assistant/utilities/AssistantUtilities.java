@@ -997,7 +997,7 @@ public class AssistantUtilities {
             return "ImageJ 3D Suite";
         }
         if (full_class_name.startsWith("net.haesleinhuepf.clijx.imagej2.")) {
-            return "ImageJ";
+            return "ImageJ2";
         }
         if (full_class_name.startsWith("net.haesleinhuepf.clijx.bonej.")) {
             return "BoneJ";
