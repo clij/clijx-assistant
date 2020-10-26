@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 public class SuggestionService {
     private static File[] getFiles() {
-        String[] resourceFiles = {"suggestions.config", "manual_suggestions.config"};
+        String[] resourceFiles = {"suggestions.config", "manual_suggestions.config", "BramvandenBroek_suggestions.config"};
         ArrayList<File> files = new ArrayList<>();
         for (String resourceFilename : resourceFiles) {
 
