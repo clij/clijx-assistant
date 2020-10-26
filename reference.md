@@ -215,6 +215,10 @@ Computes a binary image with pixel values 0 and 1 containing the binary erosion 
 * [Erode Sphere](https://clij.github.io/clij2-docs/reference_erodeSphere)
 Computes a binary image with pixel values 0 and 1 containing the binary erosion of a given input image. 
 
+* [Euclidean Distance From Label Centroid Map](https://clij.github.io/clij2-docs/reference_euclideanDistanceFromLabelCentroidMap)
+Takes a label map, determines the centroids of all labels and writes the distance of all labelled pixels to their centroid in the result image.
+Background pixels stay zero.
+
 * [Exclude Labels On Edges](https://clij.github.io/clij2-docs/reference_excludeLabelsOnEdges)
 Removes all labels from a label map which touch the edges of the image (in X, Y and Z if the image is 3D). 
 
@@ -244,6 +248,9 @@ Flips an image in X and/or Y direction depending on boolean flags.
 
 * [Flip3D](https://clij.github.io/clij2-docs/reference_flip3D)
 Flips an image in X, Y and/or Z direction depending on boolean flags.
+
+* [Gamma Correction](https://clij.github.io/clij2-docs/reference_gammaCorrection)
+Applies a gamma correction to an image.
 
 * [Gaussian Blur2D](https://clij.github.io/clij2-docs/reference_gaussianBlur2D)
 Computes the Gaussian blurred image of an image given two sigma values in X and Y. 
@@ -286,6 +293,18 @@ Takes a label map, determines for every label the maximum distance of any pixel 
 
 * [Label Maximum Extension Ratio Map](https://clij.github.io/clij2-docs/reference_labelMaximumExtensionRatioMap)
 Takes a label map, determines for every label the maximum distance of any pixel to the centroid and replaces every label with the that number.
+
+* [Label Maximum Intensity Map](https://clij.github.io/clij2-docs/reference_labelMaximumIntensityMap)
+Takes an image and a corresponding label map, determines the mean intensity per label and replaces every label with the that number.
+
+* [Label Mean Extension Map](https://clij.github.io/clij2-docs/reference_labelMeanExtensionMap)
+Takes a label map, determines for every label the mean distance of any pixel to the centroid and replaces every label with the that number.
+
+* [Label Mean Intensity Map](https://clij.github.io/clij2-docs/reference_labelMeanIntensityMap)
+Takes an image and a corresponding label map, determines the mean intensity per label and replaces every label with the that number.
+
+* [Label Minimum Intensity Map](https://clij.github.io/clij2-docs/reference_labelMinimumIntensityMap)
+Takes an image and a corresponding label map, determines the mean intensity per label and replaces every label with the that number.
 
 * [Label Pixel Count Map](https://clij.github.io/clij2-docs/reference_labelPixelCountMap)
 Takes a label map, determines the number of pixels per label and replaces every label with the that number.
@@ -725,7 +744,7 @@ See Scale2D and Scale3D.
 
 
 
-224 operations listed.
+230 operations listed.
 
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
