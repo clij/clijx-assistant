@@ -73,15 +73,18 @@ Juan Nunes-Iglesias (Monash University Melbourne),
 Kisha Sivanathan (Harvard Medical School Boston),
 Marion Louveaux (Institut Pasteur Paris),
 Matthias Arzt (MPI CBG Dresden),
+Nik Cordes,
 Noreen Walker (MPI CBG Dresden),
 Pavel Tomancak (MPI CBG Dresden),
 Pete Bankhead (University of Edinburgh),
 Pradeep Rajasekhar (Monash University Melbourne),
 Romain Guiet (EPFL Lausanne),
 Sebastian Munck (VIB Leuven),
-St\'{e}phane Dallongeville (Institut Pasteur)
-St\'{e}phane~Rigaud (Institut Pasteur Paris),
+Stéphane Dallongeville (Institut Pasteur)
+Stéphane~Rigaud (Institut Pasteur Paris),
+Stein Rørvik,
 Talley J. Lambert (Harvard Medical School Boston),
+Tanner Fadero (U Chapel Hill)
 Theresa Suckert (OncoRay, TU Dresden),
 
 Furthermore, the constant support by the Image Science and the NEUBIAS communities is fantastic.
