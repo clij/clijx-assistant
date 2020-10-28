@@ -293,7 +293,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     }
 
     protected void checkResult() {
-        if (input_output_sizes_equal != null && result != null) {
+        if (input_output_sizes_equal != null && input_output_sizes_equal && result != null) {
             long[] new_dimensions = null;
             ImagePlus source = my_sources[0];
             if (source.getNSlices() > 1) {
@@ -429,6 +429,11 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             input_output_sizes_equal =
                     pushed[0].getWidth() == result.getWidth() &&
                     pushed[0].getHeight() == result.getHeight();
+
+            if (input_output_sizes_equal && pushed[0].getDimensions() == result.getDimensions()) {
+                input_output_sizes_equal =
+                        pushed[0].getDepth() == result.getDepth();
+            }
         }
         if (pushed.length > 1) {
             ClearCLBuffer[] output = new ClearCLBuffer[pushed.length];
@@ -688,7 +693,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         Collections.sort(suggestedNames, AssistantUtilities.niceNameComparator);
 
         for (String name : suggestedNames ) {
-            System.out.println("Suggested: " + name);
+            //System.out.println("Suggested: " + name);
             Class klass = suggestions.get(name);
 
             CLIJMacroPlugin clijPlugin = CLIJMacroPluginService.getInstance().getService().getCLIJMacroPlugin(name);
