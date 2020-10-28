@@ -194,7 +194,7 @@ public class MenuService {
                 System.out.println("Warning: CLIJ Plugin " + entry + " might not be installed properly. Try to reinstall it.");
                 continue;
             }
-            System.out.println(entry);
+            //System.out.println(entry);
 
             if (all || (
                     plugin instanceof HasClassifiedInputOutput &&
