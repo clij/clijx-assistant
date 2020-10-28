@@ -12,6 +12,9 @@ public class CLIJxVirtualStack extends VirtualStack {
 
     boolean catcher_initialized = false;
 
+    @Deprecated // do not use this; it's a workaround because ImageJ closes windows when Composite stacks are replaced
+    public static boolean ignore_closing = false;
+
     public CLIJxVirtualStack(ClearCLBuffer[] buffer) {
         super((int)buffer[0].getWidth(), (int)buffer[0].getHeight(), (int)buffer[0].getDepth() * buffer.length);
         setBitDepth((int) (buffer[0].getPixelSizeInBytes() * 8));
@@ -27,6 +30,9 @@ public class CLIJxVirtualStack extends VirtualStack {
 
                 @Override
                 public synchronized void imageClosed(ImagePlus imp) {
+                    if (ignore_closing) {
+                        return;
+                    }
                     if (imp.getStack() instanceof CLIJxVirtualStack) {
                         ImageStack stack = imp.getStack();
                         if (imp.getNChannels() == 1) {
@@ -71,7 +77,13 @@ public class CLIJxVirtualStack extends VirtualStack {
             CLIJx clijx = CLIJx.getInstance();
             ClearCLBuffer slice = clijx.create(new long[]{buffer[0].getWidth(), buffer[0].getHeight()}, buffer[0].getNativeType());
 
+            System.out.println("Buffer " + buffer);
+            System.out.println("Buffer[0] " + buffer[0]);
+            System.out.println("Buffer[0] pointer " + buffer[0].getPeerPointer());
+            System.out.println("Buffer slice " + slice.getPeerPointer());
+
             for (int c = 0; c < buffer.length; c++) {
+                System.out.println("Channel " + c);
                 clijx.copySlice(buffer[c], slice, zplane);
                 ImagePlus imp = clijx.pull(slice);
                 formerSliceProcessors[c] = imp.getProcessor();

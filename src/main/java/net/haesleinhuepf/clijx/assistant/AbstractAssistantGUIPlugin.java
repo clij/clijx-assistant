@@ -597,8 +597,25 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             }
 
         } else {
-            ImagePlus output = result;
-            my_target.setStack(output.getStack());
+            ImagePlus output;
+            if (my_sources[0] != null && my_sources[0].isComposite() && result.getNChannels() > 1) {
+                System.out.println("ChChannels: " + result.getNChannels());
+                output = new CompositeImage(result, my_sources[0].getCompositeMode());
+                //((CompositeImage)my_target).copyLuts(my_sources[0]);
+            } else {
+                output = result;
+            }
+
+            ImageWindow win = my_target.getWindow();
+
+            ignore_closing = true;
+            CLIJxVirtualStack.ignore_closing = true;
+            my_target.setStack(output.getStack(), output.getNChannels(), output.getNSlices(), output.getNFrames());
+            CLIJxVirtualStack.ignore_closing = false;
+
+            if (win != my_target.getWindow()) {
+                attachMenu(my_target);
+            }
         }
         AssistantUtilities.transferCalibration(my_sources[0], my_target);
         String name_to_consider = (my_sources[0].getTitle() + " " + my_target.getTitle()).toLowerCase() + this.getName();
@@ -1173,19 +1190,24 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
     }
 
+    @Deprecated // do not use this; it's a workaround because ImageJ closes windows when Composite stacks are replaced
+    boolean ignore_closing = false;
+
     @Override
     public void imageClosed(ImagePlus imp) {
         if (imp != null && (imp == my_target)) {
-            ImagePlus.removeImageListener(this);
-            AssistantGUIPluginRegistry.getInstance().unregister(this);
-            if (heartbeat != null) {
-                Timer copy = heartbeat;
-                heartbeat = null;
-                copy.cancel();
-            }
-            if (registered_dialog != null) {
-                registered_dialog.dispose();
-                registered_dialog = null;
+            if (!ignore_closing) {
+                ImagePlus.removeImageListener(this);
+                AssistantGUIPluginRegistry.getInstance().unregister(this);
+                if (heartbeat != null) {
+                    Timer copy = heartbeat;
+                    heartbeat = null;
+                    copy.cancel();
+                }
+                if (registered_dialog != null) {
+                    registered_dialog.dispose();
+                    registered_dialog = null;
+                }
             }
         }
     }
