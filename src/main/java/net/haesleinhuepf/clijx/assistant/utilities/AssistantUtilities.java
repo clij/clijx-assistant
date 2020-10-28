@@ -311,12 +311,12 @@ public class AssistantUtilities {
             //blocklist.add(net.haesleinhuepf.clij2.plugins.Logarithm.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.MultiplyImageAndScalar.class);
             blocklist.add(net.haesleinhuepf.clij2.plugins.CountTouchingNeighbors.class);
-            blocklist.add(net.haesleinhuepf.clij2.plugins.ImageToStack.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ImageToStack.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.TopHatSphere.class);
             blocklist.add(net.haesleinhuepf.clijx.tilor.implementations.Maximum3DBox.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.Invert
-            blocklist.add(net.haesleinhuepf.clij2.plugins.BottomHatSphere.class);
-            blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumZProjectionThresholdedBounded.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.BottomHatSphere.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumZProjectionThresholdedBounded.class);
             blocklist.add(net.haesleinhuepf.clij2.plugins.Scale2D.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumZProjection
             //blocklist.add(net.haesleinhuepf.clij2.plugins.Maximum3DBox.class);
@@ -360,7 +360,7 @@ public class AssistantUtilities {
             blocklist.add(net.haesleinhuepf.clij2.plugins.DilateBoxSliceBySlice.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.EntropyBox
             blocklist.add(net.haesleinhuepf.clij2.plugins.Downsample2D.class);
-            blocklist.add(net.haesleinhuepf.clij2.plugins.ReduceStack.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.ReduceStack.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdTriangle
             blocklist.add(net.haesleinhuepf.clij2.plugins.ErodeBoxSliceBySlice.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.Flip2D.class);
