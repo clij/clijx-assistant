@@ -158,6 +158,16 @@ public class AssistantUtilities {
         }
     }
 
+    public static ImagePlus openImage(String filename) {
+        if (new File(filename).exists()) {
+            return IJ.openImage(filename);
+        }
+        IJ.log("CLIJ-Assistance couldn't find file\n" + filename + "\n" +
+                "Please select its location");
+        return IJ.openImage();
+    }
+
+
     public static boolean ignoreEvent = false;
 
 
