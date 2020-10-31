@@ -1,5 +1,6 @@
 package net.haesleinhuepf.clijx.assistant.interactive.handcrafted;
 
+import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.measure.Calibration;
@@ -15,7 +16,7 @@ import java.util.Arrays;
 @Plugin(type = AssistantGUIPlugin.class)
 public class MakeIsotropic extends AbstractAssistantGUIPlugin {
 
-    float new_voxel_size_in_microns = 1;
+    float new_voxel_size_in_microns = 0;
 
     public MakeIsotropic() {
         super(new net.haesleinhuepf.clijx.plugins.MakeIsotropic());
@@ -23,35 +24,36 @@ public class MakeIsotropic extends AbstractAssistantGUIPlugin {
 
     GenericDialog dialog = null;
 
-    //protected boolean configure() {
-
     @Override
     protected GenericDialog buildNonModalDialog(Frame parent) {
         String unit = "unit";
-        float current_avg_voxel_size = 1;
         if (my_sources != null) {
             unit = my_sources[0].getCalibration().getUnit();
-
-            current_avg_voxel_size = (float)
-                    (
-                        my_sources[0].getCalibration().pixelWidth +
-                        my_sources[0].getCalibration().pixelHeight +
-                        my_sources[0].getCalibration().pixelDepth
-                    ) / 3;
-
-            if (new_voxel_size_in_microns / current_avg_voxel_size > 1.1 || new_voxel_size_in_microns / current_avg_voxel_size < 0.9) {
-                new_voxel_size_in_microns = current_avg_voxel_size;
-            }
         }
-        if (new_voxel_size_in_microns == 0) {
-            new_voxel_size_in_microns = 1;
-        }
+
+        init();
 
         dialog = new GenericDialog("Make isotropic");
-        dialog.addNumericField("Future voxel size (in " + unit + ")", 1.0, 1);
+        dialog.addNumericField("Future voxel size (in " + unit + ")", new_voxel_size_in_microns, 1);
         addPlusMinusPanel(dialog, "voxel size");
 
         return dialog;
+    }
+
+    private void init() {
+        if (my_sources != null && new_voxel_size_in_microns == 0) {
+            new_voxel_size_in_microns = (float)
+                    (
+                            my_sources[0].getCalibration().pixelWidth +
+                            my_sources[0].getCalibration().pixelHeight +
+                            my_sources[0].getCalibration().pixelDepth
+                    ) / 3;
+
+            if (new_voxel_size_in_microns == 0) {
+                new_voxel_size_in_microns = 1;
+            }
+        }
+
     }
 
 
@@ -64,6 +66,8 @@ public class MakeIsotropic extends AbstractAssistantGUIPlugin {
 
     public synchronized void refresh()
     {
+        init();
+
         Calibration calib = my_sources[0].getCalibration();
         float original_voxel_size_x = (float) calib.pixelWidth;
         float original_voxel_size_y = (float) calib.pixelHeight;
