@@ -1173,6 +1173,10 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                     }
                 }
             }
+            if (image_life_time < 1) {
+                my_target.updateAndDraw();
+            }
+            image_life_time++;
         } catch (Exception e) {
             System.out.println("Exception in AbstractAsssistantGUIPlugin " + e);
         }
@@ -1242,9 +1246,11 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         setButtonColor(refreshText, REFRESHING_COLOR);
     }
 
+    int image_life_time = 0;
     @Override
     public void setTargetValid() {
         setButtonColor(refreshText, VALID_COLOR);
+        image_life_time = 0;
     }
 
     private void setButtonColor(String button, Color color) {
