@@ -84,7 +84,9 @@ public class CLIJxVirtualStack extends VirtualStack {
 
             for (int c = 0; c < buffer.length; c++) {
                 System.out.println("Channel " + c);
-                clijx.copySlice(buffer[c], slice, zplane);
+                if (buffer[c].getPeerPointer() != null) { // Workaround: This can happen if visualization happens during reset
+                    clijx.copySlice(buffer[c], slice, zplane);
+                }
                 ImagePlus imp = clijx.pull(slice);
                 formerSliceProcessors[c] = imp.getProcessor();
             }
