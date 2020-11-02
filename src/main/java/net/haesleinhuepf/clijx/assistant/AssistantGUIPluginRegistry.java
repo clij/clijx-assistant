@@ -131,6 +131,7 @@ class AssistantGUIPluginRegistry {
                                 tile = this.connection_tiles.get(connection_tiles.size());
                             } else {
                                 tile = new Frame();
+                                tile.setFocusable(false);
                                 tile.setType(Window.Type.UTILITY);
                             }
                             tile.setLocation((int)(x - tile_size / 2), (int)(y - tile_size / 2));
