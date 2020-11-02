@@ -1136,12 +1136,12 @@ public class AssistantUtilities {
                     conda_code_attempt2 =
                             "call " + AssistantOptions.getInstance().getCondaPath() + "conda activate " + AssistantOptions.getInstance().getCondaEnv() + "\n" +
                                     "cd " + directory + "\n" +
-                                    "jupyter notebook " + file.replace(".ipynb", ".nbconvert.ipynb") + "\n";
+                                    "jupyter notebook " + file + "\n";
                 } else {
                     conda_code_attempt1 = AssistantOptions.getInstance().getCondaPath() + "conda activate " + AssistantOptions.getInstance().getCondaEnv() + "\n" +
                             "cd " + directory + "\n" +
                             "jupyter nbconvert --execute --to notebook " + file + "\n" +
-                            "jupyter notebook " + file;
+                            "jupyter notebook " + file.replace(".ipynb", ".nbconvert.ipynb");
 
                     conda_code_attempt2 = AssistantOptions.getInstance().getCondaPath() + "conda activate " + AssistantOptions.getInstance().getCondaEnv() + "\n" +
                             "cd " + directory + "\n" +
@@ -1175,29 +1175,34 @@ public class AssistantUtilities {
 
                 boolean failed = false;
                 try {
+                    System.out.println("Attempt 1");
                     Files.write(Paths.get(directory + "/temp.bat"), conda_code_attempt1.getBytes());
                     ProcessUtils.exec(directory, out, out, directory + "/temp.bat");
                     //IJ.log(exec);
                     //parent.errorHandler = handler.errorHandler;
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    e.printStackTrace(System.out);
                     failed = true;
                 } catch (RuntimeException e) {
-                    e.printStackTrace();
+                    e.printStackTrace(System.out);
+                    failed = true;
+                }
+                if (!new File(file.replace(".ipynb", ".nbconvert.ipynb")).exists()) {
                     failed = true;
                 }
 
                 if (failed) {
+                    System.out.println("Attempt 2");
                     try {
                         Files.write(Paths.get(directory + "/temp.bat"), conda_code_attempt2.getBytes());
                         ProcessUtils.exec(directory, out, out, directory + "/temp.bat");
                         //IJ.log(exec);
                         //parent.errorHandler = handler.errorHandler;
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        e.printStackTrace(System.out);
                         failed = true;
                     } catch (RuntimeException e) {
-                        e.printStackTrace();
+                        e.printStackTrace(System.out);
                         failed = true;
                     }
                 }
