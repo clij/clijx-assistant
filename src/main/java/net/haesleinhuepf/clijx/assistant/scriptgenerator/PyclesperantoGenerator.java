@@ -2,6 +2,7 @@ package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 
 import ij.ImagePlus;
 import ij.measure.Calibration;
+import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.utilities.HasClassifiedInputOutput;
 import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
@@ -102,8 +103,19 @@ public class PyclesperantoGenerator extends AbstractScriptGenerator {
             if (i > 0) {
                 call = call + ", ";
             }
-            call = call + name;
-            program = program + name + " = " + objectToString(plugin.getArgs()[i]) + "\n";
+
+            if (plugin.getArgs()[i] instanceof ClearCLBuffer || plugin.getArgs()[i] instanceof ClearCLBuffer[]) {
+                String image_id = objectToString(plugin.getArgs()[i]);
+                if (image_id == null && i < plugin.getNumberOfSources()) {
+                    image_id = objectToString(plugin.getSource(i));
+                }
+                call = call + image_id;
+            } else {
+                call = call + name;
+                program = program + name + " = " + objectToString(plugin.getArgs()[i]) + ";\n";
+            }
+
+
         }
         program = program + methodName + "(" + call + ")\n";
 
