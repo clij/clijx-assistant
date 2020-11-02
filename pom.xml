@@ -15,7 +15,7 @@
 	<groupId>net.haesleinhuepf</groupId>
 	<!-- note: the artifactId must contain an underscore _ to make ImageJ handle it correctly.-->
 	<artifactId>clijx-assistant_</artifactId>
-	<version>0.4.0.3</version>
+	<version>0.4.0.4</version>
 
 
 	<name>incubator</name>
