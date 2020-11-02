@@ -612,6 +612,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             CLIJxVirtualStack.ignore_closing = true;
             my_target.setStack(output.getStack(), output.getNChannels(), output.getNSlices(), output.getNFrames());
             CLIJxVirtualStack.ignore_closing = false;
+            ignore_closing = false;
 
             if (win != my_target.getWindow()) {
                 attachMenu(my_target);
@@ -1125,7 +1126,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             return;
         }
         try {
-            if (my_target != null && registered_dialog != null) {
+            if (my_target != null && my_target.getWindow() != null && registered_dialog != null) {
                 if (auto_position) {
                     registered_dialog.setLocation(my_target.getWindow().getX() + my_target.getWindow().getWidth() - 15, my_target.getWindow().getY());
                 }
@@ -1179,6 +1180,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             image_life_time++;
         } catch (Exception e) {
             System.out.println("Exception in AbstractAsssistantGUIPlugin " + e);
+            e.printStackTrace();
         }
     }
 
@@ -1201,6 +1203,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     public void imageClosed(ImagePlus imp) {
         if (imp != null && (imp == my_target)) {
             if (!ignore_closing) {
+
                 ImagePlus.removeImageListener(this);
                 AssistantGUIPluginRegistry.getInstance().unregister(this);
                 if (heartbeat != null) {
@@ -1208,7 +1211,9 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                     heartbeat = null;
                     copy.cancel();
                 }
+
                 if (registered_dialog != null) {
+                    System.out.println("Dispose dialog 5");
                     registered_dialog.dispose();
                     registered_dialog = null;
                 }
