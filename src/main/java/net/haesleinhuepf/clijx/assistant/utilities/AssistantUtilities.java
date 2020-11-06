@@ -1283,7 +1283,7 @@ public class AssistantUtilities {
     }
 
     public static void attachCloseListener(ImagePlus my_target) {
-        ImageWindow frame = my_target.getWindow();
+        /*ImageWindow frame = my_target.getWindow();
         if (frame == null) {
             return;
         }
@@ -1291,7 +1291,7 @@ public class AssistantUtilities {
         WindowListener[] list = frame.getWindowListeners();
         for (WindowListener listener : list) {
             frame.removeWindowListener(listener);
-        }
+        }*/
     }
 /*
     class CloseListener implements WindowListener {
