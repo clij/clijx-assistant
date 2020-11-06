@@ -3,6 +3,7 @@ package net.haesleinhuepf.clijx.assistant.utilities;
 import ij.IJ;
 import ij.ImageJ;
 import ij.ImagePlus;
+import ij.gui.ImageWindow;
 import ij.gui.Toolbar;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.clearcl.util.StringUtils;
@@ -29,8 +30,12 @@ import net.haesleinhuepf.clijx.weka.autocontext.ApplyAutoContextWekaModel;
 import net.haesleinhuepf.clijx.weka.autocontext.TrainAutoContextWekaModel;
 import org.scijava.util.ProcessUtils;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -972,9 +977,21 @@ public class AssistantUtilities {
     }
 
     public static String getCompatibilityString(String function_name) {
-        return "java, ijm" +
+        return "ijm" +
+                (isJavaCompatible(function_name)?", java":"") +
                 (isCleCompatible(function_name)?", py":"") +
                 (isClicCompatible(function_name)?", c++":"");
+    }
+
+    private static boolean isJavaCompatible(String function_name) {
+        function_name = function_name.toLowerCase().trim();
+        return !(
+                function_name.startsWith("imagej") ||
+                function_name.startsWith("morpholibj") ||
+                function_name.startsWith("simpleitk") ||
+                function_name.startsWith("bonej") ||
+                function_name.startsWith("imglib2")
+                );
     }
 
     public static String distributionName(Class klass) {
@@ -1089,7 +1106,7 @@ public class AssistantUtilities {
 
     public static void main(String[] args) {
         //System.out.println(niceName("CLIJx_SimpleITKWhateverFilter"));
-        System.out.println(isClicCompatible("addImageAndScalar"));
+        System.out.println(isCleCompatible("thresholdOtsu"));
         /*
         System.out.println(isIncubatablePlugin(new SeededWatershed()));
 
@@ -1264,4 +1281,24 @@ public class AssistantUtilities {
 
         return dir;
     }
+
+    public static void attachCloseListener(ImagePlus my_target) {
+        ImageWindow frame = my_target.getWindow();
+        if (frame == null) {
+            return;
+        }
+
+        WindowListener[] list = frame.getWindowListeners();
+        for (WindowListener listener : list) {
+            frame.removeWindowListener(listener);
+        }
+    }
+/*
+    class CloseListener implements WindowListener {
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+
+        }
+    }*/
 }
