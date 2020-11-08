@@ -37,6 +37,8 @@ import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -974,6 +976,34 @@ public class AssistantUtilities {
         //System.out.println(clic_compatible);
         //System.out.println("Checking " + function_name + " = " + new PyclesperantoGenerator(false).pythonize(function_name));
         return clic_compatible.contains("\n" + new PyclesperantoGenerator(false).pythonize(function_name) + "\n");
+    }
+
+
+    private static String has_online_reference = null;
+
+    public static boolean hasOnlineReference(String plugin_name)
+    {
+        String function_name = pluginNameToFunctionName(plugin_name);
+        if (has_online_reference == null) {
+            InputStream resourceAsStream = SuggestionService.class.getClassLoader().getResourceAsStream("online_reference.config");
+            has_online_reference = "\n" + StringUtils.streamToString(resourceAsStream, "UTF-8").replace("\r\n", "\n") + "\n";
+        }
+        //System.out.println("Checking " + function_name + " = " + new PyclesperantoGenerator(false).pythonize(function_name));
+        return has_online_reference.contains("\n" + function_name + "\n");
+    }
+    public static void callOnlineReference(String plugin_name) {
+        String function_name = pluginNameToFunctionName(plugin_name);
+        try {
+            Desktop.getDesktop().browse(new URI("https://clij.github.io/clij2-docs/reference_" + function_name));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String pluginNameToFunctionName(String plugin_name) {
+        return plugin_name.replace("CLIJ2_", "").replace("CLIJx_", "");
     }
 
     public static String getCompatibilityString(String function_name) {

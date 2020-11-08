@@ -12,6 +12,7 @@ import ij.plugin.PlugIn;
 import ij.plugin.frame.RoiManager;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
+import net.haesleinhuepf.clij.macro.documentation.OnlineDocumentationOpener;
 import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clij2.utilities.HasAuthor;
 import net.haesleinhuepf.clij2.utilities.HasLicense;
@@ -39,6 +40,8 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.distributionName;
@@ -939,6 +942,13 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                 e2.printStackTrace();
             }*/
         });
+
+        if (AssistantUtilities.hasOnlineReference(plugin.getName())) {
+            addMenuAction(menu,"Online help for " + AssistantUtilities.niceName(getName())  + " (" + distributionName(plugin.getClass()) + ")", (a) -> {
+                AssistantUtilities.callOnlineReference(plugin.getName());
+            });
+        }
+
         return menu;
     }
 
@@ -1036,6 +1046,17 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             dialog.enableYesNoCancel(refreshText, helpText);
             //dialog.setHelpLabel(helpText);
             //dialog.addHelp("http://clij.github.io");
+        }
+
+        if (AssistantUtilities.hasOnlineReference(plugin.getName())) {
+            Panel panel = new Panel();
+            Button button = new Button("?");
+            button.addActionListener((a)->{
+                AssistantUtilities.callOnlineReference(plugin.getName());
+            });
+            panel.add(button);
+            dialog.addPanel(panel);
+            dialog.addToSameRow();
         }
 
         dialog.showDialog();
