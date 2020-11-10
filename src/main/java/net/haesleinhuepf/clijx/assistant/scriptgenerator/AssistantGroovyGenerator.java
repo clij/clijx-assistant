@@ -86,7 +86,8 @@ public class AssistantGroovyGenerator extends AbstractScriptGenerator {
         output.append(makeImageID(target) + " = node.getTarget();\n");
         output.append(
                 "IJ.run(\"In [+]\");\n" +
-                "IJ.run(\"Out [-]\");\n");
+                "IJ.run(\"Out [-]\");\n" +
+                "java.lang.Thread.sleep(500);\n");
 
         output.append("\n");
         return output.toString();
