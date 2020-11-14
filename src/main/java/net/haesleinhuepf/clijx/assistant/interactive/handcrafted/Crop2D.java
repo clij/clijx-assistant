@@ -145,10 +145,6 @@ public class Crop2D extends AbstractAssistantGUIPlugin {
         }
     }
 
-    public void refreshDialogFromArguments() {
-        // do nothing
-    }
-
 
     public static void main(String[] args) {
         new ImageJ();

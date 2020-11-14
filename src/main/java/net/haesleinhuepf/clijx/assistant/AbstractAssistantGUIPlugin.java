@@ -17,6 +17,8 @@ import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clij2.utilities.HasAuthor;
 import net.haesleinhuepf.clij2.utilities.HasLicense;
 import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
+import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Crop2D;
+import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Crop3D;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.ExtractChannel;
 import net.haesleinhuepf.clijx.assistant.optimize.*;
 import net.haesleinhuepf.clijx.assistant.scriptgenerator.*;
@@ -1392,7 +1394,9 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         System.out.println("Optimum: ");
         f.value(current);
         for (AssistantGUIPlugin plugin : path ) {
-            plugin.refreshDialogFromArguments();
+            if (!(plugin instanceof Crop3D || plugin instanceof Crop2D)) {
+                plugin.refreshDialogFromArguments();
+            }
         }
         path[0].setTargetInvalid();
         logger.log("Bye.");

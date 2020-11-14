@@ -147,11 +147,6 @@ public class Crop3D extends AbstractAssistantGUIPlugin {
         }
     }
 
-    public void refreshDialogFromArguments() {
-        // do nothing
-    }
-
-
     public static void main(String[] args) {
         new ImageJ();
         ImagePlus imp = IJ.openImage("C:/structure/data/t1-head.tif");
