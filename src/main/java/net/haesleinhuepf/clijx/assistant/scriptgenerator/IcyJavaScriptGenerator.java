@@ -2,6 +2,7 @@ package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 
 import ij.ImagePlus;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import org.scijava.util.VersionUtils;
 
 public class IcyJavaScriptGenerator extends JythonGenerator {
 
@@ -48,6 +49,7 @@ public class IcyJavaScriptGenerator extends JythonGenerator {
     public String header() {
         return  "// To make this script run in Icy Bioimaging, please install the clIcy plugin in Icy first. \n" +
                 "// Read more: http://icy.bioimageanalysis.org/plugin/clicy-blocks/\n\n" +
+                "// Generator version: " + VersionUtils.getVersion(this.getClass()) + "\n\n" +
                 "importClass(Packages.icy.sequence.Sequence);\n" +
                 "importClass(net.haesleinhuepf.clicy.CLICY);\n" +
                 "importClass(Packages.icy.main.Icy);\n\n" +

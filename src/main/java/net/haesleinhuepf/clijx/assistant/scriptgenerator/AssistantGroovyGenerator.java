@@ -6,6 +6,7 @@ import ij.WindowManager;
 import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import org.scijava.util.VersionUtils;
 
 public class AssistantGroovyGenerator extends AbstractScriptGenerator {
 
@@ -107,6 +108,7 @@ public class AssistantGroovyGenerator extends AbstractScriptGenerator {
                 "// \n" +
                 "// For image analysis automation, generate an ImageJ Groovy script for example.\n" +
                 "// Read more: https://clij.github.io/assistant/save_and_load\n\n" +
+                "// Generator version: " + VersionUtils.getVersion(this.getClass()) + "\n\n" +
                 "\n\n" +
                 "import ij.IJ;\n" +
                 "import net.haesleinhuepf.clijx.CLIJx;\n\n" +

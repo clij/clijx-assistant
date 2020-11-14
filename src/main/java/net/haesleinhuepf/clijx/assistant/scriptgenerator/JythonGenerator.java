@@ -6,6 +6,7 @@ import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
+import org.scijava.util.VersionUtils;
 
 public class JythonGenerator extends AbstractScriptGenerator {
 
@@ -38,8 +39,9 @@ public class JythonGenerator extends AbstractScriptGenerator {
         String image1 = makeImageID(result.getTarget());
 
         return "" +
-                "result = clijx.pull(" + image1 + ");\n" +
-                "result.setDisplayRange(" + result.getTarget().getDisplayRangeMin() + ", " + result.getTarget().getDisplayRangeMax() + ");\n" +
+                "result = clijx.pull(" + image1 + ")\n" +
+                "result.setDisplayRange(" + result.getTarget().getDisplayRangeMin() + ", " + result.getTarget().getDisplayRangeMax() + ")\n" +
+                (AssistantUtilities.resultIsLabelImage(result)?"IJ.run(result, \"glasbey_on_dark\", \"\")\n":"") +
                 "result.show()\n" +
                 close(image1) + "\n\n";
 
@@ -84,17 +86,17 @@ public class JythonGenerator extends AbstractScriptGenerator {
         ) {
             if ( target.getBitDepth() == source.getBitDepth()) {
                 program = program +
-                        image2 + " = clijx.create(" + image1s[0] + ");\n";
+                        image2 + " = clijx.create(" + image1s[0] + ")\n";
             } else {
                 program = program +
-                        image2 + " = clijx.create(" + image1s[0] + ".getDimensions(), clijx." + bitDepthToType(target.getBitDepth()) + " );\n";
+                        image2 + " = clijx.create(" + image1s[0] + ".getDimensions(), clijx." + bitDepthToType(target.getBitDepth()) + " )\n";
             }
         }else if (target.getNSlices() > 1) {
             program = program +
-                image2 + " = clijx.create([" + target.getWidth() + ", " + target.getHeight() + ", "  + target.getNSlices() + "], clijx." + bitDepthToType(target.getBitDepth()) + ");\n";
+                image2 + " = clijx.create([" + target.getWidth() + ", " + target.getHeight() + ", "  + target.getNSlices() + "], clijx." + bitDepthToType(target.getBitDepth()) + ")\n";
         } else {
             program = program +
-                    image2 + " = clijx.create([" + target.getWidth() + ", " + target.getHeight() + "], clijx." + bitDepthToType(target.getBitDepth()) + ");\n";
+                    image2 + " = clijx.create([" + target.getWidth() + ", " + target.getHeight() + "], clijx." + bitDepthToType(target.getBitDepth()) + ")\n";
         }
         String call = "";
         String after_call = "";
@@ -117,10 +119,10 @@ public class JythonGenerator extends AbstractScriptGenerator {
                 after_call = after_call + close(image_id) + "\n";
             } else {
                 call = call + name;
-                program = program + name + " = " + objectToString(plugin.getArgs()[i]) + ";\n";
+                program = program + name + " = " + objectToString(plugin.getArgs()[i]) + "\n";
             }
         }
-        program = program + methodName + "(" + call + ");\n" +
+        program = program + methodName + "(" + call + ")\n" +
                 after_call + "\n";
 
         //program = program + comment("consider removing this line if you don't need to see that image");
@@ -157,11 +159,12 @@ public class JythonGenerator extends AbstractScriptGenerator {
         return  "# To make this script run in Fiji, please activate \n" +
                 "# the clij and clij2 update sites in your Fiji \n" +
                 "# installation. Read more: https://clij.github.io\n\n" +
-                "from ij import IJ;\n" +
-                "from ij import WindowManager;\n" +
-                "from net.haesleinhuepf.clijx import CLIJx;\n\n" +
+                "# Generator version: " + VersionUtils.getVersion(this.getClass()) + "\n\n" +
+                "from ij import IJ\n" +
+                "from ij import WindowManager\n" +
+                "from net.haesleinhuepf.clijx import CLIJx\n\n" +
                 "# Init GPU\n" +
-                "clijx = CLIJx.getInstance();\n\n";
+                "clijx = CLIJx.getInstance()\n\n";
     }
 
     @Override

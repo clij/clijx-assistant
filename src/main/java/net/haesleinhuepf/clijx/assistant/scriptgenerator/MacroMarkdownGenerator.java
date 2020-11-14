@@ -6,6 +6,7 @@ import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clijx.assistant.annotation.ClassificationClass;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
+import org.scijava.util.VersionUtils;
 
 public class MacroMarkdownGenerator extends MacroGenerator {
     @Override
@@ -71,7 +72,8 @@ public class MacroMarkdownGenerator extends MacroGenerator {
         return  "/*\n" +
                 "To make this script run in Fiji, please activate \n" +
                 "the clij, clij2 and IJMMD update sites in your Fiji \n" +
-                "installation. Read more: https://clij.github.io\n" +
+                "installation. Read more: https://clij.github.io\n\n" +
+                "Generator version: " + VersionUtils.getVersion(this.getClass()) + "\n" +
                 "*/\n" +
                 "// Init GPU\n" +
                 "run(\"CLIJ2 Macro Extensions\", \"cl_device=\");\n\n";

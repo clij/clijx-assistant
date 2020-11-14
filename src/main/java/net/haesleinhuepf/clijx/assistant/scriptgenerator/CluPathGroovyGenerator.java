@@ -3,6 +3,7 @@ package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 import ij.ImagePlus;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
+import org.scijava.util.VersionUtils;
 
 public class CluPathGroovyGenerator extends GroovyGenerator {
 
@@ -46,7 +47,7 @@ public class CluPathGroovyGenerator extends GroovyGenerator {
                 "// https://clij.github.io/clupath\n\n" +
                 "// Note: QuPath support is experimental yet. \n" +
                 "//       This script may only work if the result is a binary image.\n" +
-                "\n\n" +
+                "// Generator version: " + VersionUtils.getVersion(this.getClass()) + "\n\n" +
                 "import qupath.lib.regions.*\n" +
                 "import qupath.imagej.tools.IJTools\n" +
                 "import qupath.imagej.gui.IJExtension\n" +

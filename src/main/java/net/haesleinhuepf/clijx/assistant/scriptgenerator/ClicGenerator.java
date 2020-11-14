@@ -6,6 +6,7 @@ import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
+import org.scijava.util.VersionUtils;
 
 public class ClicGenerator extends AbstractScriptGenerator {
 
@@ -128,7 +129,9 @@ public class ClicGenerator extends AbstractScriptGenerator {
         return  "// This is generated experimental code which is supposed to run using clic, " +
                 "// the C++ implementation of clesperanto: \n" +
                 "// https://github.com/clEsperanto/CLIc_prototype \n" +
-                "// The project is work in progress. Stay tuned!" +
+                "// The project is work in progress. Stay tuned! \n" +
+                "// \n" +
+                "// Generator version: " + VersionUtils.getVersion(this.getClass()) + "\n\n" +
                 "//" +
                 "\n" +
                 "// Initialise GPU information.\n" +

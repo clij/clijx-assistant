@@ -2,6 +2,7 @@ package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 
 import ij.ImagePlus;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import org.scijava.util.VersionUtils;
 
 public class JavaScriptGenerator extends JythonGenerator {
 
@@ -30,7 +31,7 @@ public class JavaScriptGenerator extends JythonGenerator {
         return  "// To make this script run in Fiji, please activate \n" +
                 "// the clij and clij2 update sites in your Fiji \n" +
                 "// installation. Read more: https://clij.github.io\n\n" +
-                "\n\n" +
+                "// Generator version: " + VersionUtils.getVersion(this.getClass()) + "\n\n" +
                 "importClass(Packages.ij.IJ);\n" +
                 "importClass(Packages.ij.WindowManager);\n" +
                 "importClass(Packages.net.haesleinhuepf.clijx.CLIJx);\n\n" +

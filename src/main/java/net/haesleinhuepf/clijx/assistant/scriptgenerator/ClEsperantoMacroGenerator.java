@@ -2,10 +2,12 @@ package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 
 import ij.ImagePlus;
 import net.cleasperanto.macro.api.ClEsperantoMacroAPIGenerator;
+import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
+import org.scijava.util.VersionUtils;
 
 public class ClEsperantoMacroGenerator extends AbstractScriptGenerator {
 
@@ -24,7 +26,9 @@ public class ClEsperantoMacroGenerator extends AbstractScriptGenerator {
     @Override
     public String pull(AssistantGUIPlugin result) {
         String imageID = makeImageID(result.getTarget());
-        return "pull(" + imageID + ");\n\n";
+        return "pull(" + imageID + ");\n" +
+                (AssistantUtilities.resultIsLabelImage(result)?"run(\"glasbey_on_dark\");\n":"") +
+                close(imageID) + "\n\n";
     }
 
     @Override
@@ -54,15 +58,43 @@ public class ClEsperantoMacroGenerator extends AbstractScriptGenerator {
                 image2 + " = \"" + plugin.getTarget().getTitle() + "\";\n";
 
         String call = "";
+        String after_call = "";
 
         String[] parameters = clijMacroPlugin.getParameterHelpText().split(",");
-        for (int i = 2; i < parameters.length; i++) {
+        /*for (int i = 2; i < parameters.length; i++) {
             String temp[] = parameters[i].trim().split(" ");
             String name = temp[temp.length - 1];
             call = call + ", " + name;
+
             program = program + name + " = " + objectToString(plugin.getArgs()[i]) + ";\n";
+        }*/
+        for (int i = 0; i < parameters.length; i++) {
+            String temp[] = parameters[i].trim().split(" ");
+            String name = temp[temp.length - 1];
+
+            if (i > 0) {
+                call = call + ", ";
+            }
+
+            if (plugin.getArgs()[i] instanceof ClearCLBuffer ||
+                    plugin.getArgs()[i] instanceof ClearCLBuffer[] ||
+                    plugin.getArgs()[i] instanceof ClearCLBuffer[][] ||
+                    plugin.getArgs()[i] instanceof ImagePlus
+            ) {
+                String image_id = objectToString(plugin.getArgs()[i]);
+                if (image_id == null && i < plugin.getNumberOfSources()) {
+                    image_id = objectToString(plugin.getSource(i));
+                }
+                call = call + image_id;
+                after_call = after_call + close(image_id) + "\n";
+            } else {
+                call = call + name;
+                program = program + name + " = " + objectToString(plugin.getArgs()[i]) + ";\n";
+            }
         }
-        program = program + methodName + "(" + namesToCommaSeparated(image1s) + ", " + image2 + call + ");\n";
+        program = program + methodName + "(" + call + ");\n" +
+                after_call + "";
+        //program = program + methodName + "(" + namesToCommaSeparated(image1s) + ", " + image2 + call + ");\n";
         //program = program + "Ext.CLIJ2_pull(" + image2 + "); // consider removing this line if you don't need to see that image\n";
 
         return program;
@@ -76,24 +108,20 @@ public class ClEsperantoMacroGenerator extends AbstractScriptGenerator {
 
     @Override
     public String header() {
-        return  "// This is an experimentally generated ImageJ Macro using clEsperanto." +
+        return  "// This is an experimentally generated ImageJ Macro using clEsperanto.\n" +
                 "// To make this script run in Fiji, please activate \n" +
-                "// the clij and clij2 update sites in your Fiji \n" +
-                "// installation. Furthermore add a custom update site:\n" +
-                "// https://site.imagej.net/clincubator/\n\n" +
+                "// the clij, clij2, clijx-assistant update sites in your Fiji \n" +
+                "// installation. Before executing it, activate 'clEspereanto Macro' in\n" +
+                "// the language menu of the Script Editor.\n" +
                 "// Read more: \n" +
                 "// https://clesperanto.github.io/\n" +
                 "// https://clij.github.io/assistant/\n" +
-                "\n";
+                "\n" +
+                "// Generator version: " + VersionUtils.getVersion(this.getClass()) + "\n\n";
     }
 
     @Override
     public String close(String image) {
         return "release(" + image + ");";
-    }
-
-    @Override
-    public String finish(String all) {
-        return all;
     }
 }

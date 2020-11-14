@@ -7,6 +7,7 @@ import net.haesleinhuepf.clij2.utilities.HasAuthor;
 import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
+import org.scijava.util.VersionUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -136,7 +137,8 @@ public class HumanReadibleProtocolGenerator extends AbstractScriptGenerator {
     @Override
     public String header() {
         return  "This protocol documents an image data flow using CLIJx-Assistant.\n" +
-                "Read more about it online: https://clij.github.io/assistant/ \n\n";
+                "Read more about it online: https://clij.github.io/assistant/ \n\n" +
+                "Generator version: " + VersionUtils.getVersion(this.getClass()) + "\n\n";
     }
 
     @Override

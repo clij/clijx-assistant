@@ -18,6 +18,7 @@ import net.haesleinhuepf.clijx.assistant.optimize.Workflow;
 import net.haesleinhuepf.clijx.assistant.options.AssistantOptions;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import org.jocl.CL;
+import org.scijava.util.VersionUtils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -440,8 +441,8 @@ class MavenJavaProjectGenerator {
         return new File(jar_source_file).renameTo(new File(jar_target_file));
     }
 
-    public String getJarFilename() { // TODO: Derive version number automatically
-        return "clijx-assistant-" + enter_lower_case_plugin_name_here + "_-0.4.0.7.jar";
+    public String getJarFilename() {
+        return "clijx-assistant-" + enter_lower_case_plugin_name_here + "_-" + VersionUtils.getVersion(this.getClass()) + ".jar";
     }
 
 

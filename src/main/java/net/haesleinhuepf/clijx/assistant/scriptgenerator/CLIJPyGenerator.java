@@ -5,6 +5,7 @@ import ij.ImagePlus;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
+import org.scijava.util.VersionUtils;
 
 public class CLIJPyGenerator extends JythonGenerator {
 
@@ -93,7 +94,8 @@ public class CLIJPyGenerator extends JythonGenerator {
     public String header() {
         return  "# This is an experimentally generated python script based on pyimagej and clijpy. \n" +
                 "# https://github.com/imagej/pyimagej \n" +
-                "# https://github.com/clij/clijpy \n" +
+                "# https://github.com/clij/clijpy \n\n" +
+                "# Generator version: " + VersionUtils.getVersion(this.getClass()) + "\n\n" +
                 "# Not all commands are supposed to be executable yet.\n" +
                 "# If you want to give it a try, create conda environment named te_oki:\n" +
                 "#  > conda create --name te_oki \n" +

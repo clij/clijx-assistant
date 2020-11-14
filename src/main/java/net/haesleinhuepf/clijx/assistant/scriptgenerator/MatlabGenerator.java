@@ -2,6 +2,7 @@ package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 
 import ij.ImagePlus;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import org.scijava.util.VersionUtils;
 
 public class MatlabGenerator extends JythonGenerator {
 
@@ -56,6 +57,7 @@ public class MatlabGenerator extends JythonGenerator {
     public String header() {
         return  "% To make this script run in Matlab, please install \n" +
                 "% clatlab. Read more: https://clij.github.io/clatlab/\n\n" +
+                "% Generator version: " + VersionUtils.getVersion(this.getClass()) + "\n\n" +
                 "\n\n" +
                 "% Init GPU\n" +
                 "\n" +

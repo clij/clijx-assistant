@@ -9,6 +9,7 @@ import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import org.scijava.script.ScriptService;
+import org.scijava.util.VersionUtils;
 
 public class PyclesperantoGenerator extends AbstractScriptGenerator {
 
@@ -125,9 +126,15 @@ public class PyclesperantoGenerator extends AbstractScriptGenerator {
                 scale = calibration.pixelDepth + ", " + calibration.pixelHeight + ", " + calibration.pixelWidth;
             }
 
-            program = program +
-                    "# show result\n" +
-                    "viewer.add_image(cle.pull_zyx(" + image2 + "), scale=(" + scale + "))\n\n";
+            if (AssistantUtilities.resultIsLabelImage(plugin)) {
+                program = program +
+                        "# show result\n" +
+                        "viewer.add_labels(cle.pull_zyx(" + image2 + "), scale=(" + scale + "))\n\n";
+            } else {
+                program = program +
+                        "# show result\n" +
+                        "viewer.add_image(cle.pull_zyx(" + image2 + "), scale=(" + scale + "))\n\n";
+            }
         } else {
             program = program +
                     "# show result\n";
@@ -179,8 +186,8 @@ public class PyclesperantoGenerator extends AbstractScriptGenerator {
                 "# If you want to run it from Fiji and you're using a different conda environment, you can configure it in Fijis main menu \n" +
                 "# Plugins > ImageJ on GPU (CLIJx-Assistant) > Options >Conda configuration (Te Oki) \n" +
                 "# Furthermore, activate the scripting language Te Oki in Fijis script editor to run this script.\n\n" +
-                "# Stay tuned and check out http://clesperanto.net to learn more." +
-                "\n\n" +
+                "# Stay tuned and check out http://clesperanto.net to learn more.\n\n" +
+                "# Generator version: " + VersionUtils.getVersion(this.getClass()) + "\n\n" +
                 "import pyclesperanto_prototype as cle\n" +
                 "from tifffile import imread\n\n";
 

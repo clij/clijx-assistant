@@ -7,6 +7,7 @@ import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
+import org.scijava.util.VersionUtils;
 
 public class MacroGenerator extends AbstractScriptGenerator {
 
@@ -36,6 +37,7 @@ public class MacroGenerator extends AbstractScriptGenerator {
     public String pull(AssistantGUIPlugin result) {
         String imageID = makeImageID(result.getTarget());
         return "Ext.CLIJ2_pull(" + imageID + ");\n" +
+                (AssistantUtilities.resultIsLabelImage(result)?"run(\"glasbey_on_dark\");\n":"") +
                 close(imageID) + "\n";
     }
 
@@ -110,6 +112,7 @@ public class MacroGenerator extends AbstractScriptGenerator {
         return  "// To make this script run in Fiji, please activate \n" +
                 "// the clij and clij2 update sites in your Fiji \n" +
                 "// installation. Read more: https://clij.github.io\n\n" +
+                "// Generator version: " + VersionUtils.getVersion(this.getClass()) + "\n\n" +
                 "// Init GPU\n" +
                 "run(\"CLIJ2 Macro Extensions\", \"cl_device=\");\n\n";
     }

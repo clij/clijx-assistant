@@ -774,19 +774,19 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         addMenuAction(script, "Human readable protocol", (a) -> {generateScriptFile(new HumanReadibleProtocolGenerator());});
         script.add("-");
         addMenuAction(script, "Icy JavaScript", (a) -> {generateScriptFile(new IcyJavaScriptGenerator());});
-        addMenuAction(script, "Icy Protocol", (a) -> {generateScriptFile(new IcyProtocolGenerator());});
+        addMenuAction(script, "ImageJ JavaScript", (a) -> {generateScriptFile(new JavaScriptGenerator());});
         addMenuAction(script, "Matlab", (a) -> {generateScriptFile(new MatlabGenerator());});
         addMenuAction(script, "Fiji Groovy", (a) -> {generateScriptFile(new GroovyGenerator());});
-        addMenuAction(script, "Fiji JavaScript", (a) -> {generateScriptFile(new JavaScriptGenerator());});
         addMenuAction(script, "Fiji Jython", (a) -> {generateScriptFile(new JythonGenerator());});
         script.add("-");
 
+        addMenuAction(script, "Icy Protocol", (a) -> {generateScriptFile(new IcyProtocolGenerator());});
         addMenuAction(script, "ImageJ Macro Markdown", (a) -> {generateScriptFile(new MacroMarkdownGenerator());});
         addMenuAction(script, "Export workflow as groovy (for re-loading)", (a) -> {generateScriptFile(new AssistantGroovyGenerator());});
-        addMenuAction(script, "CLIJx / Fiji plugin (Java)", (a) -> {new MavenJavaProjectGeneratorPlugin().generate(this);});
+        addMenuAction(script, "CLIJx / Fiji plugin (Java)", (a) -> {new Thread(() -> {new MavenJavaProjectGeneratorPlugin().generate(this);}).start();});
         addMenuAction(script, "CLIJPy Python", (a) -> {generateScriptFile(new CLIJPyGenerator());});
         addMenuAction(script, "CluPath Groovy", (a) -> {generateScriptFile(new CluPathGroovyGenerator());});
-        addMenuAction(script, "clEsperanto clic", (a) -> {generateScriptFile(new ClicGenerator());});
+        addMenuAction(script, "clEsperanto CLIc (C++)", (a) -> {generateScriptFile(new ClicGenerator());});
         addMenuAction(script, "clEsperanto ImageJ Macro", (a) -> {generateScriptFile(new ClEsperantoMacroGenerator());});
         addMenuAction(script, "clEsperanto Python", (a) -> {generateScriptFile(new PyclesperantoGenerator(false));});
         addMenuAction(script, "clEsperanto Python Jupyter Notebook", (a) -> {generateScriptFile(new PyclesperantoJupyterNotebookGenerator());});
