@@ -77,7 +77,7 @@ public class AssistantGroovyGenerator extends AbstractScriptGenerator {
         output.append("node.setTargetInvalid();\n");
 
         ImagePlus target = plugin.getTarget();
-        if( target.getWindow() != null) {
+        if( target != null && target.getWindow() != null) {
             output.append("// set window position and size\n");
             output.append("window = node.getTarget().getWindow();\n");
             output.append("window.setLocation(" + target.getWindow().getX() + ", " + target.getWindow().getY() + ");\n");
@@ -86,9 +86,9 @@ public class AssistantGroovyGenerator extends AbstractScriptGenerator {
         }
         output.append(makeImageID(target) + " = node.getTarget();\n");
         output.append(
+                "java.lang.Thread.sleep(500);\n" +
                 "IJ.run(\"In [+]\");\n" +
-                "IJ.run(\"Out [-]\");\n" +
-                "java.lang.Thread.sleep(500);\n");
+                "IJ.run(\"Out [-]\");\n");
 
         output.append("\n");
         return output.toString();
