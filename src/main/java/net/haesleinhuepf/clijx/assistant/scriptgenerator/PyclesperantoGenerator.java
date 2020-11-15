@@ -25,12 +25,17 @@ public class PyclesperantoGenerator extends AbstractScriptGenerator {
         String program = "\n";
         String filename = getFilename(source);
 
+        String timepoint = "";
+        if (source.getNFrames() > 1) {
+            timepoint = "[" + (source.getFrame() - 1) + "]";
+        }
+
         program = program +
                 "# Load image\n" +
                 "image = imread(\"" + filename.replace("\\", "/") + "\")\n\n" +
 
                 "# Push " + source.getTitle() + " to GPU memory\n" +
-                makeImageID(source) + " = cle.push_zyx(image)\n";
+                makeImageID(source) + " = cle.push_zyx(image" + timepoint + ")\n";
 
         program = program.replace("\n", "\n" + line_start );
         return program;
