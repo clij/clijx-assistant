@@ -85,6 +85,9 @@ pixels x and y with the binary operators AND &, OR | and NOT ! implementing the 
 * [Bottom Hat Box](https://clij.github.io/clij2-docs/reference_bottomHatBox)
 Apply a bottom-hat filter for background subtraction to the input image.
 
+* [Bottom Hat Sphere](https://clij.github.io/clij2-docs/reference_bottomHatSphere)
+Applies a bottom-hat filter for background subtraction to the input image.
+
 * [Close Index Gaps In Label Map](https://clij.github.io/clij2-docs/reference_closeIndexGapsInLabelMap)
 Analyses a label map and if there are gaps in the indexing (e.g. label 5 is not present) all 
 subsequent labels will be relabelled. 
@@ -181,6 +184,12 @@ Divides two images X and Y by each other pixel wise.
 * [Draw Distance Mesh Between Touching Labels](https://clij.github.io/clij2-docs/reference_drawDistanceMeshBetweenTouchingLabels)
 Starting from a label map, draw lines between touching neighbors resulting in a mesh.
 
+* [Draw Mesh Between N Closest Labels](https://clij.github.io/clij2-docs/reference_drawMeshBetweenNClosestLabels)
+Starting from a label map, draw lines between n closest labels for each label resulting in a mesh.
+
+* [Draw Mesh Between Proximal Labels](https://clij.github.io/clij2-docs/reference_drawMeshBetweenProximalLabels)
+Starting from a label map, draw lines between labels that are closer than a given distance resulting in a mesh.
+
 * [Draw Mesh Between Touching Labels](https://clij.github.io/clij2-docs/reference_drawMeshBetweenTouchingLabels)
 Starting from a label map, draw lines between touching neighbors resulting in a mesh.
 
@@ -204,7 +213,7 @@ Determines the local entropy in a box with a given radius around every pixel.
 Determines if an image A and a constant b are equal.
 
 * [Equal](https://clij.github.io/clij2-docs/reference_equal)
-Determines if two images A and B equal pixel wise. 
+Determines if two images A and B equal pixel wise.
 
 * [Equalize Mean Intensities Of Slices](https://clij.github.io/clij2-docs/reference_equalizeMeanIntensitiesOfSlices)
 Determines correction factors for each z-slice so that the average intensity in all slices can be made the same and multiplies these factors with the slices. 
@@ -239,6 +248,15 @@ Takes a label map image and dilates the regions using a octagon shape until they
 
 * [Extend Labels With Maximum Radius](https://clij.github.io/clij2-docs/reference_extendLabelsWithMaximumRadius)
 Extend labels with a given radius.
+
+* [Extended Depth Of Focus Sobel Projection](https://clij.github.io/clij2-docs/reference_extendedDepthOfFocusSobelProjection)
+Extended depth of focus projection maximizing intensity in the local sobel image.
+
+* [Extended Depth Of Focus Tenengrad Projection](https://clij.github.io/clij2-docs/reference_extendedDepthOfFocusTenengradProjection)
+Extended depth of focus projection maximizing intensity in the local sobel image.
+
+* [Extended Depth Of Focus Variance Projection](https://clij.github.io/clij2-docs/reference_extendedDepthOfFocusVarianceProjection)
+Extended depth of focus projection maximizing local pixel intensity variance.
 
 * [Find Maxima Plateaus](https://clij.github.io/clij2-docs/reference_findMaximaPlateaus)
 Finds local maxima, which might be groups of pixels with the same intensity and marks them in a binary image.
@@ -278,6 +296,9 @@ Determines if two images A and B greater or equal pixel wise.
 
 * [Greater](https://clij.github.io/clij2-docs/reference_greater)
 Determines if two images A and B greater pixel wise.
+
+* [Image To Stack](https://clij.github.io/clij2-docs/reference_imageToStack)
+Copies a single slice into a stack a given number of times.
 
 * [Intensity Correction Above Threshold Otsu](https://clij.github.io/clij2-docs/reference_intensityCorrectionAboveThresholdOtsu)
 Determines the mean intensity of all pixel the image stack which are above a determined Threshold (Otsu et al. 1979) and multiplies it with a factor so that the mean intensity becomes equal to a given value.
@@ -502,6 +523,9 @@ Determines the minimum intensity projection of an image along Y.
 * [Minimum Z Projection Bounded](https://clij.github.io/clij2-docs/reference_minimumZProjectionBounded)
 Determines the minimum intensity projection of an image along Z within a given z range.
 
+* [Minimum Z Projection Thresholded Bounded](https://clij.github.io/clij2-docs/reference_minimumZProjectionThresholdedBounded)
+Determines the minimum intensity projection of all pixels in an image above a given threshold along Z within a given z range.
+
 * [Minimum Z Projection](https://clij.github.io/clij2-docs/reference_minimumZProjection)
 Determines the minimum intensity projection of an image along Z.
 
@@ -553,6 +577,11 @@ Pulls a binary image from the GPU memory and puts it in the ROI Manager.
 * [Reduce Labels To Labelled Spots](https://clij.github.io/clij2-docs/reference_reduceLabelsToLabelledSpots)
 Takes a label map and reduces all labels to their center spots. Label IDs stay and background will be zero.
 
+* [Reduce Stack](https://clij.github.io/clij2-docs/reference_reduceStack)
+Reduces the number of slices in a stack by a given factor.
+With the offset you have control which slices stay: 
+* With factor 3 and offset 0, slices 0, 3, 6,... are kept. * With factor 4 and offset 1, slices 1, 5, 9,... are kept.
+
 * [Replace Pixels If Zero](https://clij.github.io/clij2-docs/reference_replacePixelsIfZero)
 Replaces pixel values x with y in case x is zero.
 
@@ -599,6 +628,9 @@ Determines if two images A and B smaller or equal pixel wise.
 * [Smaller](https://clij.github.io/clij2-docs/reference_smaller)
 Determines if two images A and B smaller pixel wise.
 
+* [Sobel Slice By Slice](https://clij.github.io/clij2-docs/reference_sobelSliceBySlice)
+Convolve the image with the Sobel kernel slice by slice.
+
 * [Sobel](https://clij.github.io/clij2-docs/reference_sobel)
 Convolve the image with the Sobel kernel.
 
@@ -607,6 +639,12 @@ Turns an image stack in XYZ cartesian coordinate system to an AID polar coordina
 
 * [Squared Difference](https://clij.github.io/clij2-docs/reference_squaredDifference)
 Determines the squared difference pixel by pixel between two images.
+
+* [Standard Deviation Box](https://clij.github.io/clij2-docs/reference_standardDeviationBox)
+Computes the local standard deviation of a pixels box neighborhood. 
+
+* [Standard Deviation Sphere](https://clij.github.io/clij2-docs/reference_standardDeviationSphere)
+Computes the local standard deviation of a pixels spherical neighborhood. 
 
 * [Standard Deviation Z Projection](https://clij.github.io/clij2-docs/reference_standardDeviationZProjection)
 Determines the standard deviation intensity projection of an image stack along Z.
@@ -628,6 +666,12 @@ Determines the sum intensity projection of an image along Z.
 
 * [Sum Z Projection](https://clij.github.io/clij2-docs/reference_sumZProjection)
 Determines the sum intensity projection of an image along Z.
+
+* [Tenengrad Slice By Slice](https://clij.github.io/clij2-docs/reference_tenengradSliceBySlice)
+Convolve the image with the Tenengrad kernel slice by slice.
+
+* [Tenengrad](https://clij.github.io/clij2-docs/reference_tenengrad)
+Convolve the image with the Tenengrad kernel slice by slice.
 
 * [Threshold Default](https://clij.github.io/clij2-docs/reference_thresholdDefault)
 The automatic thresholder utilizes the Default threshold method implemented in ImageJ using a histogram determined on 
@@ -727,6 +771,12 @@ Transpose Y and Z axes of an image.
 * [Undefined To Zero](https://clij.github.io/clij2-docs/reference_undefinedToZero)
 Copies all pixels instead those which are not a number (NaN) or infinity (inf), which are replaced by 0.
 
+* [Variance Box](https://clij.github.io/clij2-docs/reference_varianceBox)
+Computes the local variance of a pixels box neighborhood. 
+
+* [Variance Sphere](https://clij.github.io/clij2-docs/reference_varianceSphere)
+Computes the local variance of a pixels spherical neighborhood. 
+
 * [Voronoi Labeling](https://clij.github.io/clij2-docs/reference_voronoiLabeling)
 Takes a binary image, labels connected components and dilates the regions using a octagon shape until they touch. 
 
@@ -739,12 +789,21 @@ Applies a pre-trained CLIJx-Weka model to an image and a corresponding label map
 * [Within Intensity Range](https://clij.github.io/clij2-docs/reference_withinIntensityRange)
 Generates a binary image where pixels with intensity within the given range are 1 and others are 0.
 
+* [Z Position Of Maximum Z Projection](https://clij.github.io/clij2-docs/reference_zPositionOfMaximumZProjection)
+Determines a Z-position of the maximum intensity along Z and writes it into the resulting image.
+
+* [Z Position Projection](https://clij.github.io/clij2-docs/reference_zPositionProjection)
+Project a defined Z-slice of a 3D stack into a 2D image.
+
+* [Z Position Range Projection](https://clij.github.io/clij2-docs/reference_zPositionRangeProjection)
+Project multiple Z-slices of a 3D stack into a new 3D stack.
+
 * [Zoom](https://clij.github.io/clij2-docs/reference_zoom)
 See Scale2D and Scale3D.
 
 
 
-230 operations listed.
+249 operations listed.
 
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
