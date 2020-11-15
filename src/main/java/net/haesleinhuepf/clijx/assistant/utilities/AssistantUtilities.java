@@ -842,7 +842,9 @@ public class AssistantUtilities {
 
     public static boolean resultIsBinaryImage(AssistantGUIPlugin abstractAssistantGUIPlugin) {
         if (abstractAssistantGUIPlugin.getCLIJMacroPlugin() instanceof HasClassifiedInputOutput) {
-            ((HasClassifiedInputOutput) abstractAssistantGUIPlugin.getCLIJMacroPlugin()).getOutputType().contains("Binary Image");
+            if (((HasClassifiedInputOutput) abstractAssistantGUIPlugin.getCLIJMacroPlugin()).getOutputType().contains("Binary Image")) {
+                return true;
+            }
         }
 
         String name = abstractAssistantGUIPlugin.getName().toLowerCase();
@@ -861,7 +863,9 @@ public class AssistantUtilities {
 
     public static boolean resultIsLabelImage(AssistantGUIPlugin abstractAssistantGUIPlugin) {
         if (abstractAssistantGUIPlugin.getCLIJMacroPlugin() instanceof HasClassifiedInputOutput) {
-            ((HasClassifiedInputOutput) abstractAssistantGUIPlugin.getCLIJMacroPlugin()).getOutputType().contains("Label Image");
+            if (((HasClassifiedInputOutput) abstractAssistantGUIPlugin.getCLIJMacroPlugin()).getOutputType().contains("Label Image")) {
+                return true;
+            }
         }
 
         String name = abstractAssistantGUIPlugin.getName().toLowerCase();
