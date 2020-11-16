@@ -43,7 +43,7 @@ Download and upack [ImageJ](https://imagej.nih.gov/ij/download.html) and some ja
 * [clij2-imagej_-2.2.0.7-jar-with-dependencies.jar](https://github.com/clij/clij2-imagej1/releases/download/2.2.0.7/clij2-imagej_-2.2.0.7-jar-with-dependencies.jar)
 * [clijx-weka_-0.30.0.0.jar](https://github.com/clij/clijx/releases/download/0.30.0.0/clijx-weka_-0.30.0.0.jar)
 * [clijx_-0.30.0.7.jar](https://github.com/clij/clijx/releases/download/0.30.0.7/clijx_-0.30.0.7.jar)
-* [clijx-assistant_-0.4.0.7.jar](https://github.com/clij/assistant/releases/download/0.4.0.7/clijx-assistant_-0.34.0.7.jar)
+* [clijx-assistant_-0.4.0.8.jar](https://github.com/clij/assistant/releases/download/0.4.0.8/clijx-assistant_-0.4.0.8.jar)
 
 Please put these jar files in the `plugins` sub-directory of ImageJ:
 
@@ -61,7 +61,7 @@ Download and install [MicroManager 2](https://micro-manager.org/wiki/Download_Mi
 * [clij2-imagej_-2.2.0.7-jar-with-dependencies.jar](https://github.com/clij/clij2-imagej1/releases/download/2.2.0.7/clij2-imagej_-2.2.0.7-jar-with-dependencies.jar)
 * [clijx-weka_-0.30.0.0.jar](https://github.com/clij/clijx/releases/download/0.30.0.0/clijx-weka_-0.30.0.0.jar)
 * [clijx_-0.30.0.7.jar](https://github.com/clij/clijx/releases/download/0.30.0.7/clijx_-0.30.0.7.jar)
-* [clijx-assistant_-0.4.0.7.jar](https://github.com/clij/assistant/releases/download/0.4.0.7/clijx-assistant_-0.34.0.7.jar)
+* [clijx-assistant_-0.4.0.8.jar](https://github.com/clij/assistant/releases/download/0.4.0.8/clijx-assistant_-0.4.0.8.jar)
 
 Please put these jar files in the `plugins\Micro-Manager` sub-directory of MicroManager:
 ![Image](images/installation_mm.png)
