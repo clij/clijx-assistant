@@ -7,7 +7,7 @@ These generated scripts also be executed in other platforms such as Matlab, Icy,
 CLIJx-Assistant is under development and is subject to change. 
 Give it a try and let us know what you think!
 Do not use it for routine research yet.  
-Provide feedback and stay tuned.
+Stay tuned.
 
 ![Image](images/teaser_landscape.gif)
 [Image data source: Daniela Vorkel, Myers lab, CSBD / MPI CBG]
