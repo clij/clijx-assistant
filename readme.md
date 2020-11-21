@@ -4,9 +4,13 @@ It visualizes workflows as image date flow graphs while building them.
 It suggests what to do next and generates scripts and human readable protocols to facilitate reproducible bio-image analysis. 
 These generated scripts also be executed in other platforms such as Matlab, Icy, Python and QuPath.
 
+If you use CLIJx-assistant, pleace cite it: 
+
+Robert Haase, Akanskha Jain, Stephane Rigaud, Daniela Vorkel, Pradeep Rajasekhar, Theresa Suckert, Talley J Lambert, Juan Nunez-Iglesias, Daniel P Poole, Pavel Tomancak, Eugene W Myers. Interactive design of GPU-accelerated Image Data Flow Graphs and cross-platform deployment using multi-lingual code generation. [BioRxiv preprint](https://www.biorxiv.org/content/10.1101/2020.11.19.386565v1)
+
 CLIJx-Assistant is under development and is subject to change. 
 Give it a try and let us know what you think!
-Do not use it for routine research yet.  
+Do not use it for routine research yet. 
 Stay tuned.
 
 ![Image](images/teaser_landscape.gif)
