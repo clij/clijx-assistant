@@ -154,7 +154,7 @@ When considering purchasing modern GPUs, please take into account:
 * **Memory size**: As image processing is [memory-bound](https://en.wikipedia.org/wiki/Memory_bound_function) look out for GPUs with 
 large memory. For typical scenarios, it is recommended to buy GPUs with at least 8 GB of GDDR6 RAM memory.
 * **Memory Bandwidth**: GPU vendors specify their products computing capabilities with various terminology and metrics. 
- Look out for memory bandwidth: typical GDDR4-based GPUs have a memory bandwidth < 100 GB/s. 
+ Look out for memory bandwidth: typical GDDR5-based GPUs have a memory bandwidth < 100 GB/s. 
  Quite some GDDR6 GPUs for example offer > 400 GB/s. 
  Thus, GDDR6-based GPUs may compute image processing results about 4 times faster!
 * **Integrated GPUs**: If you desire processing images in long workflows, it might make sense to use integrated GPUs with access to huge amounts of DDR4-memory. 
