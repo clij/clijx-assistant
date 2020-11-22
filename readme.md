@@ -75,6 +75,7 @@ Irene Seijo Barandiaran (MPI CBG Dresden),
 Johannes Girstmair (MPI CBG Dresden),
 Juan Nunes-Iglesias (Monash University Melbourne),
 Kisha Sivanathan (Harvard Medical School Boston),
+Lior Pytowski (University of Oxford),
 Marion Louveaux (Institut Pasteur Paris),
 Matthias Arzt (MPI CBG Dresden),
 Nik Cordes,
@@ -88,7 +89,7 @@ Stéphane Dallongeville (Institut Pasteur)
 Stéphane~Rigaud (Institut Pasteur Paris),
 Stein Rørvik,
 Talley J. Lambert (Harvard Medical School Boston),
-Tanner Fadero (U Chapel Hill)
+Tanner Fadero (U Chapel Hill),
 Theresa Suckert (OncoRay, TU Dresden),
 
 Furthermore, the constant support by the Image Science and the NEUBIAS communities is fantastic.
