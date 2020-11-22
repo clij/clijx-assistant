@@ -95,7 +95,7 @@ please also activate the "IJMMD" update site in Fiji.
 
 <a name="maven"></a>
 ## Optional: Plugin generator Installation
-In order to build Fiji plugins, please to install and Java Development kit, version 8 or higher, e.g. [OpenJDK](https://openjdk.java.net/).
+In order to build Fiji plugins, please install Java Development kit, version 8 or higher, e.g. [OpenJDK](https://openjdk.java.net/).
 Furthermore, please download and install [git](https://git-scm.com/) and [maven](https://maven.apache.org/). 
 For technical reasons, the `/bin/` folder of the `git` installation must be added to the PATH of the operating system. 
 Furthermore, it is recommended to add maven to the path as well.   
@@ -154,8 +154,8 @@ When considering purchasing modern GPUs, please take into account:
 * **Memory size**: As image processing is [memory-bound](https://en.wikipedia.org/wiki/Memory_bound_function) look out for GPUs with 
 large memory. For typical scenarios it is recommended to buy GPUs with at least 8 GB of GDDR6 RAM memory.
 * **Memory Bandwidth**: GPU vendors specify their products computing capabilities with various terminology and metrics. 
- look out for memory bandwidth: typical GDDR4-based GPUs have a memory bandwidth > 400 GB/s. 
- Quite some GDDR5 GPUs for example offer < 100 GB/s. 
+ Look out for memory bandwidth: typical GDDR4-based GPUs have a memory bandwidth < 100 GB/s. 
+ Quite some GDDR6 GPUs for example offer > 400 GB/s. 
  Thus, GDDR6-based GPUs may compute image processing results about 4 times faster!
 * **Integrated GPUs**: If you desire processing images in long workflows, it might make sense to use integrated GPUs with access to huge amounts of DDR4-memory. 
 They are more affordable.
