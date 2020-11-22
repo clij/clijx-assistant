@@ -10,7 +10,7 @@ import org.scijava.util.VersionUtils;
 
 public class JythonGenerator extends AbstractScriptGenerator {
 
-    boolean clijx_used = false;
+    protected boolean clijx_used = false;
 
     @Override
     public String push(ImagePlus source) {
