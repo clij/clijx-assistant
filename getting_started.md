@@ -1,5 +1,5 @@
-# Getting started desinging image processing workflows with the CLIJx Assistant
-Open your 3D+channel+time data set. It's recommended to start the assistant from a file that has been loade from or save to disk.
+# Getting started designing image processing workflows with the CLIJx Assistant
+Open your 3D+channel+time data set. It's recommended to start the assistant from a file that has been loaded from or saved to disk.
 Afterwards, activate CLIJx-Assistant by clicking on its tool icon.
 
 ![Image](images/installation_ok.png)
@@ -11,7 +11,7 @@ Just right click in any image that has the assistant attached.
 ![Image](images/suggestion_make_isotropic.png) 
 [Image data source: Irene Seijo Barandiaran, Grapin-Botton lab, MPI CBG]
 
-Consider the suggestions but also explore the cateories of all available operations. 
+Consider the suggestions but also explore the categories of all available operations. 
 
 ![Image](images/menu_rigid_tranform.png)
 [Image data source: Irene Seijo Barandiaran, Grapin-Botton lab, MPI CBG]
@@ -21,11 +21,11 @@ CLIJ2 operations:
 
 ![Image](images/fiji_search.png)
 
-## Interoperabilty with classical ImageJ and Fiji operations
+## Interoperability with classical ImageJ and Fiji operations
 As CLIJx-Assistant runs in classical ImageJ windows, you can use ImageJ operations on the shown images. 
 However, they may be overwritten as soon as CLIJx-Assistant recomputes its results.
-Thus, it is recommended to duplicate an image before applying classial functions to it. 
-You can use ImageJs `Duplicate...` menu or the built in menu:
+Thus, it is recommended to duplicate an image before applying classical functions to it. 
+You can use ImageJ's `Duplicate...` menu or the built in menu:
 
 ![Image](images/interoperability_imagej.png)
 
