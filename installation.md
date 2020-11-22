@@ -149,10 +149,10 @@ For running pyimagej python code, please follow the installation instructions on
 <a name="hardware"></a>
 ## Hardware requirements
 CLIJx-Assistant uses modern graphics cards to ensure real-time image processing experience. 
-Therefore it is recommended to utilize state-of-the art graphics computing units (GPUs). 
+Therefore, it is recommended to utilize state-of-the art graphics computing units (GPUs). 
 When considering purchasing modern GPUs, please take into account:
 * **Memory size**: As image processing is [memory-bound](https://en.wikipedia.org/wiki/Memory_bound_function) look out for GPUs with 
-large memory. For typical scenarios it is recommended to buy GPUs with at least 8 GB of GDDR6 RAM memory.
+large memory. For typical scenarios, it is recommended to buy GPUs with at least 8 GB of GDDR6 RAM memory.
 * **Memory Bandwidth**: GPU vendors specify their products computing capabilities with various terminology and metrics. 
  Look out for memory bandwidth: typical GDDR4-based GPUs have a memory bandwidth < 100 GB/s. 
  Quite some GDDR6 GPUs for example offer > 400 GB/s. 
