@@ -7,7 +7,9 @@ import ij.gui.Toolbar;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import net.haesleinhuepf.clij2.plugins.GaussianBlur3D;
+import net.haesleinhuepf.clij2.plugins.GreaterConstant;
 import net.haesleinhuepf.clij2.plugins.MaximumZProjection;
+import net.haesleinhuepf.clij2.plugins.ThresholdOtsu;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
 import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
@@ -49,15 +51,15 @@ public class AssistantPlayground implements PlugInFilter {
 */
         //if (true) return;
         new AssistantGUIStartingPoint().run("");
-        new MakeIsotropic().run("");
+//        new MakeIsotropic().run("");
         //new AssistantPlayground().run(null);
 
         //new Crop3D().run("");
         //new Zoom().run("");
 
 
-        //new GenericAssistantGUIPlugin(new GaussianBlur3D()).run("");
-        //new GenericAssistantGUIPlugin(new ThresholdOtsu()).run("");
+        new GenericAssistantGUIPlugin(new GaussianBlur3D()).run("");
+        new GenericAssistantGUIPlugin(new GreaterConstant()).run("");
         //new GenericAssistantGUIPlugin(new ConnectedComponentsLabelingBox()).run("");
 
         //new WekaLabelClassifier().run("");

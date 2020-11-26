@@ -1,6 +1,7 @@
 package net.haesleinhuepf.clijx.assistant;
 
 import ij.IJ;
+import ij.ImageListener;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.Toolbar;
@@ -37,7 +38,37 @@ public class AssistantGUIStartingPoint extends AbstractAssistantGUIPlugin {
             return;
         }
         AssistantGUIPluginRegistry.getInstance().register(this);
-        ImagePlus.addImageListener(this);
+        ImagePlus.addImageListener(new ImageListener() {
+            @Override
+            public void imageOpened(ImagePlus imagePlus) {
+
+            }
+
+            @Override
+            public void imageClosed(ImagePlus imagePlus) {
+
+            }
+
+            @Override
+            public void imageUpdated(ImagePlus imp) {
+                if (imp == my_sources[0]) {
+                    //System.out.println("Source updated");
+                    if (imp.getT() != former_t) {
+                        //System.out.println("Target invalidated");
+                        setTargetInvalid();
+
+                        former_t = imp.getT(); }
+
+                    if (imp.getZ() != former_z || imp.getC() != former_c) {
+                        //System.out.println("Calling refresh view");
+                        refreshView();
+                        former_z = imp.getZ();
+                        former_c = imp.getC();
+                    }
+                }
+            }
+
+        });
 
         ImagePlus imp = IJ.getImage();
 
@@ -92,24 +123,6 @@ public class AssistantGUIStartingPoint extends AbstractAssistantGUIPlugin {
         refreshView();
     }
 
-    @Override
-    public void imageUpdated(ImagePlus imp) {
-        if (imp == my_sources[0]) {
-            //System.out.println("Source updated");
-            if (imp.getT() != former_t) {
-                //System.out.println("Target invalidated");
-                setTargetInvalid();
-
-                former_t = imp.getT(); }
-
-            if (imp.getZ() != former_z || imp.getC() != former_c) {
-                //System.out.println("Calling refresh view");
-                refreshView();
-                former_z = imp.getZ();
-                former_c = imp.getC();
-            }
-        }
-    }
 
     @Override
     public boolean canManage(CLIJMacroPlugin plugin) {

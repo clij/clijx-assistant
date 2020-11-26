@@ -6,11 +6,14 @@ import ij.plugin.HyperStackConverter;
 import ij.process.ImageProcessor;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
+import org.jocl.CL;
+
+import java.util.HashMap;
 
 public class CLIJxVirtualStack extends VirtualStack {
     private ClearCLBuffer[] buffer;
 
-    boolean catcher_initialized = false;
+    private static boolean catcher_initialized = false;
 
     @Deprecated // do not use this; it's a workaround because ImageJ closes windows when Composite stacks are replaced
     public static boolean ignore_closing = false;
@@ -30,26 +33,46 @@ public class CLIJxVirtualStack extends VirtualStack {
 
                 @Override
                 public synchronized void imageClosed(ImagePlus imp) {
+                    System.out.println("img closed " + imp.getTitle());
                     if (ignore_closing) {
+                        unregister(imp);
                         return;
                     }
-                    if (imp.getStack() instanceof CLIJxVirtualStack) {
-                        ImageStack stack = imp.getStack();
+                    //System.out.println("img closed2");
+                    //System.out.println("stack " + imp.getStack());
+                    //System.out.println("stack " + imp.getStack().getClass());
+
+                    CLIJxVirtualStack cvs;
+                    if ((imp.getStack() instanceof CLIJxVirtualStack)) {
+                        cvs = (CLIJxVirtualStack) imp.getStack();
+                    } else {
+                        //System.out.println("Get stack from cache " + imp.getTitle());
+                        cvs = getStackFromCache(imp);
+                    }
+                    //System.out.println("cvs" + cvs);
+
+
+                    if (cvs != null) {
+                        //System.out.println("img closed3");
                         if (imp.getNChannels() == 1) {
-                            ClearCLBuffer buffer = ((CLIJxVirtualStack) stack).getBuffer(0);
-                            //imp.setStack(CLIJx.getInstance().pull(buffer).getStack());
+                            ClearCLBuffer buffer = (cvs).getBuffer(0);
+                            imp.setStack(CLIJx.getInstance().pull(buffer).getStack());
+                            System.out.println("Replacing stack of " + imp.getTitle());
                             buffer.close();
                         } else {
 
-                            //ImagePlus imp2 = new Duplicator().run(imp, 1, imp.getNChannels(), 1, imp.getNSlices(), 1, imp.getNFrames());
-                            //imp.setStack(imp2.getStack());
+                            ImagePlus imp2 = new Duplicator().run(imp, 1, imp.getNChannels(), 1, imp.getNSlices(), 1, imp.getNFrames());
+                            imp.setStack(imp2.getStack());
+                            System.out.println("Replacing stack of " + imp.getTitle());
 
                             for (int c = 0; c < imp.getNChannels(); c++) {
-                                ClearCLBuffer buffer = ((CLIJxVirtualStack) stack).getBuffer(c);
+                                ClearCLBuffer buffer = (cvs).getBuffer(c);
+                                //imp.setStack(CLIJx.getInstance().pull(buffer).getStack());
                                 buffer.close();
                             }
                         }
                     }
+                    unregister(imp);
                 }
 
                 @Override
@@ -77,13 +100,13 @@ public class CLIJxVirtualStack extends VirtualStack {
             CLIJx clijx = CLIJx.getInstance();
             ClearCLBuffer slice = clijx.create(new long[]{buffer[0].getWidth(), buffer[0].getHeight()}, buffer[0].getNativeType());
 
-            System.out.println("Buffer " + buffer);
-            System.out.println("Buffer[0] " + buffer[0]);
-            System.out.println("Buffer[0] pointer " + buffer[0].getPeerPointer());
-            System.out.println("Buffer slice " + slice.getPeerPointer());
+            //System.out.println("Buffer " + buffer);
+            //System.out.println("Buffer[0] " + buffer[0]);
+            //System.out.println("Buffer[0] pointer " + buffer[0].getPeerPointer());
+            //System.out.println("Buffer slice " + slice.getPeerPointer());
 
             for (int c = 0; c < buffer.length; c++) {
-                System.out.println("Channel " + c);
+                //System.out.println("Channel " + c);
                 if (buffer[c].getPeerPointer() != null) { // Workaround: This can happen if visualization happens during reset
                     clijx.copySlice(buffer[c], slice, zplane);
                 }
@@ -118,6 +141,7 @@ public class CLIJxVirtualStack extends VirtualStack {
             //System.out.println("cha " + number_of_channels);
             imp = HyperStackConverter.toHyperStack(imp, number_of_channels, (int) buffer[0].getDepth(), 1);
         }
+        register(imp, cvs);
         return imp;
     }
 
@@ -169,10 +193,31 @@ public class CLIJxVirtualStack extends VirtualStack {
             } else {
                 //Roi roi = imp.getRoi();
                 //imp.killRoi();
+                System.out.println("Reading stack of " + imp.getTitle());
                 ClearCLBuffer[] buffer = new ClearCLBuffer[]{clijx.pushCurrentZStack(imp)};
                 //imp.setRoi(roi);
                 return buffer;
             }
         }
+    }
+
+    static HashMap<ImagePlus, CLIJxVirtualStack> cache = new HashMap<>();
+    public static void register(ImagePlus imp, CLIJxVirtualStack stack) {
+        //System.out.println("Registering " + imp);
+        unregister(imp);
+        cache.put(imp, stack);
+    }
+
+    private static void unregister(ImagePlus imp) {
+        cache.remove(imp);
+    }
+
+    private static CLIJxVirtualStack getStackFromCache(ImagePlus imp) {
+        //for (ImagePlus c : cache.keySet()) {
+        //    System.out.println("Cached: " + c.getTitle());
+        //}
+        CLIJxVirtualStack cvs = cache.get(imp);
+        //System.out.println("Returning " + cvs);
+        return cvs;
     }
 }

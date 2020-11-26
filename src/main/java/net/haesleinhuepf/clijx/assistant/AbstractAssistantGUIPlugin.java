@@ -586,6 +586,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             if (my_sources[0] != null && my_sources[0].isComposite() && result.getNChannels() > 1) {
                 System.out.println("Channels: " + result.getNChannels());
                 my_target = new CompositeImage(result, my_sources[0].getCompositeMode());
+
                 ((CompositeImage)my_target).copyLuts(my_sources[0]);
             } else {
                 my_target = result;
@@ -600,7 +601,6 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                         my_sources[0].getWindow().getY() + my_sources[0].getWindow().getHeight() / 4 * AssistantGUIPluginRegistry.getInstance().getFollowers(my_sources[0]).size()
                         );
             }
-
         } else {
             ImagePlus output;
             if (my_sources[0] != null && my_sources[0].isComposite() && result.getNChannels() > 1) {
@@ -623,6 +623,10 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                 attachMenu(my_target);
             }
         }
+        if (my_target.getStack() instanceof CLIJxVirtualStack) {
+            CLIJxVirtualStack.register(my_target, (CLIJxVirtualStack) my_target.getStack());
+        }
+
         AssistantUtilities.attachCloseListener(my_target);
         AssistantUtilities.transferCalibration(my_sources[0], my_target);
         String name_to_consider = (my_sources[0].getTitle() + " " + my_target.getTitle()).toLowerCase() + this.getName();
