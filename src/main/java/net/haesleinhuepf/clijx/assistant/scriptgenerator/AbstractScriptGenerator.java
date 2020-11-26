@@ -52,7 +52,7 @@ public abstract class AbstractScriptGenerator implements ScriptGenerator {
             return null;
         } else if (arg instanceof ClearCLBuffer) {
             for (ImagePlus image : image_map.keySet()) {
-                if (image.getStack() instanceof CLIJxVirtualStack) {
+                if (image != null && image.getStack() != null && image.getStack() instanceof CLIJxVirtualStack) {
                     CLIJxVirtualStack cvs = (CLIJxVirtualStack) image.getStack();
                     for (int c = 0; c < cvs.getNumberOfChannels(); c++) {
                         if (arg == cvs.getBuffer(c)) {
