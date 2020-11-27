@@ -962,7 +962,11 @@ public class AssistantUtilities {
     {
         if (cle_compatible == null) {
             InputStream resourceAsStream = SuggestionService.class.getClassLoader().getResourceAsStream("cle_compatibility.config");
-            cle_compatible = "\n" + StringUtils.streamToString(resourceAsStream, "UTF-8").replace("\r\n", "\n") + "\n";
+            try {
+                cle_compatible = "\n" + StringUtils.streamToString(resourceAsStream, "UTF-8").replace("\r\n", "\n") + "\n";
+            } catch (Exception e) {
+                return false;
+            }
         }
         //System.out.println("Checking " + function_name + " = " + new PyclesperantoGenerator(false).pythonize(function_name));
         return cle_compatible.contains("\n" + new PyclesperantoGenerator(false).pythonize(function_name) + "\n");
@@ -975,7 +979,11 @@ public class AssistantUtilities {
     {
         if (clic_compatible == null) {
             InputStream resourceAsStream = SuggestionService.class.getClassLoader().getResourceAsStream("clic_compatibility.config");
-            clic_compatible = "\n" + StringUtils.streamToString(resourceAsStream, "UTF-8").replace("\r\n", "\n") + "\n";
+            try {
+                clic_compatible = "\n" + StringUtils.streamToString(resourceAsStream, "UTF-8").replace("\r\n", "\n") + "\n";
+            } catch (Exception e) {
+                return false;
+            }
         }
         //System.out.println(clic_compatible);
         //System.out.println("Checking " + function_name + " = " + new PyclesperantoGenerator(false).pythonize(function_name));
