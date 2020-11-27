@@ -990,7 +990,11 @@ public class AssistantUtilities {
         String function_name = pluginNameToFunctionName(plugin_name);
         if (has_online_reference == null) {
             InputStream resourceAsStream = SuggestionService.class.getClassLoader().getResourceAsStream("online_reference.config");
-            has_online_reference = "\n" + StringUtils.streamToString(resourceAsStream, "UTF-8").replace("\r\n", "\n") + "\n";
+            try {
+                has_online_reference = "\n" + StringUtils.streamToString(resourceAsStream, "UTF-8").replace("\r\n", "\n") + "\n";
+            } catch (Exception e) {
+                return false;
+            }
         }
         //System.out.println("Checking " + function_name + " = " + new PyclesperantoGenerator(false).pythonize(function_name));
         return has_online_reference.contains("\n" + function_name + "\n");

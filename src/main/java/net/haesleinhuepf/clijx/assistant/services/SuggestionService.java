@@ -20,7 +20,12 @@ public class SuggestionService {
 
             InputStream resourceAsStream = SuggestionService.class.getClassLoader().getResourceAsStream(resourceFilename);
 
-            String content = StringUtils.streamToString(resourceAsStream, "UTF-8");
+            String content;
+            try {
+                content = StringUtils.streamToString(resourceAsStream, "UTF-8");
+            } catch (Exception e) {
+                return new File[0];
+            }
 
             String filename = IJ.getDirectory("temp") + "/" + resourceFilename;
             try {

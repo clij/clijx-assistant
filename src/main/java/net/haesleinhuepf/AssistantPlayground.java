@@ -6,6 +6,7 @@ import ij.ImagePlus;
 import ij.gui.Toolbar;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+import net.haesleinhuepf.clij2.plugins.GaussianBlur2D;
 import net.haesleinhuepf.clij2.plugins.GaussianBlur3D;
 import net.haesleinhuepf.clij2.plugins.MaximumZProjection;
 import net.haesleinhuepf.clijx.CLIJx;
@@ -30,7 +31,8 @@ public class AssistantPlayground implements PlugInFilter {
 
         //ImagePlus imp = IJ.openImage("C:/structure/data/spim_TL18_Angle0-1.tif");
         //ImagePlus imp = IJ.openImage("D:/structure/data/Irene/ISB200714_well5_1pos_3h_MyosinGFP-small.tif");
-        ImagePlus imp = IJ.openImage("C:/structure/data/mitosis.tif");
+        //ImagePlus imp = IJ.openImage("C:/structure/data/mitosis.tif");
+        ImagePlus imp = IJ.openImage("/home/haase/data/blobs.tif");
         //ImagePlus imp = IJ.openImage("C:/structure/data/blobs.tif");
         //ImagePlus imp = IJ.openImage("C:/structure/data/t1-head.tif");
         imp.show();
@@ -49,14 +51,14 @@ public class AssistantPlayground implements PlugInFilter {
 */
         //if (true) return;
         new AssistantGUIStartingPoint().run("");
-        new MakeIsotropic().run("");
+        //new MakeIsotropic().run("");
         //new AssistantPlayground().run(null);
 
         //new Crop3D().run("");
         //new Zoom().run("");
 
 
-        //new GenericAssistantGUIPlugin(new GaussianBlur3D()).run("");
+        new GenericAssistantGUIPlugin(new GaussianBlur2D()).run("");
         //new GenericAssistantGUIPlugin(new ThresholdOtsu()).run("");
         //new GenericAssistantGUIPlugin(new ConnectedComponentsLabelingBox()).run("");
 
