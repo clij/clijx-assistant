@@ -977,17 +977,20 @@ public class AssistantUtilities {
 
     public static boolean isClicCompatible(String function_name)
     {
+        function_name = function_name.toLowerCase();
+        function_name = function_name.replace("clijx_","");
+        function_name = function_name.replace("clij2_","");
         if (clic_compatible == null) {
             InputStream resourceAsStream = SuggestionService.class.getClassLoader().getResourceAsStream("clic_compatibility.config");
             try {
-                clic_compatible = "\n" + StringUtils.streamToString(resourceAsStream, "UTF-8").replace("\r\n", "\n") + "\n";
+                clic_compatible = "\n" + StringUtils.streamToString(resourceAsStream, "UTF-8").replace("\r\n", "\n").toLowerCase() + "\n";
             } catch (Exception e) {
                 return false;
             }
         }
         //System.out.println(clic_compatible);
-        //System.out.println("Checking " + function_name + " = " + new PyclesperantoGenerator(false).pythonize(function_name));
-        return clic_compatible.contains("\n" + new PyclesperantoGenerator(false).pythonize(function_name) + "\n");
+        //System.out.println("Checking " + function_name);
+        return clic_compatible.contains("\n" + function_name + "\n");
     }
 
 
