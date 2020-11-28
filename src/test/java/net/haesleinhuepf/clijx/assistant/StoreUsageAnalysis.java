@@ -17,7 +17,7 @@ public class StoreUsageAnalysis {
 
         String output = combinedUsageStats.all();
 
-        File outputTarget = new File("src/main/resources/suggestions.config");
+        File outputTarget = new File("src/main/resources/Robert_Haase_suggestions.config");
         try {
             FileWriter writer = new FileWriter(outputTarget);
             writer.write(output);

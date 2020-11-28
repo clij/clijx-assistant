@@ -4,7 +4,6 @@ import ij.IJ;
 import net.haesleinhuepf.clij.clearcl.util.StringUtils;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
-import net.haesleinhuepf.clij2.plugins.GaussianBlur3D;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -14,7 +13,7 @@ import java.util.HashMap;
 
 public class SuggestionService {
     private static File[] getFiles() {
-        String[] resourceFiles = {"suggestions.config", "manual_suggestions.config", "BramvandenBroek_suggestions.config"};
+        String[] resourceFiles = {"Robert_Haase_suggestions.config", "manual_suggestions.config", "BramvandenBroek_suggestions.config"};
         ArrayList<File> files = new ArrayList<>();
         for (String resourceFilename : resourceFiles) {
 
