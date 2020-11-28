@@ -230,7 +230,11 @@ class MavenJavaProjectGenerator {
             if (i == 0) {
                 enter_value_parsers_here = temp1[i];
             } else {
-                enter_value_parsers_here = enter_value_parsers_here + "[" + (i - 1) + "]" + temp1[i].split("\\]")[1];
+                enter_value_parsers_here = enter_value_parsers_here + "[" + (i - 1) + "]";
+                String[] temparr = temp1[i].split("\\]");
+                if (temparr.length > 1) {
+                    enter_value_parsers_here = enter_value_parsers_here + temparr[1];
+                }
             }
         }
 
@@ -415,7 +419,7 @@ class MavenJavaProjectGenerator {
     }
 
     public static void git_clone(String url, String target_directory) {
-        String[] command = {AssistantOptions.getInstance().getGitExecutable(), "clone", url, target_directory.replace(" ", "\\ ")};
+        String[] command = {AssistantOptions.getInstance().getGitExecutable(), "clone", "--depth", "1", "--branch", VersionUtils.getVersion(MavenJavaProjectGenerator.class) , url, target_directory.replace(" ", "\\ ")};
         AssistantUtilities.execute(target_directory, command);
     }
 
