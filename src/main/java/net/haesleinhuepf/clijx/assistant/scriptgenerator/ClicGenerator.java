@@ -29,7 +29,7 @@ public class ClicGenerator extends AbstractScriptGenerator {
                     "Image<" + bitDepthToType(imp.getBitDepth()) + "> raw_image (raw_data, " + imp.getWidth() + ", " + imp.getHeight() + ", \"" + bitDepthToType(imp.getBitDepth()) + "\"); \n";
         }
         program = program +
-                "cle::Buffer " + image1 + " = gpu.Push<" + bitDepthToType(imp.getBitDepth()) + ">(raw_image); \n\n";
+                "cle::Buffer " + image1 + " = cle.Push<" + bitDepthToType(imp.getBitDepth()) + ">(raw_image); \n\n";
 
 
         return program;
@@ -42,10 +42,8 @@ public class ClicGenerator extends AbstractScriptGenerator {
 
         String program = "";
 
-        program = program + comment(" Pull output into container");
-        program = program + "Image<" + bitDepthToType(imp.getBitDepth()) +  "> result" + call_count + " = gpu.Pull<" + bitDepthToType(imp.getBitDepth()) + ">(" + image1 + ");\n";
-
-        program = program + comment(" Write add image and scalar test result in tiff");
+        program = program + comment(" Pull result from GPU and save it to disc");
+        program = program + "Image<" + bitDepthToType(imp.getBitDepth()) +  "> result" + call_count + " = cle.Pull<" + bitDepthToType(imp.getBitDepth()) + ">(" + image1 + ");\n";
         program = program + "TiffWriter imageWriter" + call_count + " (filename.c_str());\n";
         program = program + "imageWriter" + call_count + ".write(result" + call_count + ".GetData(), result" + call_count + ".GetDimensions()[0], result" + call_count + ".GetDimensions()[1], result" + call_count + ".GetDimensions()[2]);\n";
         program = program + "\n";
@@ -67,8 +65,8 @@ public class ClicGenerator extends AbstractScriptGenerator {
         }
         String methodName = clijMacroPlugin.getName();
         methodName = methodName.replace("CLIJ2_", "").replace("CLIJx_", "");
-        methodName = methodName.substring(0,1).toLowerCase() + methodName.substring(1);
-        methodName = pythonize(methodName);
+        methodName = methodName.substring(0,1).toUpperCase() + methodName.substring(1);
+        //methodName = pythonize(methodName);
 
 
         String[] image1s = makeImageIDs(plugin);
@@ -87,7 +85,7 @@ public class ClicGenerator extends AbstractScriptGenerator {
                     "std::array<unsigned int, 2> dimensions = {" + imp.getWidth() + ", " + imp.getHeight() + "}; \n";
         }
         program = program +
-                "cle::Buffer " + image2 + " = gpu.Create<" +  bitDepthToType(imp.getBitDepth()) + ">(dimensions.data(), \"" + bitDepthToType(imp.getBitDepth()) + "\"); \n";
+                "cle::Buffer " + image2 + " = cle.Create<" +  bitDepthToType(imp.getBitDepth()) + ">(dimensions.data(), \"" + bitDepthToType(imp.getBitDepth()) + "\"); \n";
         String call = "";
 
         String[] parameters = clijMacroPlugin.getParameterHelpText().split(",");
@@ -126,15 +124,17 @@ public class ClicGenerator extends AbstractScriptGenerator {
 
     @Override
     public String header() {
-        return  "// This is generated experimental code which is supposed to run using clic, " +
-                "// the C++ implementation of clesperanto: \n" +
+        return  "// This is generated experimental code which is supposed to run using CLIc, \n" +
+                "// the C++ implementation of clesperanto. Copy this code and enter it into \n" +
+                "// that template: \n" +
+                "// https://github.com/StRigaud/CLIc_project_template/blob/main/script.cpp\n" +
+                "// \n" +
+                "// Read more: \n" +
                 "// https://github.com/clEsperanto/CLIc_prototype \n" +
                 "// The project is work in progress. Stay tuned! \n" +
                 "// \n" +
                 "// Generator version: " + VersionUtils.getVersion(this.getClass()) + "\n\n" +
-                "//" +
-                "\n" +
-                "// Initialise GPU information.\n" +
+                "// Initialize GPU\n" +
                 "cle::GPU gpu;\n" +
                 "cle::CLE cle(gpu);\n\n";
 
