@@ -788,6 +788,8 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         addMenuAction(script, "CluPath Groovy", (a) -> {generateScriptFile(new CluPathGroovyGenerator());});
         addMenuAction(script, "clEsperanto CLIc (C++)", (a) -> {generateScriptFile(new ClicGenerator());});
         addMenuAction(script, "clEsperanto ImageJ Macro", (a) -> {generateScriptFile(new ClEsperantoMacroGenerator());});
+        addMenuAction(script, "clEsperanto Jython (Camel case)", (a) -> {generateScriptFile(new ClEsperantoCamelJythonGenerator());});
+        addMenuAction(script, "clEsperanto Jython (Snake case)", (a) -> {generateScriptFile(new ClEsperantoSnakeJythonGenerator());});
         addMenuAction(script, "clEsperanto Python", (a) -> {generateScriptFile(new PyclesperantoGenerator(false));});
         addMenuAction(script, "clEsperanto Python Jupyter Notebook", (a) -> {generateScriptFile(new PyclesperantoJupyterNotebookGenerator());});
         addMenuAction(script, "clEsperanto Python + Napari", (a) -> {generateScriptFile(new PyclesperantoGenerator(true));});

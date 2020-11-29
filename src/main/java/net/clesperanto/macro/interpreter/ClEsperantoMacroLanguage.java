@@ -1,4 +1,4 @@
-/*-
+/*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
@@ -27,29 +27,54 @@
  * #L%
  */
 
-package net.cleasperanto.macro.interpreter;
+package net.clesperanto.macro.interpreter;
 
-import ij.IJ;
-import net.imagej.legacy.plugin.MacroLanguageSupportPlugin;
+import net.imagej.legacy.LegacyService;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
-import org.scijava.ui.swing.script.LanguageSupportPlugin;
+import org.scijava.script.AbstractScriptLanguage;
+import org.scijava.script.ScriptLanguage;
 
+import javax.script.ScriptEngine;
+import java.util.Arrays;
+import java.util.List;
 
 /**
- * {@link LanguageSupportPlugin} making basic auto-completion available for IJ
- * macro scripts. It offers all commands and additional help copied from the
- * <a href="https://imagej.net/developer/macro/functions.html">ImageJ macro
- * functions documentation</a>.
+ * Implements a factory for the ImageJ 1.x Macro language engine.
  *
  * @author Robert Haase
  */
-@Plugin(type = LanguageSupportPlugin.class)
-public class ClEsperantoMacroLanguageSupportPlugin extends MacroLanguageSupportPlugin
-	implements LanguageSupportPlugin
-{
+@Plugin(type = ScriptLanguage.class, name = "clEsperanto Macro", priority=-1 )
+public class ClEsperantoMacroLanguage extends AbstractScriptLanguage {
+
+	@Parameter(required = false)
+	private LegacyService legacyService;
+
 	@Override
-	public String getLanguageName() {
-		return "clEsperanto Macro";
+	public List<String> getNames() {
+		return Arrays.asList("cleijm", "clEsperanto Macro", "clesperanto-macro");
+	}
+
+	@Override
+	public List<String> getExtensions() {
+		return Arrays.asList("ijm");
+	}
+
+	@Override
+	public ScriptEngine getScriptEngine() {
+		return new ClEsperantoMacroEngine(legacyService().getIJ1Helper());
+	}
+
+	private LegacyService legacyService() {
+		if (legacyService != null) return legacyService;
+		synchronized (this) {
+			if (legacyService != null) return legacyService;
+			legacyService = getContext().getService(LegacyService.class);
+			if (legacyService == null) {
+				throw new RuntimeException("No legacy service available!");
+			}
+			return legacyService;
+		}
 	}
 
 }

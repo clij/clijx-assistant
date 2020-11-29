@@ -27,20 +27,10 @@
  * #L%
  */
 
-package net.cleasperanto.macro.interpreter;
+package net.clesperanto.macro.interpreter;
 
-import ij.IJ;
-import net.cleasperanto.macro.api.ClEsperantoMacroAPI;
 import net.imagej.legacy.IJ1Helper;
 import net.imagej.legacy.plugin.IJ1MacroEngine;
-import org.scijava.ui.swing.script.TextEditor;
-
-import javax.script.ScriptException;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  * A JSR-223-compliant script engine for the ImageJ 1.x macro + markdown language.

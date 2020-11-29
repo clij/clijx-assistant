@@ -1,10 +1,8 @@
-/*
+/*-
  * #%L
- * Script Editor and Interpreter for SciJava script languages.
+ * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2009 - 2018 Board of Regents of the University of
- * Wisconsin-Madison, Max Planck Institute of Molecular Cell Biology and
- * Genetics, and others.
+ * Copyright (C) 2009 - 2020 ImageJ developers.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,37 +27,28 @@
  * #L%
  */
 
-package net.cleasperanto.macro.interpreter;
+package net.clesperanto.macro.interpreter;
 
-import ij.IJ;
-import ij.macro.Interpreter;
-import net.cleasperanto.macro.api.ClEsperantoMacroAPI;
-import net.cleasperanto.macro.api.ClEsperantoMacroAPIGenerator;
+import net.imagej.legacy.plugin.MacroLanguageSupportPlugin;
 import org.scijava.plugin.Plugin;
-import org.scijava.ui.swing.script.SyntaxHighlighter;
-import org.scijava.ui.swing.script.highliters.ImageJMacroTokenMaker;
+import org.scijava.ui.swing.script.LanguageSupportPlugin;
+
 
 /**
- * SyntaxHighliter for ij1-macros.
+ * {@link LanguageSupportPlugin} making basic auto-completion available for IJ
+ * macro scripts. It offers all commands and additional help copied from the
+ * <a href="https://imagej.net/developer/macro/functions.html">ImageJ macro
+ * functions documentation</a>.
  *
  * @author Robert Haase
  */
-@Plugin(type = SyntaxHighlighter.class, name = "clesperanto-macro")
-public class ClEsperantoMacroHighlighter extends ImageJMacroTokenMaker implements
-	SyntaxHighlighter
+@Plugin(type = LanguageSupportPlugin.class)
+public class ClEsperantoMacroLanguageSupportPlugin extends MacroLanguageSupportPlugin
+	implements LanguageSupportPlugin
 {
-	public ClEsperantoMacroHighlighter() {
-		super();
-
-		String additionalFunctions = Interpreter.getAdditionalFunctions();
-
-		String cle_code = ClEsperantoMacroAPI.generate();
-		if (additionalFunctions == null) {
-			Interpreter.setAdditionalFunctions(cle_code);
-		} else if (!additionalFunctions.contains(cle_code)) {
-			Interpreter.setAdditionalFunctions(additionalFunctions + cle_code);
-		}
+	@Override
+	public String getLanguageName() {
+		return "clEsperanto Macro";
 	}
 
-	// Everything implemented in ImageJMacroTokenMaker
 }

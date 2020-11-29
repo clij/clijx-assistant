@@ -1,10 +1,9 @@
 package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 
 import ij.ImagePlus;
-import net.cleasperanto.macro.api.ClEsperantoMacroAPIGenerator;
+import net.clesperanto.macro.api.ClEsperantoMacroAPIGenerator;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
-import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import org.scijava.util.VersionUtils;
