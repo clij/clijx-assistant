@@ -134,19 +134,19 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                 if (parameterType.compareTo("Image") == 0) {
                     // no choice
                 } else if (parameterType.compareTo("String") == 0) {
-                    if (default_values != null) {
+                    if (default_values != null && default_values.length > i) {
                         gd.addStringField(parameterName, (String) default_values[i], 30);
                     } else {
                         gd.addStringField(parameterName, "", 30);
                     }
                 } else if (parameterType.compareTo("Boolean") == 0) {
-                    if (default_values != null) {
+                    if (default_values != null && default_values.length > i) {
                         gd.addCheckbox(parameterName, Boolean.valueOf("" + default_values[i]));
                     } else {
                         gd.addCheckbox(parameterName, true);
                     }
                 } else { // Number
-                    if (default_values != null) {
+                    if (default_values != null && default_values.length > i) {
                         gd.addNumericField(parameterName, Double.valueOf("" + default_values[i]), 2);
                     } else {
                         gd.addNumericField(parameterName, 2, 2);
@@ -240,7 +240,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                     }
                 } else if (parameterType.compareTo("String") == 0) {
                     if (registered_dialog == null) {
-                        if (default_values != null) {
+                        if (default_values != null && default_values.length > i) {
                             args[i] = default_values[i];
                         } else {
                             args[i] = "";
@@ -251,7 +251,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                     }
                 } else if (parameterType.compareTo("Boolean") == 0) {
                     if (registered_dialog == null) {
-                        if (default_values != null) {
+                        if (default_values != null && default_values.length > i) {
                             args[i] = new Double ((boolean) default_values[i] ? 1.0 : 0.0);
                         } else {
                             args[i] = new Double (0);
@@ -263,7 +263,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                     }
                 } else { // Number
                     if (registered_dialog == null) {
-                        if (default_values != null) {
+                        if (default_values != null && default_values.length > i) {
                             args[i] = default_values[i];
                         } else {
                             args[i] = 2;
