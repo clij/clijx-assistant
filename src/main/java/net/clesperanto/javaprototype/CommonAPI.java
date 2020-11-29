@@ -9,7 +9,7 @@ import net.haesleinhuepf.clij.coremem.enums.NativeTypeEnum;
 import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clijx.CLIJx;
 
-public interface CommonAPI {
+abstract class CommonAPI {
 
     public static ClearCLBuffer push(Object object) {
         return CLIJx.getInstance().push(object);
@@ -31,8 +31,5 @@ public interface CommonAPI {
     }
     public static String clinfo() {
         return CLIJx.clinfo();
-    }
-    public static void copy(ClearCLImageInterface image1, ClearCLImageInterface image2) {
-        CLIJx.getInstance().copy(image1, image2);
     }
 }

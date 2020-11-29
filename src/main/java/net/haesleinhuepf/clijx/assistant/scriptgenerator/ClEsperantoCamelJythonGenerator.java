@@ -22,7 +22,7 @@ public class ClEsperantoCamelJythonGenerator extends JythonGenerator {
 
     @Override
     public String finish(String all) {
-        return all
+        return super.finish(all)
                 .replace("clijx.", "cle.")
                 .replace("clij2.", "cle.");
     }
