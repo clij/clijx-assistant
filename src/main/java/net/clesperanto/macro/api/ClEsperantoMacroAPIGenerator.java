@@ -1,4 +1,4 @@
-package net.cleasperanto.macro.api;
+package net.clesperanto.macro.api;
 
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.CLIJMacroPluginService;

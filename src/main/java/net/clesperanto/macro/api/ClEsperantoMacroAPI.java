@@ -1,4 +1,4 @@
-package net.cleasperanto.macro.api;
+package net.clesperanto.macro.api;
 
 public class ClEsperantoMacroAPI {
     static String generated = null;
