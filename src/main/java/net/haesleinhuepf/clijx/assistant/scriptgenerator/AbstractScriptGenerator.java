@@ -67,7 +67,7 @@ public abstract class AbstractScriptGenerator implements ScriptGenerator {
         } else if (arg instanceof String) {
             return "\"" + arg + "\"";
         } else {
-            return arg.toString();
+            return "" + arg;
         }
     }
 

@@ -37,7 +37,7 @@ public class CluPathGroovyGenerator extends GroovyGenerator {
                 "roi = IJTools.convertToROI(roi, -request.getX() / downsample, -request.getY() / downsample, downsample, imagePlane)\n" +
                 "\n" +
                 "// add the ROI as annotation\n" +
-                "def annotation = PathObjects.createAnnotationObject(roi)\n" +
+                "annotation = PathObjects.createAnnotationObject(roi)\n" +
                 "addObject(annotation)";
     }
 
