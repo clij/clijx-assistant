@@ -1,4 +1,4 @@
-# Intensity projection
+# Icy / clIcy export
 Workflows can be exported as Icy Protocols.
 
 ## Installation
