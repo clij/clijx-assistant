@@ -3,6 +3,7 @@ package net.clesperanto.javaprototype;
 import net.haesleinhuepf.clij.coremem.enums.NativeTypeEnum;
 import net.haesleinhuepf.clijx.CLIJx;
 
+@Deprecated
 public class Camel extends CamelInterface {
 
     public static NativeTypeEnum Float = NativeTypeEnum.Float;
