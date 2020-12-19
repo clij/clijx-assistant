@@ -11,6 +11,6 @@ public class ClEsperantoSnakeJythonGenerator extends ClEsperantoCamelJythonGener
 
     @Override
     public String finish(String all) {
-        return super.finish(all).replace("net.clesperanto.javaprototype.Camel", "net.clesperanto.javaprototype.Snake");
+        return super.finish(all).replace("net.clesperanto.javaprototype.Camel", "pyclesperanto");
     }
 }
