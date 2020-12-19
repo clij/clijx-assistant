@@ -1,5 +1,6 @@
 package net.clesperanto.javaprototype;
 
+import ij.IJ;
 import ij.ImagePlus;
 import net.haesleinhuepf.clij.CLIJ;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
@@ -8,6 +9,7 @@ import net.haesleinhuepf.clij.clearcl.interfaces.ClearCLImageInterface;
 import net.haesleinhuepf.clij.coremem.enums.NativeTypeEnum;
 import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clijx.CLIJx;
+import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 
 abstract class CommonAPI {
 
@@ -32,4 +34,43 @@ abstract class CommonAPI {
     public static String clinfo() {
         return CLIJx.clinfo();
     }
+
+    public static ClearCLBuffer imread(String filename) {
+        ImagePlus imp = IJ.openImage(filename);
+        return CLIJx.getInstance().push(imp);
+    }
+
+    public static void imshow(Object object) {
+        imshow(object, null, false, null, null);
+    }
+
+    public static void imshow(Object object, String title) {
+        imshow(object, title, false, null, null);
+    }
+
+    public static void imshow(Object object, String title, boolean labels) {
+        imshow(object, title, labels, null, null);
+    }
+
+    public static void imshow(Object object, String title, boolean labels, Double min_intensity, Double max_intensity) {
+        ImagePlus image = CLIJx.getInstance().pull(object);
+        if (title != null) {
+            image.setTitle(title);
+        }
+
+        if (labels) {
+            image.resetDisplayRange();
+            AssistantUtilities.glasbey(image);
+        } else if (min_intensity != null || max_intensity != null) {
+            if (min_intensity == null) {
+                min_intensity = image.getDisplayRangeMin();
+            }
+            if (max_intensity == null) {
+                max_intensity = image.getDisplayRangeMax();
+            }
+            image.setDisplayRange(min_intensity, max_intensity);
+        }
+        image.show();
+    }
+
 }
