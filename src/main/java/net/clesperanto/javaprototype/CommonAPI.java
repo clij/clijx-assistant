@@ -19,6 +19,9 @@ abstract class CommonAPI {
     public static ClearCLBuffer create(ClearCLBuffer object) {
         return CLIJx.getInstance().create(object);
     }
+    public static ClearCLBuffer create_like(ClearCLBuffer object) {
+        return CLIJx.getInstance().create(object);
+    }
     public static ClearCLBuffer create(long w, long h, long d) {
         return CLIJx.getInstance().create(w, h, d);
     }
