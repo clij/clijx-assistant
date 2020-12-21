@@ -40,10 +40,10 @@ please also activate the "clijx-assistant-extensions" update site. Furthermore, 
 ## Installation in ImageJ
 Download and upack [ImageJ](https://imagej.nih.gov/ij/download.html) and some jar-files:
  
-* [clij2-imagej_-2.2.0.11-jar-with-dependencies.jar](https://github.com/clij/clij2-imagej1/releases/download/2.2.0.11/clij2-imagej_-2.2.0.7-jar-with-dependencies.jar)
-* [clijx-weka_-0.30.1.0.jar](https://github.com/clij/clijx/releases/download/0.30.1.0/clijx-weka_-0.30.1.0.jar)
-* [clijx_-0.30.1.0.jar](https://github.com/clij/clijx/releases/download/0.30.1.0/clijx_-0.30.1.0.jar)
-* [clijx-assistant_-0.4.1.0.jar](https://github.com/clij/assistant/releases/download/0.4.1.0/clijx-assistant_-0.4.1.0.jar)
+* [clij2-imagej_-2.2.0.12-jar-with-dependencies.jar](https://github.com/clij/clij2-imagej1/releases/download/2.2.0.12/clij2-imagej_-2.2.0.12-jar-with-dependencies.jar)
+* [clijx-weka_-0.30.1.12.jar](https://github.com/clij/clijx/releases/download/0.30.1.12/clijx-weka_-0.30.1.12.jar)
+* [clijx_-0.30.1.12.jar](https://github.com/clij/clijx/releases/download/0.30.1.12/clijx_-0.30.1.12.jar)
+* [clijx-assistant_-0.4.2.12.jar](https://github.com/clij/assistant/releases/download/0.4.2.12/clijx-assistant_-0.4.1.0.jar)
 
 Please put these jar files in the `plugins` sub-directory of ImageJ:
 
@@ -58,10 +58,10 @@ If a window with a green frame appears, it worked!
 ## Installation in MicroManager 2
 Download and install [MicroManager 2](https://micro-manager.org/wiki/Download_Micro-Manager_Latest_Release) and some jar files:
 
-* [clij2-imagej_-2.2.0.11-jar-with-dependencies.jar](https://github.com/clij/clij2-imagej1/releases/download/2.2.0.11/clij2-imagej_-2.2.0.7-jar-with-dependencies.jar)
-* [clijx-weka_-0.30.1.0.jar](https://github.com/clij/clijx/releases/download/0.30.1.0/clijx-weka_-0.30.1.0.jar)
-* [clijx_-0.30.1.0.jar](https://github.com/clij/clijx/releases/download/0.30.1.0/clijx_-0.30.1.0.jar)
-* [clijx-assistant_-0.4.1.0.jar](https://github.com/clij/assistant/releases/download/0.4.1.0/clijx-assistant_-0.4.1.0.jar)
+* [clij2-imagej_-2.2.0.12-jar-with-dependencies.jar](https://github.com/clij/clij2-imagej1/releases/download/2.2.0.12/clij2-imagej_-2.2.0.12-jar-with-dependencies.jar)
+* [clijx-weka_-0.30.1.12.jar](https://github.com/clij/clijx/releases/download/0.30.1.12/clijx-weka_-0.30.1.12.jar)
+* [clijx_-0.30.1.12.jar](https://github.com/clij/clijx/releases/download/0.30.1.12/clijx_-0.30.1.12.jar)
+* [clijx-assistant_-0.4.2.12.jar](https://github.com/clij/assistant/releases/download/0.4.2.12/clijx-assistant_-0.4.2.12.jar)
 
 Please put these jar files in the `plugins\Micro-Manager` sub-directory of MicroManager:
 ![Image](images/installation_mm.png)
