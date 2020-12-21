@@ -19,7 +19,7 @@ public class ClEsperantoCamelJythonGenerator extends JythonGenerator {
                 "# Read more: \n" +
                 "# https://clesperanto.net\n" +
                 "# \n" +
-                "# Generator (J) version: " + VersionUtils.getVersion(this.getClass()) + "\n\n" +
+                "# Generator (J) version: " + VersionUtils.getVersion(this.getClass()) + "\n" +
                 "# \n" +
                 "import net.clesperanto.javaprototype.Camel as cle\n\n";
     }

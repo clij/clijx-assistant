@@ -11,6 +11,11 @@ public class ClEsperantoSnakeJythonGenerator extends ClEsperantoCamelJythonGener
 
     @Override
     public String finish(String all) {
-        return super.finish(all).replace("net.clesperanto.javaprototype.Camel", "pyclesperanto");
+        return super.finish(all).replace("net.clesperanto.javaprototype.Camel", "pyclesperanto_prototype");
+    }
+
+    @Override
+    public String close(String image) {
+        return "";
     }
 }

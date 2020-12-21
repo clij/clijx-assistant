@@ -123,7 +123,7 @@ public class JythonGenerator extends AbstractScriptGenerator {
             }
         }
         program = program + methodName + "(" + call + ")\n" +
-                after_call + "\n";
+                after_call;
 
         //program = program + comment("consider removing this line if you don't need to see that image");
         //program = program + "clijx.show(" + image2 + ", \"" + plugin.getTarget().getTitle() + "\")\n";

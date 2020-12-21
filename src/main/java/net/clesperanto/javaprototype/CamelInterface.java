@@ -487,6 +487,9 @@ import net.haesleinhuepf.clijx.plugins.ExtendedDepthOfFocusTenengradProjection;
 import net.haesleinhuepf.clijx.plugins.ExtendedDepthOfFocusVarianceProjection;
 import net.haesleinhuepf.clijx.plugins.DrawMeshBetweenNClosestLabels;
 import net.haesleinhuepf.clijx.plugins.DrawMeshBetweenProximalLabels;
+import net.haesleinhuepf.clijx.plugins.Cosinus;
+import net.haesleinhuepf.clijx.plugins.Sinus;
+import net.haesleinhuepf.clijx.plugins.GenerateDistanceMatrixAlongAxis;
 // this is generated code. See src/test/java/net/haesleinhuepf/clijx/codegenerator for details
 abstract class CamelInterface extends CommonAPI{
    static CLIJ getCLIJ() {
@@ -595,6 +598,21 @@ abstract class CamelInterface extends CommonAPI{
      * Applies Gaussian blur to the input image twice with different sigma values resulting in two images which are then subtracted from each other.
      * 
      * It is recommended to apply this operation to images of type Float (32 bit) as results might be negative.
+     * 
+     * Parameters
+     * ----------
+     * input : Image
+     *     The input image to be processed.
+     * destination : Image
+     *     The output image where results are written into.
+     * sigma1_x : float
+     *     Sigma of the first Gaussian filter in x
+     * sigma1_y : float
+     *     Sigma of the first Gaussian filter in y
+     * sigma2_x : float
+     *     Sigma of the second Gaussian filter in x
+     * sigma2_y : float
+     *     Sigma of the second Gaussian filter in y
      */
     public static boolean differenceOfGaussian(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6) {
         boolean result = DifferenceOfGaussian2D.differenceOfGaussian(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue());
@@ -605,6 +623,21 @@ abstract class CamelInterface extends CommonAPI{
      * Applies Gaussian blur to the input image twice with different sigma values resulting in two images which are then subtracted from each other.
      * 
      * It is recommended to apply this operation to images of type Float (32 bit) as results might be negative.
+     * 
+     * Parameters
+     * ----------
+     * input : Image
+     *     The input image to be processed.
+     * destination : Image
+     *     The output image where results are written into.
+     * sigma1_x : float
+     *     Sigma of the first Gaussian filter in x
+     * sigma1_y : float
+     *     Sigma of the first Gaussian filter in y
+     * sigma2_x : float
+     *     Sigma of the second Gaussian filter in x
+     * sigma2_y : float
+     *     Sigma of the second Gaussian filter in y
      */
     public static boolean differenceOfGaussian2D(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6) {
         boolean result = DifferenceOfGaussian2D.differenceOfGaussian2D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue());
@@ -618,6 +651,21 @@ abstract class CamelInterface extends CommonAPI{
      * Applies Gaussian blur to the input image twice with different sigma values resulting in two images which are then subtracted from each other.
      * 
      * It is recommended to apply this operation to images of type Float (32 bit) as results might be negative.
+     * 
+     * Parameters
+     * ----------
+     * input : Image
+     *     The input image to be processed.
+     * destination : Image
+     *     The output image where results are written into.
+     * sigma1_x : float
+     *     Sigma of the first Gaussian filter in x
+     * sigma1_y : float
+     *     Sigma of the first Gaussian filter in y
+     * sigma2_x : float
+     *     Sigma of the second Gaussian filter in x
+     * sigma2_y : float
+     *     Sigma of the second Gaussian filter in y
      */
     public static boolean differenceOfGaussian(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8) {
         boolean result = DifferenceOfGaussian3D.differenceOfGaussian(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue());
@@ -628,6 +676,25 @@ abstract class CamelInterface extends CommonAPI{
      * Applies Gaussian blur to the input image twice with different sigma values resulting in two images which are then subtracted from each other.
      * 
      * It is recommended to apply this operation to images of type Float (32 bit) as results might be negative.
+     * 
+     * Parameters
+     * ----------
+     * input : Image
+     *     The input image to be processed.
+     * destination : Image
+     *     The output image where results are written into.
+     * sigma1_x : float
+     *     Sigma of the first Gaussian filter in x
+     * sigma1_y : float
+     *     Sigma of the first Gaussian filter in y
+     * sigma1_z : float
+     *     Sigma of the first Gaussian filter in z
+     * sigma2_x : float
+     *     Sigma of the second Gaussian filter in x
+     * sigma2_y : float
+     *     Sigma of the second Gaussian filter in y
+     * sigma2_z : float
+     *     Sigma of the second Gaussian filter in z
      */
     public static boolean differenceOfGaussian3D(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8) {
         boolean result = DifferenceOfGaussian3D.differenceOfGaussian3D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue());
@@ -1207,8 +1274,8 @@ abstract class CamelInterface extends CommonAPI{
      * 
      * The value v will be written at position x/y[/z] in the target image.
      */
-    public static boolean writeValuesToPositions(ClearCLBuffer positionsAndValues, ClearCLBuffer destination) {
-        boolean result = WriteValuesToPositions.writeValuesToPositions(getCLIJ2(), positionsAndValues, destination);
+    public static boolean writeValuesToPositions(ClearCLBuffer positions_and_values, ClearCLBuffer destination) {
+        boolean result = WriteValuesToPositions.writeValuesToPositions(getCLIJ2(), positions_and_values, destination);
         return result;
     }
 
@@ -2617,8 +2684,8 @@ abstract class CamelInterface extends CommonAPI{
     /**
      * Meshes all points in a given point list which are indiced in a corresponding index list.
      */
-    public static boolean pointIndexListToMesh(ClearCLBuffer pointlist, ClearCLBuffer indexList, ClearCLBuffer mesh_destination) {
-        boolean result = PointIndexListToMesh.pointIndexListToMesh(getCLIJ2(), pointlist, indexList, mesh_destination);
+    public static boolean pointIndexListToMesh(ClearCLBuffer pointlist, ClearCLBuffer indexlist, ClearCLBuffer mesh_destination) {
+        boolean result = PointIndexListToMesh.pointIndexListToMesh(getCLIJ2(), pointlist, indexlist, mesh_destination);
         return result;
     }
 
@@ -6198,8 +6265,8 @@ abstract class CamelInterface extends CommonAPI{
      * 
      * 
      */
-    public static boolean medianOfTouchingNeighbors(ClearCLBuffer values, ClearCLBuffer touch_matrix, ClearCLBuffer mean_values_destination) {
-        boolean result = MedianOfTouchingNeighbors.medianOfTouchingNeighbors(getCLIJ2(), values, touch_matrix, mean_values_destination);
+    public static boolean medianOfTouchingNeighbors(ClearCLBuffer values, ClearCLBuffer touch_matrix, ClearCLBuffer median_values_destination) {
+        boolean result = MedianOfTouchingNeighbors.medianOfTouchingNeighbors(getCLIJ2(), values, touch_matrix, median_values_destination);
         return result;
     }
 
@@ -6550,8 +6617,8 @@ abstract class CamelInterface extends CommonAPI{
      * 
      * For example, if labels 3 in labelmap1 and 4 in labelmap2 are touching then the pixel (3,4) in the matrix will be set to 1.
      */
-    public static boolean generateBinaryOverlapMatrix(ClearCLBuffer label_map1, ClearCLBuffer label_map2, ClearCLBuffer touch_matrix_destination) {
-        boolean result = GenerateBinaryOverlapMatrix.generateBinaryOverlapMatrix(getCLIJ2(), label_map1, label_map2, touch_matrix_destination);
+    public static boolean generateBinaryOverlapMatrix(ClearCLBuffer label_map1, ClearCLBuffer label_map2, ClearCLBuffer binary_overlap_matrix_destination) {
+        boolean result = GenerateBinaryOverlapMatrix.generateBinaryOverlapMatrix(getCLIJ2(), label_map1, label_map2, binary_overlap_matrix_destination);
         return result;
     }
 
@@ -7853,5 +7920,46 @@ abstract class CamelInterface extends CommonAPI{
         return result;
     }
 
+
+    // net.haesleinhuepf.clijx.plugins.Cosinus
+    //----------------------------------------------------
+    /**
+     * Computes the cosinus of all pixels value x.
+     * 
+     * <pre>f(x) = cos(x)</pre>
+     */
+    public static boolean cosinus(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        boolean result = Cosinus.cosinus(getCLIJ2(), source, destination);
+        return result;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.Sinus
+    //----------------------------------------------------
+    /**
+     * Computes the sinus of all pixels value x.
+     * 
+     * <pre>f(x) = sin(x)</pre>
+     */
+    public static boolean sinus(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        boolean result = Sinus.sinus(getCLIJ2(), source, destination);
+        return result;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.GenerateDistanceMatrixAlongAxis
+    //----------------------------------------------------
+    /**
+     * Computes the distance in X, Y or Z (specified with parameter axis) between all point coordinates given in two point lists.
+     * 
+     * Takes two images containing pointlists (dimensionality n * d, n: number of points and d: dimensionality) and builds up a matrix containing the distances between these points. 
+     * 
+     * Convention: Given two point lists with dimensionality n * d and m * d, the distance matrix will be of size(n + 1) * (m + 1). The first row and column contain zeros. They represent the distance of the objects to a theoretical background object. In that way, distance matrices are of the same size as touch matrices (see generateTouchMatrix). Thus, one can threshold a distance matrix to generate a touch matrix out of it for drawing meshes.
+     */
+    public static boolean generateDistanceMatrixAlongAxis(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4) {
+        boolean result = GenerateDistanceMatrixAlongAxis.generateDistanceMatrixAlongAxis(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).intValue());
+        return result;
+    }
+
 }
-// 527 methods generated.
+// 530 methods generated.
