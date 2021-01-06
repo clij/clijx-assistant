@@ -490,6 +490,11 @@ import net.haesleinhuepf.clijx.plugins.DrawMeshBetweenProximalLabels;
 import net.haesleinhuepf.clijx.plugins.Cosinus;
 import net.haesleinhuepf.clijx.plugins.Sinus;
 import net.haesleinhuepf.clijx.plugins.GenerateDistanceMatrixAlongAxis;
+import net.haesleinhuepf.clijx.plugins.MaximumDistanceOfTouchingNeighbors;
+import net.haesleinhuepf.clijx.plugins.MaximumNeighborDistanceMap;
+import net.haesleinhuepf.clijx.plugins.MinimumNeighborDistanceMap;
+import net.haesleinhuepf.clijx.plugins.GenerateAngleMatrix;
+import net.haesleinhuepf.clijx.plugins.NeighborDistanceRangeRatioMap;
 // this is generated code. See src/test/java/net/haesleinhuepf/clijx/codegenerator for details
 abstract class SnakeInterface extends CommonAPI {
    static CLIJ getCLIJ() {
@@ -521,9 +526,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The output image where results are written into.
      * 
      */
-    public static boolean binary_union(ClearCLBuffer operand1, ClearCLBuffer operand2, ClearCLBuffer destination) {
-        boolean result = BinaryUnion.binaryUnion(getCLIJ2(), operand1, operand2, destination);
-        return result;
+    public static ClearCLBuffer binary_union(ClearCLBuffer operand1, ClearCLBuffer operand2, ClearCLBuffer destination) {
+        BinaryUnion.binaryUnion(getCLIJ2(), operand1, operand2, destination);
+        return destination;
     }
 
 
@@ -546,9 +551,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The output image where results are written into.
      * 
      */
-    public static boolean binary_intersection(ClearCLBuffer operand1, ClearCLBuffer operand2, ClearCLBuffer destination) {
-        boolean result = BinaryIntersection.binaryIntersection(getCLIJ2(), operand1, operand2, destination);
-        return result;
+    public static ClearCLBuffer binary_intersection(ClearCLBuffer operand1, ClearCLBuffer operand2, ClearCLBuffer destination) {
+        BinaryIntersection.binaryIntersection(getCLIJ2(), operand1, operand2, destination);
+        return destination;
     }
 
 
@@ -563,9 +568,9 @@ abstract class SnakeInterface extends CommonAPI {
      * It will be stored in a new row of ImageJs
      * Results table in the column 'CountNonZero'.
      */
-    public static double count_non_zero_pixels(ClearCLBuffer source) {
-        double result = CountNonZeroPixels.countNonZeroPixels(getCLIJ2(), source);
-        return result;
+    public static ClearCLBuffer count_non_zero_pixels(ClearCLBuffer source) {
+        CountNonZeroPixels.countNonZeroPixels(getCLIJ2(), source);
+        return source;
     }
 
 
@@ -576,9 +581,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The second image is shifted by deltaPos in the given dimension. The cross correlation coefficient is calculated for each pixel in a range around the given pixel with given radius in the given dimension. Together with the original images it is recommended to hand over mean filtered images using the same radius.  
      */
-    public static boolean cross_correlation(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, ClearCLBuffer arg4, ClearCLBuffer arg5, double arg6, double arg7, double arg8) {
-        boolean result = CrossCorrelation.crossCorrelation(getCLIJ2(), arg1, arg2, arg3, arg4, arg5, new Double (arg6).intValue(), new Double (arg7).intValue(), new Double (arg8).intValue());
-        return result;
+    public static ClearCLBuffer cross_correlation(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, ClearCLBuffer arg4, ClearCLBuffer arg5, double arg6, double arg7, double arg8) {
+        CrossCorrelation.crossCorrelation(getCLIJ2(), arg1, arg2, arg3, arg4, arg5, new Double (arg6).intValue(), new Double (arg7).intValue(), new Double (arg8).intValue());
+        return arg5;
     }
 
     /**
@@ -586,9 +591,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The second image is shifted by deltaPos in the given dimension. The cross correlation coefficient is calculated for each pixel in a range around the given pixel with given radius in the given dimension. Together with the original images it is recommended to hand over mean filtered images using the same radius.  
      */
-    public static boolean cross_correlation(ClearCLImage arg1, ClearCLImage arg2, ClearCLImage arg3, ClearCLImage arg4, ClearCLImage arg5, double arg6, double arg7, double arg8) {
-        boolean result = CrossCorrelation.crossCorrelation(getCLIJ2(), arg1, arg2, arg3, arg4, arg5, new Double (arg6).intValue(), new Double (arg7).intValue(), new Double (arg8).intValue());
-        return result;
+    public static ClearCLImage cross_correlation(ClearCLImage arg1, ClearCLImage arg2, ClearCLImage arg3, ClearCLImage arg4, ClearCLImage arg5, double arg6, double arg7, double arg8) {
+        CrossCorrelation.crossCorrelation(getCLIJ2(), arg1, arg2, arg3, arg4, arg5, new Double (arg6).intValue(), new Double (arg7).intValue(), new Double (arg8).intValue());
+        return arg5;
     }
 
 
@@ -614,9 +619,9 @@ abstract class SnakeInterface extends CommonAPI {
      * sigma2_y : float
      *     Sigma of the second Gaussian filter in y
      */
-    public static boolean difference_of_gaussian(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6) {
-        boolean result = DifferenceOfGaussian2D.differenceOfGaussian(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue());
-        return result;
+    public static ClearCLBuffer difference_of_gaussian(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6) {
+        DifferenceOfGaussian2D.differenceOfGaussian(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue());
+        return arg2;
     }
 
     /**
@@ -639,9 +644,9 @@ abstract class SnakeInterface extends CommonAPI {
      * sigma2_y : float
      *     Sigma of the second Gaussian filter in y
      */
-    public static boolean difference_of_gaussian2d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6) {
-        boolean result = DifferenceOfGaussian2D.differenceOfGaussian2D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue());
-        return result;
+    public static ClearCLBuffer difference_of_gaussian2d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6) {
+        DifferenceOfGaussian2D.differenceOfGaussian2D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue());
+        return arg2;
     }
 
 
@@ -667,9 +672,9 @@ abstract class SnakeInterface extends CommonAPI {
      * sigma2_y : float
      *     Sigma of the second Gaussian filter in y
      */
-    public static boolean difference_of_gaussian(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8) {
-        boolean result = DifferenceOfGaussian3D.differenceOfGaussian(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue());
-        return result;
+    public static ClearCLBuffer difference_of_gaussian(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8) {
+        DifferenceOfGaussian3D.differenceOfGaussian(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue());
+        return arg2;
     }
 
     /**
@@ -696,9 +701,9 @@ abstract class SnakeInterface extends CommonAPI {
      * sigma2_z : float
      *     Sigma of the second Gaussian filter in z
      */
-    public static boolean difference_of_gaussian3d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8) {
-        boolean result = DifferenceOfGaussian3D.differenceOfGaussian3D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue());
-        return result;
+    public static ClearCLBuffer difference_of_gaussian3d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8) {
+        DifferenceOfGaussian3D.differenceOfGaussian3D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue());
+        return arg2;
     }
 
 
@@ -709,9 +714,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * f(x, y) = x if abs(x) > abs(y), y else.
      */
-    public static boolean extrema(ClearCLBuffer input1, ClearCLBuffer input2, ClearCLBuffer destination) {
-        boolean result = Extrema.extrema(getCLIJ(), input1, input2, destination);
-        return result;
+    public static ClearCLBuffer extrema(ClearCLBuffer input1, ClearCLBuffer input2, ClearCLBuffer destination) {
+        Extrema.extrema(getCLIJ(), input1, input2, destination);
+        return destination;
     }
 
 
@@ -722,9 +727,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Afterwards, the value is returned which is more far from zero.
      */
-    public static boolean local_extrema_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
-        boolean result = LocalExtremaBox.localExtremaBox(getCLIJ(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLBuffer local_extrema_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        LocalExtremaBox.localExtremaBox(getCLIJ(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -733,9 +738,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * local id
      */
-    public static boolean local_i_d(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = LocalID.localID(getCLIJ(), input, destination);
-        return result;
+    public static ClearCLBuffer local_i_d(ClearCLBuffer input, ClearCLBuffer destination) {
+        LocalID.localID(getCLIJ(), input, destination);
+        return destination;
     }
 
 
@@ -749,9 +754,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * f(x,m,i) = (x if (m == i); (0 otherwise))
      */
-    public static boolean mask_label(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4) {
-        boolean result = MaskLabel.maskLabel(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue());
-        return result;
+    public static ClearCLBuffer mask_label(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4) {
+        MaskLabel.maskLabel(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue());
+        return arg3;
     }
 
 
@@ -762,9 +767,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Takes two binary images A and B with marked spots and determines for each spot in image A the closest spot in image B. Afterwards, it saves the average shortest distances from image A to image B as 'mean_closest_spot_distance_A_B' and from image B to image A as 'mean_closest_spot_distance_B_A' to the results table. The distance between B and A is only determined if the `bidirectional` checkbox is checked.
      */
-    public static double mean_closest_spot_distance(ClearCLBuffer arg1, ClearCLBuffer arg2) {
-        double result = MeanClosestSpotDistance.meanClosestSpotDistance(getCLIJ2(), arg1, arg2);
-        return result;
+    public static ClearCLBuffer mean_closest_spot_distance(ClearCLBuffer arg1, ClearCLBuffer arg2) {
+        MeanClosestSpotDistance.meanClosestSpotDistance(getCLIJ2(), arg1, arg2);
+        return arg2;
     }
 
     /**
@@ -772,9 +777,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Takes two binary images A and B with marked spots and determines for each spot in image A the closest spot in image B. Afterwards, it saves the average shortest distances from image A to image B as 'mean_closest_spot_distance_A_B' and from image B to image A as 'mean_closest_spot_distance_B_A' to the results table. The distance between B and A is only determined if the `bidirectional` checkbox is checked.
      */
-    public static double[] mean_closest_spot_distance(ClearCLBuffer arg1, ClearCLBuffer arg2, boolean arg3) {
-        double[] result = MeanClosestSpotDistance.meanClosestSpotDistance(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLBuffer mean_closest_spot_distance(ClearCLBuffer arg1, ClearCLBuffer arg2, boolean arg3) {
+        MeanClosestSpotDistance.meanClosestSpotDistance(getCLIJ2(), arg1, arg2, arg3);
+        return arg2;
     }
 
 
@@ -786,9 +791,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The MSE will be stored in a new row of ImageJs
      * Results table in the column 'MSE'.
      */
-    public static double mean_squared_error(ClearCLBuffer source1, ClearCLBuffer source2) {
-        double result = MeanSquaredError.meanSquaredError(getCLIJ2(), source1, source2);
-        return result;
+    public static ClearCLBuffer mean_squared_error(ClearCLBuffer source1, ClearCLBuffer source2) {
+        MeanSquaredError.meanSquaredError(getCLIJ2(), source1, source2);
+        return source2;
     }
 
 
@@ -797,9 +802,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the median intensity projection of an image stack along Z.
      */
-    public static boolean median_z_projection(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = MedianZProjection.medianZProjection(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface median_z_projection(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        MedianZProjection.medianZProjection(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -811,9 +816,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The radius is fixed to 1 and pixels with value 0 are ignored.Note: Pixels with 0 value in the input image will not be overwritten in the output image.
      * Thus, the result image should be initialized by copying the original image in advance.
      */
-    public static boolean nonzero_minimum_diamond(ClearCLImageInterface input, ClearCLImageInterface destination) {
-        boolean result = NonzeroMinimumDiamond.nonzeroMinimumDiamond(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLImageInterface nonzero_minimum_diamond(ClearCLImageInterface input, ClearCLImageInterface destination) {
+        NonzeroMinimumDiamond.nonzeroMinimumDiamond(getCLIJ2(), input, destination);
+        return destination;
     }
 
     /**
@@ -822,9 +827,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The radius is fixed to 1 and pixels with value 0 are ignored.Note: Pixels with 0 value in the input image will not be overwritten in the output image.
      * Thus, the result image should be initialized by copying the original image in advance.
      */
-    public static boolean nonzero_minimum_diamond(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3) {
-        boolean result = NonzeroMinimumDiamond.nonzeroMinimumDiamond(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLImageInterface nonzero_minimum_diamond(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3) {
+        NonzeroMinimumDiamond.nonzeroMinimumDiamond(getCLIJ2(), arg1, arg2, arg3);
+        return arg3;
     }
 
     /**
@@ -834,8 +839,8 @@ abstract class SnakeInterface extends CommonAPI {
      * Thus, the result image should be initialized by copying the original image in advance.
      */
     public static ClearCLKernel nonzero_minimum_diamond(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3, ClearCLKernel arg4) {
-        ClearCLKernel result = NonzeroMinimumDiamond.nonzeroMinimumDiamond(getCLIJ2(), arg1, arg2, arg3, arg4);
-        return result;
+        NonzeroMinimumDiamond.nonzeroMinimumDiamond(getCLIJ2(), arg1, arg2, arg3, arg4);
+        return arg4;
     }
 
 
@@ -844,17 +849,17 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Pastes an image into another image at a given position.
      */
-    public static boolean paste(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = Paste2D.paste(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface paste(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        Paste2D.paste(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
     /**
      * Pastes an image into another image at a given position.
      */
-    public static boolean paste2d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = Paste2D.paste2D(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface paste2d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        Paste2D.paste2D(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -863,17 +868,17 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Pastes an image into another image at a given position.
      */
-    public static boolean paste(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = Paste3D.paste(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface paste(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        Paste3D.paste(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
     /**
      * Pastes an image into another image at a given position.
      */
-    public static boolean paste3d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = Paste3D.paste3D(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface paste3d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        Paste3D.paste3D(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -884,9 +889,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * f(x) = x / abs(x).
      */
-    public static boolean presign(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = Presign.presign(getCLIJ(), input, destination);
-        return result;
+    public static ClearCLBuffer presign(ClearCLBuffer input, ClearCLBuffer destination) {
+        Presign.presign(getCLIJ(), input, destination);
+        return destination;
     }
 
 
@@ -900,9 +905,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Note that the Sorensen-Dice coefficient can be calculated from the Jaccard index j using this formula:
      * <pre>s = f(j) = 2 j / (j + 1)</pre>
      */
-    public static double jaccard_index(ClearCLBuffer source1, ClearCLBuffer source2) {
-        double result = JaccardIndex.jaccardIndex(getCLIJ2(), source1, source2);
-        return result;
+    public static ClearCLBuffer jaccard_index(ClearCLBuffer source1, ClearCLBuffer source2) {
+        JaccardIndex.jaccardIndex(getCLIJ2(), source1, source2);
+        return source2;
     }
 
 
@@ -916,9 +921,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Note that the Sorensen-Dice coefficient s can be calculated from the Jaccard index j using this formula:
      * <pre>s = f(j) = 2 j / (j + 1)</pre>
      */
-    public static double sorensen_dice_coefficient(ClearCLBuffer source1, ClearCLBuffer source2) {
-        double result = SorensenDiceCoefficient.sorensenDiceCoefficient(getCLIJ2(), source1, source2);
-        return result;
+    public static ClearCLBuffer sorensen_dice_coefficient(ClearCLBuffer source1, ClearCLBuffer source2) {
+        SorensenDiceCoefficient.sorensenDiceCoefficient(getCLIJ2(), source1, source2);
+        return source2;
     }
 
 
@@ -927,9 +932,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the standard deviation intensity projection of an image stack along Z.
      */
-    public static boolean standard_deviation_z_projection(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = StandardDeviationZProjection.standardDeviationZProjection(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface standard_deviation_z_projection(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        StandardDeviationZProjection.standardDeviationZProjection(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -938,9 +943,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Stack to tiles.
      */
-    public static boolean stack_to_tiles(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = StackToTiles.stackToTiles(getCLIJx(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface stack_to_tiles(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        StackToTiles.stackToTiles(getCLIJx(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -951,9 +956,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Deprecated: Use topHat() or differenceOfGaussian() instead.
      */
-    public static boolean subtract_background(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = SubtractBackground2D.subtractBackground(getCLIJx(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
-        return result;
+    public static ClearCLImageInterface subtract_background(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        SubtractBackground2D.subtractBackground(getCLIJx(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
+        return arg2;
     }
 
     /**
@@ -961,9 +966,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Deprecated: Use topHat() or differenceOfGaussian() instead.
      */
-    public static boolean subtract_background2d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = SubtractBackground2D.subtractBackground2D(getCLIJx(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
-        return result;
+    public static ClearCLImageInterface subtract_background2d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        SubtractBackground2D.subtractBackground2D(getCLIJx(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
+        return arg2;
     }
 
 
@@ -974,9 +979,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Deprecated: Use topHat() or differenceOfGaussian() instead.
      */
-    public static boolean subtract_background(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = SubtractBackground3D.subtractBackground(getCLIJx(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
-        return result;
+    public static ClearCLImageInterface subtract_background(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        SubtractBackground3D.subtractBackground(getCLIJx(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
+        return arg2;
     }
 
     /**
@@ -984,9 +989,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Deprecated: Use topHat() or differenceOfGaussian() instead.
      */
-    public static boolean subtract_background3d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = SubtractBackground3D.subtractBackground3D(getCLIJx(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
-        return result;
+    public static ClearCLImageInterface subtract_background3d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        SubtractBackground3D.subtractBackground3D(getCLIJx(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
+        return arg2;
     }
 
 
@@ -1009,9 +1014,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     Radius of the background determination region in Z.
      * 
      */
-    public static boolean top_hat_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
-        boolean result = TopHatBox.topHatBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLBuffer top_hat_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        TopHatBox.topHatBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -1034,9 +1039,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     Radius of the background determination region in Z.
      * 
      */
-    public static boolean top_hat_sphere(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
-        boolean result = TopHatSphere.topHatSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLBuffer top_hat_sphere(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        TopHatSphere.topHatSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -1047,9 +1052,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * f(x) = exp(x)
      */
-    public static boolean exponential(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = Exponential.exponential(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface exponential(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        Exponential.exponential(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -1060,9 +1065,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * f(x) = log(x)
      */
-    public static boolean logarithm(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = Logarithm.logarithm(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface logarithm(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        Logarithm.logarithm(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -1075,9 +1080,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Convention: Given two point lists with dimensionality n * d and m * d, the distance matrix will be of size(n + 1) * (m + 1). The first row and column contain zeros. They represent the distance of the objects to a theoretical background object. In that way, distance matrices are of the same size as touch matrices (see generateTouchMatrix). Thus, one can threshold a distance matrix to generate a touch matrix out of it for drawing meshes.
      */
-    public static boolean generate_distance_matrix(ClearCLBuffer coordinate_list1, ClearCLBuffer coordinate_list2, ClearCLBuffer distance_matrix_destination) {
-        boolean result = GenerateDistanceMatrix.generateDistanceMatrix(getCLIJ2(), coordinate_list1, coordinate_list2, distance_matrix_destination);
-        return result;
+    public static ClearCLBuffer generate_distance_matrix(ClearCLBuffer coordinate_list1, ClearCLBuffer coordinate_list2, ClearCLBuffer distance_matrix_destination) {
+        GenerateDistanceMatrix.generateDistanceMatrix(getCLIJ2(), coordinate_list1, coordinate_list2, distance_matrix_destination);
+        return distance_matrix_destination;
     }
 
 
@@ -1088,9 +1093,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This corresponds to the minimum for each individial column.
      */
-    public static boolean shortest_distances(ClearCLBuffer distance_matrix, ClearCLBuffer destination_minimum_distances) {
-        boolean result = ShortestDistances.shortestDistances(getCLIJ2(), distance_matrix, destination_minimum_distances);
-        return result;
+    public static ClearCLBuffer shortest_distances(ClearCLBuffer distance_matrix, ClearCLBuffer destination_minimum_distances) {
+        ShortestDistances.shortestDistances(getCLIJ2(), distance_matrix, destination_minimum_distances);
+        return destination_minimum_distances;
     }
 
 
@@ -1100,9 +1105,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Transforms a spots image as resulting from maximum/minimum detection in an image where every column contains d 
      * pixels (with d = dimensionality of the original image) with the coordinates of the maxima/minima.
      */
-    public static boolean spots_to_point_list(ClearCLBuffer input_spots, ClearCLBuffer destination_pointlist) {
-        boolean result = SpotsToPointList.spotsToPointList(getCLIJ2(), input_spots, destination_pointlist);
-        return result;
+    public static ClearCLBuffer spots_to_point_list(ClearCLBuffer input_spots, ClearCLBuffer destination_pointlist) {
+        SpotsToPointList.spotsToPointList(getCLIJ2(), input_spots, destination_pointlist);
+        return destination_pointlist;
     }
 
 
@@ -1119,9 +1124,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The output image where results are written into.
      * 
      */
-    public static boolean transpose_xy(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = TransposeXY.transposeXY(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer transpose_xy(ClearCLBuffer input, ClearCLBuffer destination) {
+        TransposeXY.transposeXY(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -1138,9 +1143,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The output image where results are written into.
      * 
      */
-    public static boolean transpose_xz(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = TransposeXZ.transposeXZ(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer transpose_xz(ClearCLBuffer input, ClearCLBuffer destination) {
+        TransposeXZ.transposeXZ(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -1157,9 +1162,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The output image where results are written into.
      * 
      */
-    public static boolean transpose_yz(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = TransposeYZ.transposeYZ(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer transpose_yz(ClearCLBuffer input, ClearCLBuffer destination) {
+        TransposeYZ.transposeYZ(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -1168,9 +1173,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * 
      */
-    public static boolean particle_image_velocimetry2d(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, ClearCLBuffer arg4, double arg5) {
-        boolean result = FastParticleImageVelocimetry.particleImageVelocimetry2D(getCLIJ2(), arg1, arg2, arg3, arg4, new Double (arg5).intValue());
-        return result;
+    public static ClearCLBuffer particle_image_velocimetry2d(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, ClearCLBuffer arg4, double arg5) {
+        FastParticleImageVelocimetry.particleImageVelocimetry2D(getCLIJ2(), arg1, arg2, arg3, arg4, new Double (arg5).intValue());
+        return arg4;
     }
 
 
@@ -1181,9 +1186,9 @@ abstract class SnakeInterface extends CommonAPI {
      *  the local neighborhood with a given radius in source image 2. Write the distance in 
      * X, Y and Z in the three corresponding destination images.
      */
-    public static boolean particle_image_velocimetry(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, ClearCLBuffer arg4, ClearCLBuffer arg5, double arg6, double arg7, double arg8) {
-        boolean result = ParticleImageVelocimetry.particleImageVelocimetry(getCLIJ2(), arg1, arg2, arg3, arg4, arg5, new Double (arg6).intValue(), new Double (arg7).intValue(), new Double (arg8).intValue());
-        return result;
+    public static ClearCLBuffer particle_image_velocimetry(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, ClearCLBuffer arg4, ClearCLBuffer arg5, double arg6, double arg7, double arg8) {
+        ParticleImageVelocimetry.particleImageVelocimetry(getCLIJ2(), arg1, arg2, arg3, arg4, arg5, new Double (arg6).intValue(), new Double (arg7).intValue(), new Double (arg8).intValue());
+        return arg5;
     }
 
 
@@ -1192,9 +1197,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Run particle image velocimetry on a 2D+t timelapse.
      */
-    public static boolean particle_image_velocimetry_timelapse(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, ClearCLBuffer arg4, double arg5, double arg6, double arg7, boolean arg8) {
-        boolean result = ParticleImageVelocimetryTimelapse.particleImageVelocimetryTimelapse(getCLIJ2(), arg1, arg2, arg3, arg4, new Double (arg5).intValue(), new Double (arg6).intValue(), new Double (arg7).intValue(), arg8);
-        return result;
+    public static ClearCLBuffer particle_image_velocimetry_timelapse(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, ClearCLBuffer arg4, double arg5, double arg6, double arg7, boolean arg8) {
+        ParticleImageVelocimetryTimelapse.particleImageVelocimetryTimelapse(getCLIJ2(), arg1, arg2, arg3, arg4, new Double (arg5).intValue(), new Double (arg6).intValue(), new Double (arg7).intValue(), arg8);
+        return arg4;
     }
 
 
@@ -1203,9 +1208,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Applies particle image velocimetry to two images and registers them afterwards by warping input image 2 with a smoothed vector field.
      */
-    public static boolean deformable_registration2d(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4, double arg5) {
-        boolean result = DeformableRegistration2D.deformableRegistration2D(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLBuffer deformable_registration2d(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4, double arg5) {
+        DeformableRegistration2D.deformableRegistration2D(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg3;
     }
 
 
@@ -1214,17 +1219,17 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Measures center of mass of thresholded objects in the two input images and translates the second image so that it better fits to the first image.
      */
-    public static boolean translation_registration(ClearCLBuffer arg1, ClearCLBuffer arg2, double[] arg3) {
-        boolean result = TranslationRegistration.translationRegistration(getCLIJ(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLBuffer translation_registration(ClearCLBuffer arg1, ClearCLBuffer arg2, double[] arg3) {
+        TranslationRegistration.translationRegistration(getCLIJ(), arg1, arg2, arg3);
+        return arg2;
     }
 
     /**
      * Measures center of mass of thresholded objects in the two input images and translates the second image so that it better fits to the first image.
      */
-    public static boolean translation_registration(ClearCLBuffer input1, ClearCLBuffer input2, ClearCLBuffer destination) {
-        boolean result = TranslationRegistration.translationRegistration(getCLIJ(), input1, input2, destination);
-        return result;
+    public static ClearCLBuffer translation_registration(ClearCLBuffer input1, ClearCLBuffer input2, ClearCLBuffer destination) {
+        TranslationRegistration.translationRegistration(getCLIJ(), input1, input2, destination);
+        return destination;
     }
 
 
@@ -1233,9 +1238,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Applies 2D translation registration to every pair of t, t+1 slices of a 2D+t image stack.
      */
-    public static boolean translation_timelapse_registration(ClearCLBuffer input, ClearCLBuffer output) {
-        boolean result = TranslationTimelapseRegistration.translationTimelapseRegistration(getCLIJ(), input, output);
-        return result;
+    public static ClearCLBuffer translation_timelapse_registration(ClearCLBuffer input, ClearCLBuffer output) {
+        TranslationTimelapseRegistration.translationTimelapseRegistration(getCLIJ(), input, output);
+        return output;
     }
 
 
@@ -1247,9 +1252,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Otherwise the pixel is not overwritten.
      * If you want to initialize an identity transfrom matrix, set all pixels to 0 first.
      */
-    public static boolean set_where_xequals_y(ClearCLImageInterface arg1, double arg2) {
-        boolean result = SetWhereXequalsY.setWhereXequalsY(getCLIJ2(), arg1, new Double (arg2).floatValue());
-        return result;
+    public static ClearCLImageInterface set_where_xequals_y(ClearCLImageInterface arg1, double arg2) {
+        SetWhereXequalsY.setWhereXequalsY(getCLIJ2(), arg1, new Double (arg2).floatValue());
+        return arg1;
     }
 
 
@@ -1258,9 +1263,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Applies the Laplace operator (Diamond neighborhood) to an image.
      */
-    public static boolean laplace_sphere(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = LaplaceDiamond.laplaceSphere(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer laplace_sphere(ClearCLBuffer input, ClearCLBuffer destination) {
+        LaplaceDiamond.laplaceSphere(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -1274,9 +1279,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The value v will be written at position x/y[/z] in the target image.
      */
-    public static boolean write_values_to_positions(ClearCLBuffer positions_and_values, ClearCLBuffer destination) {
-        boolean result = WriteValuesToPositions.writeValuesToPositions(getCLIJ2(), positions_and_values, destination);
-        return result;
+    public static ClearCLBuffer write_values_to_positions(ClearCLBuffer positions_and_values, ClearCLBuffer destination) {
+        WriteValuesToPositions.writeValuesToPositions(getCLIJ2(), positions_and_values, destination);
+        return destination;
     }
 
 
@@ -1288,9 +1293,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Multiplies two matrices with each other.
      */
-    public static boolean multiply_matrix(ClearCLBuffer matrix1, ClearCLBuffer matrix2, ClearCLBuffer matrix_destination) {
-        boolean result = MultiplyMatrix.multiplyMatrix(getCLIJ2(), matrix1, matrix2, matrix_destination);
-        return result;
+    public static ClearCLBuffer multiply_matrix(ClearCLBuffer matrix1, ClearCLBuffer matrix2, ClearCLBuffer matrix_destination) {
+        MultiplyMatrix.multiplyMatrix(getCLIJ2(), matrix1, matrix2, matrix_destination);
+        return matrix_destination;
     }
 
 
@@ -1301,9 +1306,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The result will be put in the results table in column "MatrixEqual" as 1 if yes and 0 otherwise.
      */
-    public static boolean matrix_equal(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = MatrixEqual.matrixEqual(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLBuffer matrix_equal(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        MatrixEqual.matrixEqual(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -1312,9 +1317,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Calculates x to the power of y pixel wise of two images X and Y.
      */
-    public static boolean power_images(ClearCLBuffer input, ClearCLBuffer exponent, ClearCLBuffer destination) {
-        boolean result = PowerImages.powerImages(getCLIJ2(), input, exponent, destination);
-        return result;
+    public static ClearCLBuffer power_images(ClearCLBuffer input, ClearCLBuffer exponent, ClearCLBuffer destination) {
+        PowerImages.powerImages(getCLIJ2(), input, exponent, destination);
+        return destination;
     }
 
 
@@ -1335,9 +1340,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The resulting binary image where pixels will be 1 only if source1 and source2 equal in the given pixel.
      * 
      */
-    public static boolean equal(ClearCLImageInterface source1, ClearCLImageInterface source2, ClearCLImageInterface destination) {
-        boolean result = Equal.equal(getCLIJ2(), source1, source2, destination);
-        return result;
+    public static ClearCLImageInterface equal(ClearCLImageInterface source1, ClearCLImageInterface source2, ClearCLImageInterface destination) {
+        Equal.equal(getCLIJ2(), source1, source2, destination);
+        return destination;
     }
 
 
@@ -1348,9 +1353,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * f(a, b) = 1 if a >= b; 0 otherwise. 
      */
-    public static boolean greater_or_equal(ClearCLImageInterface source1, ClearCLImageInterface source2, ClearCLImageInterface destination) {
-        boolean result = GreaterOrEqual.greaterOrEqual(getCLIJ2(), source1, source2, destination);
-        return result;
+    public static ClearCLImageInterface greater_or_equal(ClearCLImageInterface source1, ClearCLImageInterface source2, ClearCLImageInterface destination) {
+        GreaterOrEqual.greaterOrEqual(getCLIJ2(), source1, source2, destination);
+        return destination;
     }
 
 
@@ -1361,9 +1366,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * f(a, b) = 1 if a > b; 0 otherwise. 
      */
-    public static boolean greater(ClearCLImageInterface source1, ClearCLImageInterface source2, ClearCLImageInterface destination) {
-        boolean result = Greater.greater(getCLIJ2(), source1, source2, destination);
-        return result;
+    public static ClearCLImageInterface greater(ClearCLImageInterface source1, ClearCLImageInterface source2, ClearCLImageInterface destination) {
+        Greater.greater(getCLIJ2(), source1, source2, destination);
+        return destination;
     }
 
 
@@ -1374,9 +1379,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * f(a, b) = 1 if a < b; 0 otherwise. 
      */
-    public static boolean smaller(ClearCLBuffer source1, ClearCLBuffer source2, ClearCLBuffer destination) {
-        boolean result = Smaller.smaller(getCLIJ2(), source1, source2, destination);
-        return result;
+    public static ClearCLBuffer smaller(ClearCLBuffer source1, ClearCLBuffer source2, ClearCLBuffer destination) {
+        Smaller.smaller(getCLIJ2(), source1, source2, destination);
+        return destination;
     }
 
 
@@ -1387,9 +1392,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * f(a, b) = 1 if a <= b; 0 otherwise. 
      */
-    public static boolean smaller_or_equal(ClearCLBuffer source1, ClearCLBuffer source2, ClearCLBuffer destination) {
-        boolean result = SmallerOrEqual.smallerOrEqual(getCLIJ2(), source1, source2, destination);
-        return result;
+    public static ClearCLBuffer smaller_or_equal(ClearCLBuffer source1, ClearCLBuffer source2, ClearCLBuffer destination) {
+        SmallerOrEqual.smallerOrEqual(getCLIJ2(), source1, source2, destination);
+        return destination;
     }
 
 
@@ -1410,9 +1415,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The resulting binary image where pixels will be 1 only if source1 and source2 are not equal in the given pixel.
      * 
      */
-    public static boolean not_equal(ClearCLImageInterface source1, ClearCLImageInterface source2, ClearCLBuffer destination) {
-        boolean result = NotEqual.notEqual(getCLIJ2(), source1, source2, destination);
-        return result;
+    public static ClearCLBuffer not_equal(ClearCLImageInterface source1, ClearCLImageInterface source2, ClearCLBuffer destination) {
+        NotEqual.notEqual(getCLIJ2(), source1, source2, destination);
+        return destination;
     }
 
 
@@ -1432,9 +1437,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Reads a raw file from disc and pushes it immediately to the GPU.
      */
-    public static boolean read_raw_image_from_disc(ClearCLBuffer arg1, String arg2) {
-        boolean result = ReadRawImageFromDisc.readRawImageFromDisc(getCLIJ(), arg1, arg2);
-        return result;
+    public static ClearCLBuffer read_raw_image_from_disc(ClearCLBuffer arg1, String arg2) {
+        ReadRawImageFromDisc.readRawImageFromDisc(getCLIJ(), arg1, arg2);
+        return arg1;
     }
 
     /**
@@ -1454,8 +1459,8 @@ abstract class SnakeInterface extends CommonAPI {
      *  It is assumed that all images have the same size. If this is not the case, call release(image) before  getting the second image.
      */
     public static ClearCLBuffer preload_from_disc(ClearCLBuffer destination, String filename, String nextFilename, String loaderId) {
-        ClearCLBuffer result = PreloadFromDisc.preloadFromDisc(getCLIJ(), destination, filename, nextFilename, loaderId);
-        return result;
+        PreloadFromDisc.preloadFromDisc(getCLIJ(), destination, filename, nextFilename, loaderId);
+        return destination;
     }
 
 
@@ -1476,9 +1481,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The constant where every pixel is compared to.
      * 
      */
-    public static boolean equal_constant(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
-        boolean result = EqualConstant.equalConstant(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLImageInterface equal_constant(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
+        EqualConstant.equalConstant(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -1489,9 +1494,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * f(a, b) = 1 if a >= b; 0 otherwise. 
      */
-    public static boolean greater_or_equal_constant(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
-        boolean result = GreaterOrEqualConstant.greaterOrEqualConstant(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLImageInterface greater_or_equal_constant(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
+        GreaterOrEqualConstant.greaterOrEqualConstant(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -1502,9 +1507,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * f(a, b) = 1 if a > b; 0 otherwise. 
      */
-    public static boolean greater_constant(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
-        boolean result = GreaterConstant.greaterConstant(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLImageInterface greater_constant(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
+        GreaterConstant.greaterConstant(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -1515,9 +1520,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * f(a, b) = 1 if a < b; 0 otherwise. 
      */
-    public static boolean smaller_constant(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = SmallerConstant.smallerConstant(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLBuffer smaller_constant(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        SmallerConstant.smallerConstant(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -1528,9 +1533,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * f(a, b) = 1 if a <= b; 0 otherwise. 
      */
-    public static boolean smaller_or_equal_constant(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = SmallerOrEqualConstant.smallerOrEqualConstant(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLBuffer smaller_or_equal_constant(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        SmallerOrEqualConstant.smallerOrEqualConstant(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -1549,9 +1554,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The constant where every pixel is compared to.
      * 
      */
-    public static boolean not_equal_constant(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = NotEqualConstant.notEqualConstant(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLBuffer not_equal_constant(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        NotEqualConstant.notEqualConstant(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -1561,27 +1566,27 @@ abstract class SnakeInterface extends CommonAPI {
      * Draws a box at a given start point with given size. 
      * All pixels other than in the box are untouched. Consider using `set(buffer, 0);` in advance.
      */
-    public static boolean draw_box(ClearCLImageInterface arg1, double arg2, double arg3, double arg4, double arg5) {
-        boolean result = DrawBox.drawBox(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
-        return result;
+    public static ClearCLImageInterface draw_box(ClearCLImageInterface arg1, double arg2, double arg3, double arg4, double arg5) {
+        DrawBox.drawBox(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
+        return arg1;
     }
 
     /**
      * Draws a box at a given start point with given size. 
      * All pixels other than in the box are untouched. Consider using `set(buffer, 0);` in advance.
      */
-    public static boolean draw_box(ClearCLImageInterface arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7) {
-        boolean result = DrawBox.drawBox(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue());
-        return result;
+    public static ClearCLImageInterface draw_box(ClearCLImageInterface arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7) {
+        DrawBox.drawBox(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue());
+        return arg1;
     }
 
     /**
      * Draws a box at a given start point with given size. 
      * All pixels other than in the box are untouched. Consider using `set(buffer, 0);` in advance.
      */
-    public static boolean draw_box(ClearCLImageInterface arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8) {
-        boolean result = DrawBox.drawBox(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue());
-        return result;
+    public static ClearCLImageInterface draw_box(ClearCLImageInterface arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8) {
+        DrawBox.drawBox(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue());
+        return arg1;
     }
 
 
@@ -1592,9 +1597,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * All pixels other than on the line are untouched. Consider using `set(buffer, 0);` in advance.
      */
-    public static boolean draw_line(ClearCLImageInterface arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8) {
-        boolean result = DrawLine.drawLine(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue());
-        return result;
+    public static ClearCLImageInterface draw_line(ClearCLImageInterface arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8) {
+        DrawLine.drawLine(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue());
+        return arg1;
     }
 
     /**
@@ -1602,9 +1607,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * All pixels other than on the line are untouched. Consider using `set(buffer, 0);` in advance.
      */
-    public static boolean draw_line(ClearCLImageInterface arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9) {
-        boolean result = DrawLine.drawLine(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue(), new Double (arg9).floatValue());
-        return result;
+    public static ClearCLImageInterface draw_line(ClearCLImageInterface arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9) {
+        DrawLine.drawLine(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue(), new Double (arg9).floatValue());
+        return arg1;
     }
 
 
@@ -1615,9 +1620,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      *  All pixels other than in the sphere are untouched. Consider using `set(buffer, 0);` in advance.
      */
-    public static boolean draw_sphere(ClearCLImageInterface arg1, double arg2, double arg3, double arg4, double arg5) {
-        boolean result = DrawSphere.drawSphere(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
-        return result;
+    public static ClearCLImageInterface draw_sphere(ClearCLImageInterface arg1, double arg2, double arg3, double arg4, double arg5) {
+        DrawSphere.drawSphere(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
+        return arg1;
     }
 
     /**
@@ -1625,9 +1630,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      *  All pixels other than in the sphere are untouched. Consider using `set(buffer, 0);` in advance.
      */
-    public static boolean draw_sphere(ClearCLImageInterface arg1, double arg2, double arg3, double arg4, double arg5, double arg6) {
-        boolean result = DrawSphere.drawSphere(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue());
-        return result;
+    public static ClearCLImageInterface draw_sphere(ClearCLImageInterface arg1, double arg2, double arg3, double arg4, double arg5, double arg6) {
+        DrawSphere.drawSphere(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue());
+        return arg1;
     }
 
     /**
@@ -1635,9 +1640,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      *  All pixels other than in the sphere are untouched. Consider using `set(buffer, 0);` in advance.
      */
-    public static boolean draw_sphere(ClearCLImageInterface arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7) {
-        boolean result = DrawSphere.drawSphere(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue());
-        return result;
+    public static ClearCLImageInterface draw_sphere(ClearCLImageInterface arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7) {
+        DrawSphere.drawSphere(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue());
+        return arg1;
     }
 
     /**
@@ -1645,9 +1650,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      *  All pixels other than in the sphere are untouched. Consider using `set(buffer, 0);` in advance.
      */
-    public static boolean draw_sphere(ClearCLImageInterface arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8) {
-        boolean result = DrawSphere.drawSphere(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue());
-        return result;
+    public static ClearCLImageInterface draw_sphere(ClearCLImageInterface arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8) {
+        DrawSphere.drawSphere(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue());
+        return arg1;
     }
 
 
@@ -1656,9 +1661,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Replaces a specific intensity in an image with a given new value.
      */
-    public static boolean replace_intensity(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = ReplaceIntensity.replaceIntensity(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
-        return result;
+    public static ClearCLImageInterface replace_intensity(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        ReplaceIntensity.replaceIntensity(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
+        return arg2;
     }
 
 
@@ -1669,9 +1674,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * If called from macro, the positions will be stored in a new row of ImageJs Results table in the columns 'BoundingBoxX', 'BoundingBoxY', 'BoundingBoxZ', 'BoundingBoxWidth', 'BoundingBoxHeight' 'BoundingBoxDepth'.In case of 2D images Z and depth will be zero.
      */
-    public static double[] bounding_box(ClearCLBuffer source) {
-        double[] result = BoundingBox.boundingBox(getCLIJ2(), source);
-        return result;
+    public static ClearCLBuffer bounding_box(ClearCLBuffer source) {
+        BoundingBox.boundingBox(getCLIJ2(), source);
+        return source;
     }
 
 
@@ -1682,9 +1687,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * But only in pixels which have non-zero values in another mask image.
      */
-    public static double minimum_of_masked_pixels(ClearCLBuffer source, ClearCLBuffer mask) {
-        double result = MinimumOfMaskedPixels.minimumOfMaskedPixels(getCLIJ2(), source, mask);
-        return result;
+    public static ClearCLBuffer minimum_of_masked_pixels(ClearCLBuffer source, ClearCLBuffer mask) {
+        MinimumOfMaskedPixels.minimumOfMaskedPixels(getCLIJ2(), source, mask);
+        return mask;
     }
 
 
@@ -1701,9 +1706,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     A binary image marking all pixels with 1 which should be taken into accout.
      * 
      */
-    public static double maximum_of_masked_pixels(ClearCLBuffer source, ClearCLBuffer mask) {
-        double result = MaximumOfMaskedPixels.maximumOfMaskedPixels(getCLIJ2(), source, mask);
-        return result;
+    public static ClearCLBuffer maximum_of_masked_pixels(ClearCLBuffer source, ClearCLBuffer mask) {
+        MaximumOfMaskedPixels.maximumOfMaskedPixels(getCLIJ2(), source, mask);
+        return mask;
     }
 
 
@@ -1714,9 +1719,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Only in pixels which have non-zero values in another binary mask image.
      */
-    public static double mean_of_masked_pixels(ClearCLBuffer source, ClearCLBuffer mask) {
-        double result = MeanOfMaskedPixels.meanOfMaskedPixels(getCLIJ2(), source, mask);
-        return result;
+    public static ClearCLBuffer mean_of_masked_pixels(ClearCLBuffer source, ClearCLBuffer mask) {
+        MeanOfMaskedPixels.meanOfMaskedPixels(getCLIJ2(), source, mask);
+        return mask;
     }
 
 
@@ -1727,9 +1732,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Sets all pixels in the target image to 1, where the given label index was present in the label map. Other pixels are set to 0.
      */
-    public static boolean label_to_mask(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = LabelToMask.labelToMask(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLBuffer label_to_mask(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        LabelToMask.labelToMask(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -1740,9 +1745,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This corresponds to the n row indices with minimum values for each column of the distance matrix.
      */
-    public static boolean n_closest_points(ClearCLBuffer arg1, ClearCLBuffer arg2) {
-        boolean result = NClosestPoints.nClosestPoints(getCLIJ2(), arg1, arg2);
-        return result;
+    public static ClearCLBuffer n_closest_points(ClearCLBuffer arg1, ClearCLBuffer arg2) {
+        NClosestPoints.nClosestPoints(getCLIJ2(), arg1, arg2);
+        return arg2;
     }
 
 
@@ -1764,9 +1769,9 @@ abstract class SnakeInterface extends CommonAPI {
      * //Biology Applications." in Workshop on Biomedicine in Computing (BiC) at the International
      * //Symposium on Computer Architecture (ISCA), June 2009.
      */
-    public static boolean gauss_jordan(ClearCLBuffer A_matrix, ClearCLBuffer B_result_vector, ClearCLBuffer solution_destination) {
-        boolean result = GaussJordan.gaussJordan(getCLIJ(), A_matrix, B_result_vector, solution_destination);
-        return result;
+    public static ClearCLBuffer gauss_jordan(ClearCLBuffer A_matrix, ClearCLBuffer B_result_vector, ClearCLBuffer solution_destination) {
+        GaussJordan.gaussJordan(getCLIJ(), A_matrix, B_result_vector, solution_destination);
+        return solution_destination;
     }
 
 
@@ -1780,9 +1785,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This method is executed on the CPU and not on the GPU/OpenCL device.
      */
-    public static double[] statistics_of_labelled_pixels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        double[] result = StatisticsOfLabelledPixels.statisticsOfLabelledPixels(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer statistics_of_labelled_pixels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        StatisticsOfLabelledPixels.statisticsOfLabelledPixels(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
     /**
@@ -1793,9 +1798,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This method is executed on the CPU and not on the GPU/OpenCL device.
      */
-    public static double[][] statistics_of_labelled_pixels(ClearCLBuffer input, ClearCLBuffer labelmap) {
-        double[][] result = StatisticsOfLabelledPixels.statisticsOfLabelledPixels(getCLIJ2(), input, labelmap);
-        return result;
+    public static ClearCLBuffer statistics_of_labelled_pixels(ClearCLBuffer input, ClearCLBuffer labelmap) {
+        StatisticsOfLabelledPixels.statisticsOfLabelledPixels(getCLIJ2(), input, labelmap);
+        return labelmap;
     }
 
     /**
@@ -1806,17 +1811,17 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This method is executed on the CPU and not on the GPU/OpenCL device.
      */
-    public static double[][] statistics_of_labelled_pixels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
-        double[][] result = StatisticsOfLabelledPixels.statisticsOfLabelledPixels(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLBuffer statistics_of_labelled_pixels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
+        StatisticsOfLabelledPixels.statisticsOfLabelledPixels(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
     /**
      * 
      */
-    public static double[][] statistics_of_labelled_pixels_single_threaded(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
-        double[][] result = StatisticsOfLabelledPixels.statisticsOfLabelledPixels_single_threaded(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLBuffer statistics_of_labelled_pixels_single_threaded(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
+        StatisticsOfLabelledPixels.statisticsOfLabelledPixels_single_threaded(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
     /**
@@ -1827,9 +1832,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This method is executed on the CPU and not on the GPU/OpenCL device.
      */
-    public static ResultsTable statistics_of_labelled_pixels(ClearCLBuffer arg1, ClearCLBuffer arg2, ResultsTable arg3) {
-        ResultsTable result = StatisticsOfLabelledPixels.statisticsOfLabelledPixels(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLBuffer statistics_of_labelled_pixels(ClearCLBuffer arg1, ClearCLBuffer arg2, ResultsTable arg3) {
+        StatisticsOfLabelledPixels.statisticsOfLabelledPixels(getCLIJ2(), arg1, arg2, arg3);
+        return arg2;
     }
 
 
@@ -1841,9 +1846,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The value will be stored in a new row of ImageJs
      * Results table in the column 'Variance'.
      */
-    public static double variance_of_all_pixels(ClearCLBuffer source) {
-        double result = VarianceOfAllPixels.varianceOfAllPixels(getCLIJ2(), source);
-        return result;
+    public static ClearCLBuffer variance_of_all_pixels(ClearCLBuffer source) {
+        VarianceOfAllPixels.varianceOfAllPixels(getCLIJ2(), source);
+        return source;
     }
 
     /**
@@ -1852,9 +1857,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The value will be stored in a new row of ImageJs
      * Results table in the column 'Variance'.
      */
-    public static double variance_of_all_pixels(ClearCLImageInterface arg1, double arg2) {
-        double result = VarianceOfAllPixels.varianceOfAllPixels(getCLIJ2(), arg1, new Double (arg2).floatValue());
-        return result;
+    public static ClearCLImageInterface variance_of_all_pixels(ClearCLImageInterface arg1, double arg2) {
+        VarianceOfAllPixels.varianceOfAllPixels(getCLIJ2(), arg1, new Double (arg2).floatValue());
+        return arg1;
     }
 
 
@@ -1866,9 +1871,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The value will be stored in a new row of ImageJs
      * Results table in the column 'Standard_deviation'.
      */
-    public static double standard_deviation_of_all_pixels(ClearCLImageInterface source) {
-        double result = StandardDeviationOfAllPixels.standardDeviationOfAllPixels(getCLIJ2(), source);
-        return result;
+    public static ClearCLImageInterface standard_deviation_of_all_pixels(ClearCLImageInterface source) {
+        StandardDeviationOfAllPixels.standardDeviationOfAllPixels(getCLIJ2(), source);
+        return source;
     }
 
     /**
@@ -1877,9 +1882,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The value will be stored in a new row of ImageJs
      * Results table in the column 'Standard_deviation'.
      */
-    public static double standard_deviation_of_all_pixels(ClearCLImageInterface arg1, double arg2) {
-        double result = StandardDeviationOfAllPixels.standardDeviationOfAllPixels(getCLIJ2(), arg1, new Double (arg2).floatValue());
-        return result;
+    public static ClearCLImageInterface standard_deviation_of_all_pixels(ClearCLImageInterface arg1, double arg2) {
+        StandardDeviationOfAllPixels.standardDeviationOfAllPixels(getCLIJ2(), arg1, new Double (arg2).floatValue());
+        return arg1;
     }
 
 
@@ -1890,9 +1895,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The result is put in the results table as new column named 'Masked_variance'.
      */
-    public static double variance_of_masked_pixels(ClearCLBuffer source, ClearCLBuffer mask) {
-        double result = VarianceOfMaskedPixels.varianceOfMaskedPixels(getCLIJ2(), source, mask);
-        return result;
+    public static ClearCLBuffer variance_of_masked_pixels(ClearCLBuffer source, ClearCLBuffer mask) {
+        VarianceOfMaskedPixels.varianceOfMaskedPixels(getCLIJ2(), source, mask);
+        return mask;
     }
 
     /**
@@ -1900,9 +1905,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The result is put in the results table as new column named 'Masked_variance'.
      */
-    public static double variance_of_masked_pixels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        double result = VarianceOfMaskedPixels.varianceOfMaskedPixels(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLBuffer variance_of_masked_pixels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        VarianceOfMaskedPixels.varianceOfMaskedPixels(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -1914,9 +1919,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The value will be stored in a new row of ImageJs
      * Results table in the column 'Masked_standard_deviation'.
      */
-    public static double standard_deviation_of_masked_pixels(ClearCLBuffer source, ClearCLBuffer mask) {
-        double result = StandardDeviationOfMaskedPixels.standardDeviationOfMaskedPixels(getCLIJ2(), source, mask);
-        return result;
+    public static ClearCLBuffer standard_deviation_of_masked_pixels(ClearCLBuffer source, ClearCLBuffer mask) {
+        StandardDeviationOfMaskedPixels.standardDeviationOfMaskedPixels(getCLIJ2(), source, mask);
+        return mask;
     }
 
     /**
@@ -1925,9 +1930,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The value will be stored in a new row of ImageJs
      * Results table in the column 'Masked_standard_deviation'.
      */
-    public static double standard_deviation_of_masked_pixels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        double result = StandardDeviationOfMaskedPixels.standardDeviationOfMaskedPixels(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLBuffer standard_deviation_of_masked_pixels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        StandardDeviationOfMaskedPixels.standardDeviationOfMaskedPixels(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -1938,9 +1943,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Remaining label elements are renumbered afterwards.
      */
-    public static boolean exclude_labels_on_edges(ClearCLBuffer label_map_input, ClearCLBuffer label_map_destination) {
-        boolean result = ExcludeLabelsOnEdges.excludeLabelsOnEdges(getCLIJ2(), label_map_input, label_map_destination);
-        return result;
+    public static ClearCLBuffer exclude_labels_on_edges(ClearCLBuffer label_map_input, ClearCLBuffer label_map_destination) {
+        ExcludeLabelsOnEdges.excludeLabelsOnEdges(getCLIJ2(), label_map_input, label_map_destination);
+        return label_map_destination;
     }
 
 
@@ -1959,9 +1964,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The output image where results are written into.
      * 
      */
-    public static boolean binary_subtract(ClearCLImageInterface minuend, ClearCLImageInterface subtrahend, ClearCLImageInterface destination) {
-        boolean result = BinarySubtract.binarySubtract(getCLIJ2(), minuend, subtrahend, destination);
-        return result;
+    public static ClearCLImageInterface binary_subtract(ClearCLImageInterface minuend, ClearCLImageInterface subtrahend, ClearCLImageInterface destination) {
+        BinarySubtract.binarySubtract(getCLIJ2(), minuend, subtrahend, destination);
+        return destination;
     }
 
 
@@ -1979,9 +1984,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The output image where edge pixels will be 1.
      * 
      */
-    public static boolean binary_edge_detection(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = BinaryEdgeDetection.binaryEdgeDetection(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface binary_edge_detection(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        BinaryEdgeDetection.binaryEdgeDetection(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -1994,9 +1999,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Note: This is not a distance matrix. See generateDistanceMatrix for details.
      */
-    public static boolean distance_map(ClearCLBuffer source, ClearCLBuffer destination) {
-        boolean result = DistanceMap.distanceMap(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLBuffer distance_map(ClearCLBuffer source, ClearCLBuffer destination) {
+        DistanceMap.distanceMap(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -2005,9 +2010,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Pulls a binary image from the GPU memory and puts it on the currently active ImageJ window as region of interest.
      */
-    public static Roi pull_as_r_o_i(ClearCLBuffer binary_input) {
-        Roi result = PullAsROI.pullAsROI(getCLIJ2(), binary_input);
-        return result;
+    public static ClearCLBuffer pull_as_r_o_i(ClearCLBuffer binary_input) {
+        PullAsROI.pullAsROI(getCLIJ2(), binary_input);
+        return binary_input;
     }
 
 
@@ -2016,17 +2021,17 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Pulls all labels in a label map as ROIs to the ROI manager.
      */
-    public static boolean pull_labels_to_roimanager(ClearCLBuffer labelmap_input) {
-        boolean result = PullLabelsToROIManager.pullLabelsToROIManager(getCLIJ2(), labelmap_input);
-        return result;
+    public static ClearCLBuffer pull_labels_to_roimanager(ClearCLBuffer labelmap_input) {
+        PullLabelsToROIManager.pullLabelsToROIManager(getCLIJ2(), labelmap_input);
+        return labelmap_input;
     }
 
     /**
      * Pulls all labels in a label map as ROIs to the ROI manager.
      */
-    public static boolean pull_labels_to_roimanager(ClearCLBuffer arg1, RoiManager arg2) {
-        boolean result = PullLabelsToROIManager.pullLabelsToROIManager(getCLIJ2(), arg1, arg2);
-        return result;
+    public static ClearCLBuffer pull_labels_to_roimanager(ClearCLBuffer arg1, RoiManager arg2) {
+        PullLabelsToROIManager.pullLabelsToROIManager(getCLIJ2(), arg1, arg2);
+        return arg1;
     }
 
 
@@ -2039,9 +2044,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Note: Pixels with 0 value in the input image will not be overwritten in the output image.
      * Thus, the result image should be initialized by copying the original image in advance.
      */
-    public static boolean nonzero_maximum_diamond(ClearCLImageInterface input, ClearCLImageInterface destination) {
-        boolean result = NonzeroMaximumDiamond.nonzeroMaximumDiamond(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLImageInterface nonzero_maximum_diamond(ClearCLImageInterface input, ClearCLImageInterface destination) {
+        NonzeroMaximumDiamond.nonzeroMaximumDiamond(getCLIJ2(), input, destination);
+        return destination;
     }
 
     /**
@@ -2051,9 +2056,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Note: Pixels with 0 value in the input image will not be overwritten in the output image.
      * Thus, the result image should be initialized by copying the original image in advance.
      */
-    public static boolean nonzero_maximum_diamond(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3) {
-        boolean result = NonzeroMaximumDiamond.nonzeroMaximumDiamond(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLImageInterface nonzero_maximum_diamond(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3) {
+        NonzeroMaximumDiamond.nonzeroMaximumDiamond(getCLIJ2(), arg1, arg2, arg3);
+        return arg3;
     }
 
     /**
@@ -2064,8 +2069,8 @@ abstract class SnakeInterface extends CommonAPI {
      * Thus, the result image should be initialized by copying the original image in advance.
      */
     public static ClearCLKernel nonzero_maximum_diamond(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3, ClearCLKernel arg4) {
-        ClearCLKernel result = NonzeroMaximumDiamond.nonzeroMaximumDiamond(getCLIJ2(), arg1, arg2, arg3, arg4);
-        return result;
+        NonzeroMaximumDiamond.nonzeroMaximumDiamond(getCLIJ2(), arg1, arg2, arg3, arg4);
+        return arg4;
     }
 
 
@@ -2074,25 +2079,25 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Apply a local maximum filter to an image which only overwrites pixels with value 0.
      */
-    public static boolean onlyzero_overwrite_maximum_diamond(ClearCLImageInterface input, ClearCLImageInterface destination) {
-        boolean result = OnlyzeroOverwriteMaximumDiamond.onlyzeroOverwriteMaximumDiamond(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLImageInterface onlyzero_overwrite_maximum_diamond(ClearCLImageInterface input, ClearCLImageInterface destination) {
+        OnlyzeroOverwriteMaximumDiamond.onlyzeroOverwriteMaximumDiamond(getCLIJ2(), input, destination);
+        return destination;
     }
 
     /**
      * Apply a local maximum filter to an image which only overwrites pixels with value 0.
      */
-    public static boolean onlyzero_overwrite_maximum_diamond(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3) {
-        boolean result = OnlyzeroOverwriteMaximumDiamond.onlyzeroOverwriteMaximumDiamond(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLImageInterface onlyzero_overwrite_maximum_diamond(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3) {
+        OnlyzeroOverwriteMaximumDiamond.onlyzeroOverwriteMaximumDiamond(getCLIJ2(), arg1, arg2, arg3);
+        return arg3;
     }
 
     /**
      * Apply a local maximum filter to an image which only overwrites pixels with value 0.
      */
     public static ClearCLKernel onlyzero_overwrite_maximum_diamond(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3, ClearCLKernel arg4) {
-        ClearCLKernel result = OnlyzeroOverwriteMaximumDiamond.onlyzeroOverwriteMaximumDiamond(getCLIJ2(), arg1, arg2, arg3, arg4);
-        return result;
+        OnlyzeroOverwriteMaximumDiamond.onlyzeroOverwriteMaximumDiamond(getCLIJ2(), arg1, arg2, arg3, arg4);
+        return arg4;
     }
 
 
@@ -2101,25 +2106,25 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Apply a local maximum filter to an image which only overwrites pixels with value 0.
      */
-    public static boolean onlyzero_overwrite_maximum_box(ClearCLImageInterface input, ClearCLImageInterface destination) {
-        boolean result = OnlyzeroOverwriteMaximumBox.onlyzeroOverwriteMaximumBox(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLImageInterface onlyzero_overwrite_maximum_box(ClearCLImageInterface input, ClearCLImageInterface destination) {
+        OnlyzeroOverwriteMaximumBox.onlyzeroOverwriteMaximumBox(getCLIJ2(), input, destination);
+        return destination;
     }
 
     /**
      * Apply a local maximum filter to an image which only overwrites pixels with value 0.
      */
-    public static boolean onlyzero_overwrite_maximum_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3) {
-        boolean result = OnlyzeroOverwriteMaximumBox.onlyzeroOverwriteMaximumBox(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLImageInterface onlyzero_overwrite_maximum_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3) {
+        OnlyzeroOverwriteMaximumBox.onlyzeroOverwriteMaximumBox(getCLIJ2(), arg1, arg2, arg3);
+        return arg3;
     }
 
     /**
      * Apply a local maximum filter to an image which only overwrites pixels with value 0.
      */
     public static ClearCLKernel onlyzero_overwrite_maximum_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3, ClearCLKernel arg4) {
-        ClearCLKernel result = OnlyzeroOverwriteMaximumBox.onlyzeroOverwriteMaximumBox(getCLIJ2(), arg1, arg2, arg3, arg4);
-        return result;
+        OnlyzeroOverwriteMaximumBox.onlyzeroOverwriteMaximumBox(getCLIJ2(), arg1, arg2, arg3, arg4);
+        return arg4;
     }
 
 
@@ -2132,9 +2137,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The touch matrix is a representation of a region adjacency graph
      * 
      */
-    public static boolean generate_touch_matrix(ClearCLBuffer label_map, ClearCLBuffer touch_matrix_destination) {
-        boolean result = GenerateTouchMatrix.generateTouchMatrix(getCLIJ2(), label_map, touch_matrix_destination);
-        return result;
+    public static ClearCLBuffer generate_touch_matrix(ClearCLBuffer label_map, ClearCLBuffer touch_matrix_destination) {
+        GenerateTouchMatrix.generateTouchMatrix(getCLIJ2(), label_map, touch_matrix_destination);
+        return touch_matrix_destination;
     }
 
 
@@ -2143,9 +2148,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Takes a labelmap and returns an image where all pixels on label edges are set to 1 and all other pixels to 0.
      */
-    public static boolean detect_label_edges(ClearCLImageInterface label_map, ClearCLBuffer edge_image_destination) {
-        boolean result = DetectLabelEdges.detectLabelEdges(getCLIJ2(), label_map, edge_image_destination);
-        return result;
+    public static ClearCLBuffer detect_label_edges(ClearCLImageInterface label_map, ClearCLBuffer edge_image_destination) {
+        DetectLabelEdges.detectLabelEdges(getCLIJ2(), label_map, edge_image_destination);
+        return edge_image_destination;
     }
 
 
@@ -2165,9 +2170,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Takes a touch matrix as input and delivers a vector with number of touching neighbors per label as a vector.
      */
-    public static boolean count_touching_neighbors(ClearCLBuffer touch_matrix, ClearCLBuffer touching_neighbors_count_destination) {
-        boolean result = CountTouchingNeighbors.countTouchingNeighbors(getCLIJ2(), touch_matrix, touching_neighbors_count_destination);
-        return result;
+    public static ClearCLBuffer count_touching_neighbors(ClearCLBuffer touch_matrix, ClearCLBuffer touching_neighbors_count_destination) {
+        CountTouchingNeighbors.countTouchingNeighbors(getCLIJ2(), touch_matrix, touching_neighbors_count_destination);
+        return touching_neighbors_count_destination;
     }
 
 
@@ -2183,9 +2188,9 @@ abstract class SnakeInterface extends CommonAPI {
      *  * All pixels with value 3 get value 2
      * 
      */
-    public static boolean replace_intensities(ClearCLImageInterface input, ClearCLImageInterface new_values_vector, ClearCLImageInterface destination) {
-        boolean result = ReplaceIntensities.replaceIntensities(getCLIJ2(), input, new_values_vector, destination);
-        return result;
+    public static ClearCLImageInterface replace_intensities(ClearCLImageInterface input, ClearCLImageInterface new_values_vector, ClearCLImageInterface destination) {
+        ReplaceIntensities.replaceIntensities(getCLIJ2(), input, new_values_vector, destination);
+        return destination;
     }
 
 
@@ -2196,9 +2201,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Pixels close to point 1 are set to value1. Pixels closer to point 2 are set to value2 All pixels other than on the line are untouched. Consider using clij.set(buffer, 0); in advance.
      */
-    public static boolean draw_two_value_line(ClearCLBuffer arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double arg10) {
-        boolean result = DrawTwoValueLine.drawTwoValueLine(getCLIJx(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue(), new Double (arg9).floatValue(), new Double (arg10).floatValue());
-        return result;
+    public static ClearCLBuffer draw_two_value_line(ClearCLBuffer arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double arg10) {
+        DrawTwoValueLine.drawTwoValueLine(getCLIJx(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue(), new Double (arg9).floatValue(), new Double (arg10).floatValue());
+        return arg1;
     }
 
 
@@ -2209,9 +2214,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This corresponds to the average of the n minimum values (rows) for each column of the distance matrix.
      */
-    public static boolean average_distance_of_n_closest_points(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = AverageDistanceOfNClosestPoints.averageDistanceOfNClosestPoints(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer average_distance_of_n_closest_points(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        AverageDistanceOfNClosestPoints.averageDistanceOfNClosestPoints(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -2220,9 +2225,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Pulls an image from the GPU memory and saves it as TIF to disc.
      */
-    public static boolean save_as_t_i_f(ClearCLBuffer input, String filename) {
-        boolean result = SaveAsTIF.saveAsTIF(getCLIJ2(), input, filename);
-        return result;
+    public static ClearCLBuffer save_as_t_i_f(ClearCLBuffer input, String filename) {
+        SaveAsTIF.saveAsTIF(getCLIJ2(), input, filename);
+        return input;
     }
 
 
@@ -2245,9 +2250,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The output image where results are written into.
      * 
      */
-    public static boolean touch_matrix_to_mesh(ClearCLBuffer pointlist, ClearCLBuffer touch_matrix, ClearCLBuffer mesh_destination) {
-        boolean result = TouchMatrixToMesh.touchMatrixToMesh(getCLIJ2(), pointlist, touch_matrix, mesh_destination);
-        return result;
+    public static ClearCLBuffer touch_matrix_to_mesh(ClearCLBuffer pointlist, ClearCLBuffer touch_matrix, ClearCLBuffer mesh_destination) {
+        TouchMatrixToMesh.touchMatrixToMesh(getCLIJ2(), pointlist, touch_matrix, mesh_destination);
+        return mesh_destination;
     }
 
 
@@ -2265,17 +2270,17 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * 
      */
-    public static boolean resample2d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, boolean arg5) {
-        boolean result = Resample.resample2D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), arg5);
-        return result;
+    public static ClearCLImageInterface resample2d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, boolean arg5) {
+        Resample.resample2D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), arg5);
+        return arg2;
     }
 
     /**
      * 
      */
-    public static boolean resample3d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5, boolean arg6) {
-        boolean result = Resample.resample3D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), arg6);
-        return result;
+    public static ClearCLImageInterface resample3d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5, boolean arg6) {
+        Resample.resample3D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), arg6);
+        return arg2;
     }
 
 
@@ -2286,9 +2291,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This functionality is similar to the 'Simple Ratio Bleaching Correction' in Fiji.
      */
-    public static boolean equalize_mean_intensities_of_slices(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = EqualizeMeanIntensitiesOfSlices.equalizeMeanIntensitiesOfSlices(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer equalize_mean_intensities_of_slices(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        EqualizeMeanIntensitiesOfSlices.equalizeMeanIntensitiesOfSlices(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -2297,9 +2302,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Apply a binary watershed to a binary image and introduces black pixels between objects.
      */
-    public static boolean watershed(ClearCLBuffer binary_source, ClearCLBuffer destination) {
-        boolean result = Watershed.watershed(getCLIJ2(), binary_source, destination);
-        return result;
+    public static ClearCLBuffer watershed(ClearCLBuffer binary_source, ClearCLBuffer destination) {
+        Watershed.watershed(getCLIJ2(), binary_source, destination);
+        return destination;
     }
 
 
@@ -2311,9 +2316,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Starting point for the line is the given point in any 
      * X/Y-plane of a given input image stack. Furthermore, radius of the resulting projection must be given and scaling factors in X and Y in case pixels are not isotropic.This operation is similar to ImageJs 'Radial Reslice' method but offers less flexibility.
      */
-    public static boolean reslice_radial(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = ResliceRadial.resliceRadial(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLBuffer reslice_radial(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        ResliceRadial.resliceRadial(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
     /**
@@ -2322,9 +2327,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Starting point for the line is the given point in any 
      * X/Y-plane of a given input image stack. Furthermore, radius of the resulting projection must be given and scaling factors in X and Y in case pixels are not isotropic.This operation is similar to ImageJs 'Radial Reslice' method but offers less flexibility.
      */
-    public static boolean reslice_radial(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
-        boolean result = ResliceRadial.resliceRadial(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
-        return result;
+    public static ClearCLBuffer reslice_radial(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        ResliceRadial.resliceRadial(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
+        return arg2;
     }
 
     /**
@@ -2333,9 +2338,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Starting point for the line is the given point in any 
      * X/Y-plane of a given input image stack. Furthermore, radius of the resulting projection must be given and scaling factors in X and Y in case pixels are not isotropic.This operation is similar to ImageJs 'Radial Reslice' method but offers less flexibility.
      */
-    public static boolean reslice_radial(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8) {
-        boolean result = ResliceRadial.resliceRadial(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue());
-        return result;
+    public static ClearCLBuffer reslice_radial(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8) {
+        ResliceRadial.resliceRadial(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue());
+        return arg2;
     }
 
 
@@ -2344,9 +2349,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Visualises three 2D images as one RGB image
      */
-    public static boolean show_r_g_b(ClearCLBuffer red, ClearCLBuffer green, ClearCLBuffer blue, String title) {
-        boolean result = ShowRGB.showRGB(getCLIJ(), red, green, blue, title);
-        return result;
+    public static ClearCLBuffer show_r_g_b(ClearCLBuffer red, ClearCLBuffer green, ClearCLBuffer blue, String title) {
+        ShowRGB.showRGB(getCLIJ(), red, green, blue, title);
+        return blue;
     }
 
 
@@ -2355,9 +2360,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Visualises a single 2D image.
      */
-    public static ImagePlus show_grey(ClearCLBuffer input, String title) {
-        ImagePlus result = ShowGrey.showGrey(getCLIJ(), input, title);
-        return result;
+    public static ClearCLBuffer show_grey(ClearCLBuffer input, String title) {
+        ShowGrey.showGrey(getCLIJ(), input, title);
+        return input;
     }
 
 
@@ -2366,9 +2371,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Convolve the image with the Sobel kernel.
      */
-    public static boolean sobel(ClearCLBuffer source, ClearCLBuffer destination) {
-        boolean result = Sobel.sobel(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLBuffer sobel(ClearCLBuffer source, ClearCLBuffer destination) {
+        Sobel.sobel(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -2387,9 +2392,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The output image where results are written into.
      * 
      */
-    public static boolean absolute(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = Absolute.absolute(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface absolute(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        Absolute.absolute(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -2398,9 +2403,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Applies the Laplace operator (Box neighborhood) to an image.
      */
-    public static boolean laplace_box(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = LaplaceBox.laplaceBox(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer laplace_box(ClearCLBuffer input, ClearCLBuffer destination) {
+        LaplaceBox.laplaceBox(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -2423,9 +2428,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     Radius of the background determination region in Z.
      * 
      */
-    public static boolean bottom_hat_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
-        boolean result = BottomHatBox.bottomHatBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLBuffer bottom_hat_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        BottomHatBox.bottomHatBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -2448,9 +2453,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     Radius of the background determination region in Z.
      * 
      */
-    public static boolean bottom_hat_sphere(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
-        boolean result = BottomHatSphere.bottomHatSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLBuffer bottom_hat_sphere(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        BottomHatSphere.bottomHatSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -2459,9 +2464,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Apply a binary closing to the input image by calling n dilations and n erosions subsequenntly.
      */
-    public static boolean closing_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = ClosingBox.closingBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer closing_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        ClosingBox.closingBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -2470,9 +2475,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Apply a binary closing to the input image by calling n dilations and n erosions subsequently.
      */
-    public static boolean closing_diamond(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = ClosingDiamond.closingDiamond(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer closing_diamond(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        ClosingDiamond.closingDiamond(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -2481,9 +2486,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Apply a binary opening to the input image by calling n erosions and n dilations subsequenntly.
      */
-    public static boolean opening_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = OpeningBox.openingBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer opening_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        OpeningBox.openingBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -2492,9 +2497,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Apply a binary opening to the input image by calling n erosions and n dilations subsequenntly.
      */
-    public static boolean opening_diamond(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = OpeningDiamond.openingDiamond(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer opening_diamond(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        OpeningDiamond.openingDiamond(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -2503,9 +2508,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the maximum intensity projection of an image along X.
      */
-    public static boolean maximum_x_projection(ClearCLImageInterface source, ClearCLImageInterface destination_max) {
-        boolean result = MaximumXProjection.maximumXProjection(getCLIJ2(), source, destination_max);
-        return result;
+    public static ClearCLImageInterface maximum_x_projection(ClearCLImageInterface source, ClearCLImageInterface destination_max) {
+        MaximumXProjection.maximumXProjection(getCLIJ2(), source, destination_max);
+        return destination_max;
     }
 
 
@@ -2514,9 +2519,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the maximum intensity projection of an image along X.
      */
-    public static boolean maximum_y_projection(ClearCLImageInterface source, ClearCLImageInterface destination_max) {
-        boolean result = MaximumYProjection.maximumYProjection(getCLIJ2(), source, destination_max);
-        return result;
+    public static ClearCLImageInterface maximum_y_projection(ClearCLImageInterface source, ClearCLImageInterface destination_max) {
+        MaximumYProjection.maximumYProjection(getCLIJ2(), source, destination_max);
+        return destination_max;
     }
 
 
@@ -2525,9 +2530,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the maximum intensity projection of an image along Z within a given z range.
      */
-    public static boolean maximum_z_projection_bounded(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = MaximumZProjectionBounded.maximumZProjectionBounded(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface maximum_z_projection_bounded(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        MaximumZProjectionBounded.maximumZProjectionBounded(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -2536,9 +2541,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the minimum intensity projection of an image along Z within a given z range.
      */
-    public static boolean minimum_z_projection_bounded(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = MinimumZProjectionBounded.minimumZProjectionBounded(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface minimum_z_projection_bounded(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        MinimumZProjectionBounded.minimumZProjectionBounded(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -2547,9 +2552,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the mean average intensity projection of an image along Z within a given z range.
      */
-    public static boolean mean_z_projection_bounded(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = MeanZProjectionBounded.meanZProjectionBounded(getCLIJ(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface mean_z_projection_bounded(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        MeanZProjectionBounded.meanZProjectionBounded(getCLIJ(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -2562,9 +2567,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Note: Pixels with 0 value in the input image will not be overwritten in the output image.
      * Thus, the result image should be initialized by copying the original image in advance.
      */
-    public static boolean nonzero_maximum_box(ClearCLImageInterface input, ClearCLImageInterface destination) {
-        boolean result = NonzeroMaximumBox.nonzeroMaximumBox(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLImageInterface nonzero_maximum_box(ClearCLImageInterface input, ClearCLImageInterface destination) {
+        NonzeroMaximumBox.nonzeroMaximumBox(getCLIJ2(), input, destination);
+        return destination;
     }
 
     /**
@@ -2574,9 +2579,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Note: Pixels with 0 value in the input image will not be overwritten in the output image.
      * Thus, the result image should be initialized by copying the original image in advance.
      */
-    public static boolean nonzero_maximum_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3) {
-        boolean result = NonzeroMaximumBox.nonzeroMaximumBox(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLImageInterface nonzero_maximum_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3) {
+        NonzeroMaximumBox.nonzeroMaximumBox(getCLIJ2(), arg1, arg2, arg3);
+        return arg3;
     }
 
     /**
@@ -2587,8 +2592,8 @@ abstract class SnakeInterface extends CommonAPI {
      * Thus, the result image should be initialized by copying the original image in advance.
      */
     public static ClearCLKernel nonzero_maximum_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3, ClearCLKernel arg4) {
-        ClearCLKernel result = NonzeroMaximumBox.nonzeroMaximumBox(getCLIJ2(), arg1, arg2, arg3, arg4);
-        return result;
+        NonzeroMaximumBox.nonzeroMaximumBox(getCLIJ2(), arg1, arg2, arg3, arg4);
+        return arg4;
     }
 
 
@@ -2601,9 +2606,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Note: Pixels with 0 value in the input image will not be overwritten in the output image.
      * Thus, the result image should be initialized by copying the original image in advance.
      */
-    public static boolean nonzero_minimum_box(ClearCLImageInterface input, ClearCLImageInterface destination) {
-        boolean result = NonzeroMinimumBox.nonzeroMinimumBox(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLImageInterface nonzero_minimum_box(ClearCLImageInterface input, ClearCLImageInterface destination) {
+        NonzeroMinimumBox.nonzeroMinimumBox(getCLIJ2(), input, destination);
+        return destination;
     }
 
     /**
@@ -2613,9 +2618,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Note: Pixels with 0 value in the input image will not be overwritten in the output image.
      * Thus, the result image should be initialized by copying the original image in advance.
      */
-    public static boolean nonzero_minimum_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3) {
-        boolean result = NonzeroMinimumBox.nonzeroMinimumBox(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLImageInterface nonzero_minimum_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3) {
+        NonzeroMinimumBox.nonzeroMinimumBox(getCLIJ2(), arg1, arg2, arg3);
+        return arg3;
     }
 
     /**
@@ -2626,8 +2631,8 @@ abstract class SnakeInterface extends CommonAPI {
      * Thus, the result image should be initialized by copying the original image in advance.
      */
     public static ClearCLKernel nonzero_minimum_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3, ClearCLKernel arg4) {
-        ClearCLKernel result = NonzeroMinimumBox.nonzeroMinimumBox(getCLIJ2(), arg1, arg2, arg3, arg4);
-        return result;
+        NonzeroMinimumBox.nonzeroMinimumBox(getCLIJ2(), arg1, arg2, arg3, arg4);
+        return arg4;
     }
 
 
@@ -2636,9 +2641,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the minimum intensity projection of all pixels in an image above a given threshold along Z within a given z range.
      */
-    public static boolean minimum_z_projection_thresholded_bounded(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
-        boolean result = MinimumZProjectionThresholdedBounded.minimumZProjectionThresholdedBounded(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLBuffer minimum_z_projection_thresholded_bounded(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        MinimumZProjectionThresholdedBounded.minimumZProjectionThresholdedBounded(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -2649,9 +2654,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * But only in pixels which are above a given threshold.
      */
-    public static double mean_of_pixels_above_threshold(ClearCLBuffer arg1, double arg2) {
-        double result = MeanOfPixelsAboveThreshold.meanOfPixelsAboveThreshold(getCLIJ2(), arg1, new Double (arg2).floatValue());
-        return result;
+    public static ClearCLBuffer mean_of_pixels_above_threshold(ClearCLBuffer arg1, double arg2) {
+        MeanOfPixelsAboveThreshold.meanOfPixelsAboveThreshold(getCLIJ2(), arg1, new Double (arg2).floatValue());
+        return arg1;
     }
 
 
@@ -2673,9 +2678,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Takes a pointlist with dimensions n*d with n point coordinates in d dimensions and a distance matrix of size n*n to draw lines from all points to points if the corresponding pixel in the distance matrix is smaller than a given distance threshold.
      */
-    public static boolean distance_matrix_to_mesh(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4) {
-        boolean result = DistanceMatrixToMesh.distanceMatrixToMesh(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue());
-        return result;
+    public static ClearCLBuffer distance_matrix_to_mesh(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4) {
+        DistanceMatrixToMesh.distanceMatrixToMesh(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue());
+        return arg3;
     }
 
 
@@ -2684,9 +2689,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Meshes all points in a given point list which are indiced in a corresponding index list.
      */
-    public static boolean point_index_list_to_mesh(ClearCLBuffer pointlist, ClearCLBuffer indexlist, ClearCLBuffer mesh_destination) {
-        boolean result = PointIndexListToMesh.pointIndexListToMesh(getCLIJ2(), pointlist, indexlist, mesh_destination);
-        return result;
+    public static ClearCLBuffer point_index_list_to_mesh(ClearCLBuffer pointlist, ClearCLBuffer indexlist, ClearCLBuffer mesh_destination) {
+        PointIndexListToMesh.pointIndexListToMesh(getCLIJ2(), pointlist, indexlist, mesh_destination);
+        return mesh_destination;
     }
 
 
@@ -2697,9 +2702,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Odd iterations are done with box neighborhood, even iterations with a diamond. Thus, with n > 2, the filter shape is an octagon. The given number of iterations makes the filter result very similar to minimum sphere. Approximately:radius = iterations - 2
      */
-    public static boolean minimum_octagon(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = MinimumOctagon.minimumOctagon(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer minimum_octagon(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        MinimumOctagon.minimumOctagon(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -2712,9 +2717,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Thus, with n > 2, the filter shape is an octagon. The given number of iterations makes the filter 
      * result very similar to minimum sphere. Approximately:radius = iterations - 2
      */
-    public static boolean maximum_octagon(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = MaximumOctagon.maximumOctagon(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer maximum_octagon(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        MaximumOctagon.maximumOctagon(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -2725,9 +2730,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      *  Odd iterations are done with box neighborhood, even iterations with a diamond. Thus, with n > 2, the filter shape is an octagon. The given number of iterations - 2 makes the filter result very similar to minimum sphere.
      */
-    public static boolean top_hat_octagon(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = TopHatOctagon.topHatOctagon(getCLIJx(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer top_hat_octagon(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        TopHatOctagon.topHatOctagon(getCLIJx(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -2748,9 +2753,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The output image where results are written into.
      * 
      */
-    public static boolean add_images(ClearCLImageInterface summand1, ClearCLImageInterface summand2, ClearCLImageInterface destination) {
-        boolean result = AddImages.addImages(getCLIJ2(), summand1, summand2, destination);
-        return result;
+    public static ClearCLImageInterface add_images(ClearCLImageInterface summand1, ClearCLImageInterface summand2, ClearCLImageInterface destination) {
+        AddImages.addImages(getCLIJ2(), summand1, summand2, destination);
+        return destination;
     }
 
 
@@ -2775,9 +2780,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The constant number which will be multiplied with each pixel of summand2 before adding it.
      * 
      */
-    public static boolean add_images_weighted(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3, double arg4, double arg5) {
-        boolean result = AddImagesWeighted.addImagesWeighted(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue(), new Double (arg5).floatValue());
-        return result;
+    public static ClearCLImageInterface add_images_weighted(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3, double arg4, double arg5) {
+        AddImagesWeighted.addImagesWeighted(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue(), new Double (arg5).floatValue());
+        return arg3;
     }
 
 
@@ -2788,9 +2793,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * <pre>f(x, y) = x - y</pre>
      */
-    public static boolean subtract_images(ClearCLImageInterface subtrahend, ClearCLImageInterface minuend, ClearCLImageInterface destination) {
-        boolean result = SubtractImages.subtractImages(getCLIJ2(), subtrahend, minuend, destination);
-        return result;
+    public static ClearCLImageInterface subtract_images(ClearCLImageInterface subtrahend, ClearCLImageInterface minuend, ClearCLImageInterface destination) {
+        SubtractImages.subtractImages(getCLIJ2(), subtrahend, minuend, destination);
+        return destination;
     }
 
 
@@ -2801,9 +2806,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The first channel is shown in grey, the second with glasbey LUT.
      */
-    public static boolean show_glasbey_on_grey(ClearCLBuffer red, ClearCLBuffer labelling, String title) {
-        boolean result = ShowGlasbeyOnGrey.showGlasbeyOnGrey(getCLIJ(), red, labelling, title);
-        return result;
+    public static ClearCLBuffer show_glasbey_on_grey(ClearCLBuffer red, ClearCLBuffer labelling, String title) {
+        ShowGlasbeyOnGrey.showGlasbeyOnGrey(getCLIJ(), red, labelling, title);
+        return labelling;
     }
 
 
@@ -2831,9 +2836,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Example transform:
      * transform = "-center scale=2 rotate=45 center";
      */
-    public static boolean affine_transform2d(ClearCLBuffer arg1, ClearCLImageInterface arg2, float[] arg3) {
-        boolean result = AffineTransform2D.affineTransform2D(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLImageInterface affine_transform2d(ClearCLBuffer arg1, ClearCLImageInterface arg2, float[] arg3) {
+        AffineTransform2D.affineTransform2D(getCLIJ2(), arg1, arg2, arg3);
+        return arg2;
     }
 
     /**
@@ -2858,9 +2863,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Example transform:
      * transform = "-center scale=2 rotate=45 center";
      */
-    public static boolean affine_transform2d(ClearCLBuffer source, ClearCLImageInterface destination, String transform) {
-        boolean result = AffineTransform2D.affineTransform2D(getCLIJ2(), source, destination, transform);
-        return result;
+    public static ClearCLImageInterface affine_transform2d(ClearCLBuffer source, ClearCLImageInterface destination, String transform) {
+        AffineTransform2D.affineTransform2D(getCLIJ2(), source, destination, transform);
+        return destination;
     }
 
     /**
@@ -2885,9 +2890,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Example transform:
      * transform = "-center scale=2 rotate=45 center";
      */
-    public static boolean affine_transform2d(ClearCLBuffer arg1, ClearCLImageInterface arg2, net.imglib2.realtransform.AffineTransform2D arg3) {
-        boolean result = AffineTransform2D.affineTransform2D(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLImageInterface affine_transform2d(ClearCLBuffer arg1, ClearCLImageInterface arg2, net.imglib2.realtransform.AffineTransform2D arg3) {
+        AffineTransform2D.affineTransform2D(getCLIJ2(), arg1, arg2, arg3);
+        return arg2;
     }
 
     /**
@@ -2912,9 +2917,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Example transform:
      * transform = "-center scale=2 rotate=45 center";
      */
-    public static boolean affine_transform2d(ClearCLImage arg1, ClearCLImageInterface arg2, float[] arg3) {
-        boolean result = AffineTransform2D.affineTransform2D(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLImageInterface affine_transform2d(ClearCLImage arg1, ClearCLImageInterface arg2, float[] arg3) {
+        AffineTransform2D.affineTransform2D(getCLIJ2(), arg1, arg2, arg3);
+        return arg2;
     }
 
     /**
@@ -2939,9 +2944,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Example transform:
      * transform = "-center scale=2 rotate=45 center";
      */
-    public static boolean affine_transform2d(ClearCLImage arg1, ClearCLImageInterface arg2, net.imglib2.realtransform.AffineTransform2D arg3) {
-        boolean result = AffineTransform2D.affineTransform2D(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLImageInterface affine_transform2d(ClearCLImage arg1, ClearCLImageInterface arg2, net.imglib2.realtransform.AffineTransform2D arg3) {
+        AffineTransform2D.affineTransform2D(getCLIJ2(), arg1, arg2, arg3);
+        return arg2;
     }
 
 
@@ -2979,9 +2984,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Example transform:
      * transform = "-center scale=2 rotate=45 center";
      */
-    public static boolean affine_transform3d(ClearCLBuffer arg1, ClearCLImageInterface arg2, float[] arg3) {
-        boolean result = AffineTransform3D.affineTransform3D(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLImageInterface affine_transform3d(ClearCLBuffer arg1, ClearCLImageInterface arg2, float[] arg3) {
+        AffineTransform3D.affineTransform3D(getCLIJ2(), arg1, arg2, arg3);
+        return arg2;
     }
 
     /**
@@ -3016,9 +3021,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Example transform:
      * transform = "-center scale=2 rotate=45 center";
      */
-    public static boolean affine_transform3d(ClearCLBuffer source, ClearCLImageInterface destination, String transform) {
-        boolean result = AffineTransform3D.affineTransform3D(getCLIJ2(), source, destination, transform);
-        return result;
+    public static ClearCLImageInterface affine_transform3d(ClearCLBuffer source, ClearCLImageInterface destination, String transform) {
+        AffineTransform3D.affineTransform3D(getCLIJ2(), source, destination, transform);
+        return destination;
     }
 
     /**
@@ -3053,9 +3058,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Example transform:
      * transform = "-center scale=2 rotate=45 center";
      */
-    public static boolean affine_transform3d(ClearCLBuffer arg1, ClearCLImageInterface arg2, net.imglib2.realtransform.AffineTransform3D arg3) {
-        boolean result = AffineTransform3D.affineTransform3D(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLImageInterface affine_transform3d(ClearCLBuffer arg1, ClearCLImageInterface arg2, net.imglib2.realtransform.AffineTransform3D arg3) {
+        AffineTransform3D.affineTransform3D(getCLIJ2(), arg1, arg2, arg3);
+        return arg2;
     }
 
     /**
@@ -3090,9 +3095,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Example transform:
      * transform = "-center scale=2 rotate=45 center";
      */
-    public static boolean affine_transform3d(ClearCLImage arg1, ClearCLImageInterface arg2, float[] arg3) {
-        boolean result = AffineTransform3D.affineTransform3D(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLImageInterface affine_transform3d(ClearCLImage arg1, ClearCLImageInterface arg2, float[] arg3) {
+        AffineTransform3D.affineTransform3D(getCLIJ2(), arg1, arg2, arg3);
+        return arg2;
     }
 
     /**
@@ -3127,9 +3132,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Example transform:
      * transform = "-center scale=2 rotate=45 center";
      */
-    public static boolean affine_transform3d(ClearCLImage arg1, ClearCLImageInterface arg2, net.imglib2.realtransform.AffineTransform3D arg3) {
-        boolean result = AffineTransform3D.affineTransform3D(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLImageInterface affine_transform3d(ClearCLImage arg1, ClearCLImageInterface arg2, net.imglib2.realtransform.AffineTransform3D arg3) {
+        AffineTransform3D.affineTransform3D(getCLIJ2(), arg1, arg2, arg3);
+        return arg2;
     }
 
 
@@ -3140,9 +3145,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      *  It is recommended to use 32-bit images for input, output and vector images. 
      */
-    public static boolean apply_vector_field(ClearCLImageInterface source, ClearCLImageInterface vectorX, ClearCLImageInterface vectorY, ClearCLImageInterface destination) {
-        boolean result = ApplyVectorField2D.applyVectorField(getCLIJ2(), source, vectorX, vectorY, destination);
-        return result;
+    public static ClearCLImageInterface apply_vector_field(ClearCLImageInterface source, ClearCLImageInterface vectorX, ClearCLImageInterface vectorY, ClearCLImageInterface destination) {
+        ApplyVectorField2D.applyVectorField(getCLIJ2(), source, vectorX, vectorY, destination);
+        return destination;
     }
 
     /**
@@ -3150,9 +3155,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      *  It is recommended to use 32-bit images for input, output and vector images. 
      */
-    public static boolean apply_vector_field2d(ClearCLImageInterface source, ClearCLImageInterface vectorX, ClearCLImageInterface vectorY, ClearCLImageInterface destination) {
-        boolean result = ApplyVectorField2D.applyVectorField2D(getCLIJ2(), source, vectorX, vectorY, destination);
-        return result;
+    public static ClearCLImageInterface apply_vector_field2d(ClearCLImageInterface source, ClearCLImageInterface vectorX, ClearCLImageInterface vectorY, ClearCLImageInterface destination) {
+        ApplyVectorField2D.applyVectorField2D(getCLIJ2(), source, vectorX, vectorY, destination);
+        return destination;
     }
 
 
@@ -3163,9 +3168,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      *  It is recommended to use 32-bit images for input, output and vector images. 
      */
-    public static boolean apply_vector_field(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3, ClearCLImageInterface arg4, ClearCLImageInterface arg5) {
-        boolean result = ApplyVectorField3D.applyVectorField(getCLIJ2(), arg1, arg2, arg3, arg4, arg5);
-        return result;
+    public static ClearCLImageInterface apply_vector_field(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3, ClearCLImageInterface arg4, ClearCLImageInterface arg5) {
+        ApplyVectorField3D.applyVectorField(getCLIJ2(), arg1, arg2, arg3, arg4, arg5);
+        return arg5;
     }
 
     /**
@@ -3173,9 +3178,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * It is recommended to use 32-bit image stacks for input, output and vector image stacks. 
      */
-    public static boolean apply_vector_field3d(ClearCLImageInterface source, ClearCLImageInterface vectorX, ClearCLImageInterface vectorY, ClearCLImageInterface vectorZ, ClearCLImageInterface destination) {
-        boolean result = ApplyVectorField3D.applyVectorField3D(getCLIJ2(), source, vectorX, vectorY, vectorZ, destination);
-        return result;
+    public static ClearCLImageInterface apply_vector_field3d(ClearCLImageInterface source, ClearCLImageInterface vectorX, ClearCLImageInterface vectorY, ClearCLImageInterface vectorZ, ClearCLImageInterface destination) {
+        ApplyVectorField3D.applyVectorField3D(getCLIJ2(), source, vectorX, vectorY, vectorZ, destination);
+        return destination;
     }
 
 
@@ -3186,9 +3191,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Furthermore, another 2D image is generated with pixels containing the z-index where the maximum was found (zero based).
      */
-    public static boolean arg_maximum_z_projection(ClearCLImageInterface source, ClearCLImageInterface destination_max, ClearCLImageInterface destination_arg_max) {
-        boolean result = ArgMaximumZProjection.argMaximumZProjection(getCLIJ2(), source, destination_max, destination_arg_max);
-        return result;
+    public static ClearCLImageInterface arg_maximum_z_projection(ClearCLImageInterface source, ClearCLImageInterface destination_max, ClearCLImageInterface destination_arg_max) {
+        ArgMaximumZProjection.argMaximumZProjection(getCLIJ2(), source, destination_max, destination_arg_max);
+        return destination_arg_max;
     }
 
 
@@ -3204,9 +3209,9 @@ abstract class SnakeInterface extends CommonAPI {
      * When calling this operation many times, it is recommended to determine minimum and maximum intensity 
      * once at the beginning and handing over these values.
      */
-    public static boolean histogram(ClearCLBuffer arg1, ClearCLBuffer arg2) {
-        boolean result = Histogram.histogram(getCLIJ2(), arg1, arg2);
-        return result;
+    public static ClearCLBuffer histogram(ClearCLBuffer arg1, ClearCLBuffer arg2) {
+        Histogram.histogram(getCLIJ2(), arg1, arg2);
+        return arg2;
     }
 
     /**
@@ -3219,9 +3224,9 @@ abstract class SnakeInterface extends CommonAPI {
      * When calling this operation many times, it is recommended to determine minimum and maximum intensity 
      * once at the beginning and handing over these values.
      */
-    public static boolean histogram(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, boolean arg6) {
-        boolean result = Histogram.histogram(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), arg6);
-        return result;
+    public static ClearCLBuffer histogram(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, boolean arg6) {
+        Histogram.histogram(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), arg6);
+        return arg2;
     }
 
     /**
@@ -3234,9 +3239,9 @@ abstract class SnakeInterface extends CommonAPI {
      * When calling this operation many times, it is recommended to determine minimum and maximum intensity 
      * once at the beginning and handing over these values.
      */
-    public static boolean histogram(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, boolean arg6, boolean arg7) {
-        boolean result = Histogram.histogram(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), arg6, arg7);
-        return result;
+    public static ClearCLBuffer histogram(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, boolean arg6, boolean arg7) {
+        Histogram.histogram(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), arg6, arg7);
+        return arg2;
     }
 
     /**
@@ -3249,9 +3254,9 @@ abstract class SnakeInterface extends CommonAPI {
      * When calling this operation many times, it is recommended to determine minimum and maximum intensity 
      * once at the beginning and handing over these values.
      */
-    public static float[] histogram(ClearCLBuffer arg1, double arg2, double arg3, double arg4) {
-        float[] result = Histogram.histogram(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLBuffer histogram(ClearCLBuffer arg1, double arg2, double arg3, double arg4) {
+        Histogram.histogram(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).intValue());
+        return arg1;
     }
 
     /**
@@ -3265,8 +3270,8 @@ abstract class SnakeInterface extends CommonAPI {
      * once at the beginning and handing over these values.
      */
     public static ClearCLBuffer histogram(ClearCLBuffer arg1) {
-        ClearCLBuffer result = Histogram.histogram(getCLIJ2(), arg1);
-        return result;
+        Histogram.histogram(getCLIJ2(), arg1);
+        return arg1;
     }
 
 
@@ -3280,9 +3285,9 @@ abstract class SnakeInterface extends CommonAPI {
      * of these methods in the method text field:
      * [Default, Huang, Intermodes, IsoData, IJ_IsoData, Li, MaxEntropy, Mean, MinError, Minimum, Moments, Otsu, Percentile, RenyiEntropy, Shanbhag, Triangle, Yen]
      */
-    public static boolean automatic_threshold(ClearCLBuffer input, ClearCLBuffer destination, String method) {
-        boolean result = AutomaticThreshold.automaticThreshold(getCLIJ2(), input, destination, method);
-        return result;
+    public static ClearCLBuffer automatic_threshold(ClearCLBuffer input, ClearCLBuffer destination, String method) {
+        AutomaticThreshold.automaticThreshold(getCLIJ2(), input, destination, method);
+        return destination;
     }
 
     /**
@@ -3293,9 +3298,9 @@ abstract class SnakeInterface extends CommonAPI {
      * of these methods in the method text field:
      * [Default, Huang, Intermodes, IsoData, IJ_IsoData, Li, MaxEntropy, Mean, MinError, Minimum, Moments, Otsu, Percentile, RenyiEntropy, Shanbhag, Triangle, Yen]
      */
-    public static boolean automatic_threshold(ClearCLBuffer arg1, ClearCLBuffer arg2, String arg3, double arg4, double arg5, double arg6) {
-        boolean result = AutomaticThreshold.automaticThreshold(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).intValue());
-        return result;
+    public static ClearCLBuffer automatic_threshold(ClearCLBuffer arg1, ClearCLBuffer arg2, String arg3, double arg4, double arg5, double arg6) {
+        AutomaticThreshold.automaticThreshold(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).intValue());
+        return arg2;
     }
 
 
@@ -3311,9 +3316,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This plugin is comparable to setting a raw threshold in ImageJ and using the 'Convert to Mask' menu.
      */
-    public static boolean threshold(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
-        boolean result = Threshold.threshold(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLImageInterface threshold(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
+        Threshold.threshold(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -3335,9 +3340,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The output image where results are written into.
      * 
      */
-    public static boolean binary_or(ClearCLImageInterface operand1, ClearCLImageInterface operand2, ClearCLImageInterface destination) {
-        boolean result = BinaryOr.binaryOr(getCLIJ2(), operand1, operand2, destination);
-        return result;
+    public static ClearCLImageInterface binary_or(ClearCLImageInterface operand1, ClearCLImageInterface operand2, ClearCLImageInterface destination) {
+        BinaryOr.binaryOr(getCLIJ2(), operand1, operand2, destination);
+        return destination;
     }
 
 
@@ -3360,9 +3365,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The output image where results are written into.
      * 
      */
-    public static boolean binary_and(ClearCLImageInterface operand1, ClearCLImageInterface operand2, ClearCLImageInterface destination) {
-        boolean result = BinaryAnd.binaryAnd(getCLIJ2(), operand1, operand2, destination);
-        return result;
+    public static ClearCLImageInterface binary_and(ClearCLImageInterface operand1, ClearCLImageInterface operand2, ClearCLImageInterface destination) {
+        BinaryAnd.binaryAnd(getCLIJ2(), operand1, operand2, destination);
+        return destination;
     }
 
 
@@ -3386,9 +3391,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The output image where results are written into.
      * 
      */
-    public static boolean binary_xor(ClearCLImageInterface operand1, ClearCLImageInterface operand2, ClearCLImageInterface destination) {
-        boolean result = BinaryXOr.binaryXOr(getCLIJ2(), operand1, operand2, destination);
-        return result;
+    public static ClearCLImageInterface binary_xor(ClearCLImageInterface operand1, ClearCLImageInterface operand2, ClearCLImageInterface destination) {
+        BinaryXOr.binaryXOr(getCLIJ2(), operand1, operand2, destination);
+        return destination;
     }
 
 
@@ -3410,9 +3415,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The output image where results are written into.
      * 
      */
-    public static boolean binary_not(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = BinaryNot.binaryNot(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface binary_not(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        BinaryNot.binaryNot(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -3424,9 +3429,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The erosion takes the von-Neumann-neighborhood (4 pixels in 2D and 6 pixels in 3d) into account.
      * The pixels in the input image with pixel value not equal to 0 will be interpreted as 1.
      */
-    public static boolean erode_sphere(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = ErodeSphere.erodeSphere(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface erode_sphere(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        ErodeSphere.erodeSphere(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -3441,9 +3446,9 @@ abstract class SnakeInterface extends CommonAPI {
      * This method is comparable to the 'Erode' menu in ImageJ in case it is applied to a 2D image. The only
      * difference is that the output image contains values 0 and 1 instead of 0 and 255.
      */
-    public static boolean erode_box(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = ErodeBox.erodeBox(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface erode_box(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        ErodeBox.erodeBox(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -3457,9 +3462,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This filter is applied slice by slice in 2D.
      */
-    public static boolean erode_sphere_slice_by_slice(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = ErodeSphereSliceBySlice.erodeSphereSliceBySlice(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface erode_sphere_slice_by_slice(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        ErodeSphereSliceBySlice.erodeSphereSliceBySlice(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -3476,9 +3481,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This filter is applied slice by slice in 2D.
      */
-    public static boolean erode_box_slice_by_slice(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = ErodeBoxSliceBySlice.erodeBoxSliceBySlice(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface erode_box_slice_by_slice(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        ErodeBoxSliceBySlice.erodeBoxSliceBySlice(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -3490,9 +3495,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The dilation takes the von-Neumann-neighborhood (4 pixels in 2D and 6 pixels in 3d) into account.
      * The pixels in the input image with pixel value not equal to 0 will be interpreted as 1.
      */
-    public static boolean dilate_sphere(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = DilateSphere.dilateSphere(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface dilate_sphere(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        DilateSphere.dilateSphere(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -3507,9 +3512,9 @@ abstract class SnakeInterface extends CommonAPI {
      * This method is comparable to the 'Dilate' menu in ImageJ in case it is applied to a 2D image. The only
      * difference is that the output image contains values 0 and 1 instead of 0 and 255.
      */
-    public static boolean dilate_box(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = DilateBox.dilateBox(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface dilate_box(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        DilateBox.dilateBox(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -3523,9 +3528,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This filter is applied slice by slice in 2D.
      */
-    public static boolean dilate_sphere_slice_by_slice(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = DilateSphereSliceBySlice.dilateSphereSliceBySlice(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface dilate_sphere_slice_by_slice(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        DilateSphereSliceBySlice.dilateSphereSliceBySlice(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -3542,9 +3547,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This filter is applied slice by slice in 2D.
      */
-    public static boolean dilate_box_slice_by_slice(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = DilateBoxSliceBySlice.dilateBoxSliceBySlice(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface dilate_box_slice_by_slice(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        DilateBoxSliceBySlice.dilateBoxSliceBySlice(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -3555,9 +3560,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * <pre>f(x) = x</pre>
      */
-    public static boolean copy(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = Copy.copy(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface copy(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        Copy.copy(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -3572,9 +3577,9 @@ abstract class SnakeInterface extends CommonAPI {
      * target 3D image already pre-exists in GPU memory before calling this method. Otherwise, CLIJ create 
      * the image stack with z planes.
      */
-    public static boolean copy_slice(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
-        boolean result = CopySlice.copySlice(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLImageInterface copy_slice(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
+        CopySlice.copySlice(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -3585,9 +3590,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Note: If the destination image pre-exists already, it will be overwritten and keep it's dimensions.
      */
-    public static boolean crop(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = Crop2D.crop(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface crop(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        Crop2D.crop(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
     /**
@@ -3595,9 +3600,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Note: If the destination image pre-exists already, it will be overwritten and keep it's dimensions.
      */
-    public static boolean crop2d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = Crop2D.crop2D(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface crop2d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        Crop2D.crop2D(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -3608,9 +3613,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Note: If the destination image pre-exists already, it will be overwritten and keep it's dimensions.
      */
-    public static boolean crop(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = Crop3D.crop(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface crop(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        Crop3D.crop(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
     /**
@@ -3618,9 +3623,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Note: If the destination image pre-exists already, it will be overwritten and keep it's dimensions.
      */
-    public static boolean crop3d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = Crop3D.crop3D(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface crop3d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        Crop3D.crop3D(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -3631,9 +3636,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * <pre>f(x) = v</pre>
      */
-    public static boolean set(ClearCLImageInterface arg1, double arg2) {
-        boolean result = Set.set(getCLIJ2(), arg1, new Double (arg2).floatValue());
-        return result;
+    public static ClearCLImageInterface set(ClearCLImageInterface arg1, double arg2) {
+        Set.set(getCLIJ2(), arg1, new Double (arg2).floatValue());
+        return arg1;
     }
 
 
@@ -3642,17 +3647,17 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Flips an image in X and/or Y direction depending on boolean flags.
      */
-    public static boolean flip(ClearCLImageInterface arg1, ClearCLImageInterface arg2, boolean arg3, boolean arg4) {
-        boolean result = Flip2D.flip(getCLIJ2(), arg1, arg2, arg3, arg4);
-        return result;
+    public static ClearCLImageInterface flip(ClearCLImageInterface arg1, ClearCLImageInterface arg2, boolean arg3, boolean arg4) {
+        Flip2D.flip(getCLIJ2(), arg1, arg2, arg3, arg4);
+        return arg2;
     }
 
     /**
      * Flips an image in X and/or Y direction depending on boolean flags.
      */
-    public static boolean flip2d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, boolean arg3, boolean arg4) {
-        boolean result = Flip2D.flip2D(getCLIJ2(), arg1, arg2, arg3, arg4);
-        return result;
+    public static ClearCLImageInterface flip2d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, boolean arg3, boolean arg4) {
+        Flip2D.flip2D(getCLIJ2(), arg1, arg2, arg3, arg4);
+        return arg2;
     }
 
 
@@ -3661,17 +3666,17 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Flips an image in X and/or Y direction depending on boolean flags.
      */
-    public static boolean flip(ClearCLImageInterface arg1, ClearCLImageInterface arg2, boolean arg3, boolean arg4, boolean arg5) {
-        boolean result = Flip3D.flip(getCLIJ2(), arg1, arg2, arg3, arg4, arg5);
-        return result;
+    public static ClearCLImageInterface flip(ClearCLImageInterface arg1, ClearCLImageInterface arg2, boolean arg3, boolean arg4, boolean arg5) {
+        Flip3D.flip(getCLIJ2(), arg1, arg2, arg3, arg4, arg5);
+        return arg2;
     }
 
     /**
      * Flips an image in X, Y and/or Z direction depending on boolean flags.
      */
-    public static boolean flip3d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, boolean arg3, boolean arg4, boolean arg5) {
-        boolean result = Flip3D.flip3D(getCLIJ2(), arg1, arg2, arg3, arg4, arg5);
-        return result;
+    public static ClearCLImageInterface flip3d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, boolean arg3, boolean arg4, boolean arg5) {
+        Flip3D.flip3D(getCLIJ2(), arg1, arg2, arg3, arg4, arg5);
+        return arg2;
     }
 
 
@@ -3684,9 +3689,9 @@ abstract class SnakeInterface extends CommonAPI {
      * are flipped. This operation is similar to ImageJs 'Reslice [/]' method but offers less flexibility 
      * such as interpolation.
      */
-    public static boolean rotate_counter_clockwise(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = RotateCounterClockwise.rotateCounterClockwise(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface rotate_counter_clockwise(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        RotateCounterClockwise.rotateCounterClockwise(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -3699,9 +3704,9 @@ abstract class SnakeInterface extends CommonAPI {
      * are flipped. This operation is similar to ImageJs 'Reslice [/]' method but offers less flexibility 
      * such as interpolation.
      */
-    public static boolean rotate_clockwise(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = RotateClockwise.rotateClockwise(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface rotate_clockwise(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        RotateClockwise.rotateClockwise(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -3716,9 +3721,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * <pre>f(x,m) = (x if (m != 0); (0 otherwise))</pre>
      */
-    public static boolean mask(ClearCLImageInterface source, ClearCLImageInterface mask, ClearCLImageInterface destination) {
-        boolean result = Mask.mask(getCLIJ2(), source, mask, destination);
-        return result;
+    public static ClearCLImageInterface mask(ClearCLImageInterface source, ClearCLImageInterface mask, ClearCLImageInterface destination) {
+        Mask.mask(getCLIJ2(), source, mask, destination);
+        return destination;
     }
 
 
@@ -3733,9 +3738,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * <pre>f(x,m) = (x if (m != 0); (0 otherwise))</pre>
      */
-    public static boolean mask_stack_with_plane(ClearCLImageInterface source, ClearCLImageInterface mask, ClearCLImageInterface destination) {
-        boolean result = MaskStackWithPlane.maskStackWithPlane(getCLIJ2(), source, mask, destination);
-        return result;
+    public static ClearCLImageInterface mask_stack_with_plane(ClearCLImageInterface source, ClearCLImageInterface mask, ClearCLImageInterface destination) {
+        MaskStackWithPlane.maskStackWithPlane(getCLIJ2(), source, mask, destination);
+        return destination;
     }
 
 
@@ -3744,9 +3749,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the maximum intensity projection of an image along Z.
      */
-    public static boolean maximum_z_projection(ClearCLImageInterface source, ClearCLImageInterface destination_max) {
-        boolean result = MaximumZProjection.maximumZProjection(getCLIJ2(), source, destination_max);
-        return result;
+    public static ClearCLImageInterface maximum_z_projection(ClearCLImageInterface source, ClearCLImageInterface destination_max) {
+        MaximumZProjection.maximumZProjection(getCLIJ2(), source, destination_max);
+        return destination_max;
     }
 
 
@@ -3755,9 +3760,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the mean average intensity projection of an image along Z.
      */
-    public static boolean mean_z_projection(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = MeanZProjection.meanZProjection(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface mean_z_projection(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        MeanZProjection.meanZProjection(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -3766,9 +3771,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the minimum intensity projection of an image along Z.
      */
-    public static boolean minimum_z_projection(ClearCLImageInterface source, ClearCLImageInterface destination_min) {
-        boolean result = MinimumZProjection.minimumZProjection(getCLIJ2(), source, destination_min);
-        return result;
+    public static ClearCLImageInterface minimum_z_projection(ClearCLImageInterface source, ClearCLImageInterface destination_min) {
+        MinimumZProjection.minimumZProjection(getCLIJ2(), source, destination_min);
+        return destination_min;
     }
 
 
@@ -3779,9 +3784,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * <pre>f(x, a) = x ^ a</pre>
      */
-    public static boolean power(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
-        boolean result = Power.power(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLImageInterface power(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
+        Power.power(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -3792,9 +3797,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * <pre>f(x, y) = x / y</pre>
      */
-    public static boolean divide_images(ClearCLImageInterface divident, ClearCLImageInterface divisor, ClearCLImageInterface destination) {
-        boolean result = DivideImages.divideImages(getCLIJ2(), divident, divisor, destination);
-        return result;
+    public static ClearCLImageInterface divide_images(ClearCLImageInterface divident, ClearCLImageInterface divisor, ClearCLImageInterface destination) {
+        DivideImages.divideImages(getCLIJ2(), divident, divisor, destination);
+        return destination;
     }
 
 
@@ -3805,9 +3810,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * <pre>f(x, y) = max(x, y)</pre>
      */
-    public static boolean maximum_images(ClearCLImageInterface source1, ClearCLImageInterface source2, ClearCLImageInterface destination) {
-        boolean result = MaximumImages.maximumImages(getCLIJ2(), source1, source2, destination);
-        return result;
+    public static ClearCLImageInterface maximum_images(ClearCLImageInterface source1, ClearCLImageInterface source2, ClearCLImageInterface destination) {
+        MaximumImages.maximumImages(getCLIJ2(), source1, source2, destination);
+        return destination;
     }
 
 
@@ -3818,9 +3823,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * <pre>f(x, s) = max(x, s)</pre>
      */
-    public static boolean maximum_image_and_scalar(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
-        boolean result = MaximumImageAndScalar.maximumImageAndScalar(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLImageInterface maximum_image_and_scalar(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
+        MaximumImageAndScalar.maximumImageAndScalar(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -3831,9 +3836,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * <pre>f(x, y) = min(x, y)</pre>
      */
-    public static boolean minimum_images(ClearCLImageInterface source1, ClearCLImageInterface source2, ClearCLImageInterface destination) {
-        boolean result = MinimumImages.minimumImages(getCLIJ2(), source1, source2, destination);
-        return result;
+    public static ClearCLImageInterface minimum_images(ClearCLImageInterface source1, ClearCLImageInterface source2, ClearCLImageInterface destination) {
+        MinimumImages.minimumImages(getCLIJ2(), source1, source2, destination);
+        return destination;
     }
 
 
@@ -3844,9 +3849,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * <pre>f(x, s) = min(x, s)</pre>
      */
-    public static boolean minimum_image_and_scalar(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
-        boolean result = MinimumImageAndScalar.minimumImageAndScalar(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLImageInterface minimum_image_and_scalar(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
+        MinimumImageAndScalar.minimumImageAndScalar(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -3867,9 +3872,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The number with which every pixel will be multiplied with.
      * 
      */
-    public static boolean multiply_image_and_scalar(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
-        boolean result = MultiplyImageAndScalar.multiplyImageAndScalar(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLImageInterface multiply_image_and_scalar(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
+        MultiplyImageAndScalar.multiplyImageAndScalar(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -3883,9 +3888,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * <pre>f(x, y) = x * y</pre>
      */
-    public static boolean multiply_stack_with_plane(ClearCLImageInterface sourceStack, ClearCLImageInterface sourcePlane, ClearCLImageInterface destination) {
-        boolean result = MultiplyStackWithPlane.multiplyStackWithPlane(getCLIJ2(), sourceStack, sourcePlane, destination);
-        return result;
+    public static ClearCLImageInterface multiply_stack_with_plane(ClearCLImageInterface sourceStack, ClearCLImageInterface sourcePlane, ClearCLImageInterface destination) {
+        MultiplyStackWithPlane.multiplyStackWithPlane(getCLIJ2(), sourceStack, sourcePlane, destination);
+        return destination;
     }
 
 
@@ -3896,9 +3901,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Put the number in the result image.
      */
-    public static boolean count_non_zero_pixels2d_sphere(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
-        boolean result = CountNonZeroPixels2DSphere.countNonZeroPixels2DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLBuffer count_non_zero_pixels2d_sphere(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
+        CountNonZeroPixels2DSphere.countNonZeroPixels2DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -3909,9 +3914,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      *  It puts the resulting number in the destination image stack.
      */
-    public static boolean count_non_zero_pixels_slice_by_slice_sphere(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
-        boolean result = CountNonZeroPixelsSliceBySliceSphere.countNonZeroPixelsSliceBySliceSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLBuffer count_non_zero_pixels_slice_by_slice_sphere(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
+        CountNonZeroPixelsSliceBySliceSphere.countNonZeroPixelsSliceBySliceSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -3922,9 +3927,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Put the number in the result image.
      */
-    public static boolean count_non_zero_voxels3d_sphere(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
-        boolean result = CountNonZeroVoxels3DSphere.countNonZeroVoxels3DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLBuffer count_non_zero_voxels3d_sphere(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        CountNonZeroVoxels3DSphere.countNonZeroVoxels3DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -3933,9 +3938,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the sum intensity projection of an image along Z.
      */
-    public static boolean sum_z_projection(ClearCLImageInterface source, ClearCLImageInterface destination_sum) {
-        boolean result = SumZProjection.sumZProjection(getCLIJ2(), source, destination_sum);
-        return result;
+    public static ClearCLImageInterface sum_z_projection(ClearCLImageInterface source, ClearCLImageInterface destination_sum) {
+        SumZProjection.sumZProjection(getCLIJ2(), source, destination_sum);
+        return destination_sum;
     }
 
 
@@ -3953,9 +3958,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The image of which all pixels or voxels will be summed.
      * 
      */
-    public static double sum_of_all_pixels(ClearCLImageInterface source) {
-        double result = SumOfAllPixels.sumOfAllPixels(getCLIJ2(), source);
-        return result;
+    public static ClearCLImageInterface sum_of_all_pixels(ClearCLImageInterface source) {
+        SumOfAllPixels.sumOfAllPixels(getCLIJ2(), source);
+        return source;
     }
 
 
@@ -3967,9 +3972,9 @@ abstract class SnakeInterface extends CommonAPI {
      * It writes the result in the results table
      * in the columns MassX, MassY and MassZ.
      */
-    public static double[] center_of_mass(ClearCLBuffer source) {
-        double[] result = CenterOfMass.centerOfMass(getCLIJ2(), source);
-        return result;
+    public static ClearCLBuffer center_of_mass(ClearCLBuffer source) {
+        CenterOfMass.centerOfMass(getCLIJ2(), source);
+        return source;
     }
 
 
@@ -3985,9 +3990,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * For binary images, use binaryNot.
      */
-    public static boolean invert(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = Invert.invert(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface invert(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        Invert.invert(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -4006,9 +4011,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The median method is applied. Thus, each pixel value in the destination image equals to the median of
      * four corresponding pixels in the source image.
      */
-    public static boolean downsample_slice_by_slice_half_median(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = DownsampleSliceBySliceHalfMedian.downsampleSliceBySliceHalfMedian(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface downsample_slice_by_slice_half_median(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        DownsampleSliceBySliceHalfMedian.downsampleSliceBySliceHalfMedian(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -4020,9 +4025,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * <pre>f(x) = (1 if (x >=  m)); (0 otherwise)</pre>
      */
-    public static boolean local_threshold(ClearCLImageInterface source, ClearCLImageInterface localThreshold, ClearCLImageInterface destination) {
-        boolean result = LocalThreshold.localThreshold(getCLIJ2(), source, localThreshold, destination);
-        return result;
+    public static ClearCLImageInterface local_threshold(ClearCLImageInterface source, ClearCLImageInterface localThreshold, ClearCLImageInterface destination) {
+        LocalThreshold.localThreshold(getCLIJ2(), source, localThreshold, destination);
+        return destination;
     }
 
 
@@ -4034,9 +4039,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Assuming a, b and c are three adjacent
      *  pixels in X direction. In the target image will be saved as: <pre>b' = c - a;</pre>
      */
-    public static boolean gradient_x(ClearCLBuffer source, ClearCLBuffer destination) {
-        boolean result = GradientX.gradientX(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLBuffer gradient_x(ClearCLBuffer source, ClearCLBuffer destination) {
+        GradientX.gradientX(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -4048,9 +4053,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Assuming a, b and c are three adjacent
      *  pixels in Y direction. In the target image will be saved as: <pre>b' = c - a;</pre>
      */
-    public static boolean gradient_y(ClearCLBuffer source, ClearCLBuffer destination) {
-        boolean result = GradientY.gradientY(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLBuffer gradient_y(ClearCLBuffer source, ClearCLBuffer destination) {
+        GradientY.gradientY(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -4062,9 +4067,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Assuming a, b and c are three adjacent
      *  pixels in Z direction. In the target image will be saved as: <pre>b' = c - a;</pre>
      */
-    public static boolean gradient_z(ClearCLBuffer source, ClearCLBuffer destination) {
-        boolean result = GradientZ.gradientZ(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLBuffer gradient_z(ClearCLBuffer source, ClearCLBuffer destination) {
+        GradientZ.gradientZ(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -4073,9 +4078,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Multiplies all pixel intensities with the x, y or z coordinate, depending on specified dimension.
      */
-    public static boolean multiply_image_and_coordinate(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
-        boolean result = MultiplyImageAndCoordinate.multiplyImageAndCoordinate(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLImageInterface multiply_image_and_coordinate(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
+        MultiplyImageAndCoordinate.multiplyImageAndCoordinate(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -4087,9 +4092,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The rectangles size is specified by 
      * its half-width and half-height (radius).
      */
-    public static boolean mean2d_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = Mean2DBox.mean2DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface mean2d_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        Mean2DBox.mean2DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -4101,9 +4106,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The ellipses size is specified by 
      * its half-width and half-height (radius).
      */
-    public static boolean mean2d_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = Mean2DSphere.mean2DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface mean2d_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        Mean2DSphere.mean2DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -4115,9 +4120,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The cubes size is specified by 
      * its half-width, half-height and half-depth (radius).
      */
-    public static boolean mean3d_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = Mean3DBox.mean3DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface mean3d_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        Mean3DBox.mean3DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
     /**
@@ -4126,9 +4131,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The rectangles size is specified by 
      * its half-width and half-height (radius).
      */
-    public static boolean mean_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = Mean3DBox.meanBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface mean_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        Mean3DBox.meanBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -4140,9 +4145,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The spheres size is specified by 
      * its half-width, half-height and half-depth (radius).
      */
-    public static boolean mean3d_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = Mean3DSphere.mean3DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface mean3d_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        Mean3DSphere.mean3DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -4156,9 +4161,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This filter is applied slice by slice in 2D.
      */
-    public static boolean mean_slice_by_slice_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = MeanSliceBySliceSphere.meanSliceBySliceSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface mean_slice_by_slice_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        MeanSliceBySliceSphere.meanSliceBySliceSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -4174,9 +4179,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The image of which the mean average of all pixels or voxels will be determined.
      * 
      */
-    public static double mean_of_all_pixels(ClearCLImageInterface source) {
-        double result = MeanOfAllPixels.meanOfAllPixels(getCLIJ2(), source);
-        return result;
+    public static ClearCLImageInterface mean_of_all_pixels(ClearCLImageInterface source) {
+        MeanOfAllPixels.meanOfAllPixels(getCLIJ2(), source);
+        return source;
     }
 
 
@@ -4190,9 +4195,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * For technical reasons, the area of the rectangle must have less than 1000 pixels.
      */
-    public static boolean median2d_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = Median2DBox.median2DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface median2d_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        Median2DBox.median2DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -4206,9 +4211,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * For technical reasons, the area of the ellipse must have less than 1000 pixels.
      */
-    public static boolean median2d_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = Median2DSphere.median2DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface median2d_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        Median2DSphere.median2DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -4222,9 +4227,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * For technical reasons, the volume of the cuboid must contain less than 1000 voxels.
      */
-    public static boolean median3d_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = Median3DBox.median3DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface median3d_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        Median3DBox.median3DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -4238,9 +4243,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * For technical reasons, the volume of the sphere must contain less than 1000 voxels.
      */
-    public static boolean median3d_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = Median3DSphere.median3DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface median3d_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        Median3DSphere.median3DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -4254,9 +4259,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * For technical reasons, the area of the rectangle must have less than 1000 pixels.
      */
-    public static boolean median3d_slice_by_slice_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = MedianSliceBySliceBox.median3DSliceBySliceBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface median3d_slice_by_slice_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        MedianSliceBySliceBox.median3DSliceBySliceBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -4270,9 +4275,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * For technical reasons, the area of the ellipse must have less than 1000 pixels.
      */
-    public static boolean median3d_slice_by_slice_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = MedianSliceBySliceSphere.median3DSliceBySliceSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface median3d_slice_by_slice_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        MedianSliceBySliceSphere.median3DSliceBySliceSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -4284,9 +4289,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The ellipses size is specified by 
      * its half-width and half-height (radius).
      */
-    public static boolean maximum2d_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = Maximum2DSphere.maximum2DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface maximum2d_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        Maximum2DSphere.maximum2DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -4298,9 +4303,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The spheres size is specified by 
      * its half-width, half-height and half-depth (radius).
      */
-    public static boolean maximum3d_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = Maximum3DSphere.maximum3DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface maximum3d_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        Maximum3DSphere.maximum3DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -4312,9 +4317,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The rectangles size is specified by 
      * its half-width and half-height (radius).
      */
-    public static boolean maximum2d_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = Maximum2DBox.maximum2DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface maximum2d_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        Maximum2DBox.maximum2DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
     /**
@@ -4323,9 +4328,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The rectangles size is specified by 
      * its half-width and half-height (radius).
      */
-    public static boolean maximum_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = Maximum2DBox.maximumBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface maximum_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        Maximum2DBox.maximumBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -4337,9 +4342,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The cubes size is specified by 
      * its half-width, half-height and half-depth (radius).
      */
-    public static boolean maximum3d_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = Maximum3DBox.maximum3DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface maximum3d_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        Maximum3DBox.maximum3DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
     /**
@@ -4348,9 +4353,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The rectangles size is specified by 
      * its half-width and half-height (radius).
      */
-    public static boolean maximum_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = Maximum3DBox.maximumBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface maximum_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        Maximum3DBox.maximumBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -4363,9 +4368,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This filter is applied slice by slice in 2D.
      */
-    public static boolean maximum3d_slice_by_slice_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = MaximumSliceBySliceSphere.maximum3DSliceBySliceSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface maximum3d_slice_by_slice_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        MaximumSliceBySliceSphere.maximum3DSliceBySliceSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -4377,9 +4382,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The ellipses size is specified by 
      * its half-width and half-height (radius).
      */
-    public static boolean minimum2d_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = Minimum2DSphere.minimum2DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface minimum2d_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        Minimum2DSphere.minimum2DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -4391,9 +4396,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The spheres size is specified by 
      * its half-width, half-height and half-depth (radius).
      */
-    public static boolean minimum3d_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = Minimum3DSphere.minimum3DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface minimum3d_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        Minimum3DSphere.minimum3DSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -4405,9 +4410,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The rectangles size is specified by 
      * its half-width and half-height (radius).
      */
-    public static boolean minimum2d_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = Minimum2DBox.minimum2DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface minimum2d_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        Minimum2DBox.minimum2DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
     /**
@@ -4416,9 +4421,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The rectangles size is specified by 
      * its half-width and half-height (radius).
      */
-    public static boolean minimum_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = Minimum2DBox.minimumBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface minimum_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        Minimum2DBox.minimumBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -4430,9 +4435,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The cubes size is specified by 
      * its half-width, half-height and half-depth (radius).
      */
-    public static boolean minimum3d_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = Minimum3DBox.minimum3DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface minimum3d_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        Minimum3DBox.minimum3DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
     /**
@@ -4441,9 +4446,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The rectangles size is specified by 
      * its half-width and half-height (radius).
      */
-    public static boolean minimum_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = Minimum3DBox.minimumBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface minimum_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        Minimum3DBox.minimumBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -4457,9 +4462,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This filter is applied slice by slice in 2D.
      */
-    public static boolean minimum3d_slice_by_slice_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = MinimumSliceBySliceSphere.minimum3DSliceBySliceSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface minimum3d_slice_by_slice_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        MinimumSliceBySliceSphere.minimum3DSliceBySliceSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -4480,9 +4485,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The output image where results are written into.
      * 
      */
-    public static boolean multiply_images(ClearCLImageInterface factor1, ClearCLImageInterface factor2, ClearCLImageInterface destination) {
-        boolean result = MultiplyImages.multiplyImages(getCLIJ2(), factor1, factor2, destination);
-        return result;
+    public static ClearCLImageInterface multiply_images(ClearCLImageInterface factor1, ClearCLImageInterface factor2, ClearCLImageInterface destination) {
+        MultiplyImages.multiplyImages(getCLIJ2(), factor1, factor2, destination);
+        return destination;
     }
 
 
@@ -4495,9 +4500,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The implementation is done separable. In case a sigma equals zero, the direction is not blurred.
      */
-    public static boolean gaussian_blur(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = GaussianBlur2D.gaussianBlur(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
-        return result;
+    public static ClearCLImageInterface gaussian_blur(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        GaussianBlur2D.gaussianBlur(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
+        return arg2;
     }
 
     /**
@@ -4507,9 +4512,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The implementation is done separable. In case a sigma equals zero, the direction is not blurred.
      */
-    public static boolean gaussian_blur2d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = GaussianBlur2D.gaussianBlur2D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
-        return result;
+    public static ClearCLImageInterface gaussian_blur2d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        GaussianBlur2D.gaussianBlur2D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
+        return arg2;
     }
 
 
@@ -4522,9 +4527,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The implementation is done separable. In case a sigma equals zero, the direction is not blurred.
      */
-    public static boolean gaussian_blur(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = GaussianBlur3D.gaussianBlur(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
-        return result;
+    public static ClearCLImageInterface gaussian_blur(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        GaussianBlur3D.gaussianBlur(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
+        return arg2;
     }
 
     /**
@@ -4534,9 +4539,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The implementation is done separable. In case a sigma equals zero, the direction is not blurred.
      */
-    public static boolean gaussian_blur3d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = GaussianBlur3D.gaussianBlur3D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
-        return result;
+    public static ClearCLImageInterface gaussian_blur3d(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        GaussianBlur3D.gaussianBlur3D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
+        return arg2;
     }
 
 
@@ -4549,9 +4554,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Flippes Y and Z axis of an image stack. This operation is similar to ImageJs 'Reslice [/]' method but
      * offers less flexibility such as interpolation.
      */
-    public static boolean reslice_bottom(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = ResliceBottom.resliceBottom(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface reslice_bottom(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        ResliceBottom.resliceBottom(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -4561,9 +4566,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Flippes Y and Z axis of an image stack. This operation is similar to ImageJs 'Reslice [/]' method but
      * offers less flexibility such as interpolation.
      */
-    public static boolean reslice_top(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = ResliceTop.resliceTop(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface reslice_top(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        ResliceTop.resliceTop(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -4573,9 +4578,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Flippes X, Y and Z axis of an image stack. This operation is similar to ImageJs 'Reslice [/]' method 
      *  but offers less flexibility such as interpolation.
      */
-    public static boolean reslice_left(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = ResliceLeft.resliceLeft(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface reslice_left(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        ResliceLeft.resliceLeft(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -4585,9 +4590,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Flippes X, Y and Z axis of an image stack. This operation is similar to ImageJs 'Reslice [/]' method 
      *  but offers less flexibility such as interpolation.
      */
-    public static boolean reslice_right(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = ResliceRight.resliceRight(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface reslice_right(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        ResliceRight.resliceRight(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -4601,9 +4606,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * It is recommended to apply the rotation to an isotropic image.
      */
-    public static boolean rotate2d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, boolean arg4) {
-        boolean result = Rotate2D.rotate2D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), arg4);
-        return result;
+    public static ClearCLBuffer rotate2d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, boolean arg4) {
+        Rotate2D.rotate2D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), arg4);
+        return arg2;
     }
 
 
@@ -4617,9 +4622,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * It is recommended to apply the rotation to an isotropic image stack.
      */
-    public static boolean rotate3d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, boolean arg6) {
-        boolean result = Rotate3D.rotate3D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), arg6);
-        return result;
+    public static ClearCLBuffer rotate3d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, boolean arg6) {
+        Rotate3D.rotate3D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), arg6);
+        return arg2;
     }
 
 
@@ -4628,33 +4633,33 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Scales an image with a given factor.
      */
-    public static boolean scale(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = Scale2D.scale(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLBuffer scale(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        Scale2D.scale(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
     /**
      * Scales an image with a given factor.
      */
-    public static boolean scale(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
-        boolean result = Scale2D.scale(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
-        return result;
+    public static ClearCLBuffer scale(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
+        Scale2D.scale(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
+        return arg2;
     }
 
     /**
      * Scales an image with a given factor.
      */
-    public static boolean scale2d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
-        boolean result = Scale2D.scale2D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
-        return result;
+    public static ClearCLBuffer scale2d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
+        Scale2D.scale2D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
+        return arg2;
     }
 
     /**
      * Scales an image with a given factor.
      */
-    public static boolean scale2d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, boolean arg5) {
-        boolean result = Scale2D.scale2D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), arg5);
-        return result;
+    public static ClearCLBuffer scale2d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, boolean arg5) {
+        Scale2D.scale2D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), arg5);
+        return arg2;
     }
 
 
@@ -4663,17 +4668,17 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Scales an image with a given factor.
      */
-    public static boolean scale3d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
-        boolean result = Scale3D.scale3D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
-        return result;
+    public static ClearCLBuffer scale3d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        Scale3D.scale3D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
+        return arg2;
     }
 
     /**
      * Scales an image with a given factor.
      */
-    public static boolean scale3d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, boolean arg6) {
-        boolean result = Scale3D.scale3D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), arg6);
-        return result;
+    public static ClearCLBuffer scale3d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, boolean arg6) {
+        Scale3D.scale3D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), arg6);
+        return arg2;
     }
 
 
@@ -4682,9 +4687,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Translate an image stack in X and Y.
      */
-    public static boolean translate2d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
-        boolean result = Translate2D.translate2D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
-        return result;
+    public static ClearCLBuffer translate2d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
+        Translate2D.translate2D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
+        return arg2;
     }
 
 
@@ -4693,9 +4698,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Translate an image stack in X, Y and Z.
      */
-    public static boolean translate3d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
-        boolean result = Translate3D.translate3D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
-        return result;
+    public static ClearCLBuffer translate3d(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        Translate3D.translate3D(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
+        return arg2;
     }
 
 
@@ -4761,9 +4766,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The constant number which will be added to all pixels.
      * 
      */
-    public static boolean add_image_and_scalar(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
-        boolean result = AddImageAndScalar.addImageAndScalar(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLImageInterface add_image_and_scalar(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
+        AddImageAndScalar.addImageAndScalar(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -4775,9 +4780,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Pixels in the resulting image are set to 1 if there is no other pixel in a given radius which has a 
      * lower intensity, and to 0 otherwise.
      */
-    public static boolean detect_minima_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = DetectMinimaBox.detectMinimaBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface detect_minima_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        DetectMinimaBox.detectMinimaBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -4789,9 +4794,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Pixels in the resulting image are set to 1 if there is no other pixel in a given radius which has a 
      * higher intensity, and to 0 otherwise.
      */
-    public static boolean detect_maxima_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = DetectMaximaBox.detectMaximaBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface detect_maxima_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        DetectMaximaBox.detectMaximaBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -4803,9 +4808,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The input image stack is processed slice by slice. Pixels in the resulting image are set to 1 if 
      * there is no other pixel in a given radius which has a higher intensity, and to 0 otherwise.
      */
-    public static boolean detect_maxima_slice_by_slice_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
-        boolean result = DetectMaximaSliceBySliceBox.detectMaximaSliceBySliceBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLBuffer detect_maxima_slice_by_slice_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
+        DetectMaximaSliceBySliceBox.detectMaximaSliceBySliceBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -4817,9 +4822,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The input image stack is processed slice by slice. Pixels in the resulting image are set to 1 if 
      * there is no other pixel in a given radius which has a lower intensity, and to 0 otherwise.
      */
-    public static boolean detect_minima_slice_by_slice_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
-        boolean result = DetectMinimaSliceBySliceBox.detectMinimaSliceBySliceBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLBuffer detect_minima_slice_by_slice_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
+        DetectMinimaSliceBySliceBox.detectMinimaSliceBySliceBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -4837,9 +4842,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The image of which the maximum of all pixels or voxels will be determined.
      * 
      */
-    public static double maximum_of_all_pixels(ClearCLImageInterface source) {
-        double result = MaximumOfAllPixels.maximumOfAllPixels(getCLIJ2(), source);
-        return result;
+    public static ClearCLImageInterface maximum_of_all_pixels(ClearCLImageInterface source) {
+        MaximumOfAllPixels.maximumOfAllPixels(getCLIJ2(), source);
+        return source;
     }
 
 
@@ -4857,9 +4862,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The image of which the minimum of all pixels or voxels will be determined.
      * 
      */
-    public static double minimum_of_all_pixels(ClearCLImageInterface source) {
-        double result = MinimumOfAllPixels.minimumOfAllPixels(getCLIJ2(), source);
-        return result;
+    public static ClearCLImageInterface minimum_of_all_pixels(ClearCLImageInterface source) {
+        MinimumOfAllPixels.minimumOfAllPixels(getCLIJ2(), source);
+        return source;
     }
 
 
@@ -4876,9 +4881,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Odd iterations are done with box neighborhood, even iterations with a diamond. Thus, with n > 2, the filter shape is an octagon. The given number of iterations - 2 makes the filter result very similar to minimum sphere.
      */
-    public static boolean top_hat_octagon_slice_by_slice(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = TopHatOctagonSliceBySlice.topHatOctagonSliceBySlice(getCLIJx(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer top_hat_octagon_slice_by_slice(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        TopHatOctagonSliceBySlice.topHatOctagonSliceBySlice(getCLIJx(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -4887,9 +4892,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Sets all pixel values x of a given column in X to a constant value v.
      */
-    public static boolean set_column(ClearCLImageInterface arg1, double arg2, double arg3) {
-        boolean result = SetColumn.setColumn(getCLIJ2(), arg1, new Double (arg2).intValue(), new Double (arg3).floatValue());
-        return result;
+    public static ClearCLImageInterface set_column(ClearCLImageInterface arg1, double arg2, double arg3) {
+        SetColumn.setColumn(getCLIJ2(), arg1, new Double (arg2).intValue(), new Double (arg3).floatValue());
+        return arg1;
     }
 
 
@@ -4898,9 +4903,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Sets all pixel values x of a given row in X to a constant value v.
      */
-    public static boolean set_row(ClearCLImageInterface arg1, double arg2, double arg3) {
-        boolean result = SetRow.setRow(getCLIJ2(), arg1, new Double (arg2).intValue(), new Double (arg3).floatValue());
-        return result;
+    public static ClearCLImageInterface set_row(ClearCLImageInterface arg1, double arg2, double arg3) {
+        SetRow.setRow(getCLIJ2(), arg1, new Double (arg2).intValue(), new Double (arg3).floatValue());
+        return arg1;
     }
 
 
@@ -4909,9 +4914,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the sum intensity projection of an image along Z.
      */
-    public static boolean sum_y_projection(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = SumYProjection.sumYProjection(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface sum_y_projection(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        SumYProjection.sumYProjection(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -4921,9 +4926,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Takes a touch matrix and a distance matrix to determine the average distance of touching neighbors 
      *  for every object.
      */
-    public static boolean average_distance_of_touching_neighbors(ClearCLBuffer distance_matrix, ClearCLBuffer touch_matrix, ClearCLBuffer average_distancelist_destination) {
-        boolean result = AverageDistanceOfTouchingNeighbors.averageDistanceOfTouchingNeighbors(getCLIJ2(), distance_matrix, touch_matrix, average_distancelist_destination);
-        return result;
+    public static ClearCLBuffer average_distance_of_touching_neighbors(ClearCLBuffer distance_matrix, ClearCLBuffer touch_matrix, ClearCLBuffer average_distancelist_destination) {
+        AverageDistanceOfTouchingNeighbors.averageDistanceOfTouchingNeighbors(getCLIJ2(), distance_matrix, touch_matrix, average_distancelist_destination);
+        return average_distancelist_destination;
     }
 
 
@@ -4936,9 +4941,9 @@ abstract class SnakeInterface extends CommonAPI {
      * from connected components analysis in an image where every column contains d 
      * pixels (with d = dimensionality of the original image) with the coordinates of the maxima/minima.
      */
-    public static boolean labelled_spots_to_point_list(ClearCLBuffer input_labelled_spots, ClearCLBuffer destination_pointlist) {
-        boolean result = LabelledSpotsToPointList.labelledSpotsToPointList(getCLIJ2(), input_labelled_spots, destination_pointlist);
-        return result;
+    public static ClearCLBuffer labelled_spots_to_point_list(ClearCLBuffer input_labelled_spots, ClearCLBuffer destination_pointlist) {
+        LabelledSpotsToPointList.labelledSpotsToPointList(getCLIJ2(), input_labelled_spots, destination_pointlist);
+        return destination_pointlist;
     }
 
 
@@ -4949,9 +4954,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Transforms a spots image as resulting from maximum/minimum detection in an image of the same size where every spot has a number 1, 2, ... n.
      */
-    public static boolean label_spots(ClearCLBuffer input_spots, ClearCLBuffer labelled_spots_destination) {
-        boolean result = LabelSpots.labelSpots(getCLIJ2(), input_spots, labelled_spots_destination);
-        return result;
+    public static ClearCLBuffer label_spots(ClearCLBuffer input_spots, ClearCLBuffer labelled_spots_destination) {
+        LabelSpots.labelSpots(getCLIJ2(), input_spots, labelled_spots_destination);
+        return labelled_spots_destination;
     }
 
 
@@ -4960,9 +4965,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Takes a touch matrix and a distance matrix to determine the shortest distance of touching neighbors for every object.
      */
-    public static boolean minimum_distance_of_touching_neighbors(ClearCLBuffer distance_matrix, ClearCLBuffer touch_matrix, ClearCLBuffer minimum_distancelist_destination) {
-        boolean result = MinimumDistanceOfTouchingNeighbors.minimumDistanceOfTouchingNeighbors(getCLIJ2(), distance_matrix, touch_matrix, minimum_distancelist_destination);
-        return result;
+    public static ClearCLBuffer minimum_distance_of_touching_neighbors(ClearCLBuffer distance_matrix, ClearCLBuffer touch_matrix, ClearCLBuffer minimum_distancelist_destination) {
+        MinimumDistanceOfTouchingNeighbors.minimumDistanceOfTouchingNeighbors(getCLIJ2(), distance_matrix, touch_matrix, minimum_distancelist_destination);
+        return minimum_distancelist_destination;
     }
 
 
@@ -4971,9 +4976,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Takes a point list image representing n points (n*2 for 2D points, n*3 for 3D points) and a corresponding touch matrix , sized (n+1)*(n+1), and exports them in VTK format.
      */
-    public static boolean write_v_t_k_line_list_to_disc(ClearCLBuffer pointlist, ClearCLBuffer touch_matrix, String filename) {
-        boolean result = WriteVTKLineListToDisc.writeVTKLineListToDisc(getCLIJx(), pointlist, touch_matrix, filename);
-        return result;
+    public static ClearCLBuffer write_v_t_k_line_list_to_disc(ClearCLBuffer pointlist, ClearCLBuffer touch_matrix, String filename) {
+        WriteVTKLineListToDisc.writeVTKLineListToDisc(getCLIJx(), pointlist, touch_matrix, filename);
+        return touch_matrix;
     }
 
 
@@ -4982,9 +4987,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Takes a point list image representing n points (n*2 for 2D points, n*3 for 3D points) and exports them in XYZ format.
      */
-    public static boolean write_xyz_point_list_to_disc(ClearCLBuffer pointlist, String filename) {
-        boolean result = WriteXYZPointListToDisc.writeXYZPointListToDisc(getCLIJx(), pointlist, filename);
-        return result;
+    public static ClearCLBuffer write_xyz_point_list_to_disc(ClearCLBuffer pointlist, String filename) {
+        WriteXYZPointListToDisc.writeXYZPointListToDisc(getCLIJx(), pointlist, filename);
+        return pointlist;
     }
 
 
@@ -4996,9 +5001,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Otherwise the pixel is not overwritten.
      * If you want to initialize an identity transfrom matrix, set all pixels to 0 first.
      */
-    public static boolean set_where_xgreater_than_y(ClearCLImageInterface arg1, double arg2) {
-        boolean result = SetWhereXgreaterThanY.setWhereXgreaterThanY(getCLIJ2(), arg1, new Double (arg2).floatValue());
-        return result;
+    public static ClearCLImageInterface set_where_xgreater_than_y(ClearCLImageInterface arg1, double arg2) {
+        SetWhereXgreaterThanY.setWhereXgreaterThanY(getCLIJ2(), arg1, new Double (arg2).floatValue());
+        return arg1;
     }
 
 
@@ -5010,9 +5015,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Otherwise the pixel is not overwritten.
      * If you want to initialize an identity transfrom matrix, set all pixels to 0 first.
      */
-    public static boolean set_where_xsmaller_than_y(ClearCLImageInterface arg1, double arg2) {
-        boolean result = SetWhereXsmallerThanY.setWhereXsmallerThanY(getCLIJ2(), arg1, new Double (arg2).floatValue());
-        return result;
+    public static ClearCLImageInterface set_where_xsmaller_than_y(ClearCLImageInterface arg1, double arg2) {
+        SetWhereXsmallerThanY.setWhereXsmallerThanY(getCLIJ2(), arg1, new Double (arg2).floatValue());
+        return arg1;
     }
 
 
@@ -5023,9 +5028,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This can be used for Connected Components Analysis.
      */
-    public static boolean set_non_zero_pixels_to_pixel_index(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = SetNonZeroPixelsToPixelIndex.setNonZeroPixelsToPixelIndex(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface set_non_zero_pixels_to_pixel_index(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        SetNonZeroPixelsToPixelIndex.setNonZeroPixelsToPixelIndex(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -5038,9 +5043,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Thus, afterwards number of labels and maximum label index are equal.
      * This operation is mostly performed on the CPU.
      */
-    public static boolean close_index_gaps_in_label_map(ClearCLBuffer labeling_input, ClearCLImageInterface labeling_destination) {
-        boolean result = CloseIndexGapsInLabelMap.closeIndexGapsInLabelMap(getCLIJ2(), labeling_input, labeling_destination);
-        return result;
+    public static ClearCLImageInterface close_index_gaps_in_label_map(ClearCLBuffer labeling_input, ClearCLImageInterface labeling_destination) {
+        CloseIndexGapsInLabelMap.closeIndexGapsInLabelMap(getCLIJ2(), labeling_input, labeling_destination);
+        return labeling_destination;
     }
 
 
@@ -5057,9 +5062,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * It writes the resulting  coordinates in a pointlist image. Depending on the dimensionality d of the labelmap and the number  of labels n, the pointlist image will have n*d pixels.
      */
-    public static boolean centroids_of_labels(ClearCLBuffer source, ClearCLBuffer pointlist_destination) {
-        boolean result = CentroidsOfLabels.centroidsOfLabels(getCLIJ2(), source, pointlist_destination);
-        return result;
+    public static ClearCLBuffer centroids_of_labels(ClearCLBuffer source, ClearCLBuffer pointlist_destination) {
+        CentroidsOfLabels.centroidsOfLabels(getCLIJ2(), source, pointlist_destination);
+        return pointlist_destination;
     }
 
 
@@ -5068,9 +5073,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Sets all pixel values to their X coordinate
      */
-    public static boolean set_ramp_x(ClearCLImageInterface source) {
-        boolean result = SetRampX.setRampX(getCLIJ2(), source);
-        return result;
+    public static ClearCLImageInterface set_ramp_x(ClearCLImageInterface source) {
+        SetRampX.setRampX(getCLIJ2(), source);
+        return source;
     }
 
 
@@ -5079,9 +5084,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Sets all pixel values to their Y coordinate
      */
-    public static boolean set_ramp_y(ClearCLImageInterface source) {
-        boolean result = SetRampY.setRampY(getCLIJ2(), source);
-        return result;
+    public static ClearCLImageInterface set_ramp_y(ClearCLImageInterface source) {
+        SetRampY.setRampY(getCLIJ2(), source);
+        return source;
     }
 
 
@@ -5090,9 +5095,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Sets all pixel values to their Z coordinate
      */
-    public static boolean set_ramp_z(ClearCLImageInterface source) {
-        boolean result = SetRampZ.setRampZ(getCLIJ2(), source);
-        return result;
+    public static ClearCLImageInterface set_ramp_z(ClearCLImageInterface source) {
+        SetRampZ.setRampZ(getCLIJ2(), source);
+        return source;
     }
 
 
@@ -5103,9 +5108,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * <pre>f(x, s) = s - x</pre>
      */
-    public static boolean subtract_image_from_scalar(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
-        boolean result = SubtractImageFromScalar.subtractImageFromScalar(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLImageInterface subtract_image_from_scalar(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
+        SubtractImageFromScalar.subtractImageFromScalar(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -5115,9 +5120,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The automatic thresholder utilizes the Default threshold method implemented in ImageJ using a histogram determined on 
      * the GPU to create binary images as similar as possible to ImageJ 'Apply Threshold' method.
      */
-    public static boolean threshold_default(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = ThresholdDefault.thresholdDefault(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer threshold_default(ClearCLBuffer input, ClearCLBuffer destination) {
+        ThresholdDefault.thresholdDefault(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -5127,9 +5132,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The automatic thresholder utilizes the Otsu threshold method implemented in ImageJ using a histogram determined on 
      * the GPU to create binary images as similar as possible to ImageJ 'Apply Threshold' method.
      */
-    public static boolean threshold_otsu(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = ThresholdOtsu.thresholdOtsu(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer threshold_otsu(ClearCLBuffer input, ClearCLBuffer destination) {
+        ThresholdOtsu.thresholdOtsu(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -5139,9 +5144,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The automatic thresholder utilizes the Huang threshold method implemented in ImageJ using a histogram determined on 
      * the GPU to create binary images as similar as possible to ImageJ 'Apply Threshold' method.
      */
-    public static boolean threshold_huang(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = ThresholdHuang.thresholdHuang(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer threshold_huang(ClearCLBuffer input, ClearCLBuffer destination) {
+        ThresholdHuang.thresholdHuang(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -5151,9 +5156,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The automatic thresholder utilizes the Intermodes threshold method implemented in ImageJ using a histogram determined on 
      * the GPU to create binary images as similar as possible to ImageJ 'Apply Threshold' method.
      */
-    public static boolean threshold_intermodes(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = ThresholdIntermodes.thresholdIntermodes(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer threshold_intermodes(ClearCLBuffer input, ClearCLBuffer destination) {
+        ThresholdIntermodes.thresholdIntermodes(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -5163,9 +5168,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The automatic thresholder utilizes the IsoData threshold method implemented in ImageJ using a histogram determined on 
      * the GPU to create binary images as similar as possible to ImageJ 'Apply Threshold' method.
      */
-    public static boolean threshold_iso_data(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = ThresholdIsoData.thresholdIsoData(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer threshold_iso_data(ClearCLBuffer input, ClearCLBuffer destination) {
+        ThresholdIsoData.thresholdIsoData(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -5175,9 +5180,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The automatic thresholder utilizes the IJ_IsoData threshold method implemented in ImageJ using a histogram determined on 
      * the GPU to create binary images as similar as possible to ImageJ 'Apply Threshold' method.
      */
-    public static boolean threshold_ij__iso_data(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = ThresholdIJ_IsoData.thresholdIJ_IsoData(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer threshold_ij__iso_data(ClearCLBuffer input, ClearCLBuffer destination) {
+        ThresholdIJ_IsoData.thresholdIJ_IsoData(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -5187,9 +5192,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The automatic thresholder utilizes the Li threshold method implemented in ImageJ using a histogram determined on 
      * the GPU to create binary images as similar as possible to ImageJ 'Apply Threshold' method.
      */
-    public static boolean threshold_li(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = ThresholdLi.thresholdLi(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer threshold_li(ClearCLBuffer input, ClearCLBuffer destination) {
+        ThresholdLi.thresholdLi(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -5199,9 +5204,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The automatic thresholder utilizes the MaxEntropy threshold method implemented in ImageJ using a histogram determined on 
      * the GPU to create binary images as similar as possible to ImageJ 'Apply Threshold' method.
      */
-    public static boolean threshold_max_entropy(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = ThresholdMaxEntropy.thresholdMaxEntropy(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer threshold_max_entropy(ClearCLBuffer input, ClearCLBuffer destination) {
+        ThresholdMaxEntropy.thresholdMaxEntropy(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -5211,9 +5216,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The automatic thresholder utilizes the Mean threshold method implemented in ImageJ using a histogram determined on 
      * the GPU to create binary images as similar as possible to ImageJ 'Apply Threshold' method.
      */
-    public static boolean threshold_mean(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = ThresholdMean.thresholdMean(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer threshold_mean(ClearCLBuffer input, ClearCLBuffer destination) {
+        ThresholdMean.thresholdMean(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -5223,9 +5228,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The automatic thresholder utilizes the MinError threshold method implemented in ImageJ using a histogram determined on 
      * the GPU to create binary images as similar as possible to ImageJ 'Apply Threshold' method.
      */
-    public static boolean threshold_min_error(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = ThresholdMinError.thresholdMinError(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer threshold_min_error(ClearCLBuffer input, ClearCLBuffer destination) {
+        ThresholdMinError.thresholdMinError(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -5235,9 +5240,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The automatic thresholder utilizes the Minimum threshold method implemented in ImageJ using a histogram determined on 
      * the GPU to create binary images as similar as possible to ImageJ 'Apply Threshold' method.
      */
-    public static boolean threshold_minimum(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = ThresholdMinimum.thresholdMinimum(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer threshold_minimum(ClearCLBuffer input, ClearCLBuffer destination) {
+        ThresholdMinimum.thresholdMinimum(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -5247,9 +5252,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The automatic thresholder utilizes the Moments threshold method implemented in ImageJ using a histogram determined on 
      * the GPU to create binary images as similar as possible to ImageJ 'Apply Threshold' method.
      */
-    public static boolean threshold_moments(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = ThresholdMoments.thresholdMoments(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer threshold_moments(ClearCLBuffer input, ClearCLBuffer destination) {
+        ThresholdMoments.thresholdMoments(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -5259,9 +5264,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The automatic thresholder utilizes the Percentile threshold method implemented in ImageJ using a histogram determined on 
      * the GPU to create binary images as similar as possible to ImageJ 'Apply Threshold' method.
      */
-    public static boolean threshold_percentile(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = ThresholdPercentile.thresholdPercentile(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer threshold_percentile(ClearCLBuffer input, ClearCLBuffer destination) {
+        ThresholdPercentile.thresholdPercentile(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -5271,9 +5276,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The automatic thresholder utilizes the RenyiEntropy threshold method implemented in ImageJ using a histogram determined on 
      * the GPU to create binary images as similar as possible to ImageJ 'Apply Threshold' method.
      */
-    public static boolean threshold_renyi_entropy(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = ThresholdRenyiEntropy.thresholdRenyiEntropy(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer threshold_renyi_entropy(ClearCLBuffer input, ClearCLBuffer destination) {
+        ThresholdRenyiEntropy.thresholdRenyiEntropy(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -5283,9 +5288,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The automatic thresholder utilizes the Shanbhag threshold method implemented in ImageJ using a histogram determined on 
      * the GPU to create binary images as similar as possible to ImageJ 'Apply Threshold' method.
      */
-    public static boolean threshold_shanbhag(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = ThresholdShanbhag.thresholdShanbhag(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer threshold_shanbhag(ClearCLBuffer input, ClearCLBuffer destination) {
+        ThresholdShanbhag.thresholdShanbhag(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -5295,9 +5300,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The automatic thresholder utilizes the Triangle threshold method implemented in ImageJ using a histogram determined on 
      * the GPU to create binary images as similar as possible to ImageJ 'Apply Threshold' method.
      */
-    public static boolean threshold_triangle(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = ThresholdTriangle.thresholdTriangle(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer threshold_triangle(ClearCLBuffer input, ClearCLBuffer destination) {
+        ThresholdTriangle.thresholdTriangle(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -5307,9 +5312,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The automatic thresholder utilizes the Yen threshold method implemented in ImageJ using a histogram determined on 
      * the GPU to create binary images as similar as possible to ImageJ 'Apply Threshold' method.
      */
-    public static boolean threshold_yen(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = ThresholdYen.thresholdYen(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer threshold_yen(ClearCLBuffer input, ClearCLBuffer destination) {
+        ThresholdYen.thresholdYen(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -5320,9 +5325,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * If yes, this label is eliminated from the label map.
      */
-    public static boolean exclude_labels_sub_surface(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4, double arg5, double arg6) {
-        boolean result = ExcludeLabelsSubSurface.excludeLabelsSubSurface(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue());
-        return result;
+    public static ClearCLBuffer exclude_labels_sub_surface(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4, double arg5, double arg6) {
+        ExcludeLabelsSubSurface.excludeLabelsSubSurface(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue());
+        return arg3;
     }
 
 
@@ -5333,9 +5338,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * If yes, this label is eliminated from the label map.
      */
-    public static boolean exclude_labels_on_surface(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4, double arg5, double arg6) {
-        boolean result = ExcludeLabelsOnSurface.excludeLabelsOnSurface(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue());
-        return result;
+    public static ClearCLBuffer exclude_labels_on_surface(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4, double arg5, double arg6) {
+        ExcludeLabelsOnSurface.excludeLabelsOnSurface(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue());
+        return arg3;
     }
 
 
@@ -5344,9 +5349,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Sets all pixel values x of a given plane in X to a constant value v.
      */
-    public static boolean set_plane(ClearCLImageInterface arg1, double arg2, double arg3) {
-        boolean result = SetPlane.setPlane(getCLIJ2(), arg1, new Double (arg2).intValue(), new Double (arg3).floatValue());
-        return result;
+    public static ClearCLImageInterface set_plane(ClearCLImageInterface arg1, double arg2, double arg3) {
+        SetPlane.setPlane(getCLIJ2(), arg1, new Double (arg2).intValue(), new Double (arg3).floatValue());
+        return arg1;
     }
 
 
@@ -5355,17 +5360,17 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Fuses #n# image stacks using Tenengrads algorithm.
      */
-    public static boolean tenengrad_fusion(ClearCLBuffer arg1, float[] arg2, float arg3, ClearCLBuffer[] arg4) {
-        boolean result = TenengradFusion.tenengradFusion(getCLIJx(), arg1, arg2, arg3, arg4);
-        return result;
+    public static ClearCLBuffer[] tenengrad_fusion(ClearCLBuffer arg1, float[] arg2, float arg3, ClearCLBuffer[] arg4) {
+        TenengradFusion.tenengradFusion(getCLIJx(), arg1, arg2, arg3, arg4);
+        return arg4;
     }
 
     /**
      * Fuses #n# image stacks using Tenengrads algorithm.
      */
-    public static boolean tenengrad_fusion(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7) {
-        boolean result = TenengradFusion.tenengradFusion(getCLIJx(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue());
-        return result;
+    public static ClearCLBuffer tenengrad_fusion(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7) {
+        TenengradFusion.tenengradFusion(getCLIJx(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue());
+        return arg2;
     }
 
 
@@ -5374,9 +5379,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Copies a single slice into a stack a given number of times.
      */
-    public static boolean image_to_stack(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = ImageToStack.imageToStack(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer image_to_stack(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        ImageToStack.imageToStack(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -5385,9 +5390,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the sum intensity projection of an image along Z.
      */
-    public static boolean sum_x_projection(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = SumXProjection.sumXProjection(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface sum_x_projection(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        SumXProjection.sumXProjection(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -5396,17 +5401,17 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Sums all pixels slice by slice and returns them in an array.
      */
-    public static boolean sum_image_slice_by_slice(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = SumImageSliceBySlice.sumImageSliceBySlice(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface sum_image_slice_by_slice(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        SumImageSliceBySlice.sumImageSliceBySlice(getCLIJ2(), source, destination);
+        return destination;
     }
 
     /**
      * Sums all pixels slice by slice and returns them in an array.
      */
-    public static double[] sum_image_slice_by_slice(ClearCLImageInterface arg1) {
-        double[] result = SumImageSliceBySlice.sumImageSliceBySlice(getCLIJ2(), arg1);
-        return result;
+    public static ClearCLImageInterface sum_image_slice_by_slice(ClearCLImageInterface arg1) {
+        SumImageSliceBySlice.sumImageSliceBySlice(getCLIJ2(), arg1);
+        return arg1;
     }
 
 
@@ -5417,9 +5422,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * <pre>f(x, s) = x * s</pre>
      */
-    public static boolean multiply_image_stack_with_scalars(ClearCLImageInterface arg1, ClearCLImageInterface arg2, float[] arg3) {
-        boolean result = MultiplyImageStackWithScalars.multiplyImageStackWithScalars(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLImageInterface multiply_image_stack_with_scalars(ClearCLImageInterface arg1, ClearCLImageInterface arg2, float[] arg3) {
+        MultiplyImageStackWithScalars.multiplyImageStackWithScalars(getCLIJ2(), arg1, arg2, arg3);
+        return arg2;
     }
 
     /**
@@ -5427,9 +5432,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * <pre>f(x, s) = x * s</pre>
      */
-    public static boolean multiply_image_stack_with_scalars(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLBuffer arg3) {
-        boolean result = MultiplyImageStackWithScalars.multiplyImageStackWithScalars(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLBuffer multiply_image_stack_with_scalars(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLBuffer arg3) {
+        MultiplyImageStackWithScalars.multiplyImageStackWithScalars(getCLIJ2(), arg1, arg2, arg3);
+        return arg3;
     }
 
 
@@ -5438,9 +5443,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Visualises an image on standard out (console).
      */
-    public static boolean print(ClearCLImageInterface input) {
-        boolean result = Print.print(getCLIJ2(), input);
-        return result;
+    public static ClearCLImageInterface print(ClearCLImageInterface input) {
+        Print.print(getCLIJ2(), input);
+        return input;
     }
 
 
@@ -5451,9 +5456,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The pixels where  the regions touched are afterwards returned as binary image which corresponds to the Voronoi diagram.
      */
-    public static boolean voronoi_octagon(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = VoronoiOctagon.voronoiOctagon(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer voronoi_octagon(ClearCLBuffer input, ClearCLBuffer destination) {
+        VoronoiOctagon.voronoiOctagon(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -5462,9 +5467,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Sets all pixel values at the image border to a given value.
      */
-    public static boolean set_image_borders(ClearCLImageInterface arg1, double arg2) {
-        boolean result = SetImageBorders.setImageBorders(getCLIJ2(), arg1, new Double (arg2).floatValue());
-        return result;
+    public static ClearCLImageInterface set_image_borders(ClearCLImageInterface arg1, double arg2) {
+        SetImageBorders.setImageBorders(getCLIJ2(), arg1, new Double (arg2).floatValue());
+        return arg1;
     }
 
 
@@ -5476,9 +5481,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Replaces recursively all pixels of value a with value b if the pixels have a neighbor with value b.
      */
-    public static boolean flood_fill_diamond(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
-        boolean result = FloodFillDiamond.floodFillDiamond(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
-        return result;
+    public static ClearCLBuffer flood_fill_diamond(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
+        FloodFillDiamond.floodFillDiamond(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
+        return arg2;
     }
 
 
@@ -5487,9 +5492,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Fills holes (pixels with value 0 surrounded by pixels with value 1) in a binary image.
      */
-    public static boolean binary_fill_holes(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = BinaryFillHoles.binaryFillHoles(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface binary_fill_holes(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        BinaryFillHoles.binaryFillHoles(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -5498,17 +5503,17 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Performs connected components analysis inspecting the diamond neighborhood of every pixel to a binary image and generates a label map.
      */
-    public static boolean connected_components_labeling_diamond(ClearCLImageInterface binary_input, ClearCLImageInterface labeling_destination) {
-        boolean result = ConnectedComponentsLabelingDiamond.connectedComponentsLabelingDiamond(getCLIJ2(), binary_input, labeling_destination);
-        return result;
+    public static ClearCLImageInterface connected_components_labeling_diamond(ClearCLImageInterface binary_input, ClearCLImageInterface labeling_destination) {
+        ConnectedComponentsLabelingDiamond.connectedComponentsLabelingDiamond(getCLIJ2(), binary_input, labeling_destination);
+        return labeling_destination;
     }
 
     /**
      * Performs connected components analysis inspecting the diamond neighborhood of every pixel to a binary image and generates a label map.
      */
-    public static boolean connected_components_labeling_diamond(ClearCLImageInterface arg1, ClearCLImageInterface arg2, boolean arg3) {
-        boolean result = ConnectedComponentsLabelingDiamond.connectedComponentsLabelingDiamond(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLImageInterface connected_components_labeling_diamond(ClearCLImageInterface arg1, ClearCLImageInterface arg2, boolean arg3) {
+        ConnectedComponentsLabelingDiamond.connectedComponentsLabelingDiamond(getCLIJ2(), arg1, arg2, arg3);
+        return arg2;
     }
 
 
@@ -5517,17 +5522,17 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Performs connected components analysis inspecting the box neighborhood of every pixel to a binary image and generates a label map.
      */
-    public static boolean connected_components_labeling_box(ClearCLImageInterface binary_input, ClearCLImageInterface labeling_destination) {
-        boolean result = ConnectedComponentsLabelingBox.connectedComponentsLabelingBox(getCLIJ2(), binary_input, labeling_destination);
-        return result;
+    public static ClearCLImageInterface connected_components_labeling_box(ClearCLImageInterface binary_input, ClearCLImageInterface labeling_destination) {
+        ConnectedComponentsLabelingBox.connectedComponentsLabelingBox(getCLIJ2(), binary_input, labeling_destination);
+        return labeling_destination;
     }
 
     /**
      * Performs connected components analysis inspecting the box neighborhood of every pixel to a binary image and generates a label map.
      */
-    public static boolean connected_components_labeling_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, boolean arg3) {
-        boolean result = ConnectedComponentsLabelingBox.connectedComponentsLabelingBox(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLImageInterface connected_components_labeling_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, boolean arg3) {
+        ConnectedComponentsLabelingBox.connectedComponentsLabelingBox(getCLIJ2(), arg1, arg2, arg3);
+        return arg2;
     }
 
 
@@ -5538,9 +5543,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Recommendation: For the seed, use getTime().
      */
-    public static boolean set_random(ClearCLBuffer arg1, double arg2, double arg3) {
-        boolean result = SetRandom.setRandom(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue());
-        return result;
+    public static ClearCLBuffer set_random(ClearCLBuffer arg1, double arg2, double arg3) {
+        SetRandom.setRandom(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue());
+        return arg1;
     }
 
     /**
@@ -5548,9 +5553,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Recommendation: For the seed, use getTime().
      */
-    public static boolean set_random(ClearCLBuffer arg1, double arg2, double arg3, double arg4) {
-        boolean result = SetRandom.setRandom(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue());
-        return result;
+    public static ClearCLBuffer set_random(ClearCLBuffer arg1, double arg2, double arg3, double arg4) {
+        SetRandom.setRandom(getCLIJ2(), arg1, new Double (arg2).floatValue(), new Double (arg3).floatValue(), new Double (arg4).floatValue());
+        return arg1;
     }
 
 
@@ -5562,17 +5567,17 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the local entropy in a box with a given radius around every pixel.
      */
-    public static boolean entropy_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
-        boolean result = EntropyBox.entropyBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLBuffer entropy_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        EntropyBox.entropyBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
     /**
      * Determines the local entropy in a box with a given radius around every pixel.
      */
-    public static boolean entropy_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7) {
-        boolean result = EntropyBox.entropyBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue());
-        return result;
+    public static ClearCLBuffer entropy_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7) {
+        EntropyBox.entropyBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue());
+        return arg2;
     }
 
 
@@ -5590,8 +5595,8 @@ abstract class SnakeInterface extends CommonAPI {
      * Push a tile in an image specified by its name, position and size to GPU memory in order to process it there later.
      */
     public static ClearCLBuffer push_tile(ClearCLBuffer arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double arg10) {
-        ClearCLBuffer result = PushTile.pushTile(getCLIJ2(), arg1, new Double (arg2).intValue(), new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue(), new Double (arg6).intValue(), new Double (arg7).intValue(), new Double (arg8).intValue(), new Double (arg9).intValue(), new Double (arg10).intValue());
-        return result;
+        PushTile.pushTile(getCLIJ2(), arg1, new Double (arg2).intValue(), new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue(), new Double (arg6).intValue(), new Double (arg7).intValue(), new Double (arg8).intValue(), new Double (arg9).intValue(), new Double (arg10).intValue());
+        return arg1;
     }
 
     /**
@@ -5614,15 +5619,17 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Pushes a tile in an image specified by its name, position and size from GPU memory.
      */
-    public static void pull_tile(ImagePlus arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double arg10, double arg11) {
+    public static ClearCLBuffer pull_tile(ImagePlus arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double arg10, double arg11) {
         PullTile.pullTile(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue(), new Double (arg6).intValue(), new Double (arg7).intValue(), new Double (arg8).intValue(), new Double (arg9).intValue(), new Double (arg10).intValue(), new Double (arg11).intValue());
+        return arg2;
     }
 
     /**
      * Pushes a tile in an image specified by its name, position and size from GPU memory.
      */
-    public static void pull_tile(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double arg10, double arg11) {
+    public static ClearCLBuffer pull_tile(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double arg10, double arg11) {
         PullTile.pullTile(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue(), new Double (arg6).intValue(), new Double (arg7).intValue(), new Double (arg8).intValue(), new Double (arg9).intValue(), new Double (arg10).intValue(), new Double (arg11).intValue());
+        return arg2;
     }
 
 
@@ -5631,9 +5638,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Concatenates two stacks in Z.
      */
-    public static boolean concatenate_stacks(ClearCLImageInterface stack1, ClearCLImageInterface stack2, ClearCLImageInterface destination) {
-        boolean result = ConcatenateStacks.concatenateStacks(getCLIJ2(), stack1, stack2, destination);
-        return result;
+    public static ClearCLImageInterface concatenate_stacks(ClearCLImageInterface stack1, ClearCLImageInterface stack2, ClearCLImageInterface destination) {
+        ConcatenateStacks.concatenateStacks(getCLIJ2(), stack1, stack2, destination);
+        return destination;
     }
 
 
@@ -5650,9 +5657,9 @@ abstract class SnakeInterface extends CommonAPI {
      * of these methods in the method text field:
      * [Default, Huang, Intermodes, IsoData, IJ_IsoData, Li, MaxEntropy, Mean, MinError, Minimum, Moments, Otsu, Percentile, RenyiEntropy, Shanbhag, Triangle, Yen]
      */
-    public static double get_automatic_threshold(ClearCLBuffer arg1, String arg2) {
-        double result = GetAutomaticThreshold.getAutomaticThreshold(getCLIJ2(), arg1, arg2);
-        return result;
+    public static ClearCLBuffer get_automatic_threshold(ClearCLBuffer arg1, String arg2) {
+        GetAutomaticThreshold.getAutomaticThreshold(getCLIJ2(), arg1, arg2);
+        return arg1;
     }
 
     /**
@@ -5663,9 +5670,9 @@ abstract class SnakeInterface extends CommonAPI {
      * of these methods in the method text field:
      * [Default, Huang, Intermodes, IsoData, IJ_IsoData, Li, MaxEntropy, Mean, MinError, Minimum, Moments, Otsu, Percentile, RenyiEntropy, Shanbhag, Triangle, Yen]
      */
-    public static double get_automatic_threshold(ClearCLBuffer arg1, String arg2, double arg3, double arg4, double arg5) {
-        double result = GetAutomaticThreshold.getAutomaticThreshold(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLBuffer get_automatic_threshold(ClearCLBuffer arg1, String arg2, double arg3, double arg4, double arg5) {
+        GetAutomaticThreshold.getAutomaticThreshold(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).intValue());
+        return arg1;
     }
 
 
@@ -5674,9 +5681,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Reads out the size of an image [stack] and writes it to the variables 'width', 'height' and 'depth'.
      */
-    public static long[] get_dimensions(ClearCLBuffer arg1) {
-        long[] result = GetDimensions.getDimensions(getCLIJ2(), arg1);
-        return result;
+    public static ClearCLBuffer get_dimensions(ClearCLBuffer arg1) {
+        GetDimensions.getDimensions(getCLIJ2(), arg1);
+        return arg1;
     }
 
 
@@ -5713,9 +5720,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * 
      */
-    public static boolean apply_auto_context_weka_model_with_options(ClearCLBuffer arg1, ClearCLBuffer arg2, String arg3, String arg4, double arg5) {
-        boolean result = ApplyAutoContextWekaModel.applyAutoContextWekaModelWithOptions(getCLIJ2(), arg1, arg2, arg3, arg4, new Double (arg5).intValue());
-        return result;
+    public static ClearCLBuffer apply_auto_context_weka_model_with_options(ClearCLBuffer arg1, ClearCLBuffer arg2, String arg3, String arg4, double arg5) {
+        ApplyAutoContextWekaModel.applyAutoContextWekaModelWithOptions(getCLIJ2(), arg1, arg2, arg3, arg4, new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -5724,9 +5731,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * 
      */
-    public static boolean train_auto_context_weka_model_with_options(ClearCLBuffer arg1, ClearCLBuffer arg2, String arg3, String arg4, double arg5, double arg6, double arg7, double arg8) {
-        boolean result = TrainAutoContextWekaModel.trainAutoContextWekaModelWithOptions(getCLIJ2(), arg1, arg2, arg3, arg4, new Double (arg5).intValue(), new Double (arg6).intValue(), new Double (arg7).intValue(), new Double (arg8).intValue());
-        return result;
+    public static ClearCLBuffer train_auto_context_weka_model_with_options(ClearCLBuffer arg1, ClearCLBuffer arg2, String arg3, String arg4, double arg5, double arg6, double arg7, double arg8) {
+        TrainAutoContextWekaModel.trainAutoContextWekaModelWithOptions(getCLIJ2(), arg1, arg2, arg3, arg4, new Double (arg5).intValue(), new Double (arg6).intValue(), new Double (arg7).intValue(), new Double (arg8).intValue());
+        return arg2;
     }
 
 
@@ -5737,9 +5744,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * It takes a 3D feature stack (e.g. first plane original image, second plane blurred, third plane edge image)and applies a pre-trained a Weka model. Take care that the feature stack has been generated in the sameway as for training the model!
      */
-    public static boolean apply_weka_model(ClearCLBuffer arg1, ClearCLBuffer arg2, CLIJxWeka2 arg3) {
-        boolean result = ApplyWekaModel.applyWekaModel(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLBuffer apply_weka_model(ClearCLBuffer arg1, ClearCLBuffer arg2, CLIJxWeka2 arg3) {
+        ApplyWekaModel.applyWekaModel(getCLIJ2(), arg1, arg2, arg3);
+        return arg2;
     }
 
     /**
@@ -5747,9 +5754,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * It takes a 3D feature stack (e.g. first plane original image, second plane blurred, third plane edge image)and applies a pre-trained a Weka model. Take care that the feature stack has been generated in the sameway as for training the model!
      */
-    public static CLIJxWeka2 apply_weka_model(ClearCLBuffer featureStack3D, ClearCLBuffer prediction2D_destination, String loadModelFilename) {
-        CLIJxWeka2 result = ApplyWekaModel.applyWekaModel(getCLIJ2(), featureStack3D, prediction2D_destination, loadModelFilename);
-        return result;
+    public static ClearCLBuffer apply_weka_model(ClearCLBuffer featureStack3D, ClearCLBuffer prediction2D_destination, String loadModelFilename) {
+        ApplyWekaModel.applyWekaModel(getCLIJ2(), featureStack3D, prediction2D_destination, loadModelFilename);
+        return prediction2D_destination;
     }
 
 
@@ -5797,9 +5804,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Example: "original gaussianBlur=1 gaussianBlur=5 laplacianOfGaussian=1 laplacianOfGaussian=7 entropy=3"
      */
-    public static boolean generate_feature_stack(ClearCLBuffer input, ClearCLBuffer feature_stack_destination, String feature_definitions) {
-        boolean result = GenerateFeatureStack.generateFeatureStack(getCLIJ2(), input, feature_stack_destination, feature_definitions);
-        return result;
+    public static ClearCLBuffer generate_feature_stack(ClearCLBuffer input, ClearCLBuffer feature_stack_destination, String feature_definitions) {
+        GenerateFeatureStack.generateFeatureStack(getCLIJ2(), input, feature_stack_destination, feature_definitions);
+        return feature_stack_destination;
     }
 
     /**
@@ -5822,8 +5829,8 @@ abstract class SnakeInterface extends CommonAPI {
      * Example: "original gaussianBlur=1 gaussianBlur=5 laplacianOfGaussian=1 laplacianOfGaussian=7 entropy=3"
      */
     public static ClearCLBuffer generate_feature_stack(ClearCLBuffer arg1, String arg2) {
-        ClearCLBuffer result = GenerateFeatureStack.generateFeatureStack(getCLIJ2(), arg1, arg2);
-        return result;
+        GenerateFeatureStack.generateFeatureStack(getCLIJ2(), arg1, arg2);
+        return arg1;
     }
 
 
@@ -5835,9 +5842,9 @@ abstract class SnakeInterface extends CommonAPI {
      * It takes a 3D feature stack (e.g. first plane original image, second plane blurred, third plane edge image)and trains a Weka model. This model will be saved to disc.
      * The given groundTruth image is supposed to be a label map where pixels with value 1 represent class 1, pixels with value 2 represent class 2 and so on. Pixels with value 0 will be ignored for training.
      */
-    public static CLIJxWeka2 train_weka_model(ClearCLBuffer featureStack3D, ClearCLBuffer groundTruth2D, String saveModelFilename) {
-        CLIJxWeka2 result = TrainWekaModel.trainWekaModel(getCLIJ2(), featureStack3D, groundTruth2D, saveModelFilename);
-        return result;
+    public static ClearCLBuffer train_weka_model(ClearCLBuffer featureStack3D, ClearCLBuffer groundTruth2D, String saveModelFilename) {
+        TrainWekaModel.trainWekaModel(getCLIJ2(), featureStack3D, groundTruth2D, saveModelFilename);
+        return groundTruth2D;
     }
 
 
@@ -5889,9 +5896,9 @@ abstract class SnakeInterface extends CommonAPI {
      * * features = 2
      * * maxDepth = 0
      */
-    public static CLIJxWeka2 train_weka_model_with_options(ClearCLBuffer arg1, ClearCLBuffer arg2, String arg3, double arg4, double arg5, double arg6) {
-        CLIJxWeka2 result = TrainWekaModelWithOptions.trainWekaModelWithOptions(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).intValue(), new Double (arg5).intValue(), new Double (arg6).intValue());
-        return result;
+    public static ClearCLBuffer train_weka_model_with_options(ClearCLBuffer arg1, ClearCLBuffer arg2, String arg3, double arg4, double arg5, double arg6) {
+        TrainWekaModelWithOptions.trainWekaModelWithOptions(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).intValue(), new Double (arg5).intValue(), new Double (arg6).intValue());
+        return arg2;
     }
 
 
@@ -5924,9 +5931,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * It uses the webcam-capture library by Bartosz Firyn.https://github.com/sarxos/webcam-capture
      */
-    public static boolean capture_webcam_image(ClearCLBuffer arg1, double arg2, double arg3, double arg4) {
-        boolean result = CaptureWebcamImage.captureWebcamImage(getCLIJx(), arg1, new Double (arg2).intValue(), new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLBuffer capture_webcam_image(ClearCLBuffer arg1, double arg2, double arg3, double arg4) {
+        CaptureWebcamImage.captureWebcamImage(getCLIJx(), arg1, new Double (arg2).intValue(), new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg1;
     }
 
 
@@ -5935,9 +5942,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Converts a three channel image (stack with three slices) to a single channel image (2D image) by multiplying with factors 0.299, 0.587, 0.114.
      */
-    public static boolean convert_r_g_b_stack_to_gray_slice(ClearCLBuffer stack_source, ClearCLBuffer slice_destination) {
-        boolean result = ConvertRGBStackToGraySlice.convertRGBStackToGraySlice(getCLIJx(), stack_source, slice_destination);
-        return result;
+    public static ClearCLBuffer convert_r_g_b_stack_to_gray_slice(ClearCLBuffer stack_source, ClearCLBuffer slice_destination) {
+        ConvertRGBStackToGraySlice.convertRGBStackToGraySlice(getCLIJx(), stack_source, slice_destination);
+        return slice_destination;
     }
 
 
@@ -5949,9 +5956,9 @@ abstract class SnakeInterface extends CommonAPI {
      * From ImageJ macro this list is written to the log 
      * window. From ImageJ macro conside using pullLabelsToROIManager.
      */
-    public static boolean pull_labels_to_roilist(ClearCLBuffer arg1, List arg2) {
-        boolean result = PullLabelsToROIList.pullLabelsToROIList(getCLIJ2(), arg1, arg2);
-        return result;
+    public static ClearCLBuffer pull_labels_to_roilist(ClearCLBuffer arg1, List arg2) {
+        PullLabelsToROIList.pullLabelsToROIList(getCLIJ2(), arg1, arg2);
+        return arg1;
     }
 
     /**
@@ -5960,9 +5967,9 @@ abstract class SnakeInterface extends CommonAPI {
      * From ImageJ macro this list is written to the log 
      * window. From ImageJ macro conside using pullLabelsToROIManager.
      */
-    public static ArrayList pull_labels_to_roilist(ClearCLBuffer labelmap_input) {
-        ArrayList result = PullLabelsToROIList.pullLabelsToROIList(getCLIJ2(), labelmap_input);
-        return result;
+    public static ClearCLBuffer pull_labels_to_roilist(ClearCLBuffer labelmap_input) {
+        PullLabelsToROIList.pullLabelsToROIList(getCLIJ2(), labelmap_input);
+        return labelmap_input;
     }
 
 
@@ -5981,9 +5988,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     A the resulting vector of mean average values in the neighborhood.
      * 
      */
-    public static boolean mean_of_touching_neighbors(ClearCLBuffer values, ClearCLBuffer touch_matrix, ClearCLBuffer mean_values_destination) {
-        boolean result = MeanOfTouchingNeighbors.meanOfTouchingNeighbors(getCLIJ2(), values, touch_matrix, mean_values_destination);
-        return result;
+    public static ClearCLBuffer mean_of_touching_neighbors(ClearCLBuffer values, ClearCLBuffer touch_matrix, ClearCLBuffer mean_values_destination) {
+        MeanOfTouchingNeighbors.meanOfTouchingNeighbors(getCLIJ2(), values, touch_matrix, mean_values_destination);
+        return mean_values_destination;
     }
 
 
@@ -6002,9 +6009,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     A the resulting vector of minimum values in the neighborhood.
      * 
      */
-    public static boolean minimum_of_touching_neighbors(ClearCLBuffer values, ClearCLBuffer touch_matrix, ClearCLBuffer minimum_values_destination) {
-        boolean result = MinimumOfTouchingNeighbors.minimumOfTouchingNeighbors(getCLIJ2(), values, touch_matrix, minimum_values_destination);
-        return result;
+    public static ClearCLBuffer minimum_of_touching_neighbors(ClearCLBuffer values, ClearCLBuffer touch_matrix, ClearCLBuffer minimum_values_destination) {
+        MinimumOfTouchingNeighbors.minimumOfTouchingNeighbors(getCLIJ2(), values, touch_matrix, minimum_values_destination);
+        return minimum_values_destination;
     }
 
 
@@ -6023,9 +6030,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     A the resulting vector of maximum values in the neighborhood.
      * 
      */
-    public static boolean maximum_of_touching_neighbors(ClearCLBuffer values, ClearCLBuffer touch_matrix, ClearCLBuffer maximum_values_destination) {
-        boolean result = MaximumOfTouchingNeighbors.maximumOfTouchingNeighbors(getCLIJ2(), values, touch_matrix, maximum_values_destination);
-        return result;
+    public static ClearCLBuffer maximum_of_touching_neighbors(ClearCLBuffer values, ClearCLBuffer touch_matrix, ClearCLBuffer maximum_values_destination) {
+        MaximumOfTouchingNeighbors.maximumOfTouchingNeighbors(getCLIJ2(), values, touch_matrix, maximum_values_destination);
+        return maximum_values_destination;
     }
 
 
@@ -6036,9 +6043,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The values are stored in x dimension.
      */
-    public static boolean results_table_column_to_image(ClearCLBuffer arg1, ResultsTable arg2, String arg3) {
-        boolean result = ResultsTableColumnToImage.resultsTableColumnToImage(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLBuffer results_table_column_to_image(ClearCLBuffer arg1, ResultsTable arg2, String arg3) {
+        ResultsTableColumnToImage.resultsTableColumnToImage(getCLIJ2(), arg1, arg2, arg3);
+        return arg1;
     }
 
 
@@ -6052,9 +6059,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This method is executed on the CPU and not on the GPU/OpenCL device.
      */
-    public static double[][] statistics_of_background_and_labelled_pixels(ClearCLBuffer input, ClearCLBuffer labelmap) {
-        double[][] result = StatisticsOfBackgroundAndLabelledPixels.statisticsOfBackgroundAndLabelledPixels(getCLIJ2(), input, labelmap);
-        return result;
+    public static ClearCLBuffer statistics_of_background_and_labelled_pixels(ClearCLBuffer input, ClearCLBuffer labelmap) {
+        StatisticsOfBackgroundAndLabelledPixels.statisticsOfBackgroundAndLabelledPixels(getCLIJ2(), input, labelmap);
+        return labelmap;
     }
 
     /**
@@ -6065,9 +6072,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This method is executed on the CPU and not on the GPU/OpenCL device.
      */
-    public static ResultsTable statistics_of_background_and_labelled_pixels(ClearCLBuffer arg1, ClearCLBuffer arg2, ResultsTable arg3) {
-        ResultsTable result = StatisticsOfBackgroundAndLabelledPixels.statisticsOfBackgroundAndLabelledPixels(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLBuffer statistics_of_background_and_labelled_pixels(ClearCLBuffer arg1, ClearCLBuffer arg2, ResultsTable arg3) {
+        StatisticsOfBackgroundAndLabelledPixels.statisticsOfBackgroundAndLabelledPixels(getCLIJ2(), arg1, arg2, arg3);
+        return arg2;
     }
 
 
@@ -6081,9 +6088,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * It will be stored in the variable sum_of_all_pixels.
      */
-    public static double get_sum_of_all_pixels(ClearCLImageInterface arg1) {
-        double result = GetSumOfAllPixels.getSumOfAllPixels(getCLIJ2(), arg1);
-        return result;
+    public static ClearCLImageInterface get_sum_of_all_pixels(ClearCLImageInterface arg1) {
+        GetSumOfAllPixels.getSumOfAllPixels(getCLIJ2(), arg1);
+        return arg1;
     }
 
 
@@ -6097,9 +6104,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Note that the Sorensen-Dice coefficient s can be calculated from the Jaccard index j using this formula:
      * <pre>s = f(j) = 2 j / (j + 1)</pre>
      */
-    public static double get_sorensen_dice_coefficient(ClearCLBuffer arg1, ClearCLBuffer arg2) {
-        double result = GetSorensenDiceCoefficient.getSorensenDiceCoefficient(getCLIJ2(), arg1, arg2);
-        return result;
+    public static ClearCLBuffer get_sorensen_dice_coefficient(ClearCLBuffer arg1, ClearCLBuffer arg2) {
+        GetSorensenDiceCoefficient.getSorensenDiceCoefficient(getCLIJ2(), arg1, arg2);
+        return arg2;
     }
 
 
@@ -6110,9 +6117,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * It will be stored in the variable minimum_of_all_pixels.
      */
-    public static double get_minimum_of_all_pixels(ClearCLImageInterface arg1) {
-        double result = GetMinimumOfAllPixels.getMinimumOfAllPixels(getCLIJ2(), arg1);
-        return result;
+    public static ClearCLImageInterface get_minimum_of_all_pixels(ClearCLImageInterface arg1) {
+        GetMinimumOfAllPixels.getMinimumOfAllPixels(getCLIJ2(), arg1);
+        return arg1;
     }
 
 
@@ -6123,9 +6130,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * It will be stored in the variable maximum_of_all_pixels.
      */
-    public static double get_maximum_of_all_pixels(ClearCLImageInterface arg1) {
-        double result = GetMaximumOfAllPixels.getMaximumOfAllPixels(getCLIJ2(), arg1);
-        return result;
+    public static ClearCLImageInterface get_maximum_of_all_pixels(ClearCLImageInterface arg1) {
+        GetMaximumOfAllPixels.getMaximumOfAllPixels(getCLIJ2(), arg1);
+        return arg1;
     }
 
 
@@ -6136,9 +6143,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * It will be stored in the variable mean_of_all_pixels.
      */
-    public static double get_mean_of_all_pixels(ClearCLImageInterface arg1) {
-        double result = GetMeanOfAllPixels.getMeanOfAllPixels(getCLIJ2(), arg1);
-        return result;
+    public static ClearCLImageInterface get_mean_of_all_pixels(ClearCLImageInterface arg1) {
+        GetMeanOfAllPixels.getMeanOfAllPixels(getCLIJ2(), arg1);
+        return arg1;
     }
 
 
@@ -6152,9 +6159,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Note that the Sorensen-Dice coefficient can be calculated from the Jaccard index j using this formula:
      * <pre>s = f(j) = 2 j / (j + 1)</pre>
      */
-    public static double get_jaccard_index(ClearCLBuffer arg1, ClearCLBuffer arg2) {
-        double result = GetJaccardIndex.getJaccardIndex(getCLIJ2(), arg1, arg2);
-        return result;
+    public static ClearCLBuffer get_jaccard_index(ClearCLBuffer arg1, ClearCLBuffer arg2) {
+        GetJaccardIndex.getJaccardIndex(getCLIJ2(), arg1, arg2);
+        return arg2;
     }
 
 
@@ -6166,9 +6173,9 @@ abstract class SnakeInterface extends CommonAPI {
      *  It writes the result in the variables
      *  centerOfMassX, centerOfMassY and centerOfMassZ.
      */
-    public static double[] get_center_of_mass(ClearCLBuffer arg1) {
-        double[] result = GetCenterOfMass.getCenterOfMass(getCLIJ2(), arg1);
-        return result;
+    public static ClearCLBuffer get_center_of_mass(ClearCLBuffer arg1) {
+        GetCenterOfMass.getCenterOfMass(getCLIJ2(), arg1);
+        return arg1;
     }
 
 
@@ -6179,9 +6186,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * If called from macro, the positions will be stored in the variables 'boundingBoxX', 'boundingBoxY', 'boundingBoxZ', 'boundingBoxWidth', 'boundingBoxHeight' and 'boundingBoxDepth'.In case of 2D images Z and depth will be zero.
      */
-    public static double[] get_bounding_box(ClearCLBuffer arg1) {
-        double[] result = GetBoundingBox.getBoundingBox(getCLIJ2(), arg1);
-        return result;
+    public static ClearCLBuffer get_bounding_box(ClearCLBuffer arg1) {
+        GetBoundingBox.getBoundingBox(getCLIJ2(), arg1);
+        return arg1;
     }
 
 
@@ -6190,9 +6197,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Converts an array to an image.
      */
-    public static boolean push_array(ClearCLBuffer arg1, Object arg2) {
-        boolean result = PushArray.pushArray(getCLIJ2(), arg1, arg2);
-        return result;
+    public static ClearCLBuffer push_array(ClearCLBuffer arg1, Object arg2) {
+        PushArray.pushArray(getCLIJ2(), arg1, arg2);
+        return arg1;
     }
 
     /**
@@ -6209,9 +6216,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Writes an image into a string.
      */
-    public static String pull_string(ClearCLImageInterface arg1) {
-        String result = PullString.pullString(getCLIJ2(), arg1);
-        return result;
+    public static ClearCLImageInterface pull_string(ClearCLImageInterface arg1) {
+        PullString.pullString(getCLIJ2(), arg1);
+        return arg1;
     }
 
 
@@ -6232,9 +6239,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 1 2 3 4
      * 
      */
-    public static boolean push_string(ClearCLBuffer arg1, String arg2) {
-        boolean result = PushString.pushString(getCLIJ2(), arg1, arg2);
-        return result;
+    public static ClearCLBuffer push_string(ClearCLBuffer arg1, String arg2) {
+        PushString.pushString(getCLIJ2(), arg1, arg2);
+        return arg1;
     }
 
     /**
@@ -6265,9 +6272,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * 
      */
-    public static boolean median_of_touching_neighbors(ClearCLBuffer values, ClearCLBuffer touch_matrix, ClearCLBuffer median_values_destination) {
-        boolean result = MedianOfTouchingNeighbors.medianOfTouchingNeighbors(getCLIJ2(), values, touch_matrix, median_values_destination);
-        return result;
+    public static ClearCLBuffer median_of_touching_neighbors(ClearCLBuffer values, ClearCLBuffer touch_matrix, ClearCLBuffer median_values_destination) {
+        MedianOfTouchingNeighbors.medianOfTouchingNeighbors(getCLIJ2(), values, touch_matrix, median_values_destination);
+        return median_values_destination;
     }
 
 
@@ -6278,9 +6285,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The values are stored in x dimension.
      */
-    public static boolean push_results_table_column(ClearCLBuffer arg1, ResultsTable arg2, String arg3) {
-        boolean result = PushResultsTableColumn.pushResultsTableColumn(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLBuffer push_results_table_column(ClearCLBuffer arg1, ResultsTable arg2, String arg3) {
+        PushResultsTableColumn.pushResultsTableColumn(getCLIJ2(), arg1, arg2, arg3);
+        return arg1;
     }
 
 
@@ -6291,9 +6298,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Rows stay rows, columns stay columns.
      */
-    public static boolean push_results_table(ClearCLBuffer arg1, ResultsTable arg2) {
-        boolean result = PushResultsTable.pushResultsTable(getCLIJ2(), arg1, arg2);
-        return result;
+    public static ClearCLBuffer push_results_table(ClearCLBuffer arg1, ResultsTable arg2) {
+        PushResultsTable.pushResultsTable(getCLIJ2(), arg1, arg2);
+        return arg1;
     }
 
 
@@ -6302,17 +6309,17 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Converts an image into a table.
      */
-    public static ResultsTable pull_to_results_table(ClearCLBuffer arg1, ResultsTable arg2) {
-        ResultsTable result = PullToResultsTable.pullToResultsTable(getCLIJ2(), arg1, arg2);
-        return result;
+    public static ClearCLBuffer pull_to_results_table(ClearCLBuffer arg1, ResultsTable arg2) {
+        PullToResultsTable.pullToResultsTable(getCLIJ2(), arg1, arg2);
+        return arg1;
     }
 
     /**
      * Converts an image into a table.
      */
-    public static ResultsTable pull_to_results_table(ClearCLImage arg1, ResultsTable arg2) {
-        ResultsTable result = PullToResultsTable.pullToResultsTable(getCLIJ2(), arg1, arg2);
-        return result;
+    public static ClearCLImage pull_to_results_table(ClearCLImage arg1, ResultsTable arg2) {
+        PullToResultsTable.pullToResultsTable(getCLIJ2(), arg1, arg2);
+        return arg1;
     }
 
 
@@ -6323,9 +6330,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The pixels where  the regions touched are afterwards returned as binary image which corresponds to the Voronoi diagram.
      */
-    public static boolean label_voronoi_octagon(ClearCLBuffer label_map, ClearCLBuffer label_voronoi_destination) {
-        boolean result = LabelVoronoiOctagon.labelVoronoiOctagon(getCLIJ2(), label_map, label_voronoi_destination);
-        return result;
+    public static ClearCLBuffer label_voronoi_octagon(ClearCLBuffer label_map, ClearCLBuffer label_voronoi_destination) {
+        LabelVoronoiOctagon.labelVoronoiOctagon(getCLIJ2(), label_map, label_voronoi_destination);
+        return label_voronoi_destination;
     }
 
 
@@ -6334,9 +6341,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Converts a touch matrix in an adjacency matrix
      */
-    public static boolean touch_matrix_to_adjacency_matrix(ClearCLBuffer touch_matrix, ClearCLBuffer adjacency_matrix) {
-        boolean result = TouchMatrixToAdjacencyMatrix.touchMatrixToAdjacencyMatrix(getCLIJ2(), touch_matrix, adjacency_matrix);
-        return result;
+    public static ClearCLBuffer touch_matrix_to_adjacency_matrix(ClearCLBuffer touch_matrix, ClearCLBuffer adjacency_matrix) {
+        TouchMatrixToAdjacencyMatrix.touchMatrixToAdjacencyMatrix(getCLIJ2(), touch_matrix, adjacency_matrix);
+        return adjacency_matrix;
     }
 
 
@@ -6355,9 +6362,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The output touch matrix to be written into.
      * 
      */
-    public static boolean adjacency_matrix_to_touch_matrix(ClearCLBuffer adjacency_matrix, ClearCLBuffer touch_matrix) {
-        boolean result = AdjacencyMatrixToTouchMatrix.adjacencyMatrixToTouchMatrix(getCLIJ2(), adjacency_matrix, touch_matrix);
-        return result;
+    public static ClearCLBuffer adjacency_matrix_to_touch_matrix(ClearCLBuffer adjacency_matrix, ClearCLBuffer touch_matrix) {
+        AdjacencyMatrixToTouchMatrix.adjacencyMatrixToTouchMatrix(getCLIJ2(), adjacency_matrix, touch_matrix);
+        return touch_matrix;
     }
 
 
@@ -6366,9 +6373,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Takes a pointlist with dimensions n times d with n point coordinates in d dimensions and labels corresponding pixels.
      */
-    public static boolean pointlist_to_labelled_spots(ClearCLBuffer pointlist, ClearCLBuffer spots_destination) {
-        boolean result = PointlistToLabelledSpots.pointlistToLabelledSpots(getCLIJ2(), pointlist, spots_destination);
-        return result;
+    public static ClearCLBuffer pointlist_to_labelled_spots(ClearCLBuffer pointlist, ClearCLBuffer spots_destination) {
+        PointlistToLabelledSpots.pointlistToLabelledSpots(getCLIJ2(), pointlist, spots_destination);
+        return spots_destination;
     }
 
 
@@ -6380,9 +6387,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This method is executed on the CPU and not on the GPU/OpenCL device.
      */
-    public static ResultsTable statistics_of_image(ClearCLBuffer arg1, ResultsTable arg2) {
-        ResultsTable result = StatisticsOfImage.statisticsOfImage(getCLIJ2(), arg1, arg2);
-        return result;
+    public static ClearCLBuffer statistics_of_image(ClearCLBuffer arg1, ResultsTable arg2) {
+        StatisticsOfImage.statisticsOfImage(getCLIJ2(), arg1, arg2);
+        return arg1;
     }
 
 
@@ -6393,9 +6400,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This corresponds to the n row indices with minimum values for each column of the distance matrix.Returns the n shortest distances in one image and the point indices in another image.
      */
-    public static boolean n_closest_distances(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3) {
-        boolean result = NClosestDistances.nClosestDistances(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLBuffer n_closest_distances(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3) {
+        NClosestDistances.nClosestDistances(getCLIJ2(), arg1, arg2, arg3);
+        return arg3;
     }
 
 
@@ -6408,9 +6415,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * For example if you pass 0,1,0,0,1: Labels 1 and 4 will be removed (those with a 1 in the vector will be excluded). Labels 2 and 3 will be kept and renumbered to 1 and 2.
      */
-    public static boolean exclude_labels(ClearCLBuffer binary_flaglist, ClearCLBuffer label_map_input, ClearCLBuffer label_map_destination) {
-        boolean result = ExcludeLabels.excludeLabels(getCLIJ2(), binary_flaglist, label_map_input, label_map_destination);
-        return result;
+    public static ClearCLBuffer exclude_labels(ClearCLBuffer binary_flaglist, ClearCLBuffer label_map_input, ClearCLBuffer label_map_destination) {
+        ExcludeLabels.excludeLabels(getCLIJ2(), binary_flaglist, label_map_input, label_map_destination);
+        return label_map_destination;
     }
 
 
@@ -6421,9 +6428,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This corresponds to the average of the n maximum values (rows) for each column of the distance matrix.
      */
-    public static boolean average_distance_of_n_far_off_points(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = AverageDistanceOfNFarOffPoints.averageDistanceOfNFarOffPoints(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer average_distance_of_n_far_off_points(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        AverageDistanceOfNFarOffPoints.averageDistanceOfNFarOffPoints(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -6434,9 +6441,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * 
      */
-    public static boolean standard_deviation_of_touching_neighbors(ClearCLBuffer values, ClearCLBuffer touch_matrix, ClearCLBuffer standard_deviation_values_destination) {
-        boolean result = StandardDeviationOfTouchingNeighbors.standardDeviationOfTouchingNeighbors(getCLIJ2(), values, touch_matrix, standard_deviation_values_destination);
-        return result;
+    public static ClearCLBuffer standard_deviation_of_touching_neighbors(ClearCLBuffer values, ClearCLBuffer touch_matrix, ClearCLBuffer standard_deviation_values_destination) {
+        StandardDeviationOfTouchingNeighbors.standardDeviationOfTouchingNeighbors(getCLIJ2(), values, touch_matrix, standard_deviation_values_destination);
+        return standard_deviation_values_destination;
     }
 
 
@@ -6445,9 +6452,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines neighbors of neigbors from touch matrix and saves the result as a new touch matrix.
      */
-    public static boolean neighbors_of_neighbors(ClearCLBuffer touch_matrix, ClearCLBuffer neighbor_matrix_destination) {
-        boolean result = NeighborsOfNeighbors.neighborsOfNeighbors(getCLIJ2(), touch_matrix, neighbor_matrix_destination);
-        return result;
+    public static ClearCLBuffer neighbors_of_neighbors(ClearCLBuffer touch_matrix, ClearCLBuffer neighbor_matrix_destination) {
+        NeighborsOfNeighbors.neighborsOfNeighbors(getCLIJ2(), touch_matrix, neighbor_matrix_destination);
+        return neighbor_matrix_destination;
     }
 
 
@@ -6459,9 +6466,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Note that indexing in the vector starts at zero. The 0th entry corresponds to background in the label map.Internally this method just calls ReplaceIntensities.
      * 
      */
-    public static boolean generate_parametric_image(ClearCLImageInterface label_map, ClearCLImageInterface parameter_value_vector, ClearCLImageInterface parametric_image_destination) {
-        boolean result = GenerateParametricImage.generateParametricImage(getCLIJ2(), label_map, parameter_value_vector, parametric_image_destination);
-        return result;
+    public static ClearCLImageInterface generate_parametric_image(ClearCLImageInterface label_map, ClearCLImageInterface parameter_value_vector, ClearCLImageInterface parametric_image_destination) {
+        GenerateParametricImage.generateParametricImage(getCLIJ2(), label_map, parameter_value_vector, parametric_image_destination);
+        return parametric_image_destination;
     }
 
 
@@ -6473,9 +6480,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Note that indexing in the table column starts at zero. The results table should contain a line at the beginningrepresenting the background.
      * 
      */
-    public static boolean generate_parametric_image_from_results_table_column(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ResultsTable arg3, String arg4) {
-        boolean result = GenerateParametricImageFromResultsTableColumn.generateParametricImageFromResultsTableColumn(getCLIJ2(), arg1, arg2, arg3, arg4);
-        return result;
+    public static ClearCLImageInterface generate_parametric_image_from_results_table_column(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ResultsTable arg3, String arg4) {
+        GenerateParametricImageFromResultsTableColumn.generateParametricImageFromResultsTableColumn(getCLIJ2(), arg1, arg2, arg3, arg4);
+        return arg2;
     }
 
 
@@ -6486,9 +6493,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Hand over a vector of values and a range specifying which labels with which values are eliminated.
      */
-    public static boolean exclude_labels_with_values_out_of_range(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4, double arg5) {
-        boolean result = ExcludeLabelsWithValuesOutOfRange.excludeLabelsWithValuesOutOfRange(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue(), new Double (arg5).floatValue());
-        return result;
+    public static ClearCLBuffer exclude_labels_with_values_out_of_range(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4, double arg5) {
+        ExcludeLabelsWithValuesOutOfRange.excludeLabelsWithValuesOutOfRange(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue(), new Double (arg5).floatValue());
+        return arg3;
     }
 
 
@@ -6499,9 +6506,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Hand over a vector of values and a range specifying which labels with which values are eliminated.
      */
-    public static boolean exclude_labels_with_values_within_range(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4, double arg5) {
-        boolean result = ExcludeLabelsWithValuesWithinRange.excludeLabelsWithValuesWithinRange(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue(), new Double (arg5).floatValue());
-        return result;
+    public static ClearCLBuffer exclude_labels_with_values_within_range(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4, double arg5) {
+        ExcludeLabelsWithValuesWithinRange.excludeLabelsWithValuesWithinRange(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue(), new Double (arg5).floatValue());
+        return arg3;
     }
 
 
@@ -6510,9 +6517,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Combines two images or stacks in Y.
      */
-    public static boolean combine_vertically(ClearCLImageInterface stack1, ClearCLImageInterface stack2, ClearCLImageInterface destination) {
-        boolean result = CombineVertically.combineVertically(getCLIJ2(), stack1, stack2, destination);
-        return result;
+    public static ClearCLImageInterface combine_vertically(ClearCLImageInterface stack1, ClearCLImageInterface stack2, ClearCLImageInterface destination) {
+        CombineVertically.combineVertically(getCLIJ2(), stack1, stack2, destination);
+        return destination;
     }
 
 
@@ -6521,9 +6528,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Combines two images or stacks in X.
      */
-    public static boolean combine_horizontally(ClearCLImageInterface stack1, ClearCLImageInterface stack2, ClearCLImageInterface destination) {
-        boolean result = CombineHorizontally.combineHorizontally(getCLIJ2(), stack1, stack2, destination);
-        return result;
+    public static ClearCLImageInterface combine_horizontally(ClearCLImageInterface stack1, ClearCLImageInterface stack2, ClearCLImageInterface destination) {
+        CombineHorizontally.combineHorizontally(getCLIJ2(), stack1, stack2, destination);
+        return destination;
     }
 
 
@@ -6534,9 +6541,9 @@ abstract class SnakeInterface extends CommonAPI {
      * With the offset you have control which slices stay: 
      * * With factor 3 and offset 0, slices 0, 3, 6,... are kept. * With factor 4 and offset 1, slices 1, 5, 9,... are kept.
      */
-    public static boolean reduce_stack(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        boolean result = ReduceStack.reduceStack(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLImageInterface reduce_stack(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        ReduceStack.reduceStack(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -6548,9 +6555,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Pixels in the resulting image are set to 1 if there is no other pixel in a given radius which has a 
      * lower intensity, and to 0 otherwise.
      */
-    public static boolean detect_minima2d_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
-        boolean result = DetectMinima2DBox.detectMinima2DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLBuffer detect_minima2d_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
+        DetectMinima2DBox.detectMinima2DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -6562,9 +6569,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Pixels in the resulting image are set to 1 if there is no other pixel in a given radius which has a 
      * higher intensity, and to 0 otherwise.
      */
-    public static boolean detect_maxima2d_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
-        boolean result = DetectMaxima2DBox.detectMaxima2DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLBuffer detect_maxima2d_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
+        DetectMaxima2DBox.detectMaxima2DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -6576,9 +6583,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Pixels in the resulting image are set to 1 if there is no other pixel in a given radius which has a 
      * lower intensity, and to 0 otherwise.
      */
-    public static boolean detect_minima3d_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
-        boolean result = DetectMinima3DBox.detectMinima3DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLBuffer detect_minima3d_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        DetectMinima3DBox.detectMinima3DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -6590,9 +6597,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Pixels in the resulting image are set to 1 if there is no other pixel in a given radius which has a 
      * higher intensity, and to 0 otherwise.
      */
-    public static boolean detect_maxima3d_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
-        boolean result = DetectMaxima3DBox.detectMaxima3DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLBuffer detect_maxima3d_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        DetectMaxima3DBox.detectMaxima3DBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -6604,9 +6611,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Second parameter is a Lookup-Table in the form of an 8-bit image stack 255 pixels wide, 1 pixel high with 3 planes representing red, green and blue intensities.
      * Resulting image is a 3D image with three Z-planes representing red, green and blue channels.
      */
-    public static boolean depth_color_projection(ClearCLImageInterface arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4, double arg5) {
-        boolean result = DepthColorProjection.depthColorProjection(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue(), new Double (arg5).floatValue());
-        return result;
+    public static ClearCLBuffer depth_color_projection(ClearCLImageInterface arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4, double arg5) {
+        DepthColorProjection.depthColorProjection(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue(), new Double (arg5).floatValue());
+        return arg3;
     }
 
 
@@ -6617,9 +6624,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * For example, if labels 3 in labelmap1 and 4 in labelmap2 are touching then the pixel (3,4) in the matrix will be set to 1.
      */
-    public static boolean generate_binary_overlap_matrix(ClearCLBuffer label_map1, ClearCLBuffer label_map2, ClearCLBuffer binary_overlap_matrix_destination) {
-        boolean result = GenerateBinaryOverlapMatrix.generateBinaryOverlapMatrix(getCLIJ2(), label_map1, label_map2, binary_overlap_matrix_destination);
-        return result;
+    public static ClearCLBuffer generate_binary_overlap_matrix(ClearCLBuffer label_map1, ClearCLBuffer label_map2, ClearCLBuffer binary_overlap_matrix_destination) {
+        GenerateBinaryOverlapMatrix.generateBinaryOverlapMatrix(getCLIJ2(), label_map1, label_map2, binary_overlap_matrix_destination);
+        return binary_overlap_matrix_destination;
     }
 
 
@@ -6633,9 +6640,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * It is recommended that the kernel image has an odd size in X, Y and Z.
      */
-    public static boolean convolve(ClearCLBuffer source, ClearCLBuffer convolution_kernel, ClearCLBuffer destination) {
-        boolean result = Convolve.convolve(getCLIJ2(), source, convolution_kernel, destination);
-        return result;
+    public static ClearCLBuffer convolve(ClearCLBuffer source, ClearCLBuffer convolution_kernel, ClearCLBuffer destination) {
+        Convolve.convolve(getCLIJ2(), source, convolution_kernel, destination);
+        return destination;
     }
 
 
@@ -6644,9 +6651,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Applies a non-local means filter using a box neighborhood with a Gaussian weight specified with sigma to the input image.
      */
-    public static boolean non_local_means(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6) {
-        boolean result = NonLocalMeans.nonLocalMeans(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue(), new Double (arg6).floatValue());
-        return result;
+    public static ClearCLBuffer non_local_means(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6) {
+        NonLocalMeans.nonLocalMeans(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue(), new Double (arg6).floatValue());
+        return arg2;
     }
 
 
@@ -6658,9 +6665,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Copies all pixels instead those which are not a number (NaN) or infinity (inf), which are replaced by 0.
      */
-    public static boolean undefined_to_zero(ClearCLBuffer source, ClearCLBuffer destination) {
-        boolean result = UndefinedToZero.undefinedToZero(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLBuffer undefined_to_zero(ClearCLBuffer source, ClearCLBuffer destination) {
+        UndefinedToZero.undefinedToZero(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -6672,9 +6679,9 @@ abstract class SnakeInterface extends CommonAPI {
      * For the remaining labels_1, the value will be between 0 and 1 indicating the overlap as measured by the Jaccard Index.
      * Major parts of this operation run on the CPU.
      */
-    public static boolean generate_jaccard_index_matrix(ClearCLBuffer label_map1, ClearCLBuffer label_map2, ClearCLBuffer jaccard_index_matrix_destination) {
-        boolean result = GenerateJaccardIndexMatrix.generateJaccardIndexMatrix(getCLIJ2(), label_map1, label_map2, jaccard_index_matrix_destination);
-        return result;
+    public static ClearCLBuffer generate_jaccard_index_matrix(ClearCLBuffer label_map1, ClearCLBuffer label_map2, ClearCLBuffer jaccard_index_matrix_destination) {
+        GenerateJaccardIndexMatrix.generateJaccardIndexMatrix(getCLIJ2(), label_map1, label_map2, jaccard_index_matrix_destination);
+        return jaccard_index_matrix_destination;
     }
 
 
@@ -6685,9 +6692,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Major parts of this operation run on the CPU.
      */
-    public static boolean generate_touch_count_matrix(ClearCLBuffer label_map, ClearCLBuffer touch_count_matrix_destination) {
-        boolean result = GenerateTouchCountMatrix.generateTouchCountMatrix(getCLIJ2(), label_map, touch_count_matrix_destination);
-        return result;
+    public static ClearCLBuffer generate_touch_count_matrix(ClearCLBuffer label_map, ClearCLBuffer touch_count_matrix_destination) {
+        GenerateTouchCountMatrix.generateTouchCountMatrix(getCLIJ2(), label_map, touch_count_matrix_destination);
+        return touch_count_matrix_destination;
     }
 
 
@@ -6696,9 +6703,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the minimum intensity projection of an image along Y.
      */
-    public static boolean minimum_x_projection(ClearCLImageInterface source, ClearCLImageInterface destination_min) {
-        boolean result = MinimumXProjection.minimumXProjection(getCLIJ2(), source, destination_min);
-        return result;
+    public static ClearCLImageInterface minimum_x_projection(ClearCLImageInterface source, ClearCLImageInterface destination_min) {
+        MinimumXProjection.minimumXProjection(getCLIJ2(), source, destination_min);
+        return destination_min;
     }
 
 
@@ -6707,9 +6714,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the minimum intensity projection of an image along Y.
      */
-    public static boolean minimum_y_projection(ClearCLImageInterface source, ClearCLImageInterface destination_min) {
-        boolean result = MinimumYProjection.minimumYProjection(getCLIJ2(), source, destination_min);
-        return result;
+    public static ClearCLImageInterface minimum_y_projection(ClearCLImageInterface source, ClearCLImageInterface destination_min) {
+        MinimumYProjection.minimumYProjection(getCLIJ2(), source, destination_min);
+        return destination_min;
     }
 
 
@@ -6718,9 +6725,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the mean average intensity projection of an image along X.
      */
-    public static boolean mean_x_projection(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = MeanXProjection.meanXProjection(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface mean_x_projection(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        MeanXProjection.meanXProjection(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -6729,9 +6736,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the mean average intensity projection of an image along Y.
      */
-    public static boolean mean_y_projection(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = MeanYProjection.meanYProjection(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface mean_y_projection(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        MeanYProjection.meanYProjection(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -6740,9 +6747,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the squared difference pixel by pixel between two images.
      */
-    public static boolean squared_difference(ClearCLBuffer source1, ClearCLBuffer source2, ClearCLBuffer destination) {
-        boolean result = SquaredDifference.squaredDifference(getCLIJ2(), source1, source2, destination);
-        return result;
+    public static ClearCLBuffer squared_difference(ClearCLBuffer source1, ClearCLBuffer source2, ClearCLBuffer destination) {
+        SquaredDifference.squaredDifference(getCLIJ2(), source1, source2, destination);
+        return destination;
     }
 
 
@@ -6763,9 +6770,9 @@ abstract class SnakeInterface extends CommonAPI {
      *     The output image  where results are written into.
      * 
      */
-    public static boolean absolute_difference(ClearCLBuffer source1, ClearCLBuffer source2, ClearCLBuffer destination) {
-        boolean result = AbsoluteDifference.absoluteDifference(getCLIJ2(), source1, source2, destination);
-        return result;
+    public static ClearCLBuffer absolute_difference(ClearCLBuffer source1, ClearCLBuffer source2, ClearCLBuffer destination) {
+        AbsoluteDifference.absoluteDifference(getCLIJ2(), source1, source2, destination);
+        return destination;
     }
 
 
@@ -6776,9 +6783,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This functionality is comparable to ImageJs image calculator operator 'transparent zero'.
      */
-    public static boolean replace_pixels_if_zero(ClearCLImageInterface input1, ClearCLImageInterface input2, ClearCLImageInterface destination) {
-        boolean result = ReplacePixelsIfZero.replacePixelsIfZero(getCLIJ2(), input1, input2, destination);
-        return result;
+    public static ClearCLImageInterface replace_pixels_if_zero(ClearCLImageInterface input1, ClearCLImageInterface input2, ClearCLImageInterface destination) {
+        ReplacePixelsIfZero.replacePixelsIfZero(getCLIJ2(), input1, input2, destination);
+        return destination;
     }
 
 
@@ -6789,9 +6796,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The resulting label map is written to the output.
      */
-    public static boolean voronoi_labeling(ClearCLBuffer input, ClearCLImageInterface destination) {
-        boolean result = VoronoiLabeling.voronoiLabeling(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLImageInterface voronoi_labeling(ClearCLBuffer input, ClearCLImageInterface destination) {
+        VoronoiLabeling.voronoiLabeling(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -6802,9 +6809,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The resulting label map is written to the output.
      */
-    public static boolean extend_labeling_via_voronoi(ClearCLBuffer input, ClearCLImageInterface destination) {
-        boolean result = ExtendLabelingViaVoronoi.extendLabelingViaVoronoi(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLImageInterface extend_labeling_via_voronoi(ClearCLBuffer input, ClearCLImageInterface destination) {
+        ExtendLabelingViaVoronoi.extendLabelingViaVoronoi(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -6815,17 +6822,17 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * 
      */
-    public static boolean find_maxima(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = FindMaxima.findMaxima(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLBuffer find_maxima(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        FindMaxima.findMaxima(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
     /**
      * 
      */
-    public static boolean merge_touching_labels_special(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, ClearCLBuffer arg4) {
-        boolean result = FindMaxima.mergeTouchingLabelsSpecial(getCLIJ2(), arg1, arg2, arg3, arg4);
-        return result;
+    public static ClearCLBuffer merge_touching_labels_special(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, ClearCLBuffer arg4) {
+        FindMaxima.mergeTouchingLabelsSpecial(getCLIJ2(), arg1, arg2, arg3, arg4);
+        return arg4;
     }
 
 
@@ -6834,9 +6841,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * 
      */
-    public static boolean merge_touching_labels(ClearCLBuffer source, ClearCLBuffer destination) {
-        boolean result = MergeTouchingLabels.mergeTouchingLabels(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLBuffer merge_touching_labels(ClearCLBuffer source, ClearCLBuffer destination) {
+        MergeTouchingLabels.mergeTouchingLabels(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -6847,9 +6854,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * To determine the distances, the centroid of the labels is determined internally.
      */
-    public static boolean average_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = AverageNeighborDistanceMap.averageNeighborDistanceMap(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer average_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        AverageNeighborDistanceMap.averageNeighborDistanceMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -6865,9 +6872,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Thus, going in virtual Z direction (actually D) in the resulting stack, you go from the center to theperiphery.
      */
-    public static boolean cylinder_transform(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6) {
-        boolean result = CylinderTransform.cylinderTransform(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue());
-        return result;
+    public static ClearCLBuffer cylinder_transform(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6) {
+        CylinderTransform.cylinderTransform(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue());
+        return arg2;
     }
 
 
@@ -6879,9 +6886,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The regions do not not necessarily have to be single pixels. 
      * It is also possible to invert the image before determining the maxima.
      */
-    public static boolean detect_and_label_maxima(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, boolean arg6) {
-        boolean result = DetectAndLabelMaxima.detectAndLabelMaxima(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), arg6);
-        return result;
+    public static ClearCLBuffer detect_and_label_maxima(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, boolean arg6) {
+        DetectAndLabelMaxima.detectAndLabelMaxima(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), arg6);
+        return arg2;
     }
 
 
@@ -6893,9 +6900,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The end points of the lines correspond to the centroids of the labels. The intensity of the lines 
      * corresponds to the distance between these labels (in pixels or voxels).
      */
-    public static boolean draw_distance_mesh_between_touching_labels(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = DrawDistanceMeshBetweenTouchingLabels.drawDistanceMeshBetweenTouchingLabels(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer draw_distance_mesh_between_touching_labels(ClearCLBuffer input, ClearCLBuffer destination) {
+        DrawDistanceMeshBetweenTouchingLabels.drawDistanceMeshBetweenTouchingLabels(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -6906,9 +6913,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The end points of the lines correspond to the centroids of the labels. 
      */
-    public static boolean draw_mesh_between_touching_labels(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = DrawMeshBetweenTouchingLabels.drawMeshBetweenTouchingLabels(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer draw_mesh_between_touching_labels(ClearCLBuffer input, ClearCLBuffer destination) {
+        DrawMeshBetweenTouchingLabels.drawMeshBetweenTouchingLabels(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -6919,9 +6926,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Size of the labels is given as the number of pixel or voxels per label.
      */
-    public static boolean exclude_labels_outside_size_range(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
-        boolean result = ExcludeLabelsOutsideSizeRange.excludeLabelsOutsideSizeRange(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
-        return result;
+    public static ClearCLBuffer exclude_labels_outside_size_range(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
+        ExcludeLabelsOutsideSizeRange.excludeLabelsOutsideSizeRange(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
+        return arg2;
     }
 
 
@@ -6932,9 +6939,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This is actually a local maximum filter applied to a label map which does not overwrite labels.
      */
-    public static boolean extend_labels_with_maximum_radius(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = ExtendLabelsWithMaximumRadius.extendLabelsWithMaximumRadius(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer extend_labels_with_maximum_radius(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        ExtendLabelsWithMaximumRadius.extendLabelsWithMaximumRadius(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -6943,9 +6950,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determine maxima with a given tolerance to surrounding maxima and background and label them.
      */
-    public static boolean find_and_label_maxima(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, boolean arg4) {
-        boolean result = FindAndLabelMaxima.findAndLabelMaxima(getCLIJx(), arg1, arg2, new Double (arg3).floatValue(), arg4);
-        return result;
+    public static ClearCLBuffer find_and_label_maxima(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, boolean arg4) {
+        FindAndLabelMaxima.findAndLabelMaxima(getCLIJx(), arg1, arg2, new Double (arg3).floatValue(), arg4);
+        return arg2;
     }
 
 
@@ -6954,9 +6961,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Applies a scaling operation using linear interpolation to generate an image stack with a given isotropic voxel size.
      */
-    public static boolean make_isotropic(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6) {
-        boolean result = MakeIsotropic.makeIsotropic(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue());
-        return result;
+    public static ClearCLBuffer make_isotropic(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6) {
+        MakeIsotropic.makeIsotropic(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue());
+        return arg2;
     }
 
 
@@ -6967,9 +6974,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * 
      */
-    public static boolean touching_neighbor_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = TouchingNeighborCountMap.touchingNeighborCountMap(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer touching_neighbor_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        TouchingNeighborCountMap.touchingNeighborCountMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -6978,9 +6985,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Applies a rigid transform using linear interpolation to an image stack.
      */
-    public static boolean rigid_transform(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8) {
-        boolean result = RigidTransform.rigidTransform(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue());
-        return result;
+    public static ClearCLBuffer rigid_transform(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8) {
+        RigidTransform.rigidTransform(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue(), new Double (arg8).floatValue());
+        return arg2;
     }
 
 
@@ -6991,9 +6998,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * A corresponds to azimut,I to inclination and D to the distance from the center.Thus, going in virtual Z direction (actually D) in the resulting stack, you go from the center to theperiphery.
      */
-    public static boolean sphere_transform(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7) {
-        boolean result = SphereTransform.sphereTransform(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue());
-        return result;
+    public static ClearCLBuffer sphere_transform(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6, double arg7) {
+        SphereTransform.sphereTransform(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue(), new Double (arg7).floatValue());
+        return arg2;
     }
 
 
@@ -7004,9 +7011,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Deprecated: Use differenceOfGaussian() instead.
      */
-    public static boolean subtract_gaussian_background(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = SubtractGaussianBackground.subtractGaussianBackground(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
-        return result;
+    public static ClearCLImageInterface subtract_gaussian_background(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        SubtractGaussianBackground.subtractGaussianBackground(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
+        return arg2;
     }
 
 
@@ -7015,9 +7022,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Applies a Difference-of-Gaussian filter to an image and thresholds it with given sigma and threshold values.
      */
-    public static boolean threshold_dog(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, boolean arg6) {
-        boolean result = ThresholdDoG.thresholdDoG(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), arg6);
-        return result;
+    public static ClearCLBuffer threshold_dog(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, boolean arg6) {
+        ThresholdDoG.thresholdDoG(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), arg6);
+        return arg2;
     }
 
 
@@ -7026,9 +7033,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the centerOfMass of the image stack and translates it so that it stays in a defined position.
      */
-    public static boolean drift_correction_by_center_of_mass_fixation(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
-        boolean result = DriftCorrectionByCenterOfMassFixation.driftCorrectionByCenterOfMassFixation(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
-        return result;
+    public static ClearCLBuffer drift_correction_by_center_of_mass_fixation(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        DriftCorrectionByCenterOfMassFixation.driftCorrectionByCenterOfMassFixation(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
+        return arg2;
     }
 
 
@@ -7038,9 +7045,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Threshold the image stack, determines the centroid of the resulting binary image and 
      * translates the image stack so that its centroid sits in a defined position.
      */
-    public static boolean drift_correction_by_centroid_fixation(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6) {
-        boolean result = DriftCorrectionByCentroidFixation.driftCorrectionByCentroidFixation(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue());
-        return result;
+    public static ClearCLBuffer drift_correction_by_centroid_fixation(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5, double arg6) {
+        DriftCorrectionByCentroidFixation.driftCorrectionByCentroidFixation(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue(), new Double (arg6).floatValue());
+        return arg2;
     }
 
 
@@ -7049,9 +7056,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the mean intensity of the image stack and multiplies it with a factor so that the mean intensity becomes equal to a given value.
      */
-    public static boolean intensity_correction(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = IntensityCorrection.intensityCorrection(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLBuffer intensity_correction(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        IntensityCorrection.intensityCorrection(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -7060,9 +7067,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the mean intensity of all pixel the image stack which are above a determined Threshold (Otsu et al. 1979) and multiplies it with a factor so that the mean intensity becomes equal to a given value.
      */
-    public static boolean intensity_correction_above_threshold_otsu(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = IntensityCorrectionAboveThresholdOtsu.intensityCorrectionAboveThresholdOtsu(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLBuffer intensity_correction_above_threshold_otsu(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        IntensityCorrectionAboveThresholdOtsu.intensityCorrectionAboveThresholdOtsu(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -7073,9 +7080,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This results in a parametric image expressing mean object intensity.
      */
-    public static boolean label_mean_intensity_map(ClearCLBuffer input, ClearCLBuffer label_map, ClearCLBuffer destination) {
-        boolean result = LabelMeanIntensityMap.labelMeanIntensityMap(getCLIJ2(), input, label_map, destination);
-        return result;
+    public static ClearCLBuffer label_mean_intensity_map(ClearCLBuffer input, ClearCLBuffer label_map, ClearCLBuffer destination) {
+        LabelMeanIntensityMap.labelMeanIntensityMap(getCLIJ2(), input, label_map, destination);
+        return destination;
     }
 
 
@@ -7086,9 +7093,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This results in a parametric image expressing standard deviation of object intensity.
      */
-    public static boolean label_standard_deviation_intensity_map(ClearCLBuffer input, ClearCLBuffer label_map, ClearCLBuffer destination) {
-        boolean result = LabelStandardDeviationIntensityMap.labelStandardDeviationIntensityMap(getCLIJ2(), input, label_map, destination);
-        return result;
+    public static ClearCLBuffer label_standard_deviation_intensity_map(ClearCLBuffer input, ClearCLBuffer label_map, ClearCLBuffer destination) {
+        LabelStandardDeviationIntensityMap.labelStandardDeviationIntensityMap(getCLIJ2(), input, label_map, destination);
+        return destination;
     }
 
 
@@ -7099,9 +7106,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * This results in a parametric image expressing area or volume.
      */
-    public static boolean label_pixel_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = LabelPixelCountMap.labelPixelCountMap(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer label_pixel_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        LabelPixelCountMap.labelPixelCountMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -7112,9 +7119,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * To have control about where objects are cut, the sigma parameters allow to control a Gaussian blur filter applied to the internally used distance map.
      */
-    public static boolean parametric_watershed(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
-        boolean result = ParametricWatershed.parametricWatershed(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
-        return result;
+    public static ClearCLBuffer parametric_watershed(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        ParametricWatershed.parametricWatershed(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
+        return arg2;
     }
 
 
@@ -7123,9 +7130,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the mean average intensity projection of an image along Z but only for pixels above a given threshold.
      */
-    public static boolean mean_z_projection_above_threshold(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
-        boolean result = MeanZProjectionAboveThreshold.meanZProjectionAboveThreshold(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLImageInterface mean_z_projection_above_threshold(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
+        MeanZProjectionAboveThreshold.meanZProjectionAboveThreshold(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -7136,9 +7143,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * It writes the resulting  coordinates in a pointlist image. Depending on the dimensionality d of the labelmap and the number  of labels n, the pointlist image will have n*d pixels.
      */
-    public static boolean centroids_of_background_and_labels(ClearCLBuffer source, ClearCLBuffer pointlist_destination) {
-        boolean result = CentroidsOfBackgroundAndLabels.centroidsOfBackgroundAndLabels(getCLIJ2(), source, pointlist_destination);
-        return result;
+    public static ClearCLBuffer centroids_of_background_and_labels(ClearCLBuffer source, ClearCLBuffer pointlist_destination) {
+        CentroidsOfBackgroundAndLabels.centroidsOfBackgroundAndLabels(getCLIJ2(), source, pointlist_destination);
+        return pointlist_destination;
     }
 
 
@@ -7147,9 +7154,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Takes a label map (seeds) and an input image with gray values to apply the watershed algorithm and split the image above a given threshold in labels.
      */
-    public static boolean seeded_watershed(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4) {
-        boolean result = SeededWatershed.seededWatershed(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue());
-        return result;
+    public static ClearCLBuffer seeded_watershed(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4) {
+        SeededWatershed.seededWatershed(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue());
+        return arg3;
     }
 
 
@@ -7167,9 +7174,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Takes a label map, determines distances between all centroids and replaces every label with the average distance to the n closest neighboring labels.
      */
-    public static boolean average_distance_of_n_closest_neighbors_map(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = AverageDistanceOfNClosestNeighborsMap.averageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer average_distance_of_n_closest_neighbors_map(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        AverageDistanceOfNClosestNeighborsMap.averageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -7181,9 +7188,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The end points of the lines correspond to the centroids of the labels. The intensity of the lines 
      * corresponds to the touch count between these labels.
      */
-    public static boolean draw_touch_count_mesh_between_touching_labels(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = DrawTouchCountMeshBetweenTouchingLabels.drawTouchCountMeshBetweenTouchingLabels(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer draw_touch_count_mesh_between_touching_labels(ClearCLBuffer input, ClearCLBuffer destination) {
+        DrawTouchCountMeshBetweenTouchingLabels.drawTouchCountMeshBetweenTouchingLabels(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -7193,9 +7200,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Takes a label map, determines distances between all centroids, the mean distance of the n closest points for every point
      *  and replaces every label with the maximum distance of touching labels.
      */
-    public static boolean local_maximum_average_distance_of_n_closest_neighbors_map(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = LocalMaximumAverageDistanceOfNClosestNeighborsMap.localMaximumAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer local_maximum_average_distance_of_n_closest_neighbors_map(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        LocalMaximumAverageDistanceOfNClosestNeighborsMap.localMaximumAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -7204,9 +7211,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Takes a label map, determines which labels touch, the distance between their centroids and the maximum distancebetween touching neighbors. It then replaces every label with the that value.
      */
-    public static boolean local_maximum_average_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = LocalMaximumAverageNeighborDistanceMap.localMaximumAverageNeighborDistanceMap(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer local_maximum_average_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        LocalMaximumAverageNeighborDistanceMap.localMaximumAverageNeighborDistanceMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -7218,9 +7225,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * 
      */
-    public static boolean local_maximum_touching_neighbor_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = LocalMaximumTouchingNeighborCountMap.localMaximumTouchingNeighborCountMap(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer local_maximum_touching_neighbor_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        LocalMaximumTouchingNeighborCountMap.localMaximumTouchingNeighborCountMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -7230,9 +7237,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Takes a label map, determines distances between all centroids, the mean distance of the n closest points for every point
      *  and replaces every label with the mean distance of touching labels.
      */
-    public static boolean local_mean_average_distance_of_n_closest_neighbors_map(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = LocalMeanAverageDistanceOfNClosestNeighborsMap.localMeanAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer local_mean_average_distance_of_n_closest_neighbors_map(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        LocalMeanAverageDistanceOfNClosestNeighborsMap.localMeanAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -7241,9 +7248,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Takes a label map, determines which labels touch, the distance between their centroids and the mean distancebetween touching neighbors. It then replaces every label with the that value.
      */
-    public static boolean local_mean_average_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = LocalMeanAverageNeighborDistanceMap.localMeanAverageNeighborDistanceMap(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer local_mean_average_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        LocalMeanAverageNeighborDistanceMap.localMeanAverageNeighborDistanceMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -7255,9 +7262,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * 
      */
-    public static boolean local_mean_touching_neighbor_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = LocalMeanTouchingNeighborCountMap.localMeanTouchingNeighborCountMap(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer local_mean_touching_neighbor_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        LocalMeanTouchingNeighborCountMap.localMeanTouchingNeighborCountMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -7270,9 +7277,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * 
      */
-    public static boolean local_mean_touch_portion_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = LocalMeanTouchPortionMap.localMeanTouchPortionMap(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer local_mean_touch_portion_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        LocalMeanTouchPortionMap.localMeanTouchPortionMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -7282,9 +7289,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Takes a label map, determines distances between all centroids, the mean distance of the n closest points for every point
      *  and replaces every label with the median distance of touching labels.
      */
-    public static boolean local_median_average_distance_of_n_closest_neighbors_map(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = LocalMedianAverageDistanceOfNClosestNeighborsMap.localMedianAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer local_median_average_distance_of_n_closest_neighbors_map(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        LocalMedianAverageDistanceOfNClosestNeighborsMap.localMedianAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -7293,9 +7300,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Takes a label map, determines which labels touch, the distance between their centroids and the median distancebetween touching neighbors. It then replaces every label with the that value.
      */
-    public static boolean local_median_average_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = LocalMedianAverageNeighborDistanceMap.localMedianAverageNeighborDistanceMap(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer local_median_average_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        LocalMedianAverageNeighborDistanceMap.localMedianAverageNeighborDistanceMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -7307,9 +7314,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * 
      */
-    public static boolean local_median_touching_neighbor_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = LocalMedianTouchingNeighborCountMap.localMedianTouchingNeighborCountMap(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer local_median_touching_neighbor_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        LocalMedianTouchingNeighborCountMap.localMedianTouchingNeighborCountMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -7319,9 +7326,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Takes a label map, determines distances between all centroids, the mean distance of the n closest points for every point
      *  and replaces every label with the minimum distance of touching labels.
      */
-    public static boolean local_minimum_average_distance_of_n_closest_neighbors_map(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = LocalMinimumAverageDistanceOfNClosestNeighborsMap.localMinimumAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer local_minimum_average_distance_of_n_closest_neighbors_map(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        LocalMinimumAverageDistanceOfNClosestNeighborsMap.localMinimumAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -7330,9 +7337,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Takes a label map, determines which labels touch, the distance between their centroids and the minimum distancebetween touching neighbors. It then replaces every label with the that value.
      */
-    public static boolean local_minimum_average_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = LocalMinimumAverageNeighborDistanceMap.localMinimumAverageNeighborDistanceMap(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer local_minimum_average_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        LocalMinimumAverageNeighborDistanceMap.localMinimumAverageNeighborDistanceMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -7344,9 +7351,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * 
      */
-    public static boolean local_minimum_touching_neighbor_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = LocalMinimumTouchingNeighborCountMap.localMinimumTouchingNeighborCountMap(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer local_minimum_touching_neighbor_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        LocalMinimumTouchingNeighborCountMap.localMinimumTouchingNeighborCountMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -7356,9 +7363,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Takes a label map, determines distances between all centroids, the mean distance of the n closest points for every point
      *  and replaces every label with the standard deviation distance of touching labels.
      */
-    public static boolean local_standard_deviation_average_distance_of_n_closest_neighbors_map(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = LocalStandardDeviationAverageDistanceOfNClosestNeighborsMap.localStandardDeviationAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer local_standard_deviation_average_distance_of_n_closest_neighbors_map(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        LocalStandardDeviationAverageDistanceOfNClosestNeighborsMap.localStandardDeviationAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -7367,9 +7374,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Takes a label map, determines which labels touch, the distance between their centroids and the standard deviation distancebetween touching neighbors. It then replaces every label with the that value.
      */
-    public static boolean local_standard_deviation_average_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = LocalStandardDeviationAverageNeighborDistanceMap.localStandardDeviationAverageNeighborDistanceMap(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer local_standard_deviation_average_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        LocalStandardDeviationAverageNeighborDistanceMap.localStandardDeviationAverageNeighborDistanceMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -7381,9 +7388,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * 
      */
-    public static boolean local_standard_deviation_touching_neighbor_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = LocalStandardDeviationTouchingNeighborCountMap.localStandardDeviationTouchingNeighborCountMap(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer local_standard_deviation_touching_neighbor_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        LocalStandardDeviationTouchingNeighborCountMap.localStandardDeviationTouchingNeighborCountMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -7392,9 +7399,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * 
      */
-    public static boolean label_minimum_intensity_map(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3) {
-        boolean result = LabelMinimumIntensityMap.labelMinimumIntensityMap(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLBuffer label_minimum_intensity_map(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3) {
+        LabelMinimumIntensityMap.labelMinimumIntensityMap(getCLIJ2(), arg1, arg2, arg3);
+        return arg3;
     }
 
 
@@ -7403,9 +7410,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * 
      */
-    public static boolean label_maximum_intensity_map(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3) {
-        boolean result = LabelMaximumIntensityMap.labelMaximumIntensityMap(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+    public static ClearCLBuffer label_maximum_intensity_map(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3) {
+        LabelMaximumIntensityMap.labelMaximumIntensityMap(getCLIJ2(), arg1, arg2, arg3);
+        return arg3;
     }
 
 
@@ -7416,9 +7423,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * 
      */
-    public static boolean label_maximum_extension_ratio_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = LabelMaximumExtensionRatioMap.labelMaximumExtensionRatioMap(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer label_maximum_extension_ratio_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        LabelMaximumExtensionRatioMap.labelMaximumExtensionRatioMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -7429,9 +7436,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * 
      */
-    public static boolean label_maximum_extension_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = LabelMaximumExtensionMap.labelMaximumExtensionMap(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer label_maximum_extension_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        LabelMaximumExtensionMap.labelMaximumExtensionMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -7442,9 +7449,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Major parts of this operation run on the CPU.
      */
-    public static boolean generate_integer_grey_value_cooccurrence_count_matrix_half_box(ClearCLBuffer integer_image, ClearCLBuffer grey_value_cooccurrence_matrix_destination) {
-        boolean result = GenerateIntegerGreyValueCooccurrenceCountMatrixHalfBox.generateIntegerGreyValueCooccurrenceCountMatrixHalfBox(getCLIJ2(), integer_image, grey_value_cooccurrence_matrix_destination);
-        return result;
+    public static ClearCLBuffer generate_integer_grey_value_cooccurrence_count_matrix_half_box(ClearCLBuffer integer_image, ClearCLBuffer grey_value_cooccurrence_matrix_destination) {
+        GenerateIntegerGreyValueCooccurrenceCountMatrixHalfBox.generateIntegerGreyValueCooccurrenceCountMatrixHalfBox(getCLIJ2(), integer_image, grey_value_cooccurrence_matrix_destination);
+        return grey_value_cooccurrence_matrix_destination;
     }
 
 
@@ -7455,9 +7462,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Major parts of this operation run on the CPU.
      */
-    public static boolean generate_integer_grey_value_cooccurrence_count_matrix_half_diamond(ClearCLBuffer integer_image, ClearCLBuffer grey_value_cooccurrence_matrix_destination) {
-        boolean result = GenerateIntegerGreyValueCooccurrenceCountMatrixHalfDiamond.generateIntegerGreyValueCooccurrenceCountMatrixHalfDiamond(getCLIJ2(), integer_image, grey_value_cooccurrence_matrix_destination);
-        return result;
+    public static ClearCLBuffer generate_integer_grey_value_cooccurrence_count_matrix_half_diamond(ClearCLBuffer integer_image, ClearCLBuffer grey_value_cooccurrence_matrix_destination) {
+        GenerateIntegerGreyValueCooccurrenceCountMatrixHalfDiamond.generateIntegerGreyValueCooccurrenceCountMatrixHalfDiamond(getCLIJ2(), integer_image, grey_value_cooccurrence_matrix_destination);
+        return grey_value_cooccurrence_matrix_destination;
     }
 
 
@@ -7468,9 +7475,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * It will be stored in the variable mean_of_masked_pixels.
      */
-    public static double get_mean_of_masked_pixels(ClearCLBuffer arg1, ClearCLBuffer arg2) {
-        double result = GetMeanOfMaskedPixels.getMeanOfMaskedPixels(getCLIJ2(), arg1, arg2);
-        return result;
+    public static ClearCLBuffer get_mean_of_masked_pixels(ClearCLBuffer arg1, ClearCLBuffer arg2) {
+        GetMeanOfMaskedPixels.getMeanOfMaskedPixels(getCLIJ2(), arg1, arg2);
+        return arg2;
     }
 
 
@@ -7479,9 +7486,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Applies Gaussian blur to the input image and divides the original by the result.
      */
-    public static boolean divide_by_gaussian_background(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = DivideByGaussianBackground.divideByGaussianBackground(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
-        return result;
+    public static ClearCLImageInterface divide_by_gaussian_background(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        DivideByGaussianBackground.divideByGaussianBackground(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
+        return arg2;
     }
 
 
@@ -7495,9 +7502,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Pixels with intensity above the maximimum of the given range are treated analogously.
      * The resulting co-occurrence matrix contains probability values between 0 and 1.
      */
-    public static boolean generate_grey_value_cooccurrence_matrix_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
-        boolean result = GenerateGreyValueCooccurrenceMatrixBox.generateGreyValueCooccurrenceMatrixBox(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
-        return result;
+    public static ClearCLBuffer generate_grey_value_cooccurrence_matrix_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
+        GenerateGreyValueCooccurrenceMatrixBox.generateGreyValueCooccurrenceMatrixBox(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
+        return arg2;
     }
 
 
@@ -7513,9 +7520,9 @@ abstract class SnakeInterface extends CommonAPI {
      * below pixel count are removed.
      * It is recommended that low values be used for number of bins, especially for large 3D images, or it may take long time.
      */
-    public static boolean grey_level_atttribute_filtering(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
-        boolean result = GreyLevelAtttributeFiltering.greyLevelAtttributeFiltering(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
-        return result;
+    public static ClearCLBuffer grey_level_atttribute_filtering(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
+        GreyLevelAtttributeFiltering.greyLevelAtttributeFiltering(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        return arg2;
     }
 
 
@@ -7524,9 +7531,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Fills holes (pixels with value 0 surrounded by pixels with value 1) in a binary image stack slice by slice.
      */
-    public static boolean binary_fill_holes_slice_by_slice(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = BinaryFillHolesSliceBySlice.binaryFillHolesSliceBySlice(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface binary_fill_holes_slice_by_slice(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        BinaryFillHolesSliceBySlice.binaryFillHolesSliceBySlice(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -7537,9 +7544,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * You can train your own model using menu Plugins > Segmentation > CLIJx Binary Weka Pixel ClassifierMake sure that the handed over feature list is the same used while training the model.
      */
-    public static boolean binary_weka_pixel_classifier(ClearCLBuffer input, ClearCLBuffer destination, String features, String modelfilename) {
-        boolean result = BinaryWekaPixelClassifier.binaryWekaPixelClassifier(getCLIJ2(), input, destination, features, modelfilename);
-        return result;
+    public static ClearCLBuffer binary_weka_pixel_classifier(ClearCLBuffer input, ClearCLBuffer destination, String features, String modelfilename) {
+        BinaryWekaPixelClassifier.binaryWekaPixelClassifier(getCLIJ2(), input, destination, features, modelfilename);
+        return destination;
     }
 
 
@@ -7550,9 +7557,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Make sure that the handed over feature list is the same used while training the model.
      */
-    public static boolean weka_label_classifier(ClearCLBuffer input, ClearCLBuffer label_map, ClearCLBuffer destination, String features, String modelfilename) {
-        boolean result = WekaLabelClassifier.wekaLabelClassifier(getCLIJ2(), input, label_map, destination, features, modelfilename);
-        return result;
+    public static ClearCLBuffer weka_label_classifier(ClearCLBuffer input, ClearCLBuffer label_map, ClearCLBuffer destination, String features, String modelfilename) {
+        WekaLabelClassifier.wekaLabelClassifier(getCLIJ2(), input, label_map, destination, features, modelfilename);
+        return destination;
     }
 
 
@@ -7602,9 +7609,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Example: "MEAN_INTENSITY count_touching_neighbors"
      */
-    public static boolean generate_label_feature_image(ClearCLBuffer input, ClearCLBuffer label_map, ClearCLBuffer label_feature_image_destination, String feature_definitions) {
-        boolean result = GenerateLabelFeatureImage.generateLabelFeatureImage(getCLIJ2(), input, label_map, label_feature_image_destination, feature_definitions);
-        return result;
+    public static ClearCLBuffer generate_label_feature_image(ClearCLBuffer input, ClearCLBuffer label_map, ClearCLBuffer label_feature_image_destination, String feature_definitions) {
+        GenerateLabelFeatureImage.generateLabelFeatureImage(getCLIJ2(), input, label_map, label_feature_image_destination, feature_definitions);
+        return label_feature_image_destination;
     }
 
     /**
@@ -7652,8 +7659,8 @@ abstract class SnakeInterface extends CommonAPI {
      * Example: "MEAN_INTENSITY count_touching_neighbors"
      */
     public static ClearCLBuffer generate_label_feature_image(ClearCLBuffer arg1, ClearCLBuffer arg2, String arg3) {
-        ClearCLBuffer result = GenerateLabelFeatureImage.generateLabelFeatureImage(getCLIJ2(), arg1, arg2, arg3);
-        return result;
+        GenerateLabelFeatureImage.generateLabelFeatureImage(getCLIJ2(), arg1, arg2, arg3);
+        return arg2;
     }
 
 
@@ -7664,9 +7671,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * For each label, a ray from a given center towards the label. If the ray crosses another label, the labelin question is not at the surface and thus, removed.
      */
-    public static boolean label_surface(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
-        boolean result = LabelSurface.labelSurface(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
-        return result;
+    public static ClearCLBuffer label_surface(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        LabelSurface.labelSurface(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue(), new Double (arg5).floatValue());
+        return arg2;
     }
 
 
@@ -7675,9 +7682,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Takes a label map and reduces all labels to their center spots. Label IDs stay and background will be zero.
      */
-    public static boolean reduce_labels_to_labelled_spots(ClearCLBuffer input_labels, ClearCLBuffer destination_labels) {
-        boolean result = ReduceLabelsToLabelledSpots.reduceLabelsToLabelledSpots(getCLIJ2(), input_labels, destination_labels);
-        return result;
+    public static ClearCLBuffer reduce_labels_to_labelled_spots(ClearCLBuffer input_labels, ClearCLBuffer destination_labels) {
+        ReduceLabelsToLabelledSpots.reduceLabelsToLabelledSpots(getCLIJ2(), input_labels, destination_labels);
+        return destination_labels;
     }
 
 
@@ -7688,9 +7695,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * 
      */
-    public static boolean label_mean_extension_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        boolean result = LabelMeanExtensionMap.labelMeanExtensionMap(getCLIJ2(), input, destination);
-        return result;
+    public static ClearCLBuffer label_mean_extension_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        LabelMeanExtensionMap.labelMeanExtensionMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
@@ -7699,9 +7706,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines the mean average intensity projection of an image along Z but only for pixels below a given threshold.
      */
-    public static boolean mean_z_projection_below_threshold(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
-        boolean result = MeanZProjectionBelowThreshold.meanZProjectionBelowThreshold(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLImageInterface mean_z_projection_below_threshold(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
+        MeanZProjectionBelowThreshold.meanZProjectionBelowThreshold(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -7711,9 +7718,9 @@ abstract class SnakeInterface extends CommonAPI {
      * Takes a label map, determines the centroids of all labels and writes the distance of all labelled pixels to their centroid in the result image.
      * Background pixels stay zero.
      */
-    public static boolean euclidean_distance_from_label_centroid_map(ClearCLBuffer labelmap_input, ClearCLBuffer destination) {
-        boolean result = EuclideanDistanceFromLabelCentroidMap.euclideanDistanceFromLabelCentroidMap(getCLIJ2(), labelmap_input, destination);
-        return result;
+    public static ClearCLBuffer euclidean_distance_from_label_centroid_map(ClearCLBuffer labelmap_input, ClearCLBuffer destination) {
+        EuclideanDistanceFromLabelCentroidMap.euclideanDistanceFromLabelCentroidMap(getCLIJ2(), labelmap_input, destination);
+        return destination;
     }
 
 
@@ -7724,9 +7731,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Therefore, all pixels x of the Image X are normalized and the power to gamma g is computed, before normlization is reversed (^ is the power operator):f(x) = (x / max(X)) ^ gamma * max(X)
      */
-    public static boolean gamma_correction(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = GammaCorrection.gammaCorrection(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLBuffer gamma_correction(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        GammaCorrection.gammaCorrection(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -7735,9 +7742,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Determines a Z-position of the maximum intensity along Z and writes it into the resulting image.
      */
-    public static boolean z_position_of_maximum_z_projection(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = ZPositionOfMaximumZProjection.zPositionOfMaximumZProjection(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface z_position_of_maximum_z_projection(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        ZPositionOfMaximumZProjection.zPositionOfMaximumZProjection(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -7748,9 +7755,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The slice is determined using a separate 2D image.
      */
-    public static boolean z_position_projection(ClearCLImageInterface source_stack, ClearCLImageInterface z_position, ClearCLImageInterface destination) {
-        boolean result = ZPositionProjection.zPositionProjection(getCLIJ2(), source_stack, z_position, destination);
-        return result;
+    public static ClearCLImageInterface z_position_projection(ClearCLImageInterface source_stack, ClearCLImageInterface z_position, ClearCLImageInterface destination) {
+        ZPositionProjection.zPositionProjection(getCLIJ2(), source_stack, z_position, destination);
+        return destination;
     }
 
 
@@ -7761,9 +7768,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The slices are defined using a separate 2D image containing z-positions and two numbers defining the range.
      */
-    public static boolean z_position_range_projection(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3, int arg4, int arg5) {
-        boolean result = ZPositionRangeProjection.zPositionRangeProjection(getCLIJ2(), arg1, arg2, arg3, arg4, arg5);
-        return result;
+    public static ClearCLImageInterface z_position_range_projection(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3, int arg4, int arg5) {
+        ZPositionRangeProjection.zPositionRangeProjection(getCLIJ2(), arg1, arg2, arg3, arg4, arg5);
+        return arg3;
     }
 
 
@@ -7775,9 +7782,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The spheres size is specified by 
      * its half-width, half-height and half-depth (radius). If 2D images are given, radius_z will be ignored. 
      */
-    public static boolean variance_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = VarianceSphere.varianceSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface variance_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        VarianceSphere.varianceSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -7789,9 +7796,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The spheres size is specified by 
      * its half-width, half-height and half-depth (radius). If 2D images are given, radius_z will be ignored. 
      */
-    public static boolean standard_deviation_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = StandardDeviationSphere.standardDeviationSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface standard_deviation_sphere(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        StandardDeviationSphere.standardDeviationSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -7803,9 +7810,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The box size is specified by 
      * its half-width, half-height and half-depth (radius). If 2D images are given, radius_z will be ignored. 
      */
-    public static boolean variance_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = VarianceBox.varianceBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface variance_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        VarianceBox.varianceBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -7817,9 +7824,9 @@ abstract class SnakeInterface extends CommonAPI {
      * The box size is specified by 
      * its half-width, half-height and half-depth (radius). If 2D images are given, radius_z will be ignored. 
      */
-    public static boolean standard_deviation_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = StandardDeviationBox.standardDeviationBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
-        return result;
+    public static ClearCLImageInterface standard_deviation_box(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        StandardDeviationBox.standardDeviationBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
     }
 
 
@@ -7828,9 +7835,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Convolve the image with the Tenengrad kernel slice by slice.
      */
-    public static boolean tenengrad(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = Tenengrad.tenengrad(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface tenengrad(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        Tenengrad.tenengrad(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -7839,9 +7846,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Convolve the image with the Tenengrad kernel slice by slice.
      */
-    public static boolean tenengrad_slice_by_slice(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = TenengradSliceBySlice.tenengradSliceBySlice(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface tenengrad_slice_by_slice(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        TenengradSliceBySlice.tenengradSliceBySlice(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -7850,9 +7857,9 @@ abstract class SnakeInterface extends CommonAPI {
     /**
      * Convolve the image with the Sobel kernel slice by slice.
      */
-    public static boolean sobel_slice_by_slice(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = SobelSliceBySlice.sobelSliceBySlice(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface sobel_slice_by_slice(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        SobelSliceBySlice.sobelSliceBySlice(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -7863,9 +7870,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The sigma parameter allows controlling an Gaussian blur which should smooth the altitude map.
      */
-    public static boolean extended_depth_of_focus_variance_projection(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
-        boolean result = ExtendedDepthOfFocusSobelProjection.extendedDepthOfFocusVarianceProjection(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLImageInterface extended_depth_of_focus_variance_projection(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
+        ExtendedDepthOfFocusSobelProjection.extendedDepthOfFocusVarianceProjection(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -7876,9 +7883,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The sigma parameter allows controlling an Gaussian blur which should smooth the altitude map.
      */
-    public static boolean extended_depth_of_focus_tenengrad_projection(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
-        boolean result = ExtendedDepthOfFocusTenengradProjection.extendedDepthOfFocusTenengradProjection(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLImageInterface extended_depth_of_focus_tenengrad_projection(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
+        ExtendedDepthOfFocusTenengradProjection.extendedDepthOfFocusTenengradProjection(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -7889,9 +7896,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The sigma parameter allows controlling an Gaussian blur which should smooth the altitude map.
      */
-    public static boolean extended_depth_of_focus_variance_projection(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
-        boolean result = ExtendedDepthOfFocusVarianceProjection.extendedDepthOfFocusVarianceProjection(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).floatValue());
-        return result;
+    public static ClearCLImageInterface extended_depth_of_focus_variance_projection(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
+        ExtendedDepthOfFocusVarianceProjection.extendedDepthOfFocusVarianceProjection(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).floatValue());
+        return arg2;
     }
 
 
@@ -7902,9 +7909,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The end points of the lines correspond to the centroids of the labels. 
      */
-    public static boolean draw_mesh_between_n_closest_labels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = DrawMeshBetweenNClosestLabels.drawMeshBetweenNClosestLabels(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return result;
+    public static ClearCLBuffer draw_mesh_between_n_closest_labels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        DrawMeshBetweenNClosestLabels.drawMeshBetweenNClosestLabels(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
     }
 
 
@@ -7915,9 +7922,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * The end points of the lines correspond to the centroids of the labels.
      */
-    public static boolean draw_mesh_between_proximal_labels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        boolean result = DrawMeshBetweenProximalLabels.drawMeshBetweenProximalLabels(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
-        return result;
+    public static ClearCLBuffer draw_mesh_between_proximal_labels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        DrawMeshBetweenProximalLabels.drawMeshBetweenProximalLabels(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
     }
 
 
@@ -7928,9 +7935,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * <pre>f(x) = cos(x)</pre>
      */
-    public static boolean cosinus(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = Cosinus.cosinus(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface cosinus(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        Cosinus.cosinus(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -7941,9 +7948,9 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * <pre>f(x) = sin(x)</pre>
      */
-    public static boolean sinus(ClearCLImageInterface source, ClearCLImageInterface destination) {
-        boolean result = Sinus.sinus(getCLIJ2(), source, destination);
-        return result;
+    public static ClearCLImageInterface sinus(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        Sinus.sinus(getCLIJ2(), source, destination);
+        return destination;
     }
 
 
@@ -7956,10 +7963,100 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Convention: Given two point lists with dimensionality n * d and m * d, the distance matrix will be of size(n + 1) * (m + 1). The first row and column contain zeros. They represent the distance of the objects to a theoretical background object. In that way, distance matrices are of the same size as touch matrices (see generateTouchMatrix). Thus, one can threshold a distance matrix to generate a touch matrix out of it for drawing meshes.
      */
-    public static boolean generate_distance_matrix_along_axis(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4) {
-        boolean result = GenerateDistanceMatrixAlongAxis.generateDistanceMatrixAlongAxis(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).intValue());
-        return result;
+    public static ClearCLBuffer generate_distance_matrix_along_axis(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4) {
+        GenerateDistanceMatrixAlongAxis.generateDistanceMatrixAlongAxis(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).intValue());
+        return arg3;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.MaximumDistanceOfTouchingNeighbors
+    //----------------------------------------------------
+    /**
+     * Takes a touch matrix and a distance matrix to determine the maximum distance of touching neighbors for every object.
+     */
+    public static ClearCLBuffer maximum_distance_of_touching_neighbors(ClearCLBuffer distance_matrix, ClearCLBuffer touch_matrix, ClearCLBuffer distancelist_destination) {
+        MaximumDistanceOfTouchingNeighbors.maximumDistanceOfTouchingNeighbors(getCLIJ2(), distance_matrix, touch_matrix, distancelist_destination);
+        return distancelist_destination;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.MaximumNeighborDistanceMap
+    //----------------------------------------------------
+    /**
+     * Takes a label map, determines which labels touch and replaces every label with the maximum distance to their neighboring labels.
+     * 
+     * To determine the distances, the centroid of the labels is determined internally.
+     */
+    public static ClearCLBuffer maximum_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        MaximumNeighborDistanceMap.maximumNeighborDistanceMap(getCLIJ2(), input, destination);
+        return destination;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.MinimumNeighborDistanceMap
+    //----------------------------------------------------
+    /**
+     * Takes a label map, determines which labels touch and replaces every label with the minimum distance to their neighboring labels.
+     * 
+     * To determine the distances, the centroid of the labels is determined internally.
+     */
+    public static ClearCLBuffer minimum_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        MinimumNeighborDistanceMap.minimumNeighborDistanceMap(getCLIJ2(), input, destination);
+        return destination;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.GenerateAngleMatrix
+    //----------------------------------------------------
+    /**
+     * Computes the angle in radians between all point coordinates given in two point lists.
+     * 
+     *  Takes two images containing pointlists (dimensionality n * d, n: number of 
+     * points and d: dimensionality) and builds up a matrix containing the 
+     * angles between these points.
+     * 
+     * Convention: Values range from -90 to 90 degrees (-0.5 to 0.5 pi radians)
+     * * -90 degreess (-0.5 pi radians): Top
+     * * 0 defrees (0 radians): Right
+     * * 90 degrees (0.5 pi radians): Bottom
+     * 
+     * Convention: Given two point lists with dimensionality n * d and m * d, the distance 
+     * matrix will be of size(n + 1) * (m + 1). The first row and column 
+     * contain zeros. They represent the distance of the objects to a 
+     * theoretical background object. In that way, distance matrices are of 
+     * the same size as touch matrices (see generateTouchMatrix). Thus, one 
+     * can threshold a distance matrix to generate a touch matrix out of it 
+     * for drawing meshes. 
+     * 
+     * Implemented for 2D only at the moment.
+     * 
+     * Parameters
+     * ----------
+     * coordinate_list1 : Image
+     * coordinate_list2 : Image
+     * angle_matrix_destination : Image
+     * 
+     * Returns
+     * -------
+     * angle_matrix_destination
+     */
+    public static ClearCLBuffer generate_angle_matrix(ClearCLBuffer coordinate_list1, ClearCLBuffer coordinate_list2, ClearCLBuffer angle_matrix_destination) {
+        GenerateAngleMatrix.generateAngleMatrix(getCLIJ2(), coordinate_list1, coordinate_list2, angle_matrix_destination);
+        return angle_matrix_destination;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.NeighborDistanceRangeRatioMap
+    //----------------------------------------------------
+    /**
+     * Takes a label map, determines which labels touch and replaces every label with the minimum distance to their neighboring labels.
+     * 
+     * To determine the distances, the centroid of the labels is determined internally.
+     */
+    public static ClearCLBuffer neighbor_distance_range_ratio_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        NeighborDistanceRangeRatioMap.neighborDistanceRangeRatioMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 }
-// 530 methods generated.
+// 535 methods generated.
