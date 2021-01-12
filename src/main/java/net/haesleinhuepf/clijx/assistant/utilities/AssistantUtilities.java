@@ -532,6 +532,8 @@ public class AssistantUtilities {
             blocklist.add(net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfBox.class);
 
             blocklist.add(net.haesleinhuepf.clijx.plugins.GreyLevelAtttributeFiltering.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.FlagLabelsOnEdges.class);
+            blocklist.add(net.haesleinhuepf.clijx.plugins.PullToResultsTableColumn.class);
 
             blocklist.add(CrossCorrelation.class);
             blocklist.add(TrainAutoContextWekaModel.class);
