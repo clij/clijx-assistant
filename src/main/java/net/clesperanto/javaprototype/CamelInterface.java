@@ -495,6 +495,11 @@ import net.haesleinhuepf.clijx.plugins.MaximumNeighborDistanceMap;
 import net.haesleinhuepf.clijx.plugins.MinimumNeighborDistanceMap;
 import net.haesleinhuepf.clijx.plugins.GenerateAngleMatrix;
 import net.haesleinhuepf.clijx.plugins.NeighborDistanceRangeRatioMap;
+import net.haesleinhuepf.clijx.plugins.VoronoiOtsuLabeling;
+import net.haesleinhuepf.clijx.plugins.VisualizeOutlinesOnOriginal;
+import net.haesleinhuepf.clijx.plugins.FlagLabelsOnEdges;
+import net.haesleinhuepf.clijx.plugins.MaskedVoronoiLabeling;
+import net.haesleinhuepf.clijx.plugins.PullToResultsTableColumn;
 // this is generated code. See src/test/java/net/haesleinhuepf/clijx/codegenerator for details
 abstract class CamelInterface extends CommonAPI{
    static CLIJ getCLIJ() {
@@ -8058,5 +8063,70 @@ abstract class CamelInterface extends CommonAPI{
         return destination;
     }
 
+
+    // net.haesleinhuepf.clijx.plugins.VoronoiOtsuLabeling
+    //----------------------------------------------------
+    /**
+     * Applies two Gaussian blurs, spot detection, Otsu-thresholding and Voronoi-labeling.
+     * The thresholded binary image is flooded using the Voronoi approach starting from the found local maxima.
+     * Noise-removal sigma for spot detection and thresholding can be configured separately.
+     */
+    public static ClearCLBuffer voronoiOtsuLabeling(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
+        VoronoiOtsuLabeling.voronoiOtsuLabeling(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
+        return arg2;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.VisualizeOutlinesOnOriginal
+    //----------------------------------------------------
+    /**
+     * Combines an intensity image and a label (or binary) image so that you can see segmentation outlines on the intensity image.
+     */
+    public static ClearCLBuffer visualizeOutlinesOnOriginal(ClearCLBuffer intensity, ClearCLBuffer labels, ClearCLBuffer destination) {
+        VisualizeOutlinesOnOriginal.visualizeOutlinesOnOriginal(getCLIJ2(), intensity, labels, destination);
+        return destination;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.FlagLabelsOnEdges
+    //----------------------------------------------------
+    /**
+     * Determines which labels in a label map touch the edges of the image (in X, Y and Z if the image is 3D). 
+     * 
+     * It results in a vector image with values 1 (touches edges) and 0 (does not touch edge).
+     * The entry in the vector (index 0) corresponds to background, following entries correspond to labels.
+     */
+    public static ClearCLBuffer flagLabelsOnEdges(ClearCLBuffer label_map_input, ClearCLBuffer flag_vector_destination) {
+        FlagLabelsOnEdges.flagLabelsOnEdges(getCLIJ2(), label_map_input, flag_vector_destination);
+        return flag_vector_destination;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.MaskedVoronoiLabeling
+    //----------------------------------------------------
+    /**
+     * Takes a binary image, labels connected components and dilates the regions using a octagon shape until they touch and only inside another binary mask image.
+     * 
+     * The resulting label map is written to the output.
+     * 
+     * Hint: Process isotropic images only.
+     */
+    public static ClearCLImageInterface maskedVoronoiLabeling(ClearCLBuffer input, ClearCLBuffer mask, ClearCLImageInterface destination) {
+        MaskedVoronoiLabeling.maskedVoronoiLabeling(getCLIJ2(), input, mask, destination);
+        return destination;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.PullToResultsTableColumn
+    //----------------------------------------------------
+    /**
+     * Copies the content of a vector image to a column in the results table.
+     * You can configure if new rows should be appended or if existing values should be overwritten.
+     */
+    public static ClearCLBuffer pullToResultsTableColumn(ClearCLBuffer arg1, ResultsTable arg2, String arg3, boolean arg4) {
+        PullToResultsTableColumn.pullToResultsTableColumn(getCLIJ2(), arg1, arg2, arg3, arg4);
+        return arg1;
+    }
+
 }
-// 535 methods generated.
+// 540 methods generated.
