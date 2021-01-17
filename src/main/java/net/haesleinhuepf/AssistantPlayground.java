@@ -3,21 +3,14 @@ package net.haesleinhuepf;
 import ij.IJ;
 import ij.ImageJ;
 import ij.ImagePlus;
-import ij.gui.Toolbar;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
-import net.haesleinhuepf.clij2.plugins.GaussianBlur2D;
-import net.haesleinhuepf.clij2.plugins.GaussianBlur3D;
-import net.haesleinhuepf.clij2.plugins.MaximumZProjection;
+import net.haesleinhuepf.clij2.plugins.*;
 import net.haesleinhuepf.clijx.CLIJx;
-import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
 import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Crop3D;
-import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Zoom;
+import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.*;
 import net.haesleinhuepf.clijx.gui.MemoryDisplay;
 import net.haesleinhuepf.clijx.assistant.AssistantGUIStartingPoint;
-import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.CylinderTransform;
-import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.MakeIsotropic;
 
 import java.io.FileNotFoundException;
 
@@ -32,8 +25,8 @@ public class AssistantPlayground implements PlugInFilter {
         //ImagePlus imp = IJ.openImage("C:/structure/data/spim_TL18_Angle0-1.tif");
         //ImagePlus imp = IJ.openImage("D:/structure/data/Irene/ISB200714_well5_1pos_3h_MyosinGFP-small.tif");
         //ImagePlus imp = IJ.openImage("C:/structure/data/mitosis.tif");
-        ImagePlus imp = IJ.openImage("/home/haase/data/blobs.tif");
-        //ImagePlus imp = IJ.openImage("C:/structure/data/blobs.tif");
+        //ImagePlus imp = IJ.openImage("/home/haase/data/blobs.tif");
+        ImagePlus imp = IJ.openImage("C:/structure/data/blobs.tif");
         //ImagePlus imp = IJ.openImage("C:/structure/data/t1-head.tif");
         imp.show();
 
@@ -58,9 +51,10 @@ public class AssistantPlayground implements PlugInFilter {
         //new Zoom().run("");
 
 
-        new GenericAssistantGUIPlugin(new GaussianBlur2D()).run("");
-        //new GenericAssistantGUIPlugin(new ThresholdOtsu()).run("");
-        //new GenericAssistantGUIPlugin(new ConnectedComponentsLabelingBox()).run("");
+        //new GenericAssistantGUIPlugin(new GaussianBlur2D()).run("");
+        new GenericAssistantGUIPlugin(new ThresholdOtsu()).run("");
+        new GenericAssistantGUIPlugin(new ConnectedComponentsLabelingBox()).run("");
+        new LabelClusterer().run("");
 
         //new WekaLabelClassifier().run("");
 

@@ -818,14 +818,18 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
         // -------------------------------------------------------------------------------------------------------------
         Menu followers = new Menu("Followers");
-        for (ImagePlus follower : AssistantGUIPluginRegistry.getInstance().getFollowers(my_target)) {
-            addMenuAction(followers, AssistantUtilities.shortName(follower.getTitle()), (a) -> {
-                follower.show();
-                follower.getWindow().toFront();
-                attachMenu(follower);
-            });
+        try {
+            for (ImagePlus follower : AssistantGUIPluginRegistry.getInstance().getFollowers(my_target)) {
+                addMenuAction(followers, AssistantUtilities.shortName(follower.getTitle()), (a) -> {
+                    follower.show();
+                    follower.getWindow().toFront();
+                    attachMenu(follower);
+                });
+            }
+            info.add(followers);
+        } catch (NullPointerException npe) {
+            System.out.println(npe.toString());
         }
-        info.add(followers);
         // -------------------------------------------------------------------------------------------------------------
 /*
         Menu graph = new Menu("Compute graph");
