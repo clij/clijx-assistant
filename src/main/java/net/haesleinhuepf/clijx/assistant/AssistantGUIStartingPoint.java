@@ -94,6 +94,9 @@ public class AssistantGUIStartingPoint extends AbstractAssistantGUIPlugin {
 
     @Override
     public void imageUpdated(ImagePlus imp) {
+        if (my_sources == null) {
+            return;
+        }
         if (imp == my_sources[0]) {
             //System.out.println("Source updated");
             if (imp.getT() != former_t) {
