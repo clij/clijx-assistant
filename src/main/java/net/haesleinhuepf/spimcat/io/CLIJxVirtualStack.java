@@ -10,55 +10,11 @@ import net.haesleinhuepf.clijx.CLIJx;
 public class CLIJxVirtualStack extends VirtualStack {
     private ClearCLBuffer[] buffer;
 
-    boolean catcher_initialized = false;
-
-    @Deprecated // do not use this; it's a workaround because ImageJ closes windows when Composite stacks are replaced
-    public static boolean ignore_closing = false;
-
-    public CLIJxVirtualStack(ClearCLBuffer[] buffer) {
+    private CLIJxVirtualStack(ClearCLBuffer[] buffer) {
         super((int)buffer[0].getWidth(), (int)buffer[0].getHeight(), (int)buffer[0].getDepth() * buffer.length);
         setBitDepth((int) (buffer[0].getPixelSizeInBytes() * 8));
 
         this.buffer = buffer;
-
-        if (!catcher_initialized) {
-            ImagePlus.addImageListener(new ImageListener() {
-                @Override
-                public void imageOpened(ImagePlus imp) {
-
-                }
-
-                @Override
-                public synchronized void imageClosed(ImagePlus imp) {
-                    if (ignore_closing) {
-                        return;
-                    }
-                    if (imp.getStack() instanceof CLIJxVirtualStack) {
-                        ImageStack stack = imp.getStack();
-                        if (imp.getNChannels() == 1) {
-                            ClearCLBuffer buffer = ((CLIJxVirtualStack) stack).getBuffer(0);
-                            //imp.setStack(CLIJx.getInstance().pull(buffer).getStack());
-                            buffer.close();
-                        } else {
-
-                            //ImagePlus imp2 = new Duplicator().run(imp, 1, imp.getNChannels(), 1, imp.getNSlices(), 1, imp.getNFrames());
-                            //imp.setStack(imp2.getStack());
-
-                            for (int c = 0; c < imp.getNChannels(); c++) {
-                                ClearCLBuffer buffer = ((CLIJxVirtualStack) stack).getBuffer(c);
-                                buffer.close();
-                            }
-                        }
-                    }
-                }
-
-                @Override
-                public void imageUpdated(ImagePlus imp) {
-
-                }
-            });
-            catcher_initialized = true;
-        }
     }
 
     ImageProcessor[] formerSliceProcessors = null;
@@ -118,6 +74,7 @@ public class CLIJxVirtualStack extends VirtualStack {
             //System.out.println("cha " + number_of_channels);
             imp = HyperStackConverter.toHyperStack(imp, number_of_channels, (int) buffer[0].getDepth(), 1);
         }
+        //CLIJxVirtualStackRegistry.getInstance().register(imp);
         return imp;
     }
 

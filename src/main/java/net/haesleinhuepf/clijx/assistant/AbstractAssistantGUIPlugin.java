@@ -35,6 +35,7 @@ import net.haesleinhuepf.clijx.assistant.services.MenuService;
 import net.haesleinhuepf.clijx.assistant.services.SuggestionService;
 import net.haesleinhuepf.clijx.utilities.AbstractCLIJxPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
+import net.haesleinhuepf.spimcat.io.CLIJxVirtualStackRegistry;
 import org.scijava.util.VersionUtils;
 
 import java.awt.*;
@@ -76,6 +77,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     public static boolean show_compatibility = true;
 
     public AbstractAssistantGUIPlugin(CLIJMacroPlugin plugin) {
+        CLIJxVirtualStackRegistry.getInstance();
         setCLIJMacroPlugin(plugin);
     }
 
@@ -614,9 +616,9 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             ImageWindow win = my_target.getWindow();
 
             ignore_closing = true;
-            CLIJxVirtualStack.ignore_closing = true;
+            CLIJxVirtualStackRegistry.getInstance().unregister(my_target);
             my_target.setStack(output.getStack(), output.getNChannels(), output.getNSlices(), output.getNFrames());
-            CLIJxVirtualStack.ignore_closing = false;
+            CLIJxVirtualStackRegistry.getInstance().register(my_target);
             ignore_closing = false;
 
             if (win != my_target.getWindow()) {
@@ -905,6 +907,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         addMenuAction(info,"Memory usage " + MemoryDisplay.getStatus(), (a) -> {
             new MemoryDisplay().run("");
             IJ.log(CLIJx.getInstance().reportMemory());
+            IJ.log(CLIJxVirtualStackRegistry.getInstance().report());
         });
         menu.add(info);
 
