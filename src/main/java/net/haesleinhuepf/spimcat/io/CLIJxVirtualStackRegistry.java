@@ -58,11 +58,14 @@ public class CLIJxVirtualStackRegistry implements ImageListener {
         list.addAll(cache.keySet());
         for (ImagePlus search : list) {
             boolean found = false;
-            for (int i : WindowManager.getIDList()) {
-                ImagePlus imp = WindowManager.getImage(i);
-                if (imp == search) {
-                    found = true;
-                    break;
+            int[] idlist = WindowManager.getIDList();
+            if (idlist != null) {
+                for (int i : idlist) {
+                    ImagePlus imp = WindowManager.getImage(i);
+                    if (imp == search) {
+                        found = true;
+                        break;
+                    }
                 }
             }
             if (!found) {
