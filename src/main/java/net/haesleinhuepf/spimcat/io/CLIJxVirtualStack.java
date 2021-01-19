@@ -116,9 +116,17 @@ public class CLIJxVirtualStack extends VirtualStack {
                         ImagePlus a_slice = new ImagePlus("", processor);
                         ClearCLBuffer b_slice = clijx.push(a_slice);
                         if (all[c] == null) {
-                            all[c] = clijx.create(new long[]{b_slice.getWidth(), b_slice.getHeight(), imp.getNSlices()}, b_slice.getNativeType());
+                            if (imp.getNSlices() > 1) {
+                                all[c] = clijx.create(new long[]{b_slice.getWidth(), b_slice.getHeight(), imp.getNSlices()}, b_slice.getNativeType());
+                            } else {
+                                all[c] = clijx.create(new long[]{b_slice.getWidth(), b_slice.getHeight()}, b_slice.getNativeType());
+                            }
                         }
-                        clijx.copySlice(b_slice, all[c], z);
+                        if (imp.getNSlices() > 1) {
+                            clijx.copySlice(b_slice, all[c], z);
+                        } else {
+                            clijx.copy(b_slice, all[c]);
+                        }
                         b_slice.close();
                     }
                 }
