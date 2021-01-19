@@ -121,7 +121,7 @@ class AssistantGUIPluginRegistry {
 
 
                     for (int i = 0; i < num_steps; i++) {
-                        int color = 128 - 100 + (Math.abs(Math.abs((int)(time / 100 - i) % 10 * 20)));
+                        int color = 128 + 100 - (Math.abs(Math.abs((int)(time / 100 - i) % 10 * 20)));
                         Color status = target_window.getBackground();
 
 
