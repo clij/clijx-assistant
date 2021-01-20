@@ -90,6 +90,7 @@ public class AssistantGUIStartingPoint extends AbstractAssistantGUIPlugin {
 
         my_target.setTitle("CLIJx Image of " + my_sources[0].getTitle());
         refreshView();
+        enhanceContrast();
     }
 
     @Override
