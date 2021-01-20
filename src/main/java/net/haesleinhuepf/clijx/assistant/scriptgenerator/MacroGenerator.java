@@ -23,12 +23,18 @@ public class MacroGenerator extends AbstractScriptGenerator {
                     "// Load image from disc \n" +
                     "open(\"" + filename + "\");\n" +
                     imageID + " = getTitle();\n" +
-                    "Ext.CLIJ2_push(" + imageID + ");\n";
+                    "Ext.CLIJ2_pushCurrentZStack(" + imageID + ");\n";
         } else {
             output = output + "" +
                     imageID + " = \"" + source.getTitle() + "\";\n" +
-                    "Ext.CLIJ2_push(" + imageID + ");\n";
+                    "Ext.CLIJ2_pushCurrentZStack(" + imageID + ");\n";
         }
+        if (source != null && (source.getNChannels() > 1 || source.getNFrames() > 1)) {
+            output = output + "// The following auto-generated workflow is made for processing a 2D or 3D dataset.\n" +
+                              "// For processing multiple channels or time points, you need to program a for-loop.\n" +
+                              "// You can learn how to do this online: https://www.youtube.com/watch?v=ulSq-x5_in4\n";
+        }
+
 
         return output;
     }
