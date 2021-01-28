@@ -89,13 +89,24 @@ public class MenuService {
                     ((IsCategorized) b).isInCategory("Measurement")
                     ?1:0;
         });
+        addCategory("Label neighbor filters", (a,b) -> {
+            return a.getOutputType().contains("Label Image") &&
+                    b.getInputType().contains("Label Image") &&
+                    b.getOutputType().equals("Image") &&
+                    b instanceof IsCategorized &&
+                    ((IsCategorized) b).isInCategory("Graph") &&
+                    ((IsCategorized) b).isInCategory("Measurement") &&
+                    ((IsCategorized) b).isInCategory("Neighbor-Filter")
+                    ?1:0;
+        });
         addCategory("Label neighbor graph based measurements", (a,b) -> {
             return a.getOutputType().contains("Label Image") &&
                     b.getInputType().contains("Label Image") &&
                     b.getOutputType().equals("Image") &&
                     b instanceof IsCategorized &&
                     ((IsCategorized) b).isInCategory("Graph") &&
-                    ((IsCategorized) b).isInCategory("Measurement")
+                    ((IsCategorized) b).isInCategory("Measurement") &&
+                    (!((IsCategorized) b).isInCategory("Neighbor-Filter"))
                     ?1:0;
         });
         addCategory("All", (a,b) -> 1);
