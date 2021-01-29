@@ -84,20 +84,22 @@ public class MacroGenerator extends AbstractScriptGenerator {
                 call = call + ", ";
             }
 
-            if (plugin.getArgs()[i] instanceof ClearCLBuffer ||
-                    plugin.getArgs()[i] instanceof ClearCLBuffer[] ||
-                    plugin.getArgs()[i] instanceof ClearCLBuffer[][] ||
-                    plugin.getArgs()[i] instanceof ImagePlus
-            ) {
-                String image_id = objectToString(plugin.getArgs()[i]);
-                if (image_id == null && i < plugin.getNumberOfSources()) {
-                    image_id = objectToString(plugin.getSource(i));
+            if (plugin != null && plugin.getArgs() != null) {
+                if (plugin.getArgs()[i] instanceof ClearCLBuffer ||
+                        plugin.getArgs()[i] instanceof ClearCLBuffer[] ||
+                        plugin.getArgs()[i] instanceof ClearCLBuffer[][] ||
+                        plugin.getArgs()[i] instanceof ImagePlus
+                ) {
+                    String image_id = objectToString(plugin.getArgs()[i]);
+                    if (image_id == null && i < plugin.getNumberOfSources()) {
+                        image_id = objectToString(plugin.getSource(i));
+                    }
+                    call = call + image_id;
+                    after_call = after_call + close(image_id) + "\n";
+                } else {
+                    call = call + name;
+                    program = program + name + " = " + objectToString(plugin.getArgs()[i]) + ";\n";
                 }
-                call = call + image_id;
-                after_call = after_call + close(image_id) + "\n";
-            } else {
-                call = call + name;
-                program = program + name + " = " + objectToString(plugin.getArgs()[i]) + ";\n";
             }
         }
         program = program + methodName + "(" + call + ");\n" +
