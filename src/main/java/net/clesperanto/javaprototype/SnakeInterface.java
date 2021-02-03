@@ -521,6 +521,10 @@ import net.haesleinhuepf.clijx.plugins.MinimumOfProximalNeighborsMap;
 import net.haesleinhuepf.clijx.plugins.MeanOfProximalNeighborsMap;
 import net.haesleinhuepf.clijx.plugins.ModeOfProximalNeighborsMap;
 import net.haesleinhuepf.clijx.plugins.StandardDeviationOfProximalNeighborsMap;
+import net.haesleinhuepf.clijx.plugins.LabelOverlapCountMap;
+import net.haesleinhuepf.clijx.plugins.LabelProximalNeighborCountMap;
+import net.haesleinhuepf.clijx.plugins.ReduceLabelsToLabelEdges;
+import net.haesleinhuepf.clijx.plugins.OutOfIntensityRange;
 // this is generated code. See src/test/java/net/haesleinhuepf/clijx/codegenerator for details
 abstract class SnakeInterface extends CommonAPI {
    static CLIJ getCLIJ() {
@@ -7619,19 +7623,19 @@ abstract class SnakeInterface extends CommonAPI {
      * * local_mean_average_distance_of_touching_neighbors
      * * local_maximum_average_distance_of_touching_neighbors
      * * count_touching_neighbors
+     * * local_maximum_average_distance_n_closest_neighbors=2
      * * local_minimum_average_distance_of_touching_neighbors
+     * * local_mean_average_distance_n_closest_neighbors=2
      * * average_touch_pixel_count
      * * local_minimum_count_touching_neighbors
      * * average_distance_n_closest_neighbors
+     * * local_minimum_average_distance_n_closest_neighbors=2
      * * average_distance_of_touching_neighbors
      * * local_mean_count_touching_neighbors
-     * * local_mean_average_distance_n_closest_neighbors
-     * * local_maximum_average_distance_n_closest_neighbors
+     * * local_standard_deviation_average_distance_n_closest_neighbors=2
      * * local_standard_deviation_average_distance_of_touching_neighbors
      * * local_maximum_count_touching_neighbors
      * * local_standard_deviation_count_touching_neighbors
-     * * local_standard_deviation_average_distance_n_closest_neighbors
-     * * local_minimum_average_distance_n_closest_neighbors
      * 
      * Example: "MEAN_INTENSITY count_touching_neighbors"
      */
@@ -7668,19 +7672,19 @@ abstract class SnakeInterface extends CommonAPI {
      * * local_mean_average_distance_of_touching_neighbors
      * * local_maximum_average_distance_of_touching_neighbors
      * * count_touching_neighbors
+     * * local_maximum_average_distance_n_closest_neighbors=2
      * * local_minimum_average_distance_of_touching_neighbors
+     * * local_mean_average_distance_n_closest_neighbors=2
      * * average_touch_pixel_count
      * * local_minimum_count_touching_neighbors
      * * average_distance_n_closest_neighbors
+     * * local_minimum_average_distance_n_closest_neighbors=2
      * * average_distance_of_touching_neighbors
      * * local_mean_count_touching_neighbors
-     * * local_mean_average_distance_n_closest_neighbors
-     * * local_maximum_average_distance_n_closest_neighbors
+     * * local_standard_deviation_average_distance_n_closest_neighbors=2
      * * local_standard_deviation_average_distance_of_touching_neighbors
      * * local_maximum_count_touching_neighbors
      * * local_standard_deviation_count_touching_neighbors
-     * * local_standard_deviation_average_distance_n_closest_neighbors
-     * * local_minimum_average_distance_n_closest_neighbors
      * 
      * Example: "MEAN_INTENSITY count_touching_neighbors"
      */
@@ -8221,9 +8225,9 @@ abstract class SnakeInterface extends CommonAPI {
      * map_image
      * values_destination
      */
-    public static ClearCLImageInterface read_intensities_from_map(ClearCLImageInterface input, ClearCLImageInterface new_values_vector, ClearCLImageInterface destination) {
-        ReadIntensitiesFromMap.readIntensitiesFromMap(getCLIJ2(), input, new_values_vector, destination);
-        return destination;
+    public static ClearCLImageInterface read_intensities_from_map(ClearCLImageInterface labels, ClearCLImageInterface map_image, ClearCLImageInterface values_destination) {
+        ReadIntensitiesFromMap.readIntensitiesFromMap(getCLIJ2(), labels, map_image, values_destination);
+        return values_destination;
     }
 
 
@@ -8650,5 +8654,55 @@ abstract class SnakeInterface extends CommonAPI {
         return arg3;
     }
 
+
+    // net.haesleinhuepf.clijx.plugins.LabelOverlapCountMap
+    //----------------------------------------------------
+    /**
+     * Takes two label maps, and counts for every label in label map 1 how many labels overlap with it in label map 2.
+     * 
+     * The resulting map is generated from the label map 1 by replacing the labels with the respective count.
+     */
+    public static ClearCLBuffer label_overlap_count_map(ClearCLBuffer label_map1, ClearCLBuffer label_map2, ClearCLBuffer overlap_count_map_destination) {
+        LabelOverlapCountMap.labelOverlapCountMap(getCLIJ2(), label_map1, label_map2, overlap_count_map_destination);
+        return overlap_count_map_destination;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.LabelProximalNeighborCountMap
+    //----------------------------------------------------
+    /**
+     * Takes two label maps, and counts for every label in label map 1 how many labels are in a given distance range to it in label map 2.
+     * 
+     * Distances are computed from the centroids of the labels. The resulting map is generated from the label map 1 by replacing the labels with the respective count.
+     */
+    public static ClearCLBuffer label_proximal_neighbor_count_map(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4, double arg5) {
+        LabelProximalNeighborCountMap.labelProximalNeighborCountMap(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue(), new Double (arg5).floatValue());
+        return arg3;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.ReduceLabelsToLabelEdges
+    //----------------------------------------------------
+    /**
+     * Takes a label map and reduces all labels to their edges. Label IDs stay the same and background will be zero.
+     */
+    public static ClearCLBuffer reduce_labels_to_label_edges(ClearCLBuffer input_labels, ClearCLBuffer destination_labels) {
+        ReduceLabelsToLabelEdges.reduceLabelsToLabelEdges(getCLIJ2(), input_labels, destination_labels);
+        return destination_labels;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.OutOfIntensityRange
+    //----------------------------------------------------
+    /**
+     * Sets all pixels to 1 if their intensity lies out of a given range, and 0 otherwise.
+     * 
+     * Given minimum and maximum are considered part of the range.
+     */
+    public static ClearCLImageInterface out_of_intensity_range(ClearCLBuffer arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
+        OutOfIntensityRange.outOfIntensityRange(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
+        return arg2;
+    }
+
 }
-// 561 methods generated.
+// 565 methods generated.
