@@ -350,7 +350,7 @@ public class AssistantUtilities {
             //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceTop
             //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumZProjectionBounded.class);
             blocklist.add(net.haesleinhuepf.clij2.plugins.OnlyzeroOverwriteMaximumBox.class);
-            blocklist.add(net.haesleinhuepf.clijx.plugins.Skeletonize.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.Skeletonize.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceRight
             //blocklist.add(net.haesleinhuepf.clij2.plugins.Maximum2DBox.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumOctagon.class);
@@ -364,7 +364,7 @@ public class AssistantUtilities {
             //blocklist.add(net.haesleinhuepf.clij2.plugins.Maximum3DSphere.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.Mean3DBox
             //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumOctagon.class);
-            blocklist.add(net.haesleinhuepf.clijx.plugins.StackToTiles.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.StackToTiles.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryEdgeDetection
             //blocklist.add(net.haesleinhuepf.clij2.plugins.DetectLabelEdges
             //blocklist.add(net.haesleinhuepf.clij2.plugins.MaximumImageAndScalar
@@ -403,11 +403,11 @@ public class AssistantUtilities {
             blocklist.add(net.haesleinhuepf.clijx.plugins.BinaryImageMoments3D.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.LabelToMask
             blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceRadialTop.class);
-            blocklist.add(net.haesleinhuepf.clij2.plugins.Median3DSphere.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Median3DSphere.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.NotEqualConstant
-            blocklist.add(net.haesleinhuepf.clij2.plugins.Median2DBox.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Median2DBox.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.CloseIndexGapsInLabelMap.class);
-            blocklist.add(net.haesleinhuepf.clij2.plugins.OpeningDiamond.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.OpeningDiamond.class);
             blocklist.add(net.haesleinhuepf.clij2.plugins.ShortestDistances.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdYen
             blocklist.add(net.haesleinhuepf.clij2.plugins.GenerateTouchMatrix.class);
@@ -489,7 +489,7 @@ public class AssistantUtilities {
             //blocklist.add(net.haesleinhuepf.clij2.plugins.EqualConstant
             blocklist.add(net.haesleinhuepf.clij2.plugins.NeighborsOfNeighbors.class);
             //blocklist.add(net.haesleinhuepf.clijx.plugins.MergeTouchingLabels
-            blocklist.add(net.haesleinhuepf.clij2.plugins.Median2DSphere.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.Median2DSphere.class);
             blocklist.add(net.haesleinhuepf.clij2.plugins.OnlyzeroOverwriteMaximumDiamond.class);
             blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMaximaBox.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.MeanZProjectionBounded.class);
@@ -556,8 +556,8 @@ public class AssistantUtilities {
             //blocklist.add(net.haesleinhuepf.clijx.plugins.Bilateral.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryAnd.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryEdgeDetection.class);
-            blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryFillHoles.class);
-            blocklist.add(net.haesleinhuepf.clijx.plugins.BinaryFillHolesSliceBySlice.class);
+            //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryFillHoles.class);
+            //blocklist.add(net.haesleinhuepf.clijx.plugins.BinaryFillHolesSliceBySlice.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryIntersection.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryNot.class);
             //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryOr.class);
