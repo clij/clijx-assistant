@@ -764,14 +764,6 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         loadFavorites();
         if (my_favorites.length() > 1) {
             Menu favoriteFollowers = new Menu("My favorites");
-            if (my_target.getNChannels() > 1) {
-                addMenuAction(favoriteFollowers, "Extract channel", (a) -> {
-                    my_target.show();
-                    new ExtractChannel().run(null);
-                });
-                addMenuAction(favoriteFollowers, "-", null);
-            }
-            // was:  AssistantGUIPluginService.getInstance().getSuggestedNextStepsFor(this)
 
             ArrayList<String> favNames = new ArrayList<>();
             for (String fav : my_favorites.split(";")) {
