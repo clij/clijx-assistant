@@ -1,11 +1,14 @@
 package net.haesleinhuepf.clijx.assistant.services;
 
+import ij.IJ;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
 import net.haesleinhuepf.clij2.plugins.BinaryNot;
 import net.haesleinhuepf.clij2.plugins.GaussianBlur2D;
+import net.haesleinhuepf.clij2.plugins.GenerateTouchMatrix;
 import net.haesleinhuepf.clij2.utilities.HasClassifiedInputOutput;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
+import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 
 import java.util.ArrayList;
@@ -43,6 +46,7 @@ public class MenuService {
         });
         addCategory("Filter", (a,b) -> {
             return b instanceof IsCategorized && ((IsCategorized) b).isInCategory("Filter") &&
+                    (b instanceof CLIJMacroPlugin && !((CLIJMacroPlugin) b).getName().endsWith("Map")) &&
                     a.getOutputType().equals("Image") &&
                     a.getInputType().equals("Image") &&
                     b.getOutputType().equals("Image")?1:0;
@@ -58,8 +62,16 @@ public class MenuService {
         addCategory("Projection", (a,b) -> {
             return b instanceof IsCategorized && ((IsCategorized) b).isInCategory("Project")?1:0;
         });
+        addCategory("Binarize (auto threshold)", (a,b) -> {
+            return  b.getClass().getSimpleName().startsWith("Threshold") &&
+                    (!a.getOutputType().contains("Binary Image")) &&
+                    b.getInputType().contains(a.getOutputType()) &&
+                    (!b.getInputType().contains("Binary Image")) &&
+                    b.getOutputType().equals("Binary Image")?1:0;
+        });
         addCategory("Binarize", (a,b) -> {
-            return (!a.getOutputType().contains("Binary Image")) &&
+            return  (!b.getClass().getSimpleName().startsWith("Threshold")) &&
+                    (!a.getOutputType().contains("Binary Image")) &&
                     b.getInputType().contains(a.getOutputType()) &&
                     (!b.getInputType().contains("Binary Image")) &&
                     b.getOutputType().equals("Binary Image")?1:0;
@@ -109,6 +121,13 @@ public class MenuService {
                     (!((IsCategorized) b).isInCategory("Neighbor-Filter"))
                     ?1:0;
         });
+        addCategory("Vector and matrix processing", (a,b) -> {
+            return AbstractAssistantGUIPlugin.show_advanced && b.getInputType().contains(a.getOutputType()) &&
+                    ((a.getOutputType().contains("Vector") || a.getOutputType().contains("Matrix") || a.getOutputType().contains("Pointlist")) ||
+                    (b.getOutputType().contains("Vector") || b.getOutputType().contains("Matrix") || b.getOutputType().contains("Pointlist")))
+                    ?1:0;
+        });
+
         addCategory("All", (a,b) -> 1);
 
         category_names_array = new String[category_names.size()];
@@ -117,6 +136,8 @@ public class MenuService {
 
         AssistantGUIPluginService assistantGUIPluginService = AssistantGUIPluginService.getInstance();
         net.haesleinhuepf.clij.macro.CLIJMacroPluginService clijMacroPluginService = CLIJMacroPluginService.getInstance().getService();
+
+        AbstractAssistantGUIPlugin.show_advanced = true;
 
         for (String name : clijMacroPluginService.getCLIJMethodNames()) {
             Class incubatorPluginClass = assistantGUIPluginService.getIncubatorPluginClassFromCLIJ2Plugin(clijMacroPluginService.getCLIJMacroPlugin(name));
@@ -130,6 +151,8 @@ public class MenuService {
                 names_and_tags.add(name + "," + tags + "," + getCompatibilityString(name));
             }
         }
+
+        AbstractAssistantGUIPlugin.show_advanced = false;
 
         Collections.sort(names, AssistantUtilities.niceNameComparator);
         //for (String name : names) {
@@ -156,7 +179,11 @@ public class MenuService {
     public AssistantGUIPlugin getPluginByCLIJPlugin(CLIJMacroPlugin plugin) {
         AssistantGUIPluginService assistantGUIPluginService = AssistantGUIPluginService.getInstance();
         try {
-            AssistantGUIPlugin newPlugin = (AssistantGUIPlugin) assistantGUIPluginService.getIncubatorPluginClassFromCLIJ2Plugin(plugin).newInstance();
+            Class incubatorPlugin = assistantGUIPluginService.getIncubatorPluginClassFromCLIJ2Plugin(plugin);
+            if (incubatorPlugin == null) {
+                return null;
+            }
+            AssistantGUIPlugin newPlugin = (AssistantGUIPlugin)(incubatorPlugin.newInstance());
             newPlugin.setCLIJMacroPlugin(plugin);
             return newPlugin;
         } catch (InstantiationException e) {
@@ -211,7 +238,10 @@ public class MenuService {
                     plugin instanceof HasClassifiedInputOutput &&
                             macroPlugin instanceof HasClassifiedInputOutput &&
                 comparator.compare((HasClassifiedInputOutput)plugin, (HasClassifiedInputOutput)macroPlugin) == 1)) {
-                result.add(getPluginByCLIJPlugin(macroPlugin));
+                AssistantGUIPlugin pluginByCLIJPlugin = getPluginByCLIJPlugin(macroPlugin);
+                if (pluginByCLIJPlugin != null) {
+                    result.add(pluginByCLIJPlugin);
+                }
             }
 //            if ( AssistantUtilities.isIncubatablePlugin(macroPlugin)) {
 //                if (macroPlugin instanceof OffersDocumentation) {

@@ -1,18 +1,17 @@
 package net.haesleinhuepf.clijx.assistant;
 
 import fiji.util.gui.GenericDialogPlus;
-import ij.CompositeImage;
-import ij.IJ;
-import ij.ImageListener;
-import ij.ImagePlus;
+import ij.*;
 import ij.gui.*;
 import ij.measure.Calibration;
+import ij.measure.ResultsTable;
 import ij.plugin.Duplicator;
 import ij.plugin.PlugIn;
 import ij.plugin.frame.RoiManager;
+import ij.text.TextPanel;
+import ij.text.TextWindow;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
-import net.haesleinhuepf.clij.macro.documentation.OnlineDocumentationOpener;
 import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clij2.utilities.HasAuthor;
 import net.haesleinhuepf.clij2.utilities.HasLicense;
@@ -43,8 +42,6 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.*;
 
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.distributionName;
@@ -75,6 +72,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     static boolean auto_position = true;
     public static boolean show_connections = false;
     public static boolean show_compatibility = false;
+    public static boolean show_advanced = false;
 
     public AbstractAssistantGUIPlugin(CLIJMacroPlugin plugin) {
         CLIJxVirtualStackRegistry.getInstance();
@@ -296,7 +294,18 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         setTarget(CLIJxVirtualStack.bufferToImagePlus(result));
         my_target.setTitle(AssistantUtilities.niceNameWithoutDimShape(this.getName()) + " of " + my_sources[0].getTitle());
         enhanceContrast();
+    }
 
+    protected void showTable() {
+        if (result == null) {
+            System.out.println("Show table: Error no result");
+        }
+
+        ResultsTable my_table = new ResultsTable();
+
+        CLIJx clijx = CLIJx.getInstance();
+        clijx.pullToResultsTable(result[0], my_table);
+        my_table.show(my_target.getTitle() + " table");
     }
 
     protected void checkResult() {
@@ -650,16 +659,27 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                 canvas.removeMouseListener(listener);
             }
         }
-        canvas.addMouseListener(new MyMouseAdapter(imp));
+        canvas.addMouseListener(new MyMouseAdapter(imp, canvas));
+        System.out.println("Menu attached");
+
+        ImageWindow window = imp.getWindow();
+        for (MouseListener listener : window.getMouseListeners()) {
+            if (listener instanceof MyMouseAdapter) {
+                window.removeMouseListener(listener);
+            }
+        }
+        window.addMouseListener(new MyMouseAdapter(imp, window));
         System.out.println("Menu attached");
     }
 
     class MyMouseAdapter extends MouseAdapter {
 
         private ImagePlus imp;
+        private Component component;
 
-        MyMouseAdapter(ImagePlus imp) {
+        MyMouseAdapter(ImagePlus imp, Component component) {
             this.imp = imp;
+            this.component = component;
         }
 
         @Override
@@ -669,7 +689,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             if (toolID != Toolbar.MAGNIFIER && (e.isPopupTrigger() || ( (flags & Event.META_MASK) != 0))) {
                 AbstractAssistantGUIPlugin incplugin = ((AbstractAssistantGUIPlugin) AssistantGUIPluginRegistry.getInstance().getPlugin(imp));
                 if (incplugin != null) {
-                    incplugin.handlePopupMenu(e);
+                    incplugin.handlePopupMenu(e, component);
                 }
                 return;
             }
@@ -677,10 +697,10 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         }
     }
 
-    protected void handlePopupMenu(MouseEvent e) {
+    protected void handlePopupMenu(MouseEvent e, Component component) {
         PopupMenu popupmenu = buildPopup(e);
-        my_target.getWindow().getCanvas().add(popupmenu);
-        popupmenu.show(my_target.getWindow().getCanvas(), e.getX(), e.getY());
+        component.add(popupmenu);
+        popupmenu.show(component, e.getX(), e.getY());
     }
 
 
@@ -871,6 +891,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
         // -------------------------------------------------------------------------------------------------------------
 
+
         MenuItem auto_contrast_item = new MenuItem("Auto Brightness & Contrast: " + (auto_contrast?"ON":"OFF"));
         auto_contrast_item.addActionListener((a) -> {
             auto_contrast = !auto_contrast;
@@ -896,7 +917,15 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         });
         info.add(show_compatibility_item);
 
+        MenuItem show_advanced_item = new MenuItem("Show advanced operations: " + (show_advanced?"ON":"OFF"));
+        show_advanced_item.addActionListener((a) -> {
+            show_advanced = !show_advanced;
+        });
+        info.add(show_advanced_item);
+
+
         info.add("-");
+
 
         // -------------------------------------------------------------------------------------------------------------
 
@@ -918,6 +947,13 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             new Duplicator().run(my_target, 1, my_target.getNChannels(), 1, my_target.getNSlices(),  1, my_target.getNFrames()).show();
         });
 
+        if (show_advanced) {
+            MenuItem show_result_as_table_item = new MenuItem("Show current slice as table");
+            show_result_as_table_item.addActionListener((a) -> {
+                showTable();
+            });
+            menu.add(show_result_as_table_item);
+        }
         menu.add("-");
 
         //String documentation_link =

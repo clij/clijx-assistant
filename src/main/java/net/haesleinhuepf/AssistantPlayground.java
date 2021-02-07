@@ -54,7 +54,7 @@ public class AssistantPlayground implements PlugInFilter {
         //new GenericAssistantGUIPlugin(new GaussianBlur2D()).run("");
         new GenericAssistantGUIPlugin(new ThresholdOtsu()).run("");
         new GenericAssistantGUIPlugin(new ConnectedComponentsLabelingBox()).run("");
-        new LabelClusterer().run("");
+        //new LabelClusterer().run("");
 
         //new WekaLabelClassifier().run("");
 

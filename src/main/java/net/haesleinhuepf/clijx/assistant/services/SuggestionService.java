@@ -4,6 +4,8 @@ import ij.IJ;
 import net.haesleinhuepf.clij.clearcl.util.StringUtils;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
+import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -142,6 +144,9 @@ public class SuggestionService {
                         } else {
                             //keep = (dimensionality_constraint.contains(dimensionality + "D"));
                         }
+                    }
+                    if (keep && !AbstractAssistantGUIPlugin.show_advanced && !AssistantUtilities.isAdvancedPlugin(clijPlugin)) {
+                        keep = false;
                     }
                     if (keep) {
                         incubatorSuggestions.put(clijPlugin.getName(), incubatorPluginClassFromCLIJ2Plugin);
