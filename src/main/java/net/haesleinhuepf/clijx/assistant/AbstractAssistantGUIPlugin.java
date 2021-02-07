@@ -21,7 +21,7 @@ import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Crop3D;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.ExtractChannel;
 import net.haesleinhuepf.clijx.assistant.optimize.*;
 import net.haesleinhuepf.clijx.assistant.scriptgenerator.*;
-import net.haesleinhuepf.clijx.assistant.services.CLIJMacroPluginService;
+import net.haesleinhuepf.clijx.assistant.services.*;
 import net.haesleinhuepf.clijx.assistant.utilities.*;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.AbstractCLIJPlugin;
@@ -29,9 +29,6 @@ import net.haesleinhuepf.clij.macro.CLIJOpenCLProcessor;
 import net.haesleinhuepf.clij2.AbstractCLIJ2Plugin;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.MemoryDisplay;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.services.MenuService;
-import net.haesleinhuepf.clijx.assistant.services.SuggestionService;
 import net.haesleinhuepf.clijx.utilities.AbstractCLIJxPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStackRegistry;
@@ -761,6 +758,57 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             }
         }
         menu.add(suggestedFollowers);
+
+        // -------------------------------------------------------------------------------------------------------------
+        // Favorites
+        loadFavorites();
+        if (my_favorites.length() > 1) {
+            Menu favoriteFollowers = new Menu("My favorites");
+            if (my_target.getNChannels() > 1) {
+                addMenuAction(favoriteFollowers, "Extract channel", (a) -> {
+                    my_target.show();
+                    new ExtractChannel().run(null);
+                });
+                addMenuAction(favoriteFollowers, "-", null);
+            }
+            // was:  AssistantGUIPluginService.getInstance().getSuggestedNextStepsFor(this)
+
+            ArrayList<String> favNames = new ArrayList<>();
+            for (String fav : my_favorites.split(";")) {
+                if (fav.length() > 0) {
+                    favNames.add(fav);
+                }
+            }
+
+            Collections.sort(favNames, AssistantUtilities.niceNameComparator);
+
+            int invalid_count = 0;
+            for (int i = 0; i < 2; i++) {
+                for (String name : favNames) {
+                    CLIJMacroPlugin clijPlugin = CLIJMacroPluginService.getInstance().getService().getCLIJMacroPlugin(name);
+                    if (
+                            (isSuitable(clijPlugin, this) && isReasonable(clijPlugin, this) && i == 0) ||
+                            (((!isSuitable(clijPlugin, this)) || (!isReasonable(clijPlugin, this))) && i == 1)) {
+                        Class pluginClass = clijPlugin.getClass();
+                        addMenuAction(favoriteFollowers, AssistantUtilities.niceName(name.replace("CLIJ2_", "").replace("CLIJx_", "")) + " (" + distributionName(pluginClass) + (show_compatibility ? (", " + (getCompatibilityString(clijPlugin.getName()))) : "") + ")", (a) -> {
+                            my_target.show();
+                            System.out.println("Get plugin by name: " + name);
+                            CLIJMacroPlugin macroPlugin = CLIJMacroPluginService.getInstance().getService().getCLIJMacroPlugin(name);
+                            AssistantGUIPlugin plugin = AssistantGUIPluginService.getInstance().getIncubatorPluginFromCLIJ2Plugin(macroPlugin);
+                            plugin.setCLIJMacroPlugin(macroPlugin);
+                            plugin.run(null);
+                        });
+                    } else {
+                        invalid_count++;
+                    }
+                }
+                if (i == 0 && invalid_count > 0) {
+                    favoriteFollowers.add("-");
+                }
+            }
+            menu.add(favoriteFollowers);
+        }
+
         menu.add("-");
 
         // -------------------------------------------------------------------------------------------------------------
@@ -824,7 +872,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         }
 
         // -------------------------------------------------------------------------------------------------------------
-        Menu info = new Menu("Info");
+        Menu info = new Menu("Info and options");
         // -------------------------------------------------------------------------------------------------------------
 
         Menu predecessor = new Menu("Predecessor" + (getNumberOfSources() > 1?"s":"") );
@@ -888,6 +936,21 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         info.add(history);
         info.add("-");
 
+        if (my_favorites.contains(";" + getCLIJMacroPlugin().getName() + ";")) {// not in favorites yet
+            MenuItem fav_item = new MenuItem("Remove from favorites");
+            fav_item.addActionListener((a) -> {
+                removeFromFavorites();
+            });
+            info.add(fav_item);
+        } else {
+            MenuItem fav_item = new MenuItem("Add to favorites");
+            fav_item.addActionListener((a) -> {
+                addToFavorites();
+            });
+            info.add(fav_item);
+        }
+
+        info.add("-");
 
         // -------------------------------------------------------------------------------------------------------------
 
@@ -998,7 +1061,32 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         return menu;
     }
 
+    static String my_favorites = null;
+    static final String FAVORITES_KEY = "assistant.favorites";
+    protected static void loadFavorites() {
+        if (my_favorites == null) {
+            my_favorites = Prefs.get(FAVORITES_KEY, ";");
+        }
+    }
+    protected static void saveFavorites() {
+        if (my_favorites != null) {
+            Prefs.set(FAVORITES_KEY, my_favorites);
+            Prefs.savePreferences();
+        }
+    }
 
+    protected void removeFromFavorites() {
+        loadFavorites();
+        my_favorites = my_favorites.replace(";" + getCLIJMacroPlugin().getName() + ";", ";");
+        saveFavorites();
+    }
+
+    protected void addToFavorites() {
+        loadFavorites();
+        removeFromFavorites(); // to prevent duplicates
+        my_favorites = my_favorites + getCLIJMacroPlugin().getName() + ";";
+        saveFavorites();
+    }
 
     protected void addMoreActions(Menu more_actions) {
         if (AssistantUtilities.resultIsBinaryImage(this)) {

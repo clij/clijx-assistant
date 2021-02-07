@@ -188,4 +188,19 @@ public class AssistantGUIPluginService extends AbstractPTService<AssistantGUIPlu
         }
         return null;
     }
+    public AssistantGUIPlugin getIncubatorPluginFromCLIJ2Plugin(CLIJMacroPlugin plugin) {
+        initializeService();
+        for (AssistantGUIPlugin assistantGUIPlugin : plugins) {
+            if (assistantGUIPlugin.canManage(plugin)) {
+                try {
+                    return assistantGUIPlugin.getClass().newInstance();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
 }

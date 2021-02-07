@@ -180,6 +180,21 @@ public class AssistantUtilities {
     public static boolean ignoreEvent = false;
 
 
+    public static boolean isReasonable(CLIJMacroPlugin clijPlugin, AssistantGUIPlugin plugin) {
+        if (plugin == null || plugin.getTarget() == null) {
+            return false;
+        }
+
+        CLIJMacroPlugin predecessorPlugin = plugin.getCLIJMacroPlugin();
+        if (clijPlugin instanceof HasClassifiedInputOutput && predecessorPlugin instanceof HasClassifiedInputOutput) {
+            if (((HasClassifiedInputOutput) clijPlugin).getInputType().contains(((HasClassifiedInputOutput) predecessorPlugin).getOutputType())) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public static boolean isSuitable(CLIJMacroPlugin clijPlugin, AssistantGUIPlugin plugin) {
         if (plugin == null || plugin.getTarget() == null) {
