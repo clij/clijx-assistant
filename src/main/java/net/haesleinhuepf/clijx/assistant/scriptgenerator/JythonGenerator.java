@@ -78,25 +78,26 @@ public class JythonGenerator extends AbstractScriptGenerator {
         ImagePlus target = plugin.getTarget();
         ImagePlus source = plugin.getSource(0);
 
-        if (target != null &&
-                source != null &&
-                target.getWidth() == source.getWidth() &&
-                target.getHeight() == source.getHeight() &&
-                target.getNSlices() == source.getNSlices()
-        ) {
-            if ( target.getBitDepth() == source.getBitDepth()) {
+        if (target != null) {
+            if (source != null &&
+                            target.getWidth() == source.getWidth() &&
+                            target.getHeight() == source.getHeight() &&
+                            target.getNSlices() == source.getNSlices()
+            ) {
+                if (target.getBitDepth() == source.getBitDepth()) {
+                    program = program +
+                            image2 + " = clijx.create(" + image1s[0] + ")\n";
+                } else {
+                    program = program +
+                            image2 + " = clijx.create(" + image1s[0] + ".getDimensions(), clijx." + bitDepthToType(target.getBitDepth()) + " )\n";
+                }
+            } else if (target.getNSlices() > 1) {
                 program = program +
-                        image2 + " = clijx.create(" + image1s[0] + ")\n";
+                        image2 + " = clijx.create([" + target.getWidth() + ", " + target.getHeight() + ", " + target.getNSlices() + "], clijx." + bitDepthToType(target.getBitDepth()) + ")\n";
             } else {
                 program = program +
-                        image2 + " = clijx.create(" + image1s[0] + ".getDimensions(), clijx." + bitDepthToType(target.getBitDepth()) + " )\n";
+                        image2 + " = clijx.create([" + target.getWidth() + ", " + target.getHeight() + "], clijx." + bitDepthToType(target.getBitDepth()) + ")\n";
             }
-        }else if (target.getNSlices() > 1) {
-            program = program +
-                image2 + " = clijx.create([" + target.getWidth() + ", " + target.getHeight() + ", "  + target.getNSlices() + "], clijx." + bitDepthToType(target.getBitDepth()) + ")\n";
-        } else {
-            program = program +
-                    image2 + " = clijx.create([" + target.getWidth() + ", " + target.getHeight() + "], clijx." + bitDepthToType(target.getBitDepth()) + ")\n";
         }
         String call = "";
         String after_call = "";
