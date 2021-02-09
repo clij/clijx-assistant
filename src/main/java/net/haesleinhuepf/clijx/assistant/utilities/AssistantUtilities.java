@@ -401,7 +401,7 @@ public class AssistantUtilities {
         blocklist.add(net.haesleinhuepf.clijx.plugins.BlurSliceBySlice.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.Maximum3DSphere.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.Mean3DBox
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumOctagon.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.MinimumOctagon.class);
         //blocklist.add(net.haesleinhuepf.clijx.plugins.StackToTiles.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.BinaryEdgeDetection
         //blocklist.add(net.haesleinhuepf.clij2.plugins.DetectLabelEdges
@@ -486,9 +486,9 @@ public class AssistantUtilities {
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ThresholdDefault
         advanced_list.add(net.haesleinhuepf.clij2.plugins.NClosestPoints.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.Minimum2DSphere.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.GradientY.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.GradientZ.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.GradientX.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.GradientY.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.GradientZ.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.GradientX.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.DetectMaxima3DBox.class);
         blocklist.add(net.haesleinhuepf.clijx.tilor.implementations.TopHatSphere.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumYProjection.class);
@@ -688,22 +688,6 @@ public class AssistantUtilities {
         //blocklist.add(net.haesleinhuepf.clij2.plugins.LaplaceBox.class);
         blocklist.add(net.haesleinhuepf.clijx.plugins.LaplaceSphere.class);
         //blocklist.add(net.haesleinhuepf.clijx.plugins.LaplacianOfGaussian3D.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMaximumAverageDistanceOfNClosestNeighborsMap.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMaximumAverageNeighborDistanceMap.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMaximumTouchingNeighborCountMap.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMeanAverageDistanceOfNClosestNeighborsMap.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMeanAverageNeighborDistanceMap.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMeanTouchPortionMap.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMeanTouchingNeighborCountMap.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMedianAverageDistanceOfNClosestNeighborsMap.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMedianAverageNeighborDistanceMap.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMedianTouchingNeighborCountMap.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMinimumAverageDistanceOfNClosestNeighborsMap.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMinimumAverageNeighborDistanceMap.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalMinimumTouchingNeighborCountMap.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalStandardDeviationAverageDistanceOfNClosestNeighborsMap.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalStandardDeviationAverageNeighborDistanceMap.class);
-        //blocklist.add(net.haesleinhuepf.clijx.plugins.LocalStandardDeviationTouchingNeighborCountMap.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.LocalThreshold.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.Logarithm.class);
         //blocklist.add(net.haesleinhuepf.clijx.plugins.MakeIsotropic.class);
@@ -759,7 +743,7 @@ public class AssistantUtilities {
         //blocklist.add(net.haesleinhuepf.clij2.plugins.PowerImages.class);
         blocklist.add(net.haesleinhuepf.clijx.clij2wrappers.PullToROIManager.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.ReplaceIntensities.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.ReplacePixelsIfZero.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.ReplacePixelsIfZero.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceBottom.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceLeft.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ResliceRight.class);
@@ -891,7 +875,7 @@ public class AssistantUtilities {
         advanced_list.add(net.haesleinhuepf.clij2.plugins.ReplaceIntensities.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.SumImageSliceBySlice.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.GenerateBinaryOverlapMatrix.class);
-        blocklist.add(net.haesleinhuepf.clijx.plugins.SubtractGaussianBackground.class);
+        //blocklist.add(net.haesleinhuepf.clijx.plugins.SubtractGaussianBackground.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.ShortestDistances.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.GenerateTouchMatrix.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.AverageDistanceOfNFarOffPoints.class);
@@ -942,6 +926,24 @@ public class AssistantUtilities {
         advanced_list.add(net.haesleinhuepf.clij2.plugins.CentroidsOfBackgroundAndLabels.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.CentroidsOfLabels.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.CloseIndexGapsInLabelMap.class);
+
+        advanced_list.add(net.haesleinhuepf.clijx.plugins.LocalMaximumAverageDistanceOfNClosestNeighborsMap.class);
+        advanced_list.add(net.haesleinhuepf.clijx.plugins.LocalMaximumAverageNeighborDistanceMap.class);
+        advanced_list.add(net.haesleinhuepf.clijx.plugins.LocalMaximumTouchingNeighborCountMap.class);
+        advanced_list.add(net.haesleinhuepf.clijx.plugins.LocalMeanAverageDistanceOfNClosestNeighborsMap.class);
+        advanced_list.add(net.haesleinhuepf.clijx.plugins.LocalMeanAverageNeighborDistanceMap.class);
+        advanced_list.add(net.haesleinhuepf.clijx.plugins.LocalMeanTouchPortionMap.class);
+        advanced_list.add(net.haesleinhuepf.clijx.plugins.LocalMeanTouchingNeighborCountMap.class);
+        advanced_list.add(net.haesleinhuepf.clijx.plugins.LocalMedianAverageDistanceOfNClosestNeighborsMap.class);
+        advanced_list.add(net.haesleinhuepf.clijx.plugins.LocalMedianAverageNeighborDistanceMap.class);
+        advanced_list.add(net.haesleinhuepf.clijx.plugins.LocalMedianTouchingNeighborCountMap.class);
+        advanced_list.add(net.haesleinhuepf.clijx.plugins.LocalMinimumAverageDistanceOfNClosestNeighborsMap.class);
+        advanced_list.add(net.haesleinhuepf.clijx.plugins.LocalMinimumAverageNeighborDistanceMap.class);
+        advanced_list.add(net.haesleinhuepf.clijx.plugins.LocalMinimumTouchingNeighborCountMap.class);
+        advanced_list.add(net.haesleinhuepf.clijx.plugins.LocalStandardDeviationAverageDistanceOfNClosestNeighborsMap.class);
+        advanced_list.add(net.haesleinhuepf.clijx.plugins.LocalStandardDeviationAverageNeighborDistanceMap.class);
+        advanced_list.add(net.haesleinhuepf.clijx.plugins.LocalStandardDeviationTouchingNeighborCountMap.class);
+
     }
 
     public static void installTools() {
