@@ -6,6 +6,7 @@ import ij.gui.Toolbar;
 import ij.measure.ResultsTable;
 import ij.plugin.frame.RoiManager;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
@@ -40,10 +41,18 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
     int num_features = 2;
     int max_depth = 0;
 
+    int radius_of_maximum = 0;
+    int radius_of_minimum = 0;
+    int radius_of_mean = 1;
+    int radius_of_standard_deviation = 0;
+
     boolean show_table = false;
 
     public WekaLabelClassifier() {
         super(new net.haesleinhuepf.clijx.weka.WekaLabelClassifier());
+    }
+    public WekaLabelClassifier(CLIJMacroPlugin pass_on) {
+        super(pass_on);
     }
 
     @Override
@@ -111,9 +120,17 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
             gd.addPanel(panel);
         }
 
-        gd.addNumericField("Number of trees", 200, 0);
-        gd.addNumericField("Number of features", 2, 0);
-        gd.addNumericField("Max depth", 0, 0);
+        gd.addNumericField("Number of trees", num_trees, 0);
+        gd.addNumericField("Number of features", num_features, 0);
+        gd.addNumericField("Max depth", max_depth, 0);
+
+        if (getCLIJMacroPlugin() instanceof net.haesleinhuepf.clijx.weka.WekaRegionalLabelClassifier) {
+            gd.addNumericField("Radius_of_maximum", radius_of_maximum);
+            gd.addNumericField("Radius_of_minimum", radius_of_minimum);
+            gd.addNumericField("Radius_of_mean", radius_of_mean);
+            gd.addNumericField("Radius_of_standard_deviation", radius_of_standard_deviation);
+        }
+
         gd.addCheckbox("Show table while training", show_table);
 
         return gd;
@@ -163,18 +180,29 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
             num_trees = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(0)).getText());
             num_features = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(1)).getText());
             max_depth = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(2)).getText());
-            show_table = ((Checkbox)dialog.getCheckboxes().get(0)).getState();
+            show_table = ((Checkbox) dialog.getCheckboxes().get(0)).getState();
 
             //feature_field.setMinimumSize(new Dimension(500, 10));
             //feature_field.setMaximumSize(new Dimension(500, 10));
             //feature_field.setSize(500, feature_field.getHeight());
-
+            if (getCLIJMacroPlugin() instanceof net.haesleinhuepf.clijx.weka.WekaRegionalLabelClassifier) {
+                radius_of_maximum = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(3)).getText());
+                radius_of_minimum = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(4)).getText());
+                radius_of_mean = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(5)).getText());
+                radius_of_standard_deviation = (int) Double.parseDouble(((TextField) dialog.getNumericFields().get(6)).getText());
+            }
         }
     }
 
     private void train(Logger logger) {
-        logger.log("Train Weka label classifier");
-        logger.log("---------------------------");
+
+        if (getCLIJMacroPlugin() instanceof net.haesleinhuepf.clijx.weka.WekaRegionalLabelClassifier) {
+            logger.log("Train Weka regional label classifier");
+            logger.log("------------------------------------");
+        } else {
+            logger.log("Train Weka label classifier");
+            logger.log("---------------------------");
+        }
 
         CLIJ2 clij2 = CLIJx.getInstance();
         logger.log("GPU: " + clij2.getGPUName() + " (OCLv: " + clij2.getOpenCLVersion() + ", AssistantV: " + VersionUtils.getVersion(this.getClass()) + ")");
@@ -210,7 +238,12 @@ public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
 
         ResultsTable table = new ResultsTable();
         {
-            ClearCLBuffer featureImage = GenerateLabelFeatureImage.generateLabelFeatureImage(clij2, input_image, label_map, feature_definitions);
+            ClearCLBuffer featureImage;
+            if (getCLIJMacroPlugin() instanceof net.haesleinhuepf.clijx.weka.WekaRegionalLabelClassifier) {
+                featureImage = net.haesleinhuepf.clijx.weka.WekaRegionalLabelClassifier.generateRegionalLabelFeatureImage(clij2, input_image, label_map, feature_definitions, radius_of_maximum, radius_of_minimum, radius_of_mean, radius_of_standard_deviation);
+            } else {
+                featureImage = GenerateLabelFeatureImage.generateLabelFeatureImage(clij2, input_image, label_map, feature_definitions);
+            }
             clij2.pullToResultsTable(featureImage, table);
             featureImage.close();
         }
