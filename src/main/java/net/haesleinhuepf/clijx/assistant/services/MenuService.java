@@ -44,8 +44,10 @@ public class MenuService {
                     a.getInputType().equals("Image") &&
                     b.getOutputType().equals("Image")?1:0;
         });
-        addCategory("Filter", (a,b) -> {
+        addCategory("Filter (other)", (a,b) -> {
             return b instanceof IsCategorized && ((IsCategorized) b).isInCategory("Filter") &&
+                    (!((IsCategorized) b).isInCategory("noise")) &&
+                    (!((IsCategorized) b).isInCategory("background")) &&
                     (b instanceof CLIJMacroPlugin && !((CLIJMacroPlugin) b).getName().endsWith("Map")) &&
                     a.getOutputType().equals("Image") &&
                     a.getInputType().equals("Image") &&
