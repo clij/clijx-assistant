@@ -525,6 +525,15 @@ import net.haesleinhuepf.clijx.plugins.LabelOverlapCountMap;
 import net.haesleinhuepf.clijx.plugins.LabelProximalNeighborCountMap;
 import net.haesleinhuepf.clijx.plugins.ReduceLabelsToLabelEdges;
 import net.haesleinhuepf.clijx.plugins.OutOfIntensityRange;
+import net.haesleinhuepf.clijx.plugins.ShrinkLabels;
+import net.haesleinhuepf.clijx.plugins.Similar;
+import net.haesleinhuepf.clijx.plugins.Different;
+import net.haesleinhuepf.clijx.weka.WekaRegionalLabelClassifier;
+import net.haesleinhuepf.clijx.plugins.LabelMeanOfLaplacianMap;
+import net.haesleinhuepf.clijx.plugins.MedianZProjectionMasked;
+import net.haesleinhuepf.clijx.plugins.MedianTouchPortionMap;
+import net.haesleinhuepf.clijx.plugins.NeighborCountWithTouchPortionAboveThresholdMap;
+import net.haesleinhuepf.clijx.plugins.DivideScalarByImage;
 // this is generated code. See src/test/java/net/haesleinhuepf/clijx/codegenerator for details
 abstract class CamelInterface extends CommonAPI{
    static CLIJ getCLIJ() {
@@ -6968,6 +6977,7 @@ abstract class CamelInterface extends CommonAPI{
      * Extend labels with a given radius.
      * 
      * This is actually a local maximum filter applied to a label map which does not overwrite labels.
+     * It is recommended to apply this operation to isotropic images only.
      */
     public static ClearCLBuffer extendLabelsWithMaximumRadius(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
         ExtendLabelsWithMaximumRadius.extendLabelsWithMaximumRadius(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
@@ -7583,7 +7593,7 @@ abstract class CamelInterface extends CommonAPI{
     // net.haesleinhuepf.clijx.weka.WekaLabelClassifier
     //----------------------------------------------------
     /**
-     * Applies a pre-trained CLIJx-Weka model to an image and a corresponding label map. 
+     * Applies a pre-trained CLIJx-Weka model to an image and a corresponding label map to classify labeled objects. 
      * 
      * Make sure that the handed over feature list is the same used while training the model.
      */
@@ -7623,16 +7633,12 @@ abstract class CamelInterface extends CommonAPI{
      * * local_mean_average_distance_of_touching_neighbors
      * * local_maximum_average_distance_of_touching_neighbors
      * * count_touching_neighbors
-     * * local_maximum_average_distance_n_closest_neighbors=2
      * * local_minimum_average_distance_of_touching_neighbors
-     * * local_mean_average_distance_n_closest_neighbors=2
      * * average_touch_pixel_count
      * * local_minimum_count_touching_neighbors
-     * * average_distance_n_closest_neighbors
-     * * local_minimum_average_distance_n_closest_neighbors=2
      * * average_distance_of_touching_neighbors
      * * local_mean_count_touching_neighbors
-     * * local_standard_deviation_average_distance_n_closest_neighbors=2
+     * * MEAN_OF_LAPLACIAN
      * * local_standard_deviation_average_distance_of_touching_neighbors
      * * local_maximum_count_touching_neighbors
      * * local_standard_deviation_count_touching_neighbors
@@ -7672,16 +7678,12 @@ abstract class CamelInterface extends CommonAPI{
      * * local_mean_average_distance_of_touching_neighbors
      * * local_maximum_average_distance_of_touching_neighbors
      * * count_touching_neighbors
-     * * local_maximum_average_distance_n_closest_neighbors=2
      * * local_minimum_average_distance_of_touching_neighbors
-     * * local_mean_average_distance_n_closest_neighbors=2
      * * average_touch_pixel_count
      * * local_minimum_count_touching_neighbors
-     * * average_distance_n_closest_neighbors
-     * * local_minimum_average_distance_n_closest_neighbors=2
      * * average_distance_of_touching_neighbors
      * * local_mean_count_touching_neighbors
-     * * local_standard_deviation_average_distance_n_closest_neighbors=2
+     * * MEAN_OF_LAPLACIAN
      * * local_standard_deviation_average_distance_of_touching_neighbors
      * * local_maximum_count_touching_neighbors
      * * local_standard_deviation_count_touching_neighbors
@@ -8704,5 +8706,130 @@ abstract class CamelInterface extends CommonAPI{
         return arg2;
     }
 
+
+    // net.haesleinhuepf.clijx.plugins.ShrinkLabels
+    //----------------------------------------------------
+    /**
+     * Extend labels with a given radius.
+     * 
+     * This is actually a local minimum filter applied to a label map after introducing background-gaps between labels.
+     * In case relabel_islands is set, split objects will get new labels each. In this case, more labels might be in the result.
+     * It is recommended to apply this operation to isotropic images only.
+     * Warning: If labels were too small, they may be missing in the resulting label image.
+     */
+    public static ClearCLBuffer shrinkLabels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, boolean arg4) {
+        ShrinkLabels.shrinkLabels(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), arg4);
+        return arg2;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.Similar
+    //----------------------------------------------------
+    /**
+     * Determines the absolute difference between two images and sets all pixels to 1 where it is below or equal a given tolerance, and 0 otherwise.
+     */
+    public static ClearCLBuffer similar(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4) {
+        Similar.similar(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue());
+        return arg3;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.Different
+    //----------------------------------------------------
+    /**
+     * Determines the absolute difference between two images and sets all pixels to 1 where it is above a given tolerance, and 0 otherwise.
+     */
+    public static ClearCLBuffer different(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, double arg4) {
+        Different.different(getCLIJ2(), arg1, arg2, arg3, new Double (arg4).floatValue());
+        return arg3;
+    }
+
+
+    // net.haesleinhuepf.clijx.weka.WekaRegionalLabelClassifier
+    //----------------------------------------------------
+    /**
+     * Applies a pre-trained CLIJx-Weka model to an image and a corresponding label map to classify labeled objects.
+     * 
+     * Given radii allow to configure if values of proximal neighbors, other labels with centroids closer 
+     * than given radius, should be taken into account, e.g. for determining the regional maximum.
+     * 
+     * Make sure that the handed over feature list and radii are the same used while training the model.
+     */
+    public static ClearCLBuffer wekaRegionalLabelClassifier(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3, String arg4, String arg5, double arg6, double arg7, double arg8, double arg9) {
+        WekaRegionalLabelClassifier.wekaRegionalLabelClassifier(getCLIJ2(), arg1, arg2, arg3, arg4, arg5, new Double (arg6).intValue(), new Double (arg7).intValue(), new Double (arg8).intValue(), new Double (arg9).intValue());
+        return arg3;
+    }
+
+    /**
+     * 
+     */
+    public static ClearCLBuffer generateRegionalLabelFeatureImage(ClearCLBuffer arg1, ClearCLBuffer arg2, String arg3, int arg4, int arg5, int arg6, int arg7) {
+        WekaRegionalLabelClassifier.generateRegionalLabelFeatureImage(getCLIJ2(), arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+        return arg2;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.LabelMeanOfLaplacianMap
+    //----------------------------------------------------
+    /**
+     * Takes an image and a corresponding label map, determines the mean intensity in the laplacian of the image per label and replaces every label with the that number.
+     * 
+     * This results in a parametric image visualizing local contrast.
+     */
+    public static ClearCLBuffer labelMeanOfLaplacianMap(ClearCLBuffer input, ClearCLBuffer label_map, ClearCLBuffer destination) {
+        LabelMeanOfLaplacianMap.labelMeanOfLaplacianMap(getCLIJ2(), input, label_map, destination);
+        return destination;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.MedianZProjectionMasked
+    //----------------------------------------------------
+    /**
+     * Determines the median intensity projection of an image stack along Z where pixels in a corresponding mask image are unequal to zero.
+     */
+    public static ClearCLImageInterface medianZProjectionMasked(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3) {
+        MedianZProjectionMasked.medianZProjectionMasked(getCLIJ2(), arg1, arg2, arg3);
+        return arg3;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.MedianTouchPortionMap
+    //----------------------------------------------------
+    /**
+     * Starts from a label map, determines median touch portion to neighbors (between 0 and 1) and draws a map.
+     * 
+     * 
+     */
+    public static ClearCLBuffer medianTouchPortionMap(ClearCLBuffer labels, ClearCLBuffer map_destination) {
+        MedianTouchPortionMap.medianTouchPortionMap(getCLIJ2(), labels, map_destination);
+        return map_destination;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.NeighborCountWithTouchPortionAboveThresholdMap
+    //----------------------------------------------------
+    /**
+     * Starts from a label map, determines touch portion to neighbors, counts those above a given value (between 0 and 1) and draws a map.
+     * 
+     * 
+     */
+    public static ClearCLBuffer neighborCountWithTouchPortionAboveThresholdMap(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        NeighborCountWithTouchPortionAboveThresholdMap.neighborCountWithTouchPortionAboveThresholdMap(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.DivideScalarByImage
+    //----------------------------------------------------
+    /**
+     * Divides a scalar s by image X pixel wise. 
+     * 
+     * <pre>f(s, x) = s / x</pre>
+     */
+    public static ClearCLImageInterface divideScalarByImage(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3) {
+        DivideScalarByImage.divideScalarByImage(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue());
+        return arg2;
+    }
+
 }
-// 565 methods generated.
+// 575 methods generated.
