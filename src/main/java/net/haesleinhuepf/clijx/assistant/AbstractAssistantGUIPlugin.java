@@ -1099,16 +1099,29 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
     }
 
-
+    double[] minimum_display_intensities = null;
+    double[] maximum_display_intensities = null;
     protected synchronized void enhanceContrast() {
+        int c_before = my_target.getC();
+
         if (!auto_contrast) {
+            if (minimum_display_intensities != null && maximum_display_intensities != null) {
+                for (int c = 0; c < my_target.getNChannels(); c++) {
+                    my_target.setC(c);
+                    my_target.setDisplayRange(minimum_display_intensities[c], maximum_display_intensities[c]);
+                }
+                my_target.setC(c_before);
+            }
             return;
         }
+
 
         paused = true;
         boolean binary = resultIsBinaryImage(this);
         boolean labelimage = resultIsLabelImage(this);
-        int c_before = my_target.getC();
+
+        minimum_display_intensities = new double[my_target.getNChannels()];
+        maximum_display_intensities = new double[my_target.getNChannels()];
         for (int c = 0; c < my_target.getNChannels(); c++) {
             my_target.setC(c);
             if (labelimage) {
@@ -1122,7 +1135,10 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                 IJ.resetMinAndMax(my_target);
                 IJ.run(my_target, "Enhance Contrast", "saturated=0.35");
             }
+            minimum_display_intensities[c] = my_target.getDisplayRangeMin();
+            maximum_display_intensities[c] = my_target.getDisplayRangeMax();
         }
+
         my_target.setC(c_before);
         paused = false;
     }
