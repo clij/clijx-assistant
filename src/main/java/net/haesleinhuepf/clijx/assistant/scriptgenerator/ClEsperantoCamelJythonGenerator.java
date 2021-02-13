@@ -56,7 +56,14 @@ public class ClEsperantoCamelJythonGenerator extends JythonGenerator {
     @Override
     public String finish(String all) {
         return super.finish(all)
+                .replace(".create(", ".create_like(")
                 .replace("clijx.", "cle.")
-                .replace("clij2.", "cle.");
+                .replace("clij2.", "cle.")
+                .replace(".getDimensions(), cle.Float", "")
+                .replace(".getDimensions(), cle.UnsignedShort", "")
+                .replace(".getDimensions(), cle.UnsignedByte", "")
+                .replace(", cle.Float", "")
+                .replace(", cle.UnsignedShort", "")
+                .replace(", cle.UnsignedByte", "");
     }
 }
