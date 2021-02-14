@@ -39,6 +39,7 @@ Stay tuned.
   * [Nuclei segmentation](https://clij.github.io/assistant/segmentation_nuclei)
   * [Cell segmentation based on membranes](https://clij.github.io/assistant/segmentation_cells)
   * [Optimize parameters for binarization](https://clij.github.io/assistant/parameter_optimization)
+  * [Label classification](https://clij.github.io/assistant/clijx_weka_label_classifier)
 
 * Reproducibility / interoperability
   * [Export workflows as ImageJ Script](https://clij.github.io/assistant/macro_export)
