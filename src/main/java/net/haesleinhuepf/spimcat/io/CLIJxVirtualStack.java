@@ -1,6 +1,7 @@
 package net.haesleinhuepf.spimcat.io;
 
-import ij.*;
+import ij.
+        *;
 import ij.plugin.Duplicator;
 import ij.plugin.HyperStackConverter;
 import ij.process.ImageProcessor;
@@ -8,6 +9,40 @@ import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
 
 public class CLIJxVirtualStack extends VirtualStack {
+    public enum ProjectionStyle {
+        SINGLE_SLICE,
+        MAXIMUM_INTENSITY,
+        MINIMUM_INTENSITY,
+        MEAN_INTENSITY,
+        SUM_INTENSITY,
+        MEDIAN_INTENSITY,
+        STANDARD_DEVIATION_INTENSITY,
+        EXTENDED_DEPTH_OF_FOCUS_VARIANCE;
+
+        public static ProjectionStyle[] all() {
+            return new ProjectionStyle[]{
+                SINGLE_SLICE,
+                MAXIMUM_INTENSITY,
+                MINIMUM_INTENSITY,
+                MEAN_INTENSITY,
+                SUM_INTENSITY,
+                MEDIAN_INTENSITY,
+                STANDARD_DEVIATION_INTENSITY,
+                EXTENDED_DEPTH_OF_FOCUS_VARIANCE
+            };
+        }
+    }
+
+    private ProjectionStyle projectionStyle = ProjectionStyle.SINGLE_SLICE;
+
+    public ProjectionStyle getProjectionStyle() {
+        return projectionStyle;
+    }
+
+    public void setProjectionStyle(ProjectionStyle projectionStyle) {
+        this.projectionStyle = projectionStyle;
+    }
+
     private ClearCLBuffer[] buffer;
 
     private CLIJxVirtualStack(ClearCLBuffer[] buffer) {
@@ -32,22 +67,58 @@ public class CLIJxVirtualStack extends VirtualStack {
 
             CLIJx clijx = CLIJx.getInstance();
             ClearCLBuffer slice = clijx.create(new long[]{buffer[0].getWidth(), buffer[0].getHeight()}, buffer[0].getNativeType());
+            //ClearCLBuffer backup = clijx.create(new long[]{buffer[0].getWidth(), buffer[0].getHeight()}, buffer[0].getNativeType());
 
-            System.out.println("Buffer " + buffer);
-            System.out.println("Buffer[0] " + buffer[0]);
-            System.out.println("Buffer[0] pointer " + buffer[0].getPeerPointer());
-            System.out.println("Buffer slice " + slice.getPeerPointer());
+            //System.out.println("Buffer " + buffer);
+            //System.out.println("Buffer[0] " + buffer[0]);
+            //System.out.println("Buffer[0] pointer " + buffer[0].getPeerPointer());
+            //System.out.println("Buffer slice " + slice.getPeerPointer());
 
             for (int c = 0; c < buffer.length; c++) {
                 System.out.println("Channel " + c);
                 if (buffer[c].getPeerPointer() != null) { // Workaround: This can happen if visualization happens during reset
-                    clijx.copySlice(buffer[c], slice, zplane);
+                    //if (projectionStyle != ProjectionStyle.SINGLE_SLICE) {
+                    //    clijx.copySlice(buffer[c], backup, zplane);
+                    //    clijx.setPlane(buffer[c], zplane, 0);
+                    //}
+                    switch (projectionStyle) {
+                        case MAXIMUM_INTENSITY:
+                            clijx.maximumZProjection(buffer[c], slice);
+                            break;
+                        case MINIMUM_INTENSITY:
+                            clijx.minimumZProjection(buffer[c], slice);
+                            break;
+                        case MEAN_INTENSITY:
+                            clijx.meanZProjection(buffer[c], slice);
+                            break;
+                        case SUM_INTENSITY:
+                            clijx.sumZProjection(buffer[c], slice);
+                            break;
+                        case MEDIAN_INTENSITY:
+                            clijx.medianZProjection(buffer[c], slice);
+                            break;
+                        case STANDARD_DEVIATION_INTENSITY:
+                            clijx.standardDeviationZProjection(buffer[c], slice);
+                            break;
+                        case EXTENDED_DEPTH_OF_FOCUS_VARIANCE:
+                            clijx.extendedDepthOfFocusVarianceProjection(buffer[c], slice, 10);
+                            break;
+                        case SINGLE_SLICE:
+                        default:
+                            clijx.copySlice(buffer[c], slice, zplane);
+                    }
+                    //if (projectionStyle != ProjectionStyle.SINGLE_SLICE) {
+                    //    clijx.copySlice(backup,
+                    //            buffer[c], zplane);
+                    //}
                 }
                 ImagePlus imp = clijx.pull(slice);
                 formerSliceProcessors[c] = imp.getProcessor();
             }
 
+
             slice.close();
+            //backup.close();
 
             former_z = zplane;
         }

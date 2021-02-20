@@ -26,7 +26,8 @@ public class AssistantPlayground implements PlugInFilter {
         //ImagePlus imp = IJ.openImage("D:/structure/data/Irene/ISB200714_well5_1pos_3h_MyosinGFP-small.tif");
         //ImagePlus imp = IJ.openImage("C:/structure/data/mitosis.tif");
         //ImagePlus imp = IJ.openImage("/home/haase/data/blobs.tif");
-        ImagePlus imp = IJ.openImage("C:/structure/data/blobs.tif");
+        //ImagePlus imp = IJ.openImage("C:/structure/data/blobs.tif");
+        ImagePlus imp = IJ.openImage("C:/structure/data/Lund_18.0_22.0_Hours.tif");
         //ImagePlus imp = IJ.openImage("C:/structure/data/t1-head.tif");
         imp.show();
 
@@ -52,8 +53,8 @@ public class AssistantPlayground implements PlugInFilter {
 
 
         //new GenericAssistantGUIPlugin(new GaussianBlur2D()).run("");
-        new GenericAssistantGUIPlugin(new ThresholdOtsu()).run("");
-        new GenericAssistantGUIPlugin(new ConnectedComponentsLabelingBox()).run("");
+        //new GenericAssistantGUIPlugin(new ThresholdOtsu()).run("");
+        //new GenericAssistantGUIPlugin(new ConnectedComponentsLabelingBox()).run("");
         //new LabelClusterer().run("");
 
         //new WekaLabelClassifier().run("");

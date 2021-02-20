@@ -55,6 +55,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     final static Color REFRESHING_COLOR = new Color(205, 205, 128);
     final static Color INVALID_COLOR = new Color(205, 128, 128);
     final static Color VALID_COLOR = new Color(128, 205, 128);
+    final static Color VALID_3D_COLOR = new Color(128, 205, 228);
 
     private Boolean input_output_sizes_equal = null;
 
@@ -538,6 +539,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
                 my_target.setZ(my_sources[0].getZ());
             }
         }
+        my_target.updateAndRepaintWindow();
     }
 
 
@@ -598,6 +600,9 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             } else {
                 my_target = result;
             }
+            if (my_sources[0].getStack() instanceof CLIJxVirtualStack && my_target.getStack() instanceof CLIJxVirtualStack) {
+                ((CLIJxVirtualStack) my_target.getStack()).setProjectionStyle(((CLIJxVirtualStack) my_sources[0].getStack()).getProjectionStyle());
+            }
 
             my_target.show();
             attachMenu(my_target);
@@ -623,6 +628,9 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
             ignore_closing = true;
             CLIJxVirtualStackRegistry.getInstance().unregister(my_target);
+            if (my_target.getStack() instanceof CLIJxVirtualStack && output.getStack() instanceof CLIJxVirtualStack) {
+                ((CLIJxVirtualStack) output.getStack()).setProjectionStyle(((CLIJxVirtualStack) my_target.getStack()).getProjectionStyle());
+            }
             my_target.setStack(output.getStack(), output.getNChannels(), output.getNSlices(), output.getNFrames());
             CLIJxVirtualStackRegistry.getInstance().register(my_target);
             ignore_closing = false;
@@ -993,6 +1001,21 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             IJ.log(CLIJx.getInstance().reportMemory());
             IJ.log(CLIJxVirtualStackRegistry.getInstance().report());
         });
+        if (my_target != null && my_target.getNSlices() > 1 && my_target.getStack() instanceof CLIJxVirtualStack) {
+            Menu visualizationMenu = new Menu("Visualization");
+            for (CLIJxVirtualStack.ProjectionStyle p : CLIJxVirtualStack.ProjectionStyle.all()) {
+                String selected = "   ";
+                if (((CLIJxVirtualStack) my_target.getStack()).getProjectionStyle() == p) {
+                    selected = " - ";
+                }
+                addMenuAction(visualizationMenu, selected + p.toString(), (a) -> {
+                    ((CLIJxVirtualStack) my_target.getStack()).setProjectionStyle(p);
+                    setTargetInvalid();
+                });
+            }
+            info.add("-");
+            info.add(visualizationMenu);
+        }
         menu.add(info);
 
         // -------------------------------------------------------------------------------------------------------------
@@ -1423,6 +1446,12 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     }
 
     private void setButtonColor(String button, Color color) {
+
+        if (color == VALID_COLOR && my_target != null && my_target.getStack() != null && my_target.getStack() instanceof CLIJxVirtualStack && ((CLIJxVirtualStack) my_target.getStack()).getProjectionStyle() != CLIJxVirtualStack.ProjectionStyle.SINGLE_SLICE) {
+            color = VALID_3D_COLOR;
+        }
+
+
         if (registered_dialog != null) {
             for (Button component : registered_dialog.getButtons()) {
                 if (component != null) {
