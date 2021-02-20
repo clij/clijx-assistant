@@ -145,7 +145,7 @@ public class SuggestionService {
                             //keep = (dimensionality_constraint.contains(dimensionality + "D"));
                         }
                     }
-                    if (keep && AbstractAssistantGUIPlugin.show_advanced || !AssistantUtilities.isAdvancedPlugin(clijPlugin)) {
+                    if (keep && !(AbstractAssistantGUIPlugin.show_advanced || !AssistantUtilities.isAdvancedPlugin(clijPlugin))) {
                         keep = false;
                     }
                     if (keep) {
