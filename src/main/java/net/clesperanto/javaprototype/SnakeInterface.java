@@ -534,6 +534,8 @@ import net.haesleinhuepf.clijx.plugins.MedianZProjectionMasked;
 import net.haesleinhuepf.clijx.plugins.MedianTouchPortionMap;
 import net.haesleinhuepf.clijx.plugins.NeighborCountWithTouchPortionAboveThresholdMap;
 import net.haesleinhuepf.clijx.plugins.DivideScalarByImage;
+import net.haesleinhuepf.clijx.plugins.ReadValuesFromMap;
+import net.haesleinhuepf.clijx.plugins.ReadValuesFromPositions;
 // this is generated code. See src/test/java/net/haesleinhuepf/clijx/codegenerator for details
 abstract class SnakeInterface extends CommonAPI {
    static CLIJ getCLIJ() {
@@ -4510,7 +4512,7 @@ abstract class SnakeInterface extends CommonAPI {
     // net.haesleinhuepf.clij2.plugins.MultiplyImages
     //----------------------------------------------------
     /**
-     * Multiplies all pairs of pixel values x and y from two image X and Y.
+     * Multiplies all pairs of pixel values x and y from two images X and Y.
      * 
      * <pre>f(x, y) = x * y</pre>
      * 
@@ -5438,7 +5440,7 @@ abstract class SnakeInterface extends CommonAPI {
     // net.haesleinhuepf.clij2.plugins.SumImageSliceBySlice
     //----------------------------------------------------
     /**
-     * Sums all pixels slice by slice and returns them in an array.
+     * Sums all pixels slice by slice and returns the sums in a vector.
      */
     public static ClearCLImageInterface sum_image_slice_by_slice(ClearCLImageInterface source, ClearCLImageInterface destination) {
         SumImageSliceBySlice.sumImageSliceBySlice(getCLIJ2(), source, destination);
@@ -5446,7 +5448,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
     /**
-     * Sums all pixels slice by slice and returns them in an array.
+     * Sums all pixels slice by slice and returns the sums in a vector.
      */
     public static ClearCLImageInterface sum_image_slice_by_slice(ClearCLImageInterface arg1) {
         SumImageSliceBySlice.sumImageSliceBySlice(getCLIJ2(), arg1);
@@ -7630,18 +7632,10 @@ abstract class SnakeInterface extends CommonAPI {
      * * SUM_INTENSITY
      * * STANDARD_DEVIATION_INTENSITY
      * * PIXEL_COUNT
-     * * local_mean_average_distance_of_touching_neighbors
-     * * local_maximum_average_distance_of_touching_neighbors
      * * count_touching_neighbors
-     * * local_minimum_average_distance_of_touching_neighbors
      * * average_touch_pixel_count
-     * * local_minimum_count_touching_neighbors
      * * average_distance_of_touching_neighbors
-     * * local_mean_count_touching_neighbors
      * * MEAN_OF_LAPLACIAN
-     * * local_standard_deviation_average_distance_of_touching_neighbors
-     * * local_maximum_count_touching_neighbors
-     * * local_standard_deviation_count_touching_neighbors
      * 
      * Example: "MEAN_INTENSITY count_touching_neighbors"
      */
@@ -7675,18 +7669,10 @@ abstract class SnakeInterface extends CommonAPI {
      * * SUM_INTENSITY
      * * STANDARD_DEVIATION_INTENSITY
      * * PIXEL_COUNT
-     * * local_mean_average_distance_of_touching_neighbors
-     * * local_maximum_average_distance_of_touching_neighbors
      * * count_touching_neighbors
-     * * local_minimum_average_distance_of_touching_neighbors
      * * average_touch_pixel_count
-     * * local_minimum_count_touching_neighbors
      * * average_distance_of_touching_neighbors
-     * * local_mean_count_touching_neighbors
      * * MEAN_OF_LAPLACIAN
-     * * local_standard_deviation_average_distance_of_touching_neighbors
-     * * local_maximum_count_touching_neighbors
-     * * local_standard_deviation_count_touching_neighbors
      * 
      * Example: "MEAN_INTENSITY count_touching_neighbors"
      */
@@ -8221,11 +8207,7 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Note: This will only work if all labels have number of voxels == 1 or if all pixels in each label have the same value.
      * 
-     * Parameters
-     * ----------
-     * labels
-     * map_image
-     * values_destination
+     * DEPRECATED: Use ReadValuesFromMap instead
      */
     public static ClearCLImageInterface read_intensities_from_map(ClearCLImageInterface labels, ClearCLImageInterface map_image, ClearCLImageInterface values_destination) {
         ReadIntensitiesFromMap.readIntensitiesFromMap(getCLIJ2(), labels, map_image, values_destination);
@@ -8831,5 +8813,45 @@ abstract class SnakeInterface extends CommonAPI {
         return arg2;
     }
 
+
+    // net.haesleinhuepf.clijx.plugins.ReadValuesFromMap
+    //----------------------------------------------------
+    /**
+     * Takes a label image and an parametric image and reads parametric values from the labels positions.
+     * 
+     * The read intensity valus are stored in a new vector.
+     * 
+     * Note: This will only work if all labels have number of voxels == 1 or if all pixels in each label have the same value.
+     * 
+     * Parameters
+     * ----------
+     * labels
+     * map_image
+     * values_destination
+     */
+    public static ClearCLImageInterface read_values_from_map(ClearCLImageInterface labels, ClearCLImageInterface map_image, ClearCLImageInterface values_destination) {
+        ReadValuesFromMap.readValuesFromMap(getCLIJ2(), labels, map_image, values_destination);
+        return values_destination;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.ReadValuesFromPositions
+    //----------------------------------------------------
+    /**
+     * Takes a pointlist and a parametric image and reads parametric values from the positions.
+     * 
+     * The read intensity values are stored in a new vector.
+     * 
+     * Parameters
+     * ----------
+     * pointlist
+     * map_image
+     * values_destination
+     */
+    public static ClearCLImageInterface read_values_from_positions(ClearCLImageInterface pointlist, ClearCLImageInterface map_image, ClearCLImageInterface values_destination) {
+        ReadValuesFromPositions.readValuesFromPositions(getCLIJ2(), pointlist, map_image, values_destination);
+        return values_destination;
+    }
+
 }
-// 575 methods generated.
+// 577 methods generated.
