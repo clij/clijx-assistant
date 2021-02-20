@@ -30,6 +30,7 @@
 package net.haesleinhuepf.clijx.assistant.search;
 
 import ij.IJ;
+import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.MenuService;
 import net.imglib2.img.array.ArrayImgs;
 import org.scijava.MenuEntry;
@@ -51,6 +52,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.getCompatibilityString;
+import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.isAdvancedPlugin;
 
 @Plugin(type = Searcher.class)
 public class AssistantPluginSearcher implements Searcher {
@@ -86,7 +88,10 @@ public class AssistantPluginSearcher implements Searcher {
 				}
 			}
 			if (ok) {
-				list.add(new AssistantPluginSearchResult(service.getPluginByName(name_and_tags.split(",")[0])));
+				AssistantGUIPlugin plugin = service.getPluginByName(name_and_tags.split(",")[0]);
+				if (plugin != null) {
+					list.add(new AssistantPluginSearchResult(plugin));
+				}
 			}
 		}
 
