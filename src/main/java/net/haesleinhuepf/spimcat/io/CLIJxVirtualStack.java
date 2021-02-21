@@ -12,7 +12,9 @@ public class CLIJxVirtualStack extends VirtualStack {
     public enum ProjectionStyle {
         SINGLE_SLICE,
         MAXIMUM_INTENSITY,
+        MAXIMUM_INTENSITY_WITH_SLICE_HIGHLIGHT,
         MINIMUM_INTENSITY,
+        MINIMUM_INTENSITY_WITH_SLICE_HIGHLIGHT,
         MEAN_INTENSITY,
         SUM_INTENSITY,
         MEDIAN_INTENSITY,
@@ -23,7 +25,9 @@ public class CLIJxVirtualStack extends VirtualStack {
             return new ProjectionStyle[]{
                 SINGLE_SLICE,
                 MAXIMUM_INTENSITY,
+                MAXIMUM_INTENSITY_WITH_SLICE_HIGHLIGHT,
                 MINIMUM_INTENSITY,
+                MINIMUM_INTENSITY_WITH_SLICE_HIGHLIGHT,
                 MEAN_INTENSITY,
                 SUM_INTENSITY,
                 MEDIAN_INTENSITY,
@@ -41,6 +45,7 @@ public class CLIJxVirtualStack extends VirtualStack {
 
     public void setProjectionStyle(ProjectionStyle projectionStyle) {
         this.projectionStyle = projectionStyle;
+        formerSliceProcessors = null;
     }
 
     private ClearCLBuffer[] buffer;
@@ -67,7 +72,7 @@ public class CLIJxVirtualStack extends VirtualStack {
 
             CLIJx clijx = CLIJx.getInstance();
             ClearCLBuffer slice = clijx.create(new long[]{buffer[0].getWidth(), buffer[0].getHeight()}, buffer[0].getNativeType());
-            //ClearCLBuffer backup = clijx.create(new long[]{buffer[0].getWidth(), buffer[0].getHeight()}, buffer[0].getNativeType());
+            ClearCLBuffer backup = null;
 
             //System.out.println("Buffer " + buffer);
             //System.out.println("Buffer[0] " + buffer[0]);
@@ -77,15 +82,19 @@ public class CLIJxVirtualStack extends VirtualStack {
             for (int c = 0; c < buffer.length; c++) {
                 System.out.println("Channel " + c);
                 if (buffer[c].getPeerPointer() != null) { // Workaround: This can happen if visualization happens during reset
-                    //if (projectionStyle != ProjectionStyle.SINGLE_SLICE) {
-                    //    clijx.copySlice(buffer[c], backup, zplane);
-                    //    clijx.setPlane(buffer[c], zplane, 0);
-                    //}
+                    if (projectionStyle == ProjectionStyle.MAXIMUM_INTENSITY_WITH_SLICE_HIGHLIGHT || projectionStyle == ProjectionStyle.MINIMUM_INTENSITY_WITH_SLICE_HIGHLIGHT) {
+                        backup = clijx.create(new long[]{buffer[0].getWidth(), buffer[0].getHeight()}, buffer[0].getNativeType());
+                        clijx.copySlice(buffer[c], backup, zplane);
+                        clijx.multiplyImageAndScalar(backup, slice, projectionStyle == ProjectionStyle.MAXIMUM_INTENSITY_WITH_SLICE_HIGHLIGHT?2:0.5);
+                        clijx.copySlice(slice, buffer[c], zplane);
+                    }
                     switch (projectionStyle) {
                         case MAXIMUM_INTENSITY:
+                        case MAXIMUM_INTENSITY_WITH_SLICE_HIGHLIGHT:
                             clijx.maximumZProjection(buffer[c], slice);
                             break;
                         case MINIMUM_INTENSITY:
+                        case MINIMUM_INTENSITY_WITH_SLICE_HIGHLIGHT:
                             clijx.minimumZProjection(buffer[c], slice);
                             break;
                         case MEAN_INTENSITY:
@@ -107,10 +116,9 @@ public class CLIJxVirtualStack extends VirtualStack {
                         default:
                             clijx.copySlice(buffer[c], slice, zplane);
                     }
-                    //if (projectionStyle != ProjectionStyle.SINGLE_SLICE) {
-                    //    clijx.copySlice(backup,
-                    //            buffer[c], zplane);
-                    //}
+                    if (backup != null) {
+                        clijx.copySlice(backup, buffer[c], zplane);
+                    }
                 }
                 ImagePlus imp = clijx.pull(slice);
                 formerSliceProcessors[c] = imp.getProcessor();
