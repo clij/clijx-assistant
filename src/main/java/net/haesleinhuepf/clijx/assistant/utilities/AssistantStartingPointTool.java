@@ -30,15 +30,35 @@ public class AssistantStartingPointTool extends PlugInTool {
 
     @Override
     public String getToolIcon() {
-        return "C888" +
-                "R008f"+
-                "Ra076"+
-                "Ceee" +
-                "F117d" +
-                "Cf88" +
-                "Fb135" +
-                "C8f8" +
-                "Fe135";
+        return "C000" +
+                "R0020"+
+                "R0320" +
+                "R3110"+
+                "R3410" +
+
+                "Rff00"+
+                "R9f40"+
+                "R8e00" +
+
+                "C800" +
+                "Rc400" +
+                "Rb300" +
+                "R9210" +
+                "R8300" +
+                "R7401" +
+                "R7610" +
+                "R8700" +
+
+                "C080" +
+                "Ra910" +
+                "Rc810" +
+                "Re710" +
+
+                "C008" +
+                "Rac20" +
+                "Rdb00" +
+                "Rfb00" +
+                "";
     }
 
     @Override
