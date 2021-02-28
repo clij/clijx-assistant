@@ -3,9 +3,15 @@ package net.haesleinhuepf.clijx.assistant.utilities;
 import ij.IJ;
 import ij.IJEventListener;
 import ij.ImageJ;
+import ij.ImagePlus;
 import ij.gui.Toolbar;
+import ij.gui.YesNoCancelDialog;
 import ij.plugin.tool.PlugInTool;
 import net.haesleinhuepf.clijx.assistant.AssistantGUIStartingPoint;
+import net.haesleinhuepf.clijx.gui.InteractiveWindowPosition;
+
+
+import javax.swing.*;
 
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.ignoreEvent;
 
@@ -21,6 +27,26 @@ public class AssistantStartingPointTool extends PlugInTool {
                 }
                 if (eventID == IJEventListener.TOOL_CHANGED) {
                     if (IJ.getToolName().compareTo(getToolName()) == 0 ) {
+                        if (IJ.getImage() == null) {
+                            IJ.error("No image open. Please open an image and try again.");
+                            Toolbar.addPlugInTool(new InteractiveWindowPosition());
+                            return;
+                        }
+                        if (IJ.getImage().getType() != ImagePlus.GRAY8 && IJ.getImage().getType() != ImagePlus.GRAY16 && IJ.getImage().getType() != ImagePlus.GRAY32) {
+                            YesNoCancelDialog yncd = new YesNoCancelDialog(null, "Incompatible image type","The current image has an unsupported type. Do you want to convert it first?");
+
+                            if (!yncd.yesPressed()) {
+                                Toolbar.addPlugInTool(new InteractiveWindowPosition());
+                                return;
+                            }
+                            IJ.run("RGB Stack");
+                            IJ.run("Make Composite", "display=Composite");
+                            try {
+                                Thread.sleep(100);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
                         new AssistantGUIStartingPoint().run("");
                     }
                 }
