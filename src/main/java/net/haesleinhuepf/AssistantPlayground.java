@@ -9,6 +9,7 @@ import net.haesleinhuepf.clij2.plugins.*;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.*;
+import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import net.haesleinhuepf.clijx.gui.MemoryDisplay;
 import net.haesleinhuepf.clijx.assistant.AssistantGUIStartingPoint;
 
@@ -21,6 +22,8 @@ public class AssistantPlayground implements PlugInFilter {
         CLIJx.getInstance("RTX");
 
         new MemoryDisplay().run(null);
+        AssistantUtilities.installTools();
+        if (true) return;
 
         //ImagePlus imp = IJ.openImage("C:/structure/data/spim_TL18_Angle0-1.tif");
         //ImagePlus imp = IJ.openImage("D:/structure/data/Irene/ISB200714_well5_1pos_3h_MyosinGFP-small.tif");
