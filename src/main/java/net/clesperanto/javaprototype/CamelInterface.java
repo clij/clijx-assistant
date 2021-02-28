@@ -2188,6 +2188,14 @@ abstract class CamelInterface extends CommonAPI{
     //----------------------------------------------------
     /**
      * Takes a labelmap and returns an image where all pixels on label edges are set to 1 and all other pixels to 0.
+     * 
+     * Parameters
+     * ----------
+     * label_map : Image
+     *     The label image where edges between labels will be detected.
+     * edge_image_destination : Number
+     *     Binary image where edges were marked with value 1 and all other pixels will be set to 0.
+     * 
      */
     public static ClearCLBuffer detectLabelEdges(ClearCLImageInterface label_map, ClearCLBuffer edge_image_destination) {
         DetectLabelEdges.detectLabelEdges(getCLIJ2(), label_map, edge_image_destination);
@@ -2254,6 +2262,17 @@ abstract class CamelInterface extends CommonAPI{
      * Determines the average of the n closest points for every point in a distance matrix.
      * 
      * This corresponds to the average of the n minimum values (rows) for each column of the distance matrix.
+     * 
+     * Parameters
+     * ----------
+     * distance_matrix : Image
+     *     The a distance matrix to be processed.
+     * distance_list_destination : Image
+     *     A vector image with the same width as the distance matrix and height=1, depth=1.
+     *     Determined average distances will be written into this vector.
+     * n_closest_points_to_find : Number
+     *     Number of smallest distances which should be averaged.
+     * 
      */
     public static ClearCLBuffer averageDistanceOfNClosestPoints(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
         AverageDistanceOfNClosestPoints.averageDistanceOfNClosestPoints(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
@@ -2862,6 +2881,15 @@ abstract class CamelInterface extends CommonAPI{
      * This may appear unintuitive and will be changed in the next major release. The replacement 
      * affineTransform (currently part of CLIJx) will apply inverted transforms compared to this operation.
      * Individual transforms must be separated by spaces.
+     * Parameters
+     * ----------
+     * source : Image
+     *     The input image to be processed.
+     * destination : Image
+     *     The output image where results are written into.
+     * transform : String
+     *     A space-separated list of individual transforms. Syntrax see below.
+     * 
      * Supported transforms:
      * 
      * * -center: translate the coordinate origin to the center of the image
@@ -2889,6 +2917,15 @@ abstract class CamelInterface extends CommonAPI{
      * This may appear unintuitive and will be changed in the next major release. The replacement 
      * affineTransform (currently part of CLIJx) will apply inverted transforms compared to this operation.
      * Individual transforms must be separated by spaces.
+     * Parameters
+     * ----------
+     * source : Image
+     *     The input image to be processed.
+     * destination : Image
+     *     The output image where results are written into.
+     * transform : String
+     *     A space-separated list of individual transforms. Syntrax see below.
+     * 
      * Supported transforms:
      * 
      * * -center: translate the coordinate origin to the center of the image
@@ -2916,6 +2953,15 @@ abstract class CamelInterface extends CommonAPI{
      * This may appear unintuitive and will be changed in the next major release. The replacement 
      * affineTransform (currently part of CLIJx) will apply inverted transforms compared to this operation.
      * Individual transforms must be separated by spaces.
+     * Parameters
+     * ----------
+     * source : Image
+     *     The input image to be processed.
+     * destination : Image
+     *     The output image where results are written into.
+     * transform : String
+     *     A space-separated list of individual transforms. Syntrax see below.
+     * 
      * Supported transforms:
      * 
      * * -center: translate the coordinate origin to the center of the image
@@ -2943,6 +2989,15 @@ abstract class CamelInterface extends CommonAPI{
      * This may appear unintuitive and will be changed in the next major release. The replacement 
      * affineTransform (currently part of CLIJx) will apply inverted transforms compared to this operation.
      * Individual transforms must be separated by spaces.
+     * Parameters
+     * ----------
+     * source : Image
+     *     The input image to be processed.
+     * destination : Image
+     *     The output image where results are written into.
+     * transform : String
+     *     A space-separated list of individual transforms. Syntrax see below.
+     * 
      * Supported transforms:
      * 
      * * -center: translate the coordinate origin to the center of the image
@@ -2970,6 +3025,15 @@ abstract class CamelInterface extends CommonAPI{
      * This may appear unintuitive and will be changed in the next major release. The replacement 
      * affineTransform (currently part of CLIJx) will apply inverted transforms compared to this operation.
      * Individual transforms must be separated by spaces.
+     * Parameters
+     * ----------
+     * source : Image
+     *     The input image to be processed.
+     * destination : Image
+     *     The output image where results are written into.
+     * transform : String
+     *     A space-separated list of individual transforms. Syntrax see below.
+     * 
      * Supported transforms:
      * 
      * * -center: translate the coordinate origin to the center of the image
@@ -3000,6 +3064,15 @@ abstract class CamelInterface extends CommonAPI{
      * This may appear unintuitive and will be changed in the next major release. The replacement 
      * affineTransform (currently part of CLIJx) will apply inverted transforms compared to this operation.
      * Individual transforms must be separated by spaces.
+     * Parameters
+     * ----------
+     * source : Image
+     *     The input image to be processed.
+     * destination : Image
+     *     The output image where results are written into.
+     * transform : String
+     *     A space-separated list of individual transforms. Syntrax see below.
+     * 
      * Supported transforms:
      * 
      * * -center: translate the coordinate origin to the center of the image
@@ -3037,6 +3110,15 @@ abstract class CamelInterface extends CommonAPI{
      * This may appear unintuitive and will be changed in the next major release. The replacement 
      * affineTransform (currently part of CLIJx) will apply inverted transforms compared to this operation.
      * Individual transforms must be separated by spaces.
+     * Parameters
+     * ----------
+     * source : Image
+     *     The input image to be processed.
+     * destination : Image
+     *     The output image where results are written into.
+     * transform : String
+     *     A space-separated list of individual transforms. Syntrax see below.
+     * 
      * Supported transforms:
      * 
      * * -center: translate the coordinate origin to the center of the image
@@ -3074,6 +3156,15 @@ abstract class CamelInterface extends CommonAPI{
      * This may appear unintuitive and will be changed in the next major release. The replacement 
      * affineTransform (currently part of CLIJx) will apply inverted transforms compared to this operation.
      * Individual transforms must be separated by spaces.
+     * Parameters
+     * ----------
+     * source : Image
+     *     The input image to be processed.
+     * destination : Image
+     *     The output image where results are written into.
+     * transform : String
+     *     A space-separated list of individual transforms. Syntrax see below.
+     * 
      * Supported transforms:
      * 
      * * -center: translate the coordinate origin to the center of the image
@@ -3111,6 +3202,15 @@ abstract class CamelInterface extends CommonAPI{
      * This may appear unintuitive and will be changed in the next major release. The replacement 
      * affineTransform (currently part of CLIJx) will apply inverted transforms compared to this operation.
      * Individual transforms must be separated by spaces.
+     * Parameters
+     * ----------
+     * source : Image
+     *     The input image to be processed.
+     * destination : Image
+     *     The output image where results are written into.
+     * transform : String
+     *     A space-separated list of individual transforms. Syntrax see below.
+     * 
      * Supported transforms:
      * 
      * * -center: translate the coordinate origin to the center of the image
@@ -3148,6 +3248,15 @@ abstract class CamelInterface extends CommonAPI{
      * This may appear unintuitive and will be changed in the next major release. The replacement 
      * affineTransform (currently part of CLIJx) will apply inverted transforms compared to this operation.
      * Individual transforms must be separated by spaces.
+     * Parameters
+     * ----------
+     * source : Image
+     *     The input image to be processed.
+     * destination : Image
+     *     The output image where results are written into.
+     * transform : String
+     *     A space-separated list of individual transforms. Syntrax see below.
+     * 
      * Supported transforms:
      * 
      * * -center: translate the coordinate origin to the center of the image
@@ -3184,20 +3293,44 @@ abstract class CamelInterface extends CommonAPI{
     /**
      * Deforms an image according to distances provided in the given vector images.
      * 
-     *  It is recommended to use 32-bit images for input, output and vector images. 
+     *  It is recommended to use 32-bit images for input, output and vector images.
+     * 
+     * Parameters
+     * ----------
+     * source : Image
+     *     The input image to be processed.
+     * vector_x : Image
+     *     Pixels in this image describe the distance in X direction pixels should be shifted during warping.
+     * vector_y : Image
+     *     Pixels in this image describe the distance in Y direction pixels should be shifted during warping.
+     * destination : Image
+     *     The output image where results are written into.
+     * 
      */
-    public static ClearCLImageInterface applyVectorField(ClearCLImageInterface source, ClearCLImageInterface vectorX, ClearCLImageInterface vectorY, ClearCLImageInterface destination) {
-        ApplyVectorField2D.applyVectorField(getCLIJ2(), source, vectorX, vectorY, destination);
+    public static ClearCLImageInterface applyVectorField(ClearCLImageInterface source, ClearCLImageInterface vector_x, ClearCLImageInterface vector_y, ClearCLImageInterface destination) {
+        ApplyVectorField2D.applyVectorField(getCLIJ2(), source, vector_x, vector_y, destination);
         return destination;
     }
 
     /**
      * Deforms an image according to distances provided in the given vector images.
      * 
-     *  It is recommended to use 32-bit images for input, output and vector images. 
+     *  It is recommended to use 32-bit images for input, output and vector images.
+     * 
+     * Parameters
+     * ----------
+     * source : Image
+     *     The input image to be processed.
+     * vector_x : Image
+     *     Pixels in this image describe the distance in X direction pixels should be shifted during warping.
+     * vector_y : Image
+     *     Pixels in this image describe the distance in Y direction pixels should be shifted during warping.
+     * destination : Image
+     *     The output image where results are written into.
+     * 
      */
-    public static ClearCLImageInterface applyVectorField2D(ClearCLImageInterface source, ClearCLImageInterface vectorX, ClearCLImageInterface vectorY, ClearCLImageInterface destination) {
-        ApplyVectorField2D.applyVectorField2D(getCLIJ2(), source, vectorX, vectorY, destination);
+    public static ClearCLImageInterface applyVectorField2D(ClearCLImageInterface source, ClearCLImageInterface vector_x, ClearCLImageInterface vector_y, ClearCLImageInterface destination) {
+        ApplyVectorField2D.applyVectorField2D(getCLIJ2(), source, vector_x, vector_y, destination);
         return destination;
     }
 
@@ -3207,7 +3340,19 @@ abstract class CamelInterface extends CommonAPI{
     /**
      * Deforms an image according to distances provided in the given vector images.
      * 
-     *  It is recommended to use 32-bit images for input, output and vector images. 
+     *  It is recommended to use 32-bit images for input, output and vector images.
+     * 
+     * Parameters
+     * ----------
+     * source : Image
+     *     The input image to be processed.
+     * vector_x : Image
+     *     Pixels in this image describe the distance in X direction pixels should be shifted during warping.
+     * vector_y : Image
+     *     Pixels in this image describe the distance in Y direction pixels should be shifted during warping.
+     * destination : Image
+     *     The output image where results are written into.
+     * 
      */
     public static ClearCLImageInterface applyVectorField(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3, ClearCLImageInterface arg4, ClearCLImageInterface arg5) {
         ApplyVectorField3D.applyVectorField(getCLIJ2(), arg1, arg2, arg3, arg4, arg5);
@@ -3217,7 +3362,21 @@ abstract class CamelInterface extends CommonAPI{
     /**
      * Deforms an image stack according to distances provided in the given vector image stacks.
      * 
-     * It is recommended to use 32-bit image stacks for input, output and vector image stacks. 
+     * It is recommended to use 32-bit image stacks for input, output and vector image stacks.
+     * 
+     * Parameters
+     * ----------
+     * source : Image
+     *     The input image to be processed.
+     * vector_x : Image
+     *     Pixels in this image describe the distance in X direction pixels should be shifted during warping.
+     * vector_y : Image
+     *     Pixels in this image describe the distance in Y direction pixels should be shifted during warping.
+     * vector_z : Image
+     *     Pixels in this image describe the distance in Z direction pixels should be shifted during warping.
+     * destination : Image
+     *     The output image where results are written into.
+     * 
      */
     public static ClearCLImageInterface applyVectorField3D(ClearCLImageInterface source, ClearCLImageInterface vectorX, ClearCLImageInterface vectorY, ClearCLImageInterface vectorZ, ClearCLImageInterface destination) {
         ApplyVectorField3D.applyVectorField3D(getCLIJ2(), source, vectorX, vectorY, vectorZ, destination);
@@ -3630,6 +3789,22 @@ abstract class CamelInterface extends CommonAPI{
      * Crops a given rectangle out of a given image. 
      * 
      * Note: If the destination image pre-exists already, it will be overwritten and keep it's dimensions.
+     * 
+     * Parameters
+     * ----------
+     * source : Image
+     *     The image where a part will be cropped out.
+     * destination : Image
+     *     The cropped image will be stored in this variable.
+     * start_x : Number
+     *     The horizontal position of the region to crop in the source image.
+     * start_y : Number
+     *     The vertical position of the region to crop in the source image.
+     * width : Number
+     *     The width of the region to crop in the source image.
+     * height : Number
+     *     The height of the region to crop in the source image.
+     * 
      */
     public static ClearCLImageInterface crop(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
         Crop2D.crop(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
@@ -3640,6 +3815,22 @@ abstract class CamelInterface extends CommonAPI{
      * Crops a given rectangle out of a given image. 
      * 
      * Note: If the destination image pre-exists already, it will be overwritten and keep it's dimensions.
+     * 
+     * Parameters
+     * ----------
+     * source : Image
+     *     The image where a part will be cropped out.
+     * destination : Image
+     *     The cropped image will be stored in this variable.
+     * start_x : Number
+     *     The horizontal position of the region to crop in the source image.
+     * start_y : Number
+     *     The vertical position of the region to crop in the source image.
+     * width : Number
+     *     The width of the region to crop in the source image.
+     * height : Number
+     *     The height of the region to crop in the source image.
+     * 
      */
     public static ClearCLImageInterface crop2D(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
         Crop2D.crop2D(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
@@ -3653,6 +3844,22 @@ abstract class CamelInterface extends CommonAPI{
      * Crops a given rectangle out of a given image. 
      * 
      * Note: If the destination image pre-exists already, it will be overwritten and keep it's dimensions.
+     * 
+     * Parameters
+     * ----------
+     * source : Image
+     *     The image where a part will be cropped out.
+     * destination : Image
+     *     The cropped image will be stored in this variable.
+     * start_x : Number
+     *     The horizontal position of the region to crop in the source image.
+     * start_y : Number
+     *     The vertical position of the region to crop in the source image.
+     * width : Number
+     *     The width of the region to crop in the source image.
+     * height : Number
+     *     The height of the region to crop in the source image.
+     * 
      */
     public static ClearCLImageInterface crop(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
         Crop3D.crop(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
@@ -3663,6 +3870,26 @@ abstract class CamelInterface extends CommonAPI{
      * Crops a given sub-stack out of a given image stack. 
      * 
      * Note: If the destination image pre-exists already, it will be overwritten and keep it's dimensions.
+     * 
+     * Parameters
+     * ----------
+     * source : Image
+     *     The image where a part will be cropped out.
+     * destination : Image
+     *     The cropped image will be stored in this variable.
+     * start_x : Number
+     *     The horizontal position of the region to crop in the source image.
+     * start_y : Number
+     *     The vertical position of the region to crop in the source image.
+     * start_z : Number
+     *     The slice position of the region to crop in the source image. Slices are counted 0-based; the first slice is z=0.
+     * width : Number
+     *     The width of the region to crop in the source image.
+     * height : Number
+     *     The height of the region to crop in the source image.
+     * depth : Number
+     *     The depth of the region to crop in the source image.
+     * 
      */
     public static ClearCLImageInterface crop3D(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4, double arg5) {
         Crop3D.crop3D(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
@@ -3686,7 +3913,7 @@ abstract class CamelInterface extends CommonAPI{
     // net.haesleinhuepf.clij2.plugins.Flip2D
     //----------------------------------------------------
     /**
-     * Flips an image in X and/or Y direction depending on boolean flags.
+     * Flips an image in X and/or Y direction depending on if flip_x and/or flip_y are set to true or false.
      */
     public static ClearCLImageInterface flip(ClearCLImageInterface arg1, ClearCLImageInterface arg2, boolean arg3, boolean arg4) {
         Flip2D.flip(getCLIJ2(), arg1, arg2, arg3, arg4);
@@ -3694,7 +3921,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
     /**
-     * Flips an image in X and/or Y direction depending on boolean flags.
+     * Flips an image in X and/or Y direction depending on if flip_x and/or flip_y are set to true or false.
      */
     public static ClearCLImageInterface flip2D(ClearCLImageInterface arg1, ClearCLImageInterface arg2, boolean arg3, boolean arg4) {
         Flip2D.flip2D(getCLIJ2(), arg1, arg2, arg3, arg4);
@@ -3705,7 +3932,7 @@ abstract class CamelInterface extends CommonAPI{
     // net.haesleinhuepf.clij2.plugins.Flip3D
     //----------------------------------------------------
     /**
-     * Flips an image in X and/or Y direction depending on boolean flags.
+     * Flips an image in X and/or Y direction depending on if flip_x and/or flip_y are set to true or false.
      */
     public static ClearCLImageInterface flip(ClearCLImageInterface arg1, ClearCLImageInterface arg2, boolean arg3, boolean arg4, boolean arg5) {
         Flip3D.flip(getCLIJ2(), arg1, arg2, arg3, arg4, arg5);
@@ -3713,7 +3940,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
     /**
-     * Flips an image in X, Y and/or Z direction depending on boolean flags.
+     * Flips an image in X, Y and/or Z direction depending on if flip_x, flip_y and/or flip_z are set to true or false.
      */
     public static ClearCLImageInterface flip3D(ClearCLImageInterface arg1, ClearCLImageInterface arg2, boolean arg3, boolean arg4, boolean arg5) {
         Flip3D.flip3D(getCLIJ2(), arg1, arg2, arg3, arg4, arg5);
@@ -4966,6 +5193,17 @@ abstract class CamelInterface extends CommonAPI{
     /**
      * Takes a touch matrix and a distance matrix to determine the average distance of touching neighbors 
      *  for every object.
+     * 
+     * Parameters
+     * ----------
+     * distance_matrix : Image
+     *     The a distance matrix to be processed.
+     * touch_matrix : Image
+     *     The binary touch matrix describing which distances should be taken into account.
+     * distance_list_destination : Image
+     *     A vector image with the same width as the distance matrix and height=1, depth=1.
+     *     Determined average distances will be written into this vector.
+     * 
      */
     public static ClearCLBuffer averageDistanceOfTouchingNeighbors(ClearCLBuffer distance_matrix, ClearCLBuffer touch_matrix, ClearCLBuffer average_distancelist_destination) {
         AverageDistanceOfTouchingNeighbors.averageDistanceOfTouchingNeighbors(getCLIJ2(), distance_matrix, touch_matrix, average_distancelist_destination);
@@ -5532,6 +5770,18 @@ abstract class CamelInterface extends CommonAPI{
     //----------------------------------------------------
     /**
      * Fills holes (pixels with value 0 surrounded by pixels with value 1) in a binary image.
+     * 
+     * Note: This function is known to perform slowly on large images. Consider using the extension 
+     * CLIJx_morphoLibJFillHoles(input, destination) instead.
+     * Read more: http://clij.github.io/assistant/installation#extensions
+     * 
+     * Parameters
+     * ----------
+     * source : Image
+     *     The binary input image where holes will be filled.
+     * destination : Image
+     *     The output image where true pixels will be 1.
+     * 
      */
     public static ClearCLImageInterface binaryFillHoles(ClearCLImageInterface source, ClearCLImageInterface destination) {
         BinaryFillHoles.binaryFillHoles(getCLIJ2(), source, destination);
@@ -6468,6 +6718,17 @@ abstract class CamelInterface extends CommonAPI{
      * Determines the average of the n far off (most distant) points for every point in a distance matrix.
      * 
      * This corresponds to the average of the n maximum values (rows) for each column of the distance matrix.
+     * 
+     * Parameters
+     * ----------
+     * distance_matrix : Image
+     *     The a distance matrix to be processed.
+     * distance_list_destination : Image
+     *     A vector image with the same width as the distance matrix and height=1, depth=1.
+     *     Determined average distances will be written into this vector.
+     * n_far_off_points_to_find : Number
+     *     Number of largest distances which should be averaged.
+     * 
      */
     public static ClearCLBuffer averageDistanceOfNFarOffPoints(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
         AverageDistanceOfNFarOffPoints.averageDistanceOfNFarOffPoints(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
