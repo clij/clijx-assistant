@@ -29,6 +29,7 @@ import net.haesleinhuepf.clij.macro.CLIJOpenCLProcessor;
 import net.haesleinhuepf.clij2.AbstractCLIJ2Plugin;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.gui.MemoryDisplay;
+import net.haesleinhuepf.clijx.plugins.VisualizeOutlinesOnOriginal;
 import net.haesleinhuepf.clijx.utilities.AbstractCLIJxPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStackRegistry;
@@ -67,6 +68,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     protected Object[] args = null;
 
     boolean auto_contrast = true;
+    boolean auto_lut = true;
     static boolean auto_position = true;
     public static boolean show_connections = false;
     public static boolean show_compatibility = false;
@@ -641,18 +643,27 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         }
         AssistantUtilities.attachCloseListener(my_target);
         AssistantUtilities.transferCalibration(my_sources[0], my_target);
-        String name_to_consider = (my_sources[0].getTitle() + " " + my_target.getTitle()).toLowerCase() + this.getName();
 
-        if (name_to_consider.contains("map") || name_to_consider.contains("mesh") ) {
-            AssistantUtilities.fire(my_target);
-        } else if (name_to_consider.contains("label") && !name_to_consider.contains("ROI")) {
-            AssistantUtilities.glasbey(my_target);
-        } else {
-            //my_target.setLut(my_source.getProcessor().getLut());
-        }
+        refreshLUT();
         paused = false;
 
         refreshView();
+    }
+
+    public void refreshLUT() {
+        if (auto_lut) {
+            if (plugin instanceof VisualizeOutlinesOnOriginal) {
+                AssistantUtilities.hilo(my_target);
+            }
+            String name_to_consider = (my_sources[0].getTitle() + " " + my_target.getTitle()).toLowerCase() + this.getName();
+            if (name_to_consider.contains("map") || name_to_consider.contains("mesh") ) {
+                AssistantUtilities.fire(my_target);
+            } else if (name_to_consider.contains("label") && !name_to_consider.contains("ROI")) {
+                AssistantUtilities.glasbey(my_target);
+            } else {
+                //my_target.setLut(my_source.getProcessor().getLut());
+            }
+        }
     }
 
     private void attachMenu(ImagePlus imp) {
@@ -962,6 +973,15 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         });
         info.add(auto_contrast_item);
 
+        MenuItem auto_lut_item = new MenuItem("Auto Look-up table: " + (auto_lut?"ON":"OFF"));
+        auto_lut_item.addActionListener((a) -> {
+            auto_lut = !auto_lut;
+            enhanceContrast();
+        });
+        info.add(auto_lut_item);
+
+
+
         MenuItem auto_position_item = new MenuItem("Auto Window Position: " + (auto_position?"ON":"OFF"));
         auto_position_item.addActionListener((a) -> {
             auto_position = !auto_position;
@@ -1147,7 +1167,10 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         maximum_display_intensities = new double[my_target.getNChannels()];
         for (int c = 0; c < my_target.getNChannels(); c++) {
             my_target.setC(c);
-            if (labelimage) {
+            if (plugin instanceof VisualizeOutlinesOnOriginal) {
+                System.out.println("Set min-1 / max");
+                IJ.setMinAndMax(my_target,CLIJx.getInstance().minimumOfAllPixels(result[0]) - 1, CLIJx.getInstance().maximumOfAllPixels(result[0]));
+            } else if (labelimage) {
                 System.out.println("Set 0 max");
                 IJ.setMinAndMax(my_target,0, CLIJx.getInstance().maximumOfAllPixels(result[0]));
             } else if (binary) {

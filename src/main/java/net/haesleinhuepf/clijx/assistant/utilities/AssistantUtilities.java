@@ -132,8 +132,8 @@ public class AssistantUtilities {
     public static void glasbey(ImagePlus imp) {
         String dir = IJ.getDirectory("imagej");
         if (!dir.contains("null") && dir.toLowerCase().contains("fiji")) {
-
-
+            IJ.run(imp, "glasbey_on_dark", "");
+            // ensure that the LUT is really applied: TODO: check if the following is really necessary
             new java.util.Timer().schedule(
                     new java.util.TimerTask() {
                         @Override
@@ -144,7 +144,27 @@ public class AssistantUtilities {
                     },
                     300
             );
+        }
+    }
 
+
+    public static void hilo(ImagePlus imp) {
+        String dir = IJ.getDirectory("imagej");
+        if (!dir.contains("null") && dir.toLowerCase().contains("fiji")) {
+
+            IJ.run(imp, "hilo", "");
+
+            // ensure that the LUT is really applied: TODO: check if the following is really necessary
+            new java.util.Timer().schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            IJ.run(imp, "hilo", "");
+                            imp.resetDisplayRange();
+                        }
+                    },
+                    300
+            );
         }
     }
 
@@ -153,6 +173,9 @@ public class AssistantUtilities {
         String dir = IJ.getDirectory("imagej");
         if (!dir.contains("null")) {
 
+            IJ.run(imp, "Green Fire Blue", "");
+
+            // ensure that the LUT is really applied: TODO: check if the following is really necessary
             new java.util.Timer().schedule(
                     new java.util.TimerTask() {
                         @Override
