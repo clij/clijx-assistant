@@ -65,7 +65,7 @@ public class MenuService {
             return b instanceof IsCategorized && ((IsCategorized) b).isInCategory("Project")?1:0;
         });
         addCategory("Binarize (auto threshold)", (a,b) -> {
-            return  b.getClass().getSimpleName().startsWith("Threshold") &&
+            return  b.getClass().getSimpleName().contains("Threshold") &&
                     (!a.getOutputType().contains("Binary Image")) &&
                     b.getInputType().contains(a.getOutputType()) &&
                     (!b.getInputType().contains("Binary Image")) &&
