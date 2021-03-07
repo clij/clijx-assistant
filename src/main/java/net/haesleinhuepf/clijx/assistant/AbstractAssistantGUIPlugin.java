@@ -653,7 +653,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     public void refreshLUT() {
         if (auto_lut) {
             if (plugin instanceof VisualizeOutlinesOnOriginal) {
-                AssistantUtilities.hilo(my_target);
+                AssistantUtilities.hi(my_target);
             }
             String name_to_consider = (my_sources[0].getTitle() + " " + my_target.getTitle()).toLowerCase() + this.getName();
             if (name_to_consider.contains("map") || name_to_consider.contains("mesh") ) {
