@@ -536,6 +536,8 @@ import net.haesleinhuepf.clijx.plugins.NeighborCountWithTouchPortionAboveThresho
 import net.haesleinhuepf.clijx.plugins.DivideScalarByImage;
 import net.haesleinhuepf.clijx.plugins.ReadValuesFromMap;
 import net.haesleinhuepf.clijx.plugins.ReadValuesFromPositions;
+import net.haesleinhuepf.clijx.plugins.ZPositionOfMinimumZProjection;
+import net.haesleinhuepf.clijx.plugins.LocalThresholdPhansalkar;
 // this is generated code. See src/test/java/net/haesleinhuepf/clijx/codegenerator for details
 abstract class CamelInterface extends CommonAPI{
    static CLIJ getCLIJ() {
@@ -8020,6 +8022,8 @@ abstract class CamelInterface extends CommonAPI{
     //----------------------------------------------------
     /**
      * Determines a Z-position of the maximum intensity along Z and writes it into the resulting image.
+     * 
+     * If there are multiple z-slices with the same value, the smallest Z will be chosen.
      */
     public static ClearCLImageInterface zPositionOfMaximumZProjection(ClearCLImageInterface source, ClearCLImageInterface destination) {
         ZPositionOfMaximumZProjection.zPositionOfMaximumZProjection(getCLIJ2(), source, destination);
@@ -9114,5 +9118,35 @@ abstract class CamelInterface extends CommonAPI{
         return values_destination;
     }
 
+
+    // net.haesleinhuepf.clijx.plugins.ZPositionOfMinimumZProjection
+    //----------------------------------------------------
+    /**
+     * Determines a Z-position of the minimum intensity along Z and writes it into the resulting image.
+     * 
+     * If there are multiple z-slices with the same value, the smallest Z will be chosen.
+     */
+    public static ClearCLImageInterface zPositionOfMinimumZProjection(ClearCLImageInterface source, ClearCLImageInterface destination) {
+        ZPositionOfMinimumZProjection.zPositionOfMinimumZProjection(getCLIJ2(), source, destination);
+        return destination;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.LocalThresholdPhansalkar
+    //----------------------------------------------------
+    /**
+     * Computes the local threshold (Fast version) based on 
+     *  Auto Local Threshold (Phansalkar method) see: https://imagej.net/Auto_Local_Threshold 
+     *  see code in: 
+     *  https://github.com/fiji/Auto_Local_Threshold/blob/c955dc18cff58ac61df82f3f001799f7ffaec5cb/src/main/java/fiji/threshold/Auto_Local_Threshold.java#L636 
+     *  The version here has been adapted to use normalization my multiplying the image with 1.0 / max_intensity instead of 1.0/255. 
+     *  Formulary: 
+     * <pre>t = mean * (1 + p * exp(-q * mean) + k * ((stdev / r) - 1))</pre>
+     */
+    public static ClearCLBuffer localThresholdPhansalkar(ClearCLBuffer arg1, ClearCLBuffer arg2, float arg3, float arg4, float arg5) {
+        LocalThresholdPhansalkar.localThresholdPhansalkar(getCLIJx(), arg1, arg2, arg3, arg4, arg5);
+        return arg2;
+    }
+
 }
-// 577 methods generated.
+// 579 methods generated.
