@@ -288,6 +288,14 @@ class AssistantGUIPluginRegistry {
         regenerating = false;
     }
 
+    public String log() {
+        StringBuilder builder = new StringBuilder();
+        for (AssistantGUIPlugin plugin : registeredPlugins) {
+            builder.append(plugin.getName() + "Source: " + allSourcesValid(plugin) + " Target: " + isValid(plugin.getTarget()) + "\n");
+        }
+        return builder.toString();
+    }
+
     private boolean allSourcesValid(AssistantGUIPlugin plugin) {
         for (int s = 0; s < plugin.getNumberOfSources(); s++) {
             if (!isValid(plugin.getSource(s))) {

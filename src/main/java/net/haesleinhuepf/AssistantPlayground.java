@@ -12,6 +12,7 @@ import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.*;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import net.haesleinhuepf.clijx.gui.MemoryDisplay;
 import net.haesleinhuepf.clijx.assistant.AssistantGUIStartingPoint;
+import net.haesleinhuepf.clijx.plugins.VisualizeOutlinesOnOriginal;
 
 import java.io.FileNotFoundException;
 
@@ -21,16 +22,16 @@ public class AssistantPlayground implements PlugInFilter {
         new ImageJ();
         CLIJx.getInstance("RTX");
 
-        new MemoryDisplay().run(null);
-        AssistantUtilities.installTools();
-        if (true) return;
+        //new MemoryDisplay().run(null);
+        //AssistantUtilities.installTools();
+        //if (true) return;
 
         //ImagePlus imp = IJ.openImage("C:/structure/data/spim_TL18_Angle0-1.tif");
         //ImagePlus imp = IJ.openImage("D:/structure/data/Irene/ISB200714_well5_1pos_3h_MyosinGFP-small.tif");
         //ImagePlus imp = IJ.openImage("C:/structure/data/mitosis.tif");
         //ImagePlus imp = IJ.openImage("/home/haase/data/blobs.tif");
-        //ImagePlus imp = IJ.openImage("C:/structure/data/blobs.tif");
-        ImagePlus imp = IJ.openImage("C:/structure/data/Lund_18.0_22.0_Hours.tif");
+        ImagePlus imp = IJ.openImage("C:/structure/data/blobs.tif");
+        //ImagePlus imp = IJ.openImage("C:/structure/data/Lund_18.0_22.0_Hours.tif");
         //ImagePlus imp = IJ.openImage("C:/structure/data/t1-head.tif");
         imp.show();
 
@@ -48,6 +49,9 @@ public class AssistantPlayground implements PlugInFilter {
 */
         //if (true) return;
         new AssistantGUIStartingPoint().run("");
+        new GenericAssistantGUIPlugin(new DifferenceOfGaussian2D()).run("");
+        new GenericAssistantGUIPlugin(new DetectMaxima2DBox()).run("");
+        new GenericAssistantGUIPlugin(new VisualizeOutlinesOnOriginal()).run("");
         //new MakeIsotropic().run("");
         //new AssistantPlayground().run(null);
 

@@ -8,8 +8,6 @@ import ij.measure.ResultsTable;
 import ij.plugin.Duplicator;
 import ij.plugin.PlugIn;
 import ij.plugin.frame.RoiManager;
-import ij.text.TextPanel;
-import ij.text.TextWindow;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
 import net.haesleinhuepf.clij2.CLIJ2;
@@ -1036,6 +1034,11 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             info.add("-");
             info.add(visualizationMenu);
         }
+
+        addMenuAction(info,"Computation state", (a) -> {
+            IJ.log(AssistantGUIPluginRegistry.getInstance().log());
+        });
+
         menu.add(info);
 
         // -------------------------------------------------------------------------------------------------------------

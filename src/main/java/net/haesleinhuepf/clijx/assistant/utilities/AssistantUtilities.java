@@ -151,44 +151,15 @@ public class AssistantUtilities {
     public static void hi(ImagePlus imp) {
         String dir = IJ.getDirectory("imagej");
         if (!dir.contains("null") && dir.toLowerCase().contains("fiji")) {
-            byte[] r = new byte[256];
-            byte[] g = new byte[256];
-            byte[] b = new byte[256];
-            for (int i = 0; i < 254; i ++) {
-                r[i] = (byte)i;
-                g[i] = (byte)i;
-                b[i] = (byte)i;
-            }
-            r[255] = (byte)255;
-            g[255] = 0;
-            b[255] = 0;
-            LUT lut = new LUT(r,g,b);
-            imp.setLut(lut);
+
+            IJ.run(imp, "hi", "");
 
             // ensure that the LUT is really applied: TODO: check if the following is really necessary
             new java.util.Timer().schedule(
                     new java.util.TimerTask() {
                         @Override
                         public void run() {
-                            imp.setLut(lut);
-                        }
-                    },
-                    300
-            );
-        }
-    }
-    public static void hilo(ImagePlus imp) {
-        String dir = IJ.getDirectory("imagej");
-        if (!dir.contains("null") && dir.toLowerCase().contains("fiji")) {
-
-            IJ.run(imp, "hilo", "");
-
-            // ensure that the LUT is really applied: TODO: check if the following is really necessary
-            new java.util.Timer().schedule(
-                    new java.util.TimerTask() {
-                        @Override
-                        public void run() {
-                            IJ.run(imp, "hilo", "");
+                            IJ.run(imp, "hi", "");
                             imp.resetDisplayRange();
                         }
                     },
