@@ -57,13 +57,15 @@ class AssistantGUIPluginRegistry {
     long former_duration = 0;
 
     private synchronized void removeConnections() {
-        for (int i = 0; i < this.connection_tiles.size(); i++) {
-            Frame tile = this.connection_tiles.get(i);
-            if (tile.isVisible()) {
-                tile.setVisible(false);
+        try {
+            for (int i = 0; i < this.connection_tiles.size(); i++) {
+                Frame tile = this.connection_tiles.get(i);
+                if (tile.isVisible()) {
+                    tile.setVisible(false);
+                }
+                tile.dispose();
             }
-            tile.dispose();
-        }
+        } catch (ConcurrentModificationException e) {}
         this.connection_tiles.clear();
     }
 
