@@ -538,6 +538,14 @@ import net.haesleinhuepf.clijx.plugins.ReadValuesFromMap;
 import net.haesleinhuepf.clijx.plugins.ReadValuesFromPositions;
 import net.haesleinhuepf.clijx.plugins.ZPositionOfMinimumZProjection;
 import net.haesleinhuepf.clijx.plugins.LocalThresholdPhansalkar;
+import net.haesleinhuepf.clijx.plugins.LocalThresholdBernsen;
+import net.haesleinhuepf.clijx.plugins.LocalThresholdContrast;
+import net.haesleinhuepf.clijx.plugins.LocalThresholdMean;
+import net.haesleinhuepf.clijx.plugins.LocalThresholdMedian;
+import net.haesleinhuepf.clijx.plugins.LocalThresholdMidGrey;
+import net.haesleinhuepf.clijx.plugins.LocalThresholdNiblack;
+import net.haesleinhuepf.clijx.plugins.LocalThresholdSauvola;
+import net.haesleinhuepf.clijx.plugins.ColorDeconvolution;
 // this is generated code. See src/test/java/net/haesleinhuepf/clijx/codegenerator for details
 abstract class SnakeInterface extends CommonAPI {
    static CLIJ getCLIJ() {
@@ -9139,7 +9147,6 @@ abstract class SnakeInterface extends CommonAPI {
      *  Auto Local Threshold (Phansalkar method) see: https://imagej.net/Auto_Local_Threshold 
      *  see code in: 
      *  https://github.com/fiji/Auto_Local_Threshold/blob/c955dc18cff58ac61df82f3f001799f7ffaec5cb/src/main/java/fiji/threshold/Auto_Local_Threshold.java#L636 
-     *  The version here has been adapted to use normalization my multiplying the image with 1.0 / max_intensity instead of 1.0/255. 
      *  Formulary: 
      * <pre>t = mean * (1 + p * exp(-q * mean) + k * ((stdev / r) - 1))</pre>
      */
@@ -9148,5 +9155,137 @@ abstract class SnakeInterface extends CommonAPI {
         return arg2;
     }
 
+
+    // net.haesleinhuepf.clijx.plugins.LocalThresholdBernsen
+    //----------------------------------------------------
+    /**
+     * Computes the local threshold based on 
+     *  Auto Local Threshold (Bernsen method) see: https://imagej.net/Auto_Local_Threshold 
+     *  see code in: 
+     *  https://github.com/fiji/Auto_Local_Threshold/blob/master/src/main/java/fiji/threshold/Auto_Local_Threshold.java 
+     *  Formular: 
+     * <pre>if (tcontrast > max - min){ if ((max + min)/2.0 >= 128) res = 0} else if (val > (max + min)/2.0) res =0</pre>
+     */
+    public static ClearCLBuffer local_threshold_bernsen(ClearCLBuffer arg1, ClearCLBuffer arg2, float arg3, float arg4) {
+        LocalThresholdBernsen.localThresholdBernsen(getCLIJx(), arg1, arg2, arg3, arg4);
+        return arg2;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.LocalThresholdContrast
+    //----------------------------------------------------
+    /**
+     * Computes the local threshold based on 
+     *  Auto Local Threshold (Contrast method) see: https://imagej.net/Auto_Local_Threshold 
+     *  see code in: 
+     *  https://github.com/fiji/Auto_Local_Threshold/blob/master/src/main/java/fiji/threshold/Auto_Local_Threshold.java 
+     *  Formular: 
+     * <pre>if (abs(value - min) >= abs(max - value) && (value != 0)) value = 0 </pre>
+     */
+    public static ClearCLBuffer local_threshold_contrast(ClearCLBuffer arg1, ClearCLBuffer arg2, float arg3) {
+        LocalThresholdContrast.localThresholdContrast(getCLIJx(), arg1, arg2, arg3);
+        return arg2;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.LocalThresholdMean
+    //----------------------------------------------------
+    /**
+     * Computes the local threshold based on 
+     *  Auto Local Threshold (Mean method) see: https://imagej.net/Auto_Local_Threshold 
+     *  see code in: 
+     *  https://github.com/fiji/Auto_Local_Threshold/blob/master/src/main/java/fiji/threshold/Auto_Local_Threshold.java 
+     *  Formular: 
+     * <pre>if(value > (mean - c_value)) value = 0 </pre>
+     */
+    public static ClearCLBuffer local_threshold_mean(ClearCLBuffer arg1, ClearCLBuffer arg2, float arg3, float arg4) {
+        LocalThresholdMean.localThresholdMean(getCLIJx(), arg1, arg2, arg3, arg4);
+        return arg2;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.LocalThresholdMedian
+    //----------------------------------------------------
+    /**
+     * Computes the local threshold based on 
+     *  Auto Local Threshold (Median method) see: https://imagej.net/Auto_Local_Threshold 
+     *  see code in: 
+     *  https://github.com/fiji/Auto_Local_Threshold/blob/master/src/main/java/fiji/threshold/Auto_Local_Threshold.java 
+     *  Formular: 
+     * <pre>if(value > (median - c_value)) value = 0 </pre>
+     */
+    public static ClearCLBuffer local_threshold_median(ClearCLBuffer arg1, ClearCLBuffer arg2, float arg3, float arg4) {
+        LocalThresholdMedian.localThresholdMedian(getCLIJx(), arg1, arg2, arg3, arg4);
+        return arg2;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.LocalThresholdMidGrey
+    //----------------------------------------------------
+    /**
+     * Computes the local threshold based on 
+     *  Auto Local Threshold (MidGrey method) see: https://imagej.net/Auto_Local_Threshold 
+     *  see code in: 
+     *  https://github.com/fiji/Auto_Local_Threshold/blob/master/src/main/java/fiji/threshold/Auto_Local_Threshold.java 
+     *  Formular: 
+     * <pre>if (value > ( (max + min)/2.0 - c_value) ) value = 0 </pre>
+     */
+    public static ClearCLBuffer local_threshold_mid_grey(ClearCLBuffer arg1, ClearCLBuffer arg2, float arg3, float arg4) {
+        LocalThresholdMidGrey.localThresholdMidGrey(getCLIJx(), arg1, arg2, arg3, arg4);
+        return arg2;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.LocalThresholdNiblack
+    //----------------------------------------------------
+    /**
+     * Computes the local threshold based on 
+     *  Auto Local Threshold (Niblack method) see: https://imagej.net/Auto_Local_Threshold 
+     *  see code in: 
+     *  https://github.com/fiji/Auto_Local_Threshold/blob/master/src/main/java/fiji/threshold/Auto_Local_Threshold.java 
+     *  Formular: 
+     * <pre>t = mean + k_value * sqrt(var - c_value) </pre>
+     */
+    public static ClearCLBuffer local_threshold_niblack(ClearCLBuffer arg1, ClearCLBuffer arg2, float arg3, float arg4, float arg5) {
+        LocalThresholdNiblack.localThresholdNiblack(getCLIJx(), arg1, arg2, arg3, arg4, arg5);
+        return arg2;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.LocalThresholdSauvola
+    //----------------------------------------------------
+    /**
+     * Computes the local threshold based on 
+     *  Auto Local Threshold (Sauvola method) see: https://imagej.net/Auto_Local_Threshold 
+     *  see code in: 
+     *  https://github.com/fiji/Auto_Local_Threshold/blob/master/src/main/java/fiji/threshold/Auto_Local_Threshold.java 
+     *  Formular: 
+     * <pre>t = mean * (1.0 + k_value * (stddev / r_value - 1.0)) </pre>
+     */
+    public static ClearCLBuffer local_threshold_sauvola(ClearCLBuffer arg1, ClearCLBuffer arg2, float arg3, float arg4, float arg5) {
+        LocalThresholdSauvola.localThresholdSauvola(getCLIJx(), arg1, arg2, arg3, arg4, arg5);
+        return arg2;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.ColorDeconvolution
+    //----------------------------------------------------
+    /**
+     * Computes the color deconvolution of an 8bit RGB stack color image 
+     *  with a given 3x3 matrix of color vectors.
+     *  Note: The input image has to be a stack with three z-slices corresponding to the red, green and blue channel.)
+     * 
+     *  Additional information see Supplementary Information to: 
+     * 
+     *  Haub, P., Meckel, T. A Model based Survey of Colour Deconvolution in 
+     *  Diagnostic Brightfield Microscopy: Error Estimation and Spectral Consideration. 
+     *  Sci Rep 5, 12096 (2015). https://doi.org/10.1038/srep12096 
+     * 
+     */
+    public static ClearCLBuffer color_deconvolution(ClearCLBuffer source, ClearCLBuffer color_vectors, ClearCLBuffer destination) {
+        ColorDeconvolution.colorDeconvolution(getCLIJ2(), source, color_vectors, destination);
+        return destination;
+    }
+
 }
-// 579 methods generated.
+// 587 methods generated.
