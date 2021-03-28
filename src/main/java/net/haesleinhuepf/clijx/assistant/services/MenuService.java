@@ -72,7 +72,7 @@ public class MenuService {
                     b.getOutputType().equals("Binary Image")?1:0;
         });
         addCategory("Binarize", (a,b) -> {
-            return  (!b.getClass().getSimpleName().startsWith("Threshold")) &&
+            return  (!b.getClass().getSimpleName().contains("Threshold")) &&
                     (!a.getOutputType().contains("Binary Image")) &&
                     b.getInputType().contains(a.getOutputType()) &&
                     (!b.getInputType().contains("Binary Image")) &&
