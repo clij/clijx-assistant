@@ -711,7 +711,7 @@ public class AssistantUtilities {
         //blocklist.add(net.haesleinhuepf.clij2.plugins.LaplaceBox.class);
         blocklist.add(net.haesleinhuepf.clijx.plugins.LaplaceSphere.class);
         //blocklist.add(net.haesleinhuepf.clijx.plugins.LaplacianOfGaussian3D.class);
-        //blocklist.add(net.haesleinhuepf.clij2.plugins.LocalThreshold.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.LocalThreshold.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.Logarithm.class);
         //blocklist.add(net.haesleinhuepf.clijx.plugins.MakeIsotropic.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.Mask.class);
