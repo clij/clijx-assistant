@@ -36,7 +36,9 @@ public class MenuService {
             return b instanceof IsCategorized && ((IsCategorized) b).isInCategory("filter") && ((IsCategorized) b).isInCategory("noise") &&
                     a.getOutputType().equals("Image") &&
                     a.getInputType().equals("Image") &&
-                    b.getOutputType().equals("Image")?1:0;
+                    b.getOutputType().equals("Image")
+
+                    ?1:0;
         });
         addCategory("Filter (background removal)", (a,b) -> {
             return b instanceof IsCategorized && ((IsCategorized) b).isInCategory("filter") && ((IsCategorized) b).isInCategory("background") &&
@@ -66,36 +68,36 @@ public class MenuService {
         });
         addCategory("Binarize (auto threshold)", (a,b) -> {
             return  b.getClass().getSimpleName().contains("Threshold") &&
-                    (!a.getOutputType().contains("Binary Image")) &&
+                    (!(((a.getOutputType().contains("Binary Image") || (a instanceof AbstractAssistantGUIPlugin && ((AbstractAssistantGUIPlugin) a).isResultBinaryImage()))))) &&
                     b.getInputType().contains(a.getOutputType()) &&
                     (!b.getInputType().contains("Binary Image")) &&
-                    b.getOutputType().equals("Binary Image")?1:0;
+                    b.getOutputType().equals("Binary Image") ?1:0;
         });
         addCategory("Binarize", (a,b) -> {
             return  (!b.getClass().getSimpleName().contains("Threshold")) &&
-                    (!a.getOutputType().contains("Binary Image")) &&
+                    (!((a.getOutputType().contains("Binary Image") || (a instanceof AbstractAssistantGUIPlugin && ((AbstractAssistantGUIPlugin) a).isResultBinaryImage())))) &&
                     b.getInputType().contains(a.getOutputType()) &&
                     (!b.getInputType().contains("Binary Image")) &&
                     b.getOutputType().equals("Binary Image")?1:0;
         });
         addCategory("Binary processing", (a,b) -> {
-            return a.getOutputType().contains("Binary Image") &&
+            return ((a.getOutputType().contains("Binary Image") || (a instanceof AbstractAssistantGUIPlugin && ((AbstractAssistantGUIPlugin) a).isResultBinaryImage()))) &&
                     b.getInputType().contains("Binary Image") &&
                     b.getOutputType().equals("Binary Image")?1:0;
         });
         addCategory("Label", (a,b) -> {
             return b.getInputType().contains(a.getOutputType()) &&
-                    (!a.getOutputType().contains("Label Image")) &&
+                    (!((a.getOutputType().contains("Label Image") || (a instanceof AbstractAssistantGUIPlugin && ((AbstractAssistantGUIPlugin) a).isResultLabelImage())))) &&
                     (!b.getInputType().contains("Label Image")) &&
                     b.getOutputType().equals("Label Image")?1:0;
         });
         addCategory("Label processing", (a,b) -> {
-            return a.getOutputType().contains("Label Image") &&
+            return ((a.getOutputType().contains("Label Image") || (a instanceof AbstractAssistantGUIPlugin && ((AbstractAssistantGUIPlugin) a).isResultLabelImage()))) &&
                     b.getInputType().contains("Label Image")&&
                     b.getOutputType().equals("Label Image")?1:0;
         });
         addCategory("Label measurements", (a,b) -> {
-            return a.getOutputType().contains("Label Image") &&
+            return ((a.getOutputType().contains("Label Image") || (a instanceof AbstractAssistantGUIPlugin && ((AbstractAssistantGUIPlugin) a).isResultLabelImage()))) &&
                     b.getInputType().contains("Label Image") &&
                     b.getOutputType().equals("Image") &&
                     b instanceof IsCategorized &&
@@ -104,7 +106,7 @@ public class MenuService {
                     ?1:0;
         });
         addCategory("Label neighbor filters", (a,b) -> {
-            return a.getOutputType().contains("Label Image") &&
+            return ((a.getOutputType().contains("Label Image") || (a instanceof AbstractAssistantGUIPlugin && ((AbstractAssistantGUIPlugin) a).isResultLabelImage()))) &&
                     b.getInputType().contains("Label Image") &&
                     b.getOutputType().equals("Image") &&
                     b instanceof IsCategorized &&
@@ -114,7 +116,7 @@ public class MenuService {
                     ?1:0;
         });
         addCategory("Label neighbor graph based measurements", (a,b) -> {
-            return a.getOutputType().contains("Label Image") &&
+            return ((a.getOutputType().contains("Label Image") || (a instanceof AbstractAssistantGUIPlugin && ((AbstractAssistantGUIPlugin) a).isResultLabelImage()))) &&
                     b.getInputType().contains("Label Image") &&
                     b.getOutputType().equals("Image") &&
                     b instanceof IsCategorized &&

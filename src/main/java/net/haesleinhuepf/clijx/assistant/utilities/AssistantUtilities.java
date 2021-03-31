@@ -998,40 +998,15 @@ public class AssistantUtilities {
          */
     }
 
+    // use abstractAssistantGUIPlugin.isResultBinaryImage(); instead
+    @Deprecated
     public static boolean resultIsBinaryImage(AssistantGUIPlugin abstractAssistantGUIPlugin) {
-        if (abstractAssistantGUIPlugin.getCLIJMacroPlugin() instanceof HasClassifiedInputOutput) {
-            if (((HasClassifiedInputOutput) abstractAssistantGUIPlugin.getCLIJMacroPlugin()).getOutputType().contains("Binary Image")) {
-                return true;
-            }
-        }
-
-        String name = abstractAssistantGUIPlugin.getName().toLowerCase();
-        if (abstractAssistantGUIPlugin.getCLIJMacroPlugin() != null && abstractAssistantGUIPlugin.getCLIJMacroPlugin() instanceof IsCategorized) {
-            name = name + "," + ((IsCategorized) abstractAssistantGUIPlugin.getCLIJMacroPlugin()).getCategories().toLowerCase();
-        }
-
-        return name.contains("threshold") ||
-                name.contains("binary") ||
-                name.contains("watershed") ||
-                name.contains("greater") ||
-                name.contains("smaller") ||
-                name.contains("equal")
-                ;
+        return abstractAssistantGUIPlugin.isResultBinaryImage();
     }
 
+    // use
     public static boolean resultIsLabelImage(AssistantGUIPlugin abstractAssistantGUIPlugin) {
-        if (abstractAssistantGUIPlugin.getCLIJMacroPlugin() instanceof HasClassifiedInputOutput) {
-            if (((HasClassifiedInputOutput) abstractAssistantGUIPlugin.getCLIJMacroPlugin()).getOutputType().contains("Label Image")) {
-                return true;
-            }
-        }
-
-        String name = abstractAssistantGUIPlugin.getName().toLowerCase();
-        if (abstractAssistantGUIPlugin.getCLIJMacroPlugin() != null && abstractAssistantGUIPlugin.getCLIJMacroPlugin() instanceof IsCategorized) {
-            name = name + "," + ((IsCategorized) abstractAssistantGUIPlugin.getCLIJMacroPlugin()).getCategories().toLowerCase();
-        }
-
-        return name.contains("label");
+        return abstractAssistantGUIPlugin.isResultLabelImage();
     }
 
     public static double parmeterNameToStepSizeSuggestion(String parameterName, boolean small_step) {

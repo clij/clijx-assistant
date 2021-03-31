@@ -12,7 +12,9 @@ import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
 import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clij2.utilities.HasAuthor;
+import net.haesleinhuepf.clij2.utilities.HasClassifiedInputOutput;
 import net.haesleinhuepf.clij2.utilities.HasLicense;
+import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Crop2D;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Crop3D;
@@ -50,6 +52,13 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     private final String doneText = "Done";
     private final String refreshText = "Refresh";
     private String helpText = "Action";
+
+    public enum ResultType {
+        Image,
+        BinaryImage,
+        LabelImage
+    }
+    private ResultType result_type = null;
 
     final static Color REFRESHING_COLOR = new Color(205, 205, 128);
     final static Color INVALID_COLOR = new Color(205, 128, 128);
@@ -933,6 +942,22 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         info.add(graph);
 */
         // -------------------------------------------------------------------------------------------------------------
+        Menu type = new Menu("Image type");
+        addMenuAction(type, "Automatic", (a) -> {
+            result_type = null;
+        });
+        addMenuAction(type, "Image", (a) -> {
+            result_type = ResultType.Image;
+        });
+        addMenuAction(type, "Binary Image " + (isResultBinaryImage()?"A":"B"), (a) -> {
+            result_type = ResultType.BinaryImage;
+        });
+        addMenuAction(type, "Label Image", (a) -> {
+            result_type = ResultType.LabelImage;
+        });
+        info.add(type);
+
+        // -------------------------------------------------------------------------------------------------------------
 
         Menu history = new Menu("Parameter history");
 
@@ -1681,5 +1706,49 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
 
     public static void setAutoPosition(boolean auto_position) {
         AbstractAssistantGUIPlugin.auto_position = auto_position;
+    }
+
+    public boolean isResultBinaryImage() {
+        if (result_type == ResultType.BinaryImage) {
+            return true;
+        }
+
+        if (getCLIJMacroPlugin() instanceof HasClassifiedInputOutput) {
+            if (((HasClassifiedInputOutput) getCLIJMacroPlugin()).getOutputType().contains("Binary Image")) {
+                return true;
+            }
+        }
+
+        String name = getName().toLowerCase();
+        if (getCLIJMacroPlugin() != null && getCLIJMacroPlugin() instanceof IsCategorized) {
+            name = name + "," + ((IsCategorized) getCLIJMacroPlugin()).getCategories().toLowerCase();
+        }
+
+        return name.contains("threshold") ||
+                name.contains("binary") ||
+                name.contains("watershed") ||
+                name.contains("greater") ||
+                name.contains("smaller") ||
+                name.contains("equal")
+                ;
+    }
+
+    public boolean isResultLabelImage() {
+        if (result_type == ResultType.LabelImage) {
+            return true;
+        }
+
+        if (getCLIJMacroPlugin() instanceof HasClassifiedInputOutput) {
+            if (((HasClassifiedInputOutput) getCLIJMacroPlugin()).getOutputType().contains("Label Image")) {
+                return true;
+            }
+        }
+
+        String name = getName().toLowerCase();
+        if (getCLIJMacroPlugin() != null && getCLIJMacroPlugin() instanceof IsCategorized) {
+            name = name + "," + ((IsCategorized) getCLIJMacroPlugin()).getCategories().toLowerCase();
+        }
+
+        return name.contains("label");
     }
 }
