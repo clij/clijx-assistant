@@ -15,11 +15,11 @@ public abstract class AbstractScriptGenerator implements ScriptGenerator {
     protected HashMap<ImagePlus, String> image_map = new HashMap<>();
     public String makeImageID(ImagePlus target) {
         if (!image_map.keySet().contains(target)) {
-            String name = "result_image_" + (image_map.size() + 1);
+            String name = "image_" + (image_map.size() + 1);
 
             AssistantGUIPlugin pluginFromTargetImage = AbstractAssistantGUIPlugin.getPluginFromTargetImage(target);
             if (pluginFromTargetImage != null) {
-                name = "result_" + AssistantUtilities.niceName(pluginFromTargetImage.getName()).toLowerCase().replace(" ", "_") + "_" + (image_map.size() + 1);
+                name = "image_" + AssistantUtilities.niceName(pluginFromTargetImage.getName()).toLowerCase().replace(" ", "_") + "_" + (image_map.size() + 1);
             }
 
             image_map.put(target, name);
