@@ -42,7 +42,9 @@ public class AssistantGUIStartingPoint extends AbstractAssistantGUIPlugin {
         ImagePlus imp = IJ.getImage();
 
         if (!new File(new MacroGenerator().getFilename(imp)).exists()) {
+            String name_before = imp.getTitle();
             IJ.saveAs(imp, "tif", System.getProperty("java.io.tmpdir") + "/temp" + System.currentTimeMillis() + ".tif");
+            imp.setTitle(name_before);
         }
 
 
