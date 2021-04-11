@@ -2,17 +2,27 @@ package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 
 import ij.ImagePlus;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 public abstract class AbstractScriptGenerator implements ScriptGenerator {
     protected HashMap<ImagePlus, String> image_map = new HashMap<>();
     public String makeImageID(ImagePlus target) {
         if (!image_map.keySet().contains(target)) {
-            image_map.put(target, "image" + (image_map.size() + 1));
+            String name = "image_" + (image_map.size() + 1);
+
+            AssistantGUIPlugin pluginFromTargetImage = AbstractAssistantGUIPlugin.getPluginFromTargetImage(target);
+            if (pluginFromTargetImage != null) {
+                name = "image_" + AssistantUtilities.niceName(pluginFromTargetImage.getName()).toLowerCase().replace(" ", "_") + "_" + (image_map.size() + 1);
+            }
+
+            image_map.put(target, name);
         }
 
         return image_map.get(target);
