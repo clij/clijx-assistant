@@ -20,6 +20,8 @@ Furthermore, choose the right features, depending on your desired analysis (shap
 
 ![Image](images/weka_label_classifier_features.png)
 
+The model will then be saved to the specified file location when you hit the "Train" button.
+
 Note: For technical reasons, the model files are not compatible with traditional Trainable Weka Segmentation.
 
 Back to [CLIJx-Assistant](https://clij.github.io/assistant)
