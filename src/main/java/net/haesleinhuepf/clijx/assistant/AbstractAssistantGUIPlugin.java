@@ -38,6 +38,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
 import java.util.*;
 
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.distributionName;
@@ -504,8 +505,11 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             for (int s = 0; s < names_sources.length; s++) {
                 gd.addImageChoice(names_sources[s], IJ.getImage().getTitle());
             }
-            gd.addHelp("http://clij.github.io/assistant/");
-            gd.setHelpLabel("CLIJ assistant online");
+            if (hasOnlineReference(plugin.getName())) {
+                String function_name = pluginNameToFunctionName(plugin.getName());
+                gd.addHelp("https://clij.github.io/clij2-docs/reference_" + function_name);
+                gd.setHelpLabel("Help");
+            }
 
             myWasCancelled = false;
             myWasOKed = false;

@@ -1179,7 +1179,7 @@ public class AssistantUtilities {
         }
     }
 
-    private static String pluginNameToFunctionName(String plugin_name) {
+    public static String pluginNameToFunctionName(String plugin_name) {
         return plugin_name.replace("CLIJ2_", "").replace("CLIJx_", "");
     }
 
