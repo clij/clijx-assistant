@@ -107,6 +107,8 @@ public class AssistantGroovyGenerator extends AbstractScriptGenerator {
                 "//                   This script is not meant to be edited.\n" +
                 "// \n" +
                 "// For image analysis automation, generate an ImageJ Groovy script for example.\n" +
+                "// To make this script run in Fiji, please activate the clij, clij2 and \n" +
+                "// clijx-assistant update sites in your Fiji. \n" +
                 "// Read more: https://clij.github.io/assistant/save_and_load\n\n" +
                 "// Generator version: " + VersionUtils.getVersion(this.getClass()) + "\n\n" +
                 "\n\n" +
