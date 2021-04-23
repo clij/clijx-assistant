@@ -546,6 +546,12 @@ import net.haesleinhuepf.clijx.plugins.LocalThresholdMidGrey;
 import net.haesleinhuepf.clijx.plugins.LocalThresholdNiblack;
 import net.haesleinhuepf.clijx.plugins.LocalThresholdSauvola;
 import net.haesleinhuepf.clijx.plugins.ColorDeconvolution;
+import net.haesleinhuepf.clijx.plugins.GreyscaleOpeningBox;
+import net.haesleinhuepf.clijx.plugins.GreyscaleOpeningSphere;
+import net.haesleinhuepf.clijx.plugins.GreyscaleClosingBox;
+import net.haesleinhuepf.clijx.plugins.GreyscaleClosingSphere;
+import net.haesleinhuepf.clijx.plugins.ProximalNeighborCountMap;
+import net.haesleinhuepf.clijx.plugins.SubStack;
 // this is generated code. See src/test/java/net/haesleinhuepf/clijx/codegenerator for details
 abstract class SnakeInterface extends CommonAPI {
    static CLIJ getCLIJ() {
@@ -5951,6 +5957,8 @@ abstract class SnakeInterface extends CommonAPI {
     // net.haesleinhuepf.clij2.plugins.GetAutomaticThreshold
     //----------------------------------------------------
     /**
+     * Determines a threshold according to a given method and saves it to the threshold_value variable.
+     * 
      * The automatic thresholder utilizes the threshold methods from ImageJ on a histogram determined on 
      * the GPU to determine a threshold value as similar as possible to ImageJ 'Apply Threshold' method. 
      * 
@@ -5964,6 +5972,8 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
     /**
+     * Determines a threshold according to a given method and saves it to the threshold_value variable.
+     * 
      * The automatic thresholder utilizes the threshold methods from ImageJ on a histogram determined on 
      * the GPU to determine a threshold value as similar as possible to ImageJ 'Apply Threshold' method. 
      * 
@@ -9287,5 +9297,87 @@ abstract class SnakeInterface extends CommonAPI {
         return destination;
     }
 
+
+    // net.haesleinhuepf.clijx.plugins.GreyscaleOpeningBox
+    //----------------------------------------------------
+    /**
+     * Apply a greyscale morphological opening to the input image.
+     * 
+     * It applies a minimum filter first and the result is processed by a maximum filter with given radii.
+     * High intensity regions smaller than radius will disappear.
+     */
+    public static ClearCLBuffer greyscale_opening_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        GreyscaleOpeningBox.greyscaleOpeningBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.GreyscaleOpeningSphere
+    //----------------------------------------------------
+    /**
+     * Apply a greyscale morphological opening to the input image.
+     * 
+     * It applies a minimum filter first and the result is processed by a maximum filter with given radii.
+     * High intensity regions smaller than radius will disappear.
+     */
+    public static ClearCLBuffer greyscale_opening_sphere(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        GreyscaleOpeningSphere.greyscaleOpeningSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.GreyscaleClosingBox
+    //----------------------------------------------------
+    /**
+     * Apply a greyscale morphological closing to the input image.
+     * 
+     * It applies a maximum filter first and the result is processed by a minimum filter with given radii.
+     * Low intensity regions smaller than radius will disappear.
+     */
+    public static ClearCLBuffer greyscale_closing_box(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        GreyscaleClosingBox.greyscaleClosingBox(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.GreyscaleClosingSphere
+    //----------------------------------------------------
+    /**
+     * Apply a greyscale morphological closing to the input image.
+     * 
+     * It applies a maximum filter first and the result is processed by a minimum filter with given radii.
+     * Low intensity regions smaller than radius will disappear.
+     */
+    public static ClearCLBuffer greyscale_closing_sphere(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4, double arg5) {
+        GreyscaleClosingSphere.greyscaleClosingSphere(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue(), new Double (arg5).intValue());
+        return arg2;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.ProximalNeighborCountMap
+    //----------------------------------------------------
+    /**
+     * Takes a label map, determines which labels are within a given distance range and replaces every label with the number of neighboring labels.
+     * 
+     * 
+     */
+    public static ClearCLBuffer proximal_neighbor_count_map(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, double arg4) {
+        ProximalNeighborCountMap.proximalNeighborCountMap(getCLIJ2(), arg1, arg2, new Double (arg3).floatValue(), new Double (arg4).floatValue());
+        return arg2;
+    }
+
+
+    // net.haesleinhuepf.clijx.plugins.SubStack
+    //----------------------------------------------------
+    /**
+     * Crops multiple Z-slices of a 3D stack into a new 3D stack.
+     * 
+     * 
+     */
+    public static ClearCLImageInterface sub_stack(ClearCLImageInterface arg1, ClearCLImageInterface arg2, int arg3, int arg4) {
+        SubStack.subStack(getCLIJ2(), arg1, arg2, arg3, arg4);
+        return arg2;
+    }
+
 }
-// 587 methods generated.
+// 593 methods generated.
