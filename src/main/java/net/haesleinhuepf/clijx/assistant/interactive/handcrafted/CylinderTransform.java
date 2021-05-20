@@ -26,7 +26,7 @@ public class CylinderTransform extends AbstractAssistantGUIPlugin {
     private TextField center_z_slider;
 
     public CylinderTransform() {
-        super(new net.haesleinhuepf.clijx.plugins.CylinderTransform());
+        super(new net.haesleinhuepf.clij2.plugins.CylinderTransform());
     }
 
     @Override
@@ -75,7 +75,7 @@ public class CylinderTransform extends AbstractAssistantGUIPlugin {
         ClearCLBuffer[][] pushed = CLIJxVirtualStack.imagePlusesToBuffers(my_sources);
 
         args = new Object[]{pushed[0], null, number_of_angles, delta_angle_in_degrees, relative_center_x, relative_center_z};
-        net.haesleinhuepf.clijx.plugins.CylinderTransform plugin = (net.haesleinhuepf.clijx.plugins.CylinderTransform) getCLIJMacroPlugin();
+        net.haesleinhuepf.clij2.plugins.CylinderTransform plugin = (net.haesleinhuepf.clij2.plugins.CylinderTransform) getCLIJMacroPlugin();
         plugin.setArgs(args);
 
         //

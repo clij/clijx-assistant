@@ -19,7 +19,7 @@ public class MakeIsotropic extends AbstractAssistantGUIPlugin {
     float new_voxel_size_in_microns = 0;
 
     public MakeIsotropic() {
-        super(new net.haesleinhuepf.clijx.plugins.MakeIsotropic());
+        super(new net.haesleinhuepf.clij2.plugins.MakeIsotropic());
     }
 
     GenericDialog dialog = null;
@@ -92,7 +92,7 @@ public class MakeIsotropic extends AbstractAssistantGUIPlugin {
 
         ClearCLBuffer[][] pushed = CLIJxVirtualStack.imagePlusesToBuffers(my_sources);
 
-        net.haesleinhuepf.clijx.plugins.MakeIsotropic plugin = (net.haesleinhuepf.clijx.plugins.MakeIsotropic) getCLIJMacroPlugin();
+        net.haesleinhuepf.clij2.plugins.MakeIsotropic plugin = (net.haesleinhuepf.clij2.plugins.MakeIsotropic) getCLIJMacroPlugin();
         args = new Object[] {
                 pushed[0],
                 null,

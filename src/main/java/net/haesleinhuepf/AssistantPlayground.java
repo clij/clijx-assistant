@@ -6,6 +6,8 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import net.haesleinhuepf.clij2.plugins.*;
+import net.haesleinhuepf.clij2.plugins.CylinderTransform;
+import net.haesleinhuepf.clij2.plugins.MakeIsotropic;
 import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.*;
@@ -81,9 +83,6 @@ public class AssistantPlayground implements PlugInFilter {
     @Override
     public void run(ImageProcessor ip) {
 
-        new MakeIsotropic().run("");
-
-        new CylinderTransform().run("");
 
 
 

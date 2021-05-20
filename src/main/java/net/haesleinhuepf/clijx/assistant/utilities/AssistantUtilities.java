@@ -906,8 +906,8 @@ public class AssistantUtilities {
         advanced_list.add(net.haesleinhuepf.clij2.plugins.WriteValuesToPositions.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.FloodFillDiamond.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.LabelVoronoiOctagon.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.Sinus.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.Cosinus.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.Sinus.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.Cosinus.class);
         blocklist.add(net.haesleinhuepf.clijx.plugins.Bilateral.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.StatisticsOfLabelledPixels.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.MedianOfTouchingNeighbors.class);
@@ -944,7 +944,7 @@ public class AssistantUtilities {
         advanced_list.add(net.haesleinhuepf.clij2.plugins.AverageDistanceOfNClosestPoints.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.AverageDistanceOfNFarOffPoints.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.AverageDistanceOfTouchingNeighbors.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.AverageNeighborDistanceMap.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.AverageNeighborDistanceMap.class);
         blocklist.add(net.haesleinhuepf.clijx.plugins.Bilateral.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.CentroidsOfBackgroundAndLabels.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.CentroidsOfLabels.class);
