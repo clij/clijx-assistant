@@ -409,13 +409,13 @@ import net.haesleinhuepf.clij2.plugins.MergeTouchingLabels;
 import net.haesleinhuepf.clij2.plugins.AverageNeighborDistanceMap;
 import net.haesleinhuepf.clij2.plugins.CylinderTransform;
 import net.haesleinhuepf.clijx.plugins.DetectAndLabelMaxima;
-import net.haesleinhuepf.clijx.plugins.DrawDistanceMeshBetweenTouchingLabels;
-import net.haesleinhuepf.clijx.plugins.DrawMeshBetweenTouchingLabels;
-import net.haesleinhuepf.clijx.plugins.ExcludeLabelsOutsideSizeRange;
+import net.haesleinhuepf.clij2.plugins.DrawDistanceMeshBetweenTouchingLabels;
+import net.haesleinhuepf.clij2.plugins.DrawMeshBetweenTouchingLabels;
+import net.haesleinhuepf.clij2.plugins.ExcludeLabelsOutsideSizeRange;
 import net.haesleinhuepf.clij2.plugins.DilateLabels;
 import net.haesleinhuepf.clijx.plugins.FindAndLabelMaxima;
 import net.haesleinhuepf.clij2.plugins.MakeIsotropic;
-import net.haesleinhuepf.clijx.plugins.TouchingNeighborCountMap;
+import net.haesleinhuepf.clij2.plugins.TouchingNeighborCountMap;
 import net.haesleinhuepf.clijx.plugins.RigidTransform;
 import net.haesleinhuepf.clijx.plugins.SphereTransform;
 import net.haesleinhuepf.clijx.plugins.SubtractGaussianBackground;
@@ -470,60 +470,60 @@ import net.haesleinhuepf.clijx.plugins.LabelSurface;
 import net.haesleinhuepf.clij2.plugins.ReduceLabelsToCentroids;
 import net.haesleinhuepf.clijx.plugins.LabelMeanExtensionMap;
 import net.haesleinhuepf.clijx.plugins.MeanZProjectionBelowThreshold;
-import net.haesleinhuepf.clijx.plugins.EuclideanDistanceFromLabelCentroidMap;
+import net.haesleinhuepf.clij2.plugins.EuclideanDistanceFromLabelCentroidMap;
 import net.haesleinhuepf.clij2.plugins.GammaCorrection;
-import net.haesleinhuepf.clijx.plugins.ZPositionOfMaximumZProjection;
-import net.haesleinhuepf.clijx.plugins.ZPositionProjection;
-import net.haesleinhuepf.clijx.plugins.ZPositionRangeProjection;
+import net.haesleinhuepf.clij2.plugins.ZPositionOfMaximumZProjection;
+import net.haesleinhuepf.clij2.plugins.ZPositionProjection;
+import net.haesleinhuepf.clij2.plugins.ZPositionRangeProjection;
 import net.haesleinhuepf.clij2.plugins.VarianceSphere;
 import net.haesleinhuepf.clij2.plugins.StandardDeviationSphere;
 import net.haesleinhuepf.clij2.plugins.VarianceBox;
 import net.haesleinhuepf.clij2.plugins.StandardDeviationBox;
-import net.haesleinhuepf.clijx.plugins.Tenengrad;
-import net.haesleinhuepf.clijx.plugins.TenengradSliceBySlice;
-import net.haesleinhuepf.clijx.plugins.SobelSliceBySlice;
-import net.haesleinhuepf.clijx.plugins.ExtendedDepthOfFocusSobelProjection;
-import net.haesleinhuepf.clijx.plugins.ExtendedDepthOfFocusTenengradProjection;
-import net.haesleinhuepf.clijx.plugins.ExtendedDepthOfFocusVarianceProjection;
-import net.haesleinhuepf.clijx.plugins.DrawMeshBetweenNClosestLabels;
-import net.haesleinhuepf.clijx.plugins.DrawMeshBetweenProximalLabels;
+import net.haesleinhuepf.clij2.plugins.Tenengrad;
+import net.haesleinhuepf.clij2.plugins.TenengradSliceBySlice;
+import net.haesleinhuepf.clij2.plugins.SobelSliceBySlice;
+import net.haesleinhuepf.clij2.plugins.ExtendedDepthOfFocusSobelProjection;
+import net.haesleinhuepf.clij2.plugins.ExtendedDepthOfFocusTenengradProjection;
+import net.haesleinhuepf.clij2.plugins.ExtendedDepthOfFocusVarianceProjection;
+import net.haesleinhuepf.clij2.plugins.DrawMeshBetweenNNearestLabels;
+import net.haesleinhuepf.clij2.plugins.DrawMeshBetweenProximalLabels;
 import net.haesleinhuepf.clij2.plugins.Cosinus;
 import net.haesleinhuepf.clij2.plugins.Sinus;
 import net.haesleinhuepf.clijx.plugins.GenerateDistanceMatrixAlongAxis;
-import net.haesleinhuepf.clijx.plugins.MaximumDistanceOfTouchingNeighbors;
-import net.haesleinhuepf.clijx.plugins.MaximumNeighborDistanceMap;
-import net.haesleinhuepf.clijx.plugins.MinimumNeighborDistanceMap;
+import net.haesleinhuepf.clij2.plugins.MaximumDistanceOfTouchingNeighbors;
+import net.haesleinhuepf.clij2.plugins.MaximumTouchingNeighborDistanceMap;
+import net.haesleinhuepf.clij2.plugins.MinimumTouchingNeighborDistanceMap;
 import net.haesleinhuepf.clijx.plugins.GenerateAngleMatrix;
-import net.haesleinhuepf.clijx.plugins.NeighborDistanceRangeRatioMap;
+import net.haesleinhuepf.clij2.plugins.TouchingNeighborDistanceRangeRatioMap;
 import net.haesleinhuepf.clij2.plugins.VoronoiOtsuLabeling;
 import net.haesleinhuepf.clijx.plugins.VisualizeOutlinesOnOriginal;
 import net.haesleinhuepf.clijx.plugins.FlagLabelsOnEdges;
 import net.haesleinhuepf.clij2.plugins.MaskedVoronoiLabeling;
 import net.haesleinhuepf.clijx.plugins.PullToResultsTableColumn;
 import net.haesleinhuepf.clijx.plugins.KMeansLabelClusterer;
-import net.haesleinhuepf.clijx.plugins.ModeOfTouchingNeighbors;
-import net.haesleinhuepf.clijx.plugins.GenerateProximalNeighborsMatrix;
+import net.haesleinhuepf.clij2.plugins.ModeOfTouchingNeighbors;
+import net.haesleinhuepf.clij2.plugins.GenerateProximalNeighborsMatrix;
 import net.haesleinhuepf.clijx.plugins.ReadIntensitiesFromMap;
-import net.haesleinhuepf.clijx.plugins.MaximumOfTouchingNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.MinimumOfTouchingNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.MeanOfTouchingNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.ModeOfTouchingNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.StandardDeviationOfTouchingNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.PointIndexListToTouchMatrix;
-import net.haesleinhuepf.clijx.plugins.GenerateNNearestNeighborsMatrix;
-import net.haesleinhuepf.clijx.plugins.MaximumOfNNearestNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.MinimumOfNNearestNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.MeanOfNNearestNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.ModeOfNNearestNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.StandardDeviationOfNNearestNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.MaximumOfProximalNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.MinimumOfProximalNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.MeanOfProximalNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.ModeOfProximalNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.StandardDeviationOfProximalNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.MaximumOfTouchingNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.MinimumOfTouchingNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.MeanOfTouchingNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.ModeOfTouchingNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.StandardDeviationOfTouchingNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.PointIndexListToTouchMatrix;
+import net.haesleinhuepf.clij2.plugins.GenerateNNearestNeighborsMatrix;
+import net.haesleinhuepf.clij2.plugins.MaximumOfNNearestNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.MinimumOfNNearestNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.MeanOfNNearestNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.ModeOfNNearestNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.StandardDeviationOfNNearestNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.MaximumOfProximalNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.MinimumOfProximalNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.MeanOfProximalNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.ModeOfProximalNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.StandardDeviationOfProximalNeighborsMap;
 import net.haesleinhuepf.clijx.plugins.LabelOverlapCountMap;
 import net.haesleinhuepf.clijx.plugins.LabelProximalNeighborCountMap;
-import net.haesleinhuepf.clijx.plugins.ReduceLabelsToLabelEdges;
+import net.haesleinhuepf.clij2.plugins.ReduceLabelsToLabelEdges;
 import net.haesleinhuepf.clij2.plugins.OutOfIntensityRange;
 import net.haesleinhuepf.clij2.plugins.ErodeLabels;
 import net.haesleinhuepf.clij2.plugins.Similar;
@@ -536,7 +536,7 @@ import net.haesleinhuepf.clijx.plugins.NeighborCountWithTouchPortionAboveThresho
 import net.haesleinhuepf.clij2.plugins.DivideScalarByImage;
 import net.haesleinhuepf.clij2.plugins.ReadValuesFromMap;
 import net.haesleinhuepf.clij2.plugins.ReadValuesFromPositions;
-import net.haesleinhuepf.clijx.plugins.ZPositionOfMinimumZProjection;
+import net.haesleinhuepf.clij2.plugins.ZPositionOfMinimumZProjection;
 import net.haesleinhuepf.clijx.plugins.LocalThresholdPhansalkar;
 import net.haesleinhuepf.clijx.plugins.LocalThresholdBernsen;
 import net.haesleinhuepf.clijx.plugins.LocalThresholdContrast;
@@ -546,11 +546,11 @@ import net.haesleinhuepf.clijx.plugins.LocalThresholdMidGrey;
 import net.haesleinhuepf.clijx.plugins.LocalThresholdNiblack;
 import net.haesleinhuepf.clijx.plugins.LocalThresholdSauvola;
 import net.haesleinhuepf.clijx.plugins.ColorDeconvolution;
-import net.haesleinhuepf.clijx.plugins.GreyscaleOpeningBox;
-import net.haesleinhuepf.clijx.plugins.GreyscaleOpeningSphere;
-import net.haesleinhuepf.clijx.plugins.GreyscaleClosingBox;
-import net.haesleinhuepf.clijx.plugins.GreyscaleClosingSphere;
-import net.haesleinhuepf.clijx.plugins.ProximalNeighborCountMap;
+import net.haesleinhuepf.clij2.plugins.GreyscaleOpeningBox;
+import net.haesleinhuepf.clij2.plugins.GreyscaleOpeningSphere;
+import net.haesleinhuepf.clij2.plugins.GreyscaleClosingBox;
+import net.haesleinhuepf.clij2.plugins.GreyscaleClosingSphere;
+import net.haesleinhuepf.clij2.plugins.ProximalNeighborCountMap;
 import net.haesleinhuepf.clij2.plugins.SubStack;
 // this is generated code. See src/test/java/net/haesleinhuepf/clijx/codegenerator for details
 abstract class SnakeInterface extends CommonAPI {
@@ -8302,7 +8302,7 @@ abstract class SnakeInterface extends CommonAPI {
      * To determine the distances, the centroid of the labels is determined internally.
      */
     public static ClearCLBuffer minimum_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        MinimumNeighborDistanceMap.minimumNeighborDistanceMap(getCLIJ2(), input, destination);
+        MinimumTouchingNeighborDistanceMap.minimumTouchingNeighborDistanceMap(getCLIJ2(), input, destination);
         return destination;
     }
 
@@ -8355,7 +8355,7 @@ abstract class SnakeInterface extends CommonAPI {
      * To determine the distances, the centroid of the labels is determined internally.
      */
     public static ClearCLBuffer neighbor_distance_range_ratio_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        NeighborDistanceRangeRatioMap.neighborDistanceRangeRatioMap(getCLIJ2(), input, destination);
+        TouchingNeighborDistanceRangeRatioMap.touchingNeighborDistanceRangeRatioMap(getCLIJ2(), input, destination);
         return destination;
     }
 
