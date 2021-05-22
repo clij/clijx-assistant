@@ -1,28 +1,21 @@
 package net.haesleinhuepf.clijx.assistant.utilities;
 
 import ij.IJ;
-import ij.ImageJ;
 import ij.ImagePlus;
-import ij.gui.ImageWindow;
 import ij.gui.Toolbar;
-import ij.process.LUT;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.clearcl.util.StringUtils;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
 import net.haesleinhuepf.clij2.plugins.*;
-import net.haesleinhuepf.clij2.plugins.AffineTransform;
-import net.haesleinhuepf.clij2.plugins.Blur3DSliceBySlice;
 import net.haesleinhuepf.clij2.utilities.HasClassifiedInputOutput;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.CLIJx;
-import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.AssistantGUIStartingPoint;
-import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
-import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.AbstractCLIJxAssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.annotation.AnnotationTool;
 import net.haesleinhuepf.clijx.assistant.options.AssistantOptions;
 import net.haesleinhuepf.clijx.assistant.scriptgenerator.PyclesperantoGenerator;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.MenuService;
 import net.haesleinhuepf.clijx.assistant.services.SuggestionService;
 import net.haesleinhuepf.clijx.gui.*;
@@ -33,12 +26,8 @@ import net.haesleinhuepf.clijx.weka.autocontext.ApplyAutoContextWekaModel;
 import net.haesleinhuepf.clijx.weka.autocontext.TrainAutoContextWekaModel;
 import org.scijava.util.ProcessUtils;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -46,7 +35,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 
@@ -342,7 +330,7 @@ public class AssistantUtilities {
         if (blocklist.contains(clijMacroPlugin.getClass())) {
             return false;
         }
-        if ((!AbstractAssistantGUIPlugin.show_advanced) && isAdvancedPlugin(clijMacroPlugin)) {
+        if ((!AbstractCLIJxAssistantGUIPlugin.show_advanced) && isAdvancedPlugin(clijMacroPlugin)) {
             return false;
         }
 

@@ -1,6 +1,7 @@
 package net.haesleinhuepf.clijx.assistant.services;
 
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.*;
 import net.imagej.ImageJService;

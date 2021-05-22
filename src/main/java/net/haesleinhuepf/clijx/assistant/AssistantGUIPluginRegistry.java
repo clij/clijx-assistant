@@ -1,17 +1,12 @@
 package net.haesleinhuepf.clijx.assistant;
 
-import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.ImageWindow;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.ScriptGenerator;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
-import net.imglib2.converter.AbstractConvertedRandomAccess;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.CubicCurve2D;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.RoundRectangle2D;
 import java.util.*;
 import java.util.Timer;
 
@@ -72,7 +67,7 @@ class AssistantGUIPluginRegistry {
     private synchronized void highlightConnections() {
 
         try{
-            if (!AbstractAssistantGUIPlugin.show_connections) {
+            if (!AbstractCLIJxAssistantGUIPlugin.show_connections) {
                 removeConnections();
                 return;
             }

@@ -8,9 +8,9 @@ import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clij2.plugins.Copy;
-import net.haesleinhuepf.clijx.assistant.scriptgenerator.MacroGenerator;
+import net.haesleinhuepf.clij2.assistant.scriptgenerator.MacroGenerator;
 import net.haesleinhuepf.clijx.gui.InteractiveWindowPosition;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.SuggestionService;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
@@ -18,7 +18,7 @@ import org.scijava.plugin.Plugin;
 import java.io.File;
 
 @Plugin(type = AssistantGUIPlugin.class)
-public class AssistantGUIStartingPoint extends AbstractAssistantGUIPlugin {
+public class AssistantGUIStartingPoint extends AbstractCLIJxAssistantGUIPlugin {
 
     public AssistantGUIStartingPoint(){
         super(new Copy());

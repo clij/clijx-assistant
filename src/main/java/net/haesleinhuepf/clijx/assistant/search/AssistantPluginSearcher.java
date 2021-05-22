@@ -30,7 +30,7 @@
 package net.haesleinhuepf.clijx.assistant.search;
 
 import ij.IJ;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.MenuService;
 import net.imglib2.img.array.ArrayImgs;
 import org.scijava.MenuEntry;

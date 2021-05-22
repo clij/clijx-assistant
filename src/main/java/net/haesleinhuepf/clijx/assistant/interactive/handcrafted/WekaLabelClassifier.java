@@ -9,13 +9,13 @@ import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.CLIJ2;
 import net.haesleinhuepf.clijx.CLIJx;
-import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
-import net.haesleinhuepf.clijx.assistant.optimize.OptimizationUtilities;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.AbstractCLIJxAssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.annotation.AnnotationTool;
+import net.haesleinhuepf.clij2.assistant.optimize.OptimizationUtilities;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
-import net.haesleinhuepf.clijx.assistant.utilities.IJLogger;
-import net.haesleinhuepf.clijx.assistant.utilities.Logger;
+import net.haesleinhuepf.clij2.assistant.utilities.IJLogger;
+import net.haesleinhuepf.clij2.assistant.utilities.Logger;
 import net.haesleinhuepf.clijx.weka.GenerateLabelFeatureImage;
 import net.haesleinhuepf.clijx.weka.TrainWekaFromTable;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
@@ -30,7 +30,7 @@ import static net.haesleinhuepf.clijx.assistant.interactive.handcrafted.BinaryWe
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.addMenuAction;
 
 @Plugin(type = AssistantGUIPlugin.class)
-public class WekaLabelClassifier extends AbstractAssistantGUIPlugin {
+public class WekaLabelClassifier extends AbstractCLIJxAssistantGUIPlugin {
 
     GenericDialog dialog;
 

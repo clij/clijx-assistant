@@ -1,16 +1,14 @@
 package net.haesleinhuepf.clijx.assistant.interactive.handcrafted;
 
 import ij.gui.GenericDialog;
-import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
-import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
-import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.AbstractCLIJxAssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
 import org.scijava.plugin.Plugin;
 
 import java.awt.*;
 
 @Plugin(type = AssistantGUIPlugin.class)
-public class Zoom extends AbstractAssistantGUIPlugin {
+public class Zoom extends AbstractCLIJxAssistantGUIPlugin {
 
     private GenericDialog dialog = null;
 

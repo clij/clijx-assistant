@@ -1,14 +1,12 @@
 package net.haesleinhuepf.clijx.assistant.services;
 
-import ij.IJ;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
-import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clij2.plugins.BinaryNot;
 import net.haesleinhuepf.clij2.plugins.GaussianBlur2D;
-import net.haesleinhuepf.clij2.plugins.GenerateTouchMatrix;
 import net.haesleinhuepf.clij2.utilities.HasClassifiedInputOutput;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
-import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.AbstractCLIJxAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 
 import java.util.ArrayList;
@@ -124,7 +122,7 @@ public class MenuService {
                     ?1:0;
         });
         addCategory("Vector and matrix processing", (a,b) -> {
-            return AbstractAssistantGUIPlugin.show_advanced && b.getInputType().contains(a.getOutputType()) &&
+            return AbstractCLIJxAssistantGUIPlugin.show_advanced && b.getInputType().contains(a.getOutputType()) &&
                     ((a.getOutputType().contains("Vector") || a.getOutputType().contains("Matrix") || a.getOutputType().contains("Pointlist")) ||
                     (b.getOutputType().contains("Vector") || b.getOutputType().contains("Matrix") || b.getOutputType().contains("Pointlist")))
                     ?1:0;
@@ -139,7 +137,7 @@ public class MenuService {
         AssistantGUIPluginService assistantGUIPluginService = AssistantGUIPluginService.getInstance();
         net.haesleinhuepf.clij.macro.CLIJMacroPluginService clijMacroPluginService = CLIJMacroPluginService.getInstance().getService();
 
-        AbstractAssistantGUIPlugin.show_advanced = true;
+        AbstractCLIJxAssistantGUIPlugin.show_advanced = true;
 
         for (String name : clijMacroPluginService.getCLIJMethodNames()) {
             Class incubatorPluginClass = assistantGUIPluginService.getIncubatorPluginClassFromCLIJ2Plugin(clijMacroPluginService.getCLIJMacroPlugin(name));
@@ -156,7 +154,7 @@ public class MenuService {
             }
         }
 
-        AbstractAssistantGUIPlugin.show_advanced = false;
+        AbstractCLIJxAssistantGUIPlugin.show_advanced = false;
 
         Collections.sort(names, AssistantUtilities.niceNameComparator);
         //for (String name : names) {

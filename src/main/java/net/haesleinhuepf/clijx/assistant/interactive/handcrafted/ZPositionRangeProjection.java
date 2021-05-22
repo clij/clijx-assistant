@@ -1,18 +1,15 @@
 package net.haesleinhuepf.clijx.assistant.interactive.handcrafted;
 
-import ij.ImagePlus;
 import ij.gui.GenericDialog;
-import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
-import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
-import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
+import net.haesleinhuepf.clijx.assistant.AbstractCLIJxAssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
 import org.scijava.plugin.Plugin;
 
 import java.awt.*;
 import java.util.Arrays;
 
 @Plugin(type = AssistantGUIPlugin.class)
-public class ZPositionRangeProjection extends AbstractAssistantGUIPlugin {
+public class ZPositionRangeProjection extends AbstractCLIJxAssistantGUIPlugin {
 
     public ZPositionRangeProjection() {
         super(new net.haesleinhuepf.clij2.plugins.ZPositionRangeProjection());

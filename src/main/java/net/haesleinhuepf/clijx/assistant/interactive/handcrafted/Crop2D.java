@@ -6,8 +6,8 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.Roi;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
-import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.AbstractCLIJxAssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
 
@@ -17,7 +17,7 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 
 @Plugin(type = AssistantGUIPlugin.class)
-public class Crop2D extends AbstractAssistantGUIPlugin {
+public class Crop2D extends AbstractCLIJxAssistantGUIPlugin {
 
     private GenericDialog dialog = null;
 
