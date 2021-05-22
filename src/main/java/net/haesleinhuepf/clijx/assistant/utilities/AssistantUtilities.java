@@ -970,6 +970,12 @@ public class AssistantUtilities {
     }
 
     public static void installTools() {
+        if (AssistantUtilities.class.getPackage().toString().contains(".clij2.")) {
+            if (AssistantUtilities.CLIJxAssistantInstalled()) {
+                return;
+            }
+        }
+
         String tool = IJ.getToolName();
         ignoreEvent = true;
         //Toolbar.removeMacroTools();
@@ -1503,21 +1509,26 @@ public class AssistantUtilities {
         }*/
     }
 
-    private static boolean CLIJxAssistantInstalled() {
+    static Boolean isCLIJxAssistantInstalled = null;
+    public static boolean CLIJxAssistantInstalled() {
+        if (isCLIJxAssistantInstalled != null) {
+            return isCLIJxAssistantInstalled;
+        }
+        isCLIJxAssistantInstalled = true;
         try {
             String dir = IJ.getDirectory("imagej");
             if (!dir.contains("null") && dir.toLowerCase().contains("fiji")) {
                 // we're in a Fiji folder
                 File plugins_dir = new File(dir + "/plugins");
                 if (!jarExists(plugins_dir, "clijx-assistant_")) {
-                    return false;
+                    isCLIJxAssistantInstalled = false;
                 }
             }
         }catch (Exception e) {
             System.out.println("Error while checking the CLIJ2 installation:");
             System.out.println(e.getMessage());
         }
-        return true;
+        return isCLIJxAssistantInstalled;
     }
 
     private static boolean jarExists(File folder, String name) {
