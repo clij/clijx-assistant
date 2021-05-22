@@ -22,7 +22,7 @@ import net.haesleinhuepf.clijx.plugins.Extrema;
 import net.haesleinhuepf.clijx.plugins.LocalExtremaBox;
 import net.haesleinhuepf.clijx.plugins.LocalID;
 import net.haesleinhuepf.clijx.plugins.Presign;
-import net.haesleinhuepf.clijx.plugins.StackToTiles;
+import net.haesleinhuepf.clij2.plugins.StackToTiles;
 import net.haesleinhuepf.clijx.plugins.SubtractBackground2D;
 import net.haesleinhuepf.clijx.plugins.SubtractBackground3D;
 import net.haesleinhuepf.clijx.piv.FastParticleImageVelocimetry;
@@ -53,8 +53,8 @@ import net.haesleinhuepf.clijx.io.WriteVTKLineListToDisc;
 import net.haesleinhuepf.clijx.io.WriteXYZPointListToDisc;
 import net.haesleinhuepf.clijx.plugins.tenengradfusion.TenengradFusion;
 import net.haesleinhuepf.clijx.plugins.Skeletonize;
-import net.haesleinhuepf.clijx.plugins.PushTile;
-import net.haesleinhuepf.clijx.plugins.PullTile;
+import net.haesleinhuepf.clij2.plugins.PushTile;
+import net.haesleinhuepf.clij2.plugins.PullTile;
 import net.haesleinhuepf.clijx.weka.autocontext.ApplyAutoContextWekaModel;
 import net.haesleinhuepf.clijx.weka.autocontext.TrainAutoContextWekaModel;
 import net.haesleinhuepf.clijx.weka.ApplyWekaModel;
@@ -77,16 +77,16 @@ import net.haesleinhuepf.clij2.plugins.ExcludeLabelsOutsideSizeRange;
 import net.haesleinhuepf.clij2.plugins.DilateLabels;
 import net.haesleinhuepf.clijx.plugins.FindAndLabelMaxima;
 import net.haesleinhuepf.clij2.plugins.TouchingNeighborCountMap;
-import net.haesleinhuepf.clijx.plugins.RigidTransform;
-import net.haesleinhuepf.clijx.plugins.SphereTransform;
+import net.haesleinhuepf.clij2.plugins.RigidTransform;
+import net.haesleinhuepf.clij2.plugins.SphereTransform;
 import net.haesleinhuepf.clijx.plugins.SubtractGaussianBackground;
 import net.haesleinhuepf.clijx.plugins.ThresholdDoG;
 import net.haesleinhuepf.clijx.plugins.DriftCorrectionByCenterOfMassFixation;
 import net.haesleinhuepf.clijx.plugins.DriftCorrectionByCentroidFixation;
 import net.haesleinhuepf.clijx.plugins.IntensityCorrection;
 import net.haesleinhuepf.clijx.plugins.IntensityCorrectionAboveThresholdOtsu;
-import net.haesleinhuepf.clijx.plugins.LabelMeanIntensityMap;
-import net.haesleinhuepf.clijx.plugins.LabelStandardDeviationIntensityMap;
+import net.haesleinhuepf.clij2.plugins.MeanIntensityMap;
+import net.haesleinhuepf.clij2.plugins.StandardDeviationIntensityMap;
 import net.haesleinhuepf.clijx.plugins.ParametricWatershed;
 import net.haesleinhuepf.clijx.plugins.MeanZProjectionAboveThreshold;
 import net.haesleinhuepf.clijx.plugins.SeededWatershed;
@@ -110,10 +110,10 @@ import net.haesleinhuepf.clijx.plugins.LocalMinimumTouchingNeighborCountMap;
 import net.haesleinhuepf.clijx.plugins.LocalStandardDeviationAverageDistanceOfNClosestNeighborsMap;
 import net.haesleinhuepf.clijx.plugins.LocalStandardDeviationAverageNeighborDistanceMap;
 import net.haesleinhuepf.clijx.plugins.LocalStandardDeviationTouchingNeighborCountMap;
-import net.haesleinhuepf.clijx.plugins.LabelMinimumIntensityMap;
-import net.haesleinhuepf.clijx.plugins.LabelMaximumIntensityMap;
-import net.haesleinhuepf.clijx.plugins.LabelMaximumExtensionRatioMap;
-import net.haesleinhuepf.clijx.plugins.LabelMaximumExtensionMap;
+import net.haesleinhuepf.clij2.plugins.MinimumIntensityMap;
+import net.haesleinhuepf.clij2.plugins.MaximumIntensityMap;
+import net.haesleinhuepf.clij2.plugins.ExtensionRatioMap;
+import net.haesleinhuepf.clij2.plugins.MaximumExtensionMap;
 import net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfBox;
 import net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfDiamond;
 import net.haesleinhuepf.clijx.plugins.GenerateGreyValueCooccurrenceMatrixBox;
@@ -122,8 +122,8 @@ import net.haesleinhuepf.clijx.plugins.BinaryFillHolesSliceBySlice;
 import net.haesleinhuepf.clijx.weka.BinaryWekaPixelClassifier;
 import net.haesleinhuepf.clijx.weka.WekaLabelClassifier;
 import net.haesleinhuepf.clijx.weka.GenerateLabelFeatureImage;
-import net.haesleinhuepf.clijx.plugins.LabelSurface;
-import net.haesleinhuepf.clijx.plugins.LabelMeanExtensionMap;
+import net.haesleinhuepf.clij2.plugins.LabelSurface;
+import net.haesleinhuepf.clij2.plugins.MeanExtensionMap;
 import net.haesleinhuepf.clijx.plugins.MeanZProjectionBelowThreshold;
 import net.haesleinhuepf.clij2.plugins.EuclideanDistanceFromLabelCentroidMap;
 import net.haesleinhuepf.clij2.plugins.ZPositionOfMaximumZProjection;
@@ -146,7 +146,7 @@ import net.haesleinhuepf.clij2.plugins.TouchingNeighborDistanceRangeRatioMap;
 import net.haesleinhuepf.clijx.plugins.VisualizeOutlinesOnOriginal;
 import net.haesleinhuepf.clijx.plugins.FlagLabelsOnEdges;
 import net.haesleinhuepf.clij2.plugins.MaskedVoronoiLabeling;
-import net.haesleinhuepf.clijx.plugins.PullToResultsTableColumn;
+import net.haesleinhuepf.clij2.plugins.PullToResultsTableColumn;
 import net.haesleinhuepf.clijx.plugins.KMeansLabelClusterer;
 import net.haesleinhuepf.clij2.plugins.ModeOfTouchingNeighbors;
 import net.haesleinhuepf.clij2.plugins.GenerateProximalNeighborsMatrix;
@@ -168,8 +168,8 @@ import net.haesleinhuepf.clij2.plugins.MinimumOfProximalNeighborsMap;
 import net.haesleinhuepf.clij2.plugins.MeanOfProximalNeighborsMap;
 import net.haesleinhuepf.clij2.plugins.ModeOfProximalNeighborsMap;
 import net.haesleinhuepf.clij2.plugins.StandardDeviationOfProximalNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.LabelOverlapCountMap;
-import net.haesleinhuepf.clijx.plugins.LabelProximalNeighborCountMap;
+import net.haesleinhuepf.clij2.plugins.LabelOverlapCountMap;
+import net.haesleinhuepf.clij2.plugins.LabelProximalNeighborCountMap;
 import net.haesleinhuepf.clij2.plugins.ReduceLabelsToLabelEdges;
 import net.haesleinhuepf.clijx.weka.WekaRegionalLabelClassifier;
 import net.haesleinhuepf.clijx.plugins.LabelMeanOfLaplacianMap;
@@ -7043,7 +7043,7 @@ abstract class CamelInterface extends CommonAPI{
      * This results in a parametric image expressing mean object intensity.
      */
     public static ClearCLBuffer labelMeanIntensityMap(ClearCLBuffer input, ClearCLBuffer label_map, ClearCLBuffer destination) {
-        LabelMeanIntensityMap.labelMeanIntensityMap(getCLIJ2(), input, label_map, destination);
+        MeanIntensityMap.labelMeanIntensityMap(getCLIJ2(), input, label_map, destination);
         return destination;
     }
 
@@ -7056,7 +7056,7 @@ abstract class CamelInterface extends CommonAPI{
      * This results in a parametric image expressing standard deviation of object intensity.
      */
     public static ClearCLBuffer labelStandardDeviationIntensityMap(ClearCLBuffer input, ClearCLBuffer label_map, ClearCLBuffer destination) {
-        LabelStandardDeviationIntensityMap.labelStandardDeviationIntensityMap(getCLIJ2(), input, label_map, destination);
+        StandardDeviationIntensityMap.labelStandardDeviationIntensityMap(getCLIJ2(), input, label_map, destination);
         return destination;
     }
 
@@ -7069,7 +7069,7 @@ abstract class CamelInterface extends CommonAPI{
      * This results in a parametric image expressing area or volume.
      */
     public static ClearCLBuffer labelPixelCountMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        LabelPixelCountMap.labelPixelCountMap(getCLIJ2(), input, destination);
+        PixelCountMap.labelPixelCountMap(getCLIJ2(), input, destination);
         return destination;
     }
 
@@ -7362,7 +7362,7 @@ abstract class CamelInterface extends CommonAPI{
      * 
      */
     public static ClearCLBuffer labelMinimumIntensityMap(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3) {
-        LabelMinimumIntensityMap.labelMinimumIntensityMap(getCLIJ2(), arg1, arg2, arg3);
+        MinimumIntensityMap.labelMinimumIntensityMap(getCLIJ2(), arg1, arg2, arg3);
         return arg3;
     }
 
@@ -7373,7 +7373,7 @@ abstract class CamelInterface extends CommonAPI{
      * 
      */
     public static ClearCLBuffer labelMaximumIntensityMap(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3) {
-        LabelMaximumIntensityMap.labelMaximumIntensityMap(getCLIJ2(), arg1, arg2, arg3);
+        MaximumIntensityMap.labelMaximumIntensityMap(getCLIJ2(), arg1, arg2, arg3);
         return arg3;
     }
 
@@ -7386,7 +7386,7 @@ abstract class CamelInterface extends CommonAPI{
      * 
      */
     public static ClearCLBuffer labelMaximumExtensionRatioMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        LabelMaximumExtensionRatioMap.labelMaximumExtensionRatioMap(getCLIJ2(), input, destination);
+        ExtensionRatioMap.labelMaximumExtensionRatioMap(getCLIJ2(), input, destination);
         return destination;
     }
 
@@ -7399,7 +7399,7 @@ abstract class CamelInterface extends CommonAPI{
      * 
      */
     public static ClearCLBuffer labelMaximumExtensionMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        LabelMaximumExtensionMap.labelMaximumExtensionMap(getCLIJ2(), input, destination);
+        MaximumExtensionMap.labelMaximumExtensionMap(getCLIJ2(), input, destination);
         return destination;
     }
 
@@ -7634,7 +7634,7 @@ abstract class CamelInterface extends CommonAPI{
      * 
      */
     public static ClearCLBuffer labelMeanExtensionMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        LabelMeanExtensionMap.labelMeanExtensionMap(getCLIJ2(), input, destination);
+        MeanExtensionMap.meanExtensionMap(getCLIJ2(), input, destination);
         return destination;
     }
 

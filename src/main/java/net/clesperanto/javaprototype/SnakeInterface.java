@@ -36,7 +36,7 @@ import net.haesleinhuepf.clijx.plugins.Presign;
 import net.haesleinhuepf.clij2.plugins.JaccardIndex;
 import net.haesleinhuepf.clij2.plugins.SorensenDiceCoefficient;
 import net.haesleinhuepf.clij2.plugins.StandardDeviationZProjection;
-import net.haesleinhuepf.clijx.plugins.StackToTiles;
+import net.haesleinhuepf.clij2.plugins.StackToTiles;
 import net.haesleinhuepf.clijx.plugins.SubtractBackground2D;
 import net.haesleinhuepf.clijx.plugins.SubtractBackground3D;
 import net.haesleinhuepf.clij2.plugins.TopHatBox;
@@ -324,8 +324,8 @@ import net.haesleinhuepf.clij2.plugins.ConnectedComponentsLabelingBox;
 import net.haesleinhuepf.clij2.plugins.SetRandom;
 import net.haesleinhuepf.clij2.plugins.InvalidateKernelCache;
 import net.haesleinhuepf.clij2.plugins.EntropyBox;
-import net.haesleinhuepf.clijx.plugins.PushTile;
-import net.haesleinhuepf.clijx.plugins.PullTile;
+import net.haesleinhuepf.clij2.plugins.PushTile;
+import net.haesleinhuepf.clij2.plugins.PullTile;
 import net.haesleinhuepf.clij2.plugins.ConcatenateStacks;
 import net.haesleinhuepf.clij2.plugins.ResultsTableToImage2D;
 import net.haesleinhuepf.clij2.plugins.GetAutomaticThreshold;
@@ -416,17 +416,17 @@ import net.haesleinhuepf.clij2.plugins.DilateLabels;
 import net.haesleinhuepf.clijx.plugins.FindAndLabelMaxima;
 import net.haesleinhuepf.clij2.plugins.MakeIsotropic;
 import net.haesleinhuepf.clij2.plugins.TouchingNeighborCountMap;
-import net.haesleinhuepf.clijx.plugins.RigidTransform;
-import net.haesleinhuepf.clijx.plugins.SphereTransform;
+import net.haesleinhuepf.clij2.plugins.RigidTransform;
+import net.haesleinhuepf.clij2.plugins.SphereTransform;
 import net.haesleinhuepf.clijx.plugins.SubtractGaussianBackground;
 import net.haesleinhuepf.clijx.plugins.ThresholdDoG;
 import net.haesleinhuepf.clijx.plugins.DriftCorrectionByCenterOfMassFixation;
 import net.haesleinhuepf.clijx.plugins.DriftCorrectionByCentroidFixation;
 import net.haesleinhuepf.clijx.plugins.IntensityCorrection;
 import net.haesleinhuepf.clijx.plugins.IntensityCorrectionAboveThresholdOtsu;
-import net.haesleinhuepf.clijx.plugins.LabelMeanIntensityMap;
-import net.haesleinhuepf.clijx.plugins.LabelStandardDeviationIntensityMap;
-import net.haesleinhuepf.clij2.plugins.LabelPixelCountMap;
+import net.haesleinhuepf.clij2.plugins.MeanIntensityMap;
+import net.haesleinhuepf.clij2.plugins.StandardDeviationIntensityMap;
+import net.haesleinhuepf.clij2.plugins.PixelCountMap;
 import net.haesleinhuepf.clijx.plugins.ParametricWatershed;
 import net.haesleinhuepf.clijx.plugins.MeanZProjectionAboveThreshold;
 import net.haesleinhuepf.clij2.plugins.CentroidsOfBackgroundAndLabels;
@@ -452,10 +452,10 @@ import net.haesleinhuepf.clijx.plugins.LocalMinimumTouchingNeighborCountMap;
 import net.haesleinhuepf.clijx.plugins.LocalStandardDeviationAverageDistanceOfNClosestNeighborsMap;
 import net.haesleinhuepf.clijx.plugins.LocalStandardDeviationAverageNeighborDistanceMap;
 import net.haesleinhuepf.clijx.plugins.LocalStandardDeviationTouchingNeighborCountMap;
-import net.haesleinhuepf.clijx.plugins.LabelMinimumIntensityMap;
-import net.haesleinhuepf.clijx.plugins.LabelMaximumIntensityMap;
-import net.haesleinhuepf.clijx.plugins.LabelMaximumExtensionRatioMap;
-import net.haesleinhuepf.clijx.plugins.LabelMaximumExtensionMap;
+import net.haesleinhuepf.clij2.plugins.MinimumIntensityMap;
+import net.haesleinhuepf.clij2.plugins.MaximumIntensityMap;
+import net.haesleinhuepf.clij2.plugins.ExtensionRatioMap;
+import net.haesleinhuepf.clij2.plugins.MaximumExtensionMap;
 import net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfBox;
 import net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfDiamond;
 import net.haesleinhuepf.clij2.plugins.GetMeanOfMaskedPixels;
@@ -466,9 +466,9 @@ import net.haesleinhuepf.clijx.plugins.BinaryFillHolesSliceBySlice;
 import net.haesleinhuepf.clijx.weka.BinaryWekaPixelClassifier;
 import net.haesleinhuepf.clijx.weka.WekaLabelClassifier;
 import net.haesleinhuepf.clijx.weka.GenerateLabelFeatureImage;
-import net.haesleinhuepf.clijx.plugins.LabelSurface;
+import net.haesleinhuepf.clij2.plugins.LabelSurface;
 import net.haesleinhuepf.clij2.plugins.ReduceLabelsToCentroids;
-import net.haesleinhuepf.clijx.plugins.LabelMeanExtensionMap;
+import net.haesleinhuepf.clij2.plugins.MeanExtensionMap;
 import net.haesleinhuepf.clijx.plugins.MeanZProjectionBelowThreshold;
 import net.haesleinhuepf.clij2.plugins.EuclideanDistanceFromLabelCentroidMap;
 import net.haesleinhuepf.clij2.plugins.GammaCorrection;
@@ -499,7 +499,7 @@ import net.haesleinhuepf.clij2.plugins.VoronoiOtsuLabeling;
 import net.haesleinhuepf.clijx.plugins.VisualizeOutlinesOnOriginal;
 import net.haesleinhuepf.clijx.plugins.FlagLabelsOnEdges;
 import net.haesleinhuepf.clij2.plugins.MaskedVoronoiLabeling;
-import net.haesleinhuepf.clijx.plugins.PullToResultsTableColumn;
+import net.haesleinhuepf.clij2.plugins.PullToResultsTableColumn;
 import net.haesleinhuepf.clijx.plugins.KMeansLabelClusterer;
 import net.haesleinhuepf.clij2.plugins.ModeOfTouchingNeighbors;
 import net.haesleinhuepf.clij2.plugins.GenerateProximalNeighborsMatrix;
@@ -521,8 +521,8 @@ import net.haesleinhuepf.clij2.plugins.MinimumOfProximalNeighborsMap;
 import net.haesleinhuepf.clij2.plugins.MeanOfProximalNeighborsMap;
 import net.haesleinhuepf.clij2.plugins.ModeOfProximalNeighborsMap;
 import net.haesleinhuepf.clij2.plugins.StandardDeviationOfProximalNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.LabelOverlapCountMap;
-import net.haesleinhuepf.clijx.plugins.LabelProximalNeighborCountMap;
+import net.haesleinhuepf.clij2.plugins.LabelOverlapCountMap;
+import net.haesleinhuepf.clij2.plugins.LabelProximalNeighborCountMap;
 import net.haesleinhuepf.clij2.plugins.ReduceLabelsToLabelEdges;
 import net.haesleinhuepf.clij2.plugins.OutOfIntensityRange;
 import net.haesleinhuepf.clij2.plugins.ErodeLabels;
@@ -7404,7 +7404,7 @@ abstract class SnakeInterface extends CommonAPI {
      * This results in a parametric image expressing mean object intensity.
      */
     public static ClearCLBuffer label_mean_intensity_map(ClearCLBuffer input, ClearCLBuffer label_map, ClearCLBuffer destination) {
-        LabelMeanIntensityMap.labelMeanIntensityMap(getCLIJ2(), input, label_map, destination);
+        MeanIntensityMap.meanIntensityMap(getCLIJ2(), input, label_map, destination);
         return destination;
     }
 
@@ -7417,7 +7417,7 @@ abstract class SnakeInterface extends CommonAPI {
      * This results in a parametric image expressing standard deviation of object intensity.
      */
     public static ClearCLBuffer label_standard_deviation_intensity_map(ClearCLBuffer input, ClearCLBuffer label_map, ClearCLBuffer destination) {
-        LabelStandardDeviationIntensityMap.labelStandardDeviationIntensityMap(getCLIJ2(), input, label_map, destination);
+        StandardDeviationIntensityMap.standardDeviationIntensityMap(getCLIJ2(), input, label_map, destination);
         return destination;
     }
 
@@ -7430,7 +7430,7 @@ abstract class SnakeInterface extends CommonAPI {
      * This results in a parametric image expressing area or volume.
      */
     public static ClearCLBuffer label_pixel_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        LabelPixelCountMap.labelPixelCountMap(getCLIJ2(), input, destination);
+        PixelCountMap.labelPixelCountMap(getCLIJ2(), input, destination);
         return destination;
     }
 
@@ -7723,7 +7723,7 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      */
     public static ClearCLBuffer label_minimum_intensity_map(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3) {
-        LabelMinimumIntensityMap.labelMinimumIntensityMap(getCLIJ2(), arg1, arg2, arg3);
+        MinimumIntensityMap.minimumIntensityMap(getCLIJ2(), arg1, arg2, arg3);
         return arg3;
     }
 
@@ -7734,7 +7734,7 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      */
     public static ClearCLBuffer label_maximum_intensity_map(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3) {
-        LabelMaximumIntensityMap.labelMaximumIntensityMap(getCLIJ2(), arg1, arg2, arg3);
+        MaximumIntensityMap.maximumIntensityMap(getCLIJ2(), arg1, arg2, arg3);
         return arg3;
     }
 
@@ -7747,7 +7747,7 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      */
     public static ClearCLBuffer label_maximum_extension_ratio_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        LabelMaximumExtensionRatioMap.labelMaximumExtensionRatioMap(getCLIJ2(), input, destination);
+        ExtensionRatioMap.labelMaximumExtensionRatioMap(getCLIJ2(), input, destination);
         return destination;
     }
 
@@ -7760,7 +7760,7 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      */
     public static ClearCLBuffer label_maximum_extension_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        LabelMaximumExtensionMap.labelMaximumExtensionMap(getCLIJ2(), input, destination);
+        MaximumExtensionMap.labelMaximumExtensionMap(getCLIJ2(), input, destination);
         return destination;
     }
 
@@ -7995,7 +7995,7 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      */
     public static ClearCLBuffer label_mean_extension_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        LabelMeanExtensionMap.labelMeanExtensionMap(getCLIJ2(), input, destination);
+        MeanExtensionMap.meanExtensionMap(getCLIJ2(), input, destination);
         return destination;
     }
 
@@ -8211,7 +8211,7 @@ abstract class SnakeInterface extends CommonAPI {
      * The end points of the lines correspond to the centroids of the labels. 
      */
     public static ClearCLBuffer draw_mesh_between_n_closest_labels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        DrawMeshBetweenNClosestLabels.drawMeshBetweenNClosestLabels(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        DrawMeshBetweenNNearestLabels.drawMeshBetweenNClosestLabels(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
         return arg2;
     }
 
@@ -8289,7 +8289,7 @@ abstract class SnakeInterface extends CommonAPI {
      * To determine the distances, the centroid of the labels is determined internally.
      */
     public static ClearCLBuffer maximum_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        MaximumNeighborDistanceMap.maximumNeighborDistanceMap(getCLIJ2(), input, destination);
+        MaximumTouchingNeighborDistanceMap.maximumNeighborDistanceMap(getCLIJ2(), input, destination);
         return destination;
     }
 

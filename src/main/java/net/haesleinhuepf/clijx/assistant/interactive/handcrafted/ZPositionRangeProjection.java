@@ -15,7 +15,7 @@ import java.util.Arrays;
 public class ZPositionRangeProjection extends AbstractAssistantGUIPlugin {
 
     public ZPositionRangeProjection() {
-        super(new net.haesleinhuepf.clijx.plugins.ZPositionRangeProjection());
+        super(new net.haesleinhuepf.clij2.plugins.ZPositionRangeProjection());
     }
 
 
