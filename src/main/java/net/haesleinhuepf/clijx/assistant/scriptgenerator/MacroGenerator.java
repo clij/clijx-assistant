@@ -42,9 +42,21 @@ public class MacroGenerator extends AbstractScriptGenerator {
     @Override
     public String pull(AssistantGUIPlugin result) {
         String imageID = makeImageID(result.getTarget());
-        return "Ext.CLIJ2_pull(" + imageID + ");\n" +
-                (AssistantUtilities.resultIsLabelImage(result)?"run(\"glasbey_on_dark\");\n":"") +
+        String output = "Ext.CLIJ2_pull(" + imageID + ");\n";
+        if (AssistantUtilities.resultIsLabelImage(result)) {
+
+            String name_to_consider = result.getTarget().getTitle().toLowerCase();
+            if (name_to_consider.contains("map") || name_to_consider.contains("mesh")) {
+                output = output +
+                    "run(\"Green Fire Blue\");\n";
+            } else if (name_to_consider.contains("label") && !name_to_consider.contains("ROI")) {
+                output = output +
+                        "run(\"glasbey_on_dark\");\n";
+            }
+        }
+        output = output +
                 close(imageID) + "\n";
+        return output;
     }
 
     @Override
