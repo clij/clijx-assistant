@@ -485,7 +485,7 @@ import net.haesleinhuepf.clij2.plugins.SobelSliceBySlice;
 import net.haesleinhuepf.clij2.plugins.ExtendedDepthOfFocusSobelProjection;
 import net.haesleinhuepf.clij2.plugins.ExtendedDepthOfFocusTenengradProjection;
 import net.haesleinhuepf.clij2.plugins.ExtendedDepthOfFocusVarianceProjection;
-import net.haesleinhuepf.clij2.plugins.DrawMeshBetweenNNearestLabels;
+import net.haesleinhuepf.clij2.plugins.DrawMeshBetweenNClosestLabels;
 import net.haesleinhuepf.clij2.plugins.DrawMeshBetweenProximalLabels;
 import net.haesleinhuepf.clij2.plugins.Cosinus;
 import net.haesleinhuepf.clij2.plugins.Sinus;
@@ -552,6 +552,7 @@ import net.haesleinhuepf.clij2.plugins.GreyscaleClosingBox;
 import net.haesleinhuepf.clij2.plugins.GreyscaleClosingSphere;
 import net.haesleinhuepf.clij2.plugins.ProximalNeighborCountMap;
 import net.haesleinhuepf.clij2.plugins.SubStack;
+import net.haesleinhuepf.clij2.plugins.DrawMeshBetweenNNearestLabels;
 // this is generated code. See src/test/java/net/haesleinhuepf/clijx/codegenerator for details
 abstract class SnakeInterface extends CommonAPI {
    static CLIJ getCLIJ() {
@@ -995,13 +996,13 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.StackToTiles
+    // net.haesleinhuepf.clij2.plugins.StackToTiles
     //----------------------------------------------------
     /**
      * Stack to tiles.
      */
     public static ClearCLImageInterface stack_to_tiles(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        StackToTiles.stackToTiles(getCLIJx(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        StackToTiles.stackToTiles(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
         return arg2;
     }
 
@@ -1807,6 +1808,16 @@ abstract class SnakeInterface extends CommonAPI {
         return arg2;
     }
 
+    /**
+     * Determine the n point indices with shortest distance for all points in a distance matrix. 
+     * 
+     * This corresponds to the n row indices with minimum values for each column of the distance matrix.
+     */
+    public static ClearCLBuffer n_closest_points(ClearCLBuffer arg1, ClearCLBuffer arg2, boolean arg3, boolean arg4) {
+        NClosestPoints.nClosestPoints(getCLIJ2(), arg1, arg2, arg3, arg4);
+        return arg2;
+    }
+
 
     // net.haesleinhuepf.clijx.plugins.GaussJordan
     //----------------------------------------------------
@@ -2054,6 +2065,7 @@ abstract class SnakeInterface extends CommonAPI {
      * 
      * Pixels with non-zero value in the binary image are set to a number representing the distance to the closest zero-value pixel.
      * 
+     * Note: This function is known to be slow. See the web for alternatives: 
      * Note: This is not a distance matrix. See generateDistanceMatrix for details.
      */
     public static ClearCLBuffer distance_map(ClearCLBuffer source, ClearCLBuffer destination) {
@@ -2377,6 +2389,8 @@ abstract class SnakeInterface extends CommonAPI {
     //----------------------------------------------------
     /**
      * Apply a binary watershed to a binary image and introduces black pixels between objects.
+     * 
+     * Note: This parallel GPU-accelerated approach delivers results of limited quality.See the web for alternatives: https://github.com/clij/clij2/issues/18
      */
     public static ClearCLBuffer watershed(ClearCLBuffer binary_source, ClearCLBuffer destination) {
         Watershed.watershed(getCLIJ2(), binary_source, destination);
@@ -5888,7 +5902,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.PushTile
+    // net.haesleinhuepf.clij2.plugins.PushTile
     //----------------------------------------------------
     /**
      * Push a tile in an image specified by its name, position and size to GPU memory in order to process it there later.
@@ -5914,7 +5928,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.PullTile
+    // net.haesleinhuepf.clij2.plugins.PullTile
     //----------------------------------------------------
     /**
      * Pushes a tile in an image specified by its name, position and size from GPU memory.
@@ -6506,7 +6520,7 @@ abstract class SnakeInterface extends CommonAPI {
     // net.haesleinhuepf.clij2.plugins.PushArray
     //----------------------------------------------------
     /**
-     * Converts an array to an image.
+     * Converts an array to a 3D image stack.
      */
     public static ClearCLBuffer push_array(ClearCLBuffer arg1, Object arg2) {
         PushArray.pushArray(getCLIJ2(), arg1, arg2);
@@ -6514,7 +6528,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
     /**
-     * Converts an array to an image.
+     * Converts an array to a 3D image stack.
      */
     public static ClearCLBuffer push_array(float[] arg1, double arg2, double arg3, double arg4) {
         ClearCLBuffer result = PushArray.pushArray(getCLIJ2(), arg1, new Double (arg2).intValue(), new Double (arg3).intValue(), new Double (arg4).intValue());
@@ -6637,7 +6651,7 @@ abstract class SnakeInterface extends CommonAPI {
     // net.haesleinhuepf.clij2.plugins.LabelVoronoiOctagon
     //----------------------------------------------------
     /**
-     * Takes a labelled image and dilates the labels using a octagon shape until they touch. 
+     * Takes a labeled image and dilates the labels using a octagon shape until they touch. 
      * 
      * The pixels where  the regions touched are afterwards returned as binary image which corresponds to the Voronoi diagram.
      */
@@ -7158,7 +7172,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MergeTouchingLabels
+    // net.haesleinhuepf.clij2.plugins.MergeTouchingLabels
     //----------------------------------------------------
     /**
      * 
@@ -7169,7 +7183,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.AverageNeighborDistanceMap
+    // net.haesleinhuepf.clij2.plugins.AverageNeighborDistanceMap
     //----------------------------------------------------
     /**
      * Takes a label map, determines which labels touch and replaces every label with the average distance to their neighboring labels.
@@ -7182,7 +7196,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.CylinderTransform
+    // net.haesleinhuepf.clij2.plugins.CylinderTransform
     //----------------------------------------------------
     /**
      * Applies a cylinder transform to an image stack assuming the center line goes in Y direction in the center of the stack.
@@ -7214,7 +7228,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.DrawDistanceMeshBetweenTouchingLabels
+    // net.haesleinhuepf.clij2.plugins.DrawDistanceMeshBetweenTouchingLabels
     //----------------------------------------------------
     /**
      * Starting from a label map, draw lines between touching neighbors resulting in a mesh.
@@ -7228,7 +7242,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.DrawMeshBetweenTouchingLabels
+    // net.haesleinhuepf.clij2.plugins.DrawMeshBetweenTouchingLabels
     //----------------------------------------------------
     /**
      * Starting from a label map, draw lines between touching neighbors resulting in a mesh.
@@ -7241,7 +7255,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ExcludeLabelsOutsideSizeRange
+    // net.haesleinhuepf.clij2.plugins.ExcludeLabelsOutsideSizeRange
     //----------------------------------------------------
     /**
      * Removes labels from a label map which are not within a certain size range.
@@ -7254,13 +7268,21 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ExtendLabelsWithMaximumRadius
+    // net.haesleinhuepf.clij2.plugins.DilateLabels
     //----------------------------------------------------
     /**
      * Extend labels with a given radius.
      * 
      * This is actually a local maximum filter applied to a label map which does not overwrite labels.
      * It is recommended to apply this operation to isotropic images only.
+     */
+    public static ClearCLBuffer dilate_labels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        DilateLabels.dilateLabels(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
+    }
+
+    /**
+     * 
      */
     public static ClearCLBuffer extend_labels_with_maximum_radius(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
         DilateLabels.extendLabelsWithMaximumRadius(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
@@ -7279,7 +7301,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MakeIsotropic
+    // net.haesleinhuepf.clij2.plugins.MakeIsotropic
     //----------------------------------------------------
     /**
      * Applies a scaling operation using linear interpolation to generate an image stack with a given isotropic voxel size.
@@ -7290,10 +7312,10 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.TouchingNeighborCountMap
+    // net.haesleinhuepf.clij2.plugins.TouchingNeighborCountMap
     //----------------------------------------------------
     /**
-     * Takes a label map, determines which labels touch and replaces every label with the number of touching neighboring labels.
+     * Takes a label map, determines which labels touch and replaces every label with the number of touching neighbor labels.
      * 
      * 
      */
@@ -7303,7 +7325,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.RigidTransform
+    // net.haesleinhuepf.clij2.plugins.RigidTransform
     //----------------------------------------------------
     /**
      * Applies a rigid transform using linear interpolation to an image stack.
@@ -7314,7 +7336,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.SphereTransform
+    // net.haesleinhuepf.clij2.plugins.SphereTransform
     //----------------------------------------------------
     /**
      * Turns an image stack in XYZ cartesian coordinate system to an AID polar coordinate system.
@@ -7396,41 +7418,41 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelMeanIntensityMap
+    // net.haesleinhuepf.clij2.plugins.MeanIntensityMap
     //----------------------------------------------------
     /**
      * Takes an image and a corresponding label map, determines the mean intensity per label and replaces every label with the that number.
      * 
      * This results in a parametric image expressing mean object intensity.
      */
-    public static ClearCLBuffer label_mean_intensity_map(ClearCLBuffer input, ClearCLBuffer label_map, ClearCLBuffer destination) {
-        MeanIntensityMap.meanIntensityMap(getCLIJ2(), input, label_map, destination);
+    public static ClearCLBuffer mean_intensity_map(ClearCLBuffer intensity_image, ClearCLBuffer label_map, ClearCLBuffer destination) {
+        MeanIntensityMap.meanIntensityMap(getCLIJ2(), intensity_image, label_map, destination);
         return destination;
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelStandardDeviationIntensityMap
+    // net.haesleinhuepf.clij2.plugins.StandardDeviationIntensityMap
     //----------------------------------------------------
     /**
      * Takes an image and a corresponding label map, determines the standard deviation of the intensity per label and replaces every label with the that number.
      * 
      * This results in a parametric image expressing standard deviation of object intensity.
      */
-    public static ClearCLBuffer label_standard_deviation_intensity_map(ClearCLBuffer input, ClearCLBuffer label_map, ClearCLBuffer destination) {
-        StandardDeviationIntensityMap.standardDeviationIntensityMap(getCLIJ2(), input, label_map, destination);
+    public static ClearCLBuffer standard_deviation_intensity_map(ClearCLBuffer intensity_image, ClearCLBuffer label_map, ClearCLBuffer destination) {
+        StandardDeviationIntensityMap.standardDeviationIntensityMap(getCLIJ2(), intensity_image, label_map, destination);
         return destination;
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelPixelCountMap
+    // net.haesleinhuepf.clij2.plugins.PixelCountMap
     //----------------------------------------------------
     /**
      * Takes a label map, determines the number of pixels per label and replaces every label with the that number.
      * 
      * This results in a parametric image expressing area or volume.
      */
-    public static ClearCLBuffer label_pixel_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        PixelCountMap.labelPixelCountMap(getCLIJ2(), input, destination);
+    public static ClearCLBuffer pixel_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        PixelCountMap.pixelCountMap(getCLIJ2(), input, destination);
         return destination;
     }
 
@@ -7492,7 +7514,7 @@ abstract class SnakeInterface extends CommonAPI {
     // net.haesleinhuepf.clijx.plugins.ResetMetaData
     //----------------------------------------------------
 
-    // net.haesleinhuepf.clijx.plugins.AverageDistanceOfNClosestNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.AverageDistanceOfNClosestNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label map, determines distances between all centroids and replaces every label with the average distance to the n closest neighboring labels.
@@ -7519,77 +7541,21 @@ abstract class SnakeInterface extends CommonAPI {
 
     // net.haesleinhuepf.clijx.plugins.LocalMaximumAverageDistanceOfNClosestNeighborsMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines distances between all centroids, the mean distance of the n closest points for every point
-     *  and replaces every label with the maximum distance of touching labels.
-     */
-    public static ClearCLBuffer local_maximum_average_distance_of_n_closest_neighbors_map(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        LocalMaximumAverageDistanceOfNClosestNeighborsMap.localMaximumAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return arg2;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMaximumAverageNeighborDistanceMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines which labels touch, the distance between their centroids and the maximum distancebetween touching neighbors. It then replaces every label with the that value.
-     */
-    public static ClearCLBuffer local_maximum_average_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalMaximumAverageNeighborDistanceMap.localMaximumAverageNeighborDistanceMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMaximumTouchingNeighborCountMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines which labels touch, determines for every label with the number of touching 
-     * neighboring labels and replaces the label index with the local maximum of this count.
-     * 
-     * 
-     */
-    public static ClearCLBuffer local_maximum_touching_neighbor_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalMaximumTouchingNeighborCountMap.localMaximumTouchingNeighborCountMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMeanAverageDistanceOfNClosestNeighborsMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines distances between all centroids, the mean distance of the n closest points for every point
-     *  and replaces every label with the mean distance of touching labels.
-     */
-    public static ClearCLBuffer local_mean_average_distance_of_n_closest_neighbors_map(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        LocalMeanAverageDistanceOfNClosestNeighborsMap.localMeanAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return arg2;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMeanAverageNeighborDistanceMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines which labels touch, the distance between their centroids and the mean distancebetween touching neighbors. It then replaces every label with the that value.
-     */
-    public static ClearCLBuffer local_mean_average_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalMeanAverageNeighborDistanceMap.localMeanAverageNeighborDistanceMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMeanTouchingNeighborCountMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines which labels touch, determines for every label with the number of touching 
-     * neighboring labels and replaces the label index with the local mean of this count.
-     * 
-     * 
-     */
-    public static ClearCLBuffer local_mean_touching_neighbor_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalMeanTouchingNeighborCountMap.localMeanTouchingNeighborCountMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMeanTouchPortionMap
     //----------------------------------------------------
@@ -7608,159 +7574,79 @@ abstract class SnakeInterface extends CommonAPI {
 
     // net.haesleinhuepf.clijx.plugins.LocalMedianAverageDistanceOfNClosestNeighborsMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines distances between all centroids, the mean distance of the n closest points for every point
-     *  and replaces every label with the median distance of touching labels.
-     */
-    public static ClearCLBuffer local_median_average_distance_of_n_closest_neighbors_map(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        LocalMedianAverageDistanceOfNClosestNeighborsMap.localMedianAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return arg2;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMedianAverageNeighborDistanceMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines which labels touch, the distance between their centroids and the median distancebetween touching neighbors. It then replaces every label with the that value.
-     */
-    public static ClearCLBuffer local_median_average_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalMedianAverageNeighborDistanceMap.localMedianAverageNeighborDistanceMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMedianTouchingNeighborCountMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines which labels touch, determines for every label with the number of touching 
-     * neighboring labels and replaces the label index with the local median of this count.
-     * 
-     * 
-     */
-    public static ClearCLBuffer local_median_touching_neighbor_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalMedianTouchingNeighborCountMap.localMedianTouchingNeighborCountMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMinimumAverageDistanceOfNClosestNeighborsMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines distances between all centroids, the mean distance of the n closest points for every point
-     *  and replaces every label with the minimum distance of touching labels.
-     */
-    public static ClearCLBuffer local_minimum_average_distance_of_n_closest_neighbors_map(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        LocalMinimumAverageDistanceOfNClosestNeighborsMap.localMinimumAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return arg2;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMinimumAverageNeighborDistanceMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines which labels touch, the distance between their centroids and the minimum distancebetween touching neighbors. It then replaces every label with the that value.
-     */
-    public static ClearCLBuffer local_minimum_average_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalMinimumAverageNeighborDistanceMap.localMinimumAverageNeighborDistanceMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMinimumTouchingNeighborCountMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines which labels touch, determines for every label with the number of touching 
-     * neighboring labels and replaces the label index with the local minimum of this count.
-     * 
-     * 
-     */
-    public static ClearCLBuffer local_minimum_touching_neighbor_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalMinimumTouchingNeighborCountMap.localMinimumTouchingNeighborCountMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalStandardDeviationAverageDistanceOfNClosestNeighborsMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines distances between all centroids, the mean distance of the n closest points for every point
-     *  and replaces every label with the standard deviation distance of touching labels.
-     */
-    public static ClearCLBuffer local_standard_deviation_average_distance_of_n_closest_neighbors_map(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        LocalStandardDeviationAverageDistanceOfNClosestNeighborsMap.localStandardDeviationAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return arg2;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalStandardDeviationAverageNeighborDistanceMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines which labels touch, the distance between their centroids and the standard deviation distancebetween touching neighbors. It then replaces every label with the that value.
-     */
-    public static ClearCLBuffer local_standard_deviation_average_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalStandardDeviationAverageNeighborDistanceMap.localStandardDeviationAverageNeighborDistanceMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalStandardDeviationTouchingNeighborCountMap
     //----------------------------------------------------
+
+    // net.haesleinhuepf.clij2.plugins.MinimumIntensityMap
+    //----------------------------------------------------
     /**
-     * Takes a label map, determines which labels touch, determines for every label with the number of touching 
-     * neighboring labels and replaces the label index with the local standard deviation of this count.
+     * Takes an image and a corresponding label map, determines the minimum intensity per label and replaces every label with the that number.
      * 
-     * 
+     * This results in a parametric image expressing mean object intensity.
      */
-    public static ClearCLBuffer local_standard_deviation_touching_neighbor_count_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalStandardDeviationTouchingNeighborCountMap.localStandardDeviationTouchingNeighborCountMap(getCLIJ2(), input, destination);
+    public static ClearCLBuffer minimum_intensity_map(ClearCLBuffer intensity_image, ClearCLBuffer label_map, ClearCLBuffer destination) {
+        MinimumIntensityMap.minimumIntensityMap(getCLIJ2(), intensity_image, label_map, destination);
         return destination;
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelMinimumIntensityMap
+    // net.haesleinhuepf.clij2.plugins.MaximumIntensityMap
     //----------------------------------------------------
     /**
+     * Takes an image and a corresponding label map, determines the maximum intensity per label and replaces every label with the that number.
      * 
+     * This results in a parametric image expressing mean object intensity.
      */
-    public static ClearCLBuffer label_minimum_intensity_map(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3) {
-        MinimumIntensityMap.minimumIntensityMap(getCLIJ2(), arg1, arg2, arg3);
-        return arg3;
+    public static ClearCLBuffer maximum_intensity_map(ClearCLBuffer intensity_image, ClearCLBuffer label_map, ClearCLBuffer destination) {
+        MaximumIntensityMap.maximumIntensityMap(getCLIJ2(), intensity_image, label_map, destination);
+        return destination;
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelMaximumIntensityMap
+    // net.haesleinhuepf.clij2.plugins.ExtensionRatioMap
     //----------------------------------------------------
     /**
+     * Takes a label map, determines for every label the extension ratio and replaces every label with the that number.
      * 
+     * The extension ratio is the maximum distance of any pixel in the label to the label centroid divided by the average distance of all pixels in the label to the centroid.
      */
-    public static ClearCLBuffer label_maximum_intensity_map(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3) {
-        MaximumIntensityMap.maximumIntensityMap(getCLIJ2(), arg1, arg2, arg3);
-        return arg3;
+    public static ClearCLBuffer extension_ratio_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        ExtensionRatioMap.extensionRatioMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelMaximumExtensionRatioMap
+    // net.haesleinhuepf.clij2.plugins.MaximumExtensionMap
     //----------------------------------------------------
     /**
      * Takes a label map, determines for every label the maximum distance of any pixel to the centroid and replaces every label with the that number.
      * 
      * 
      */
-    public static ClearCLBuffer label_maximum_extension_ratio_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        ExtensionRatioMap.labelMaximumExtensionRatioMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
-
-    // net.haesleinhuepf.clijx.plugins.LabelMaximumExtensionMap
-    //----------------------------------------------------
-    /**
-     * Takes a label map, determines for every label the maximum distance of any pixel to the centroid and replaces every label with the that number.
-     * 
-     * 
-     */
-    public static ClearCLBuffer label_maximum_extension_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        MaximumExtensionMap.labelMaximumExtensionMap(getCLIJ2(), input, destination);
+    public static ClearCLBuffer maximum_extension_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        MaximumExtensionMap.maximumExtensionMap(getCLIJ2(), input, destination);
         return destination;
     }
 
@@ -7804,7 +7690,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.DivideByGaussianBackground
+    // net.haesleinhuepf.clij2.plugins.DivideByGaussianBackground
     //----------------------------------------------------
     /**
      * Applies Gaussian blur to the input image and divides the original by the result.
@@ -7963,7 +7849,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelSurface
+    // net.haesleinhuepf.clij2.plugins.LabelSurface
     //----------------------------------------------------
     /**
      * Takes a label map and excludes all labels which are not on the surface.
@@ -7976,8 +7862,16 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ReduceLabelsToLabelledSpots
+    // net.haesleinhuepf.clij2.plugins.ReduceLabelsToCentroids
     //----------------------------------------------------
+    /**
+     * Takes a label map and reduces all labels to their center spots. Label IDs stay and background will be zero.
+     */
+    public static ClearCLBuffer reduce_labels_to_centroids(ClearCLBuffer input_labels, ClearCLBuffer destination_labels) {
+        ReduceLabelsToCentroids.reduceLabelsToCentroids(getCLIJ2(), input_labels, destination_labels);
+        return destination_labels;
+    }
+
     /**
      * Takes a label map and reduces all labels to their center spots. Label IDs stay and background will be zero.
      */
@@ -7987,14 +7881,14 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelMeanExtensionMap
+    // net.haesleinhuepf.clij2.plugins.MeanExtensionMap
     //----------------------------------------------------
     /**
      * Takes a label map, determines for every label the mean distance of any pixel to the centroid and replaces every label with the that number.
      * 
      * 
      */
-    public static ClearCLBuffer label_mean_extension_map(ClearCLBuffer input, ClearCLBuffer destination) {
+    public static ClearCLBuffer mean_extension_map(ClearCLBuffer input, ClearCLBuffer destination) {
         MeanExtensionMap.meanExtensionMap(getCLIJ2(), input, destination);
         return destination;
     }
@@ -8011,7 +7905,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.EuclideanDistanceFromLabelCentroidMap
+    // net.haesleinhuepf.clij2.plugins.EuclideanDistanceFromLabelCentroidMap
     //----------------------------------------------------
     /**
      * Takes a label map, determines the centroids of all labels and writes the distance of all labelled pixels to their centroid in the result image.
@@ -8023,7 +7917,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.GammaCorrection
+    // net.haesleinhuepf.clij2.plugins.GammaCorrection
     //----------------------------------------------------
     /**
      * Applies a gamma correction to an image.
@@ -8036,7 +7930,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ZPositionOfMaximumZProjection
+    // net.haesleinhuepf.clij2.plugins.ZPositionOfMaximumZProjection
     //----------------------------------------------------
     /**
      * Determines a Z-position of the maximum intensity along Z and writes it into the resulting image.
@@ -8049,12 +7943,12 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ZPositionProjection
+    // net.haesleinhuepf.clij2.plugins.ZPositionProjection
     //----------------------------------------------------
     /**
      * Project a defined Z-slice of a 3D stack into a 2D image.
      * 
-     * The slice is determined using a separate 2D image.
+     * Which Z-slice is defined as the z_position image, which represents an altitude map.
      */
     public static ClearCLImageInterface z_position_projection(ClearCLImageInterface source_stack, ClearCLImageInterface z_position, ClearCLImageInterface destination) {
         ZPositionProjection.zPositionProjection(getCLIJ2(), source_stack, z_position, destination);
@@ -8062,12 +7956,12 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ZPositionRangeProjection
+    // net.haesleinhuepf.clij2.plugins.ZPositionRangeProjection
     //----------------------------------------------------
     /**
      * Project multiple Z-slices of a 3D stack into a new 3D stack.
      * 
-     * The slices are defined using a separate 2D image containing z-positions and two numbers defining the range.
+     * Which Z-slice is defined as the z_position image, which represents an altitude map. The two additional numbers define the range relative to the given z-position.
      */
     public static ClearCLImageInterface z_position_range_projection(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3, int arg4, int arg5) {
         ZPositionRangeProjection.zPositionRangeProjection(getCLIJ2(), arg1, arg2, arg3, arg4, arg5);
@@ -8075,7 +7969,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.VarianceSphere
+    // net.haesleinhuepf.clij2.plugins.VarianceSphere
     //----------------------------------------------------
     /**
      * Computes the local variance of a pixels spherical neighborhood. 
@@ -8089,7 +7983,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.StandardDeviationSphere
+    // net.haesleinhuepf.clij2.plugins.StandardDeviationSphere
     //----------------------------------------------------
     /**
      * Computes the local standard deviation of a pixels spherical neighborhood. 
@@ -8103,7 +7997,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.VarianceBox
+    // net.haesleinhuepf.clij2.plugins.VarianceBox
     //----------------------------------------------------
     /**
      * Computes the local variance of a pixels box neighborhood. 
@@ -8117,7 +8011,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.StandardDeviationBox
+    // net.haesleinhuepf.clij2.plugins.StandardDeviationBox
     //----------------------------------------------------
     /**
      * Computes the local standard deviation of a pixels box neighborhood. 
@@ -8131,7 +8025,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.Tenengrad
+    // net.haesleinhuepf.clij2.plugins.Tenengrad
     //----------------------------------------------------
     /**
      * Convolve the image with the Tenengrad kernel slice by slice.
@@ -8142,7 +8036,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.TenengradSliceBySlice
+    // net.haesleinhuepf.clij2.plugins.TenengradSliceBySlice
     //----------------------------------------------------
     /**
      * Convolve the image with the Tenengrad kernel slice by slice.
@@ -8153,7 +8047,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.SobelSliceBySlice
+    // net.haesleinhuepf.clij2.plugins.SobelSliceBySlice
     //----------------------------------------------------
     /**
      * Convolve the image with the Sobel kernel slice by slice.
@@ -8164,7 +8058,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ExtendedDepthOfFocusSobelProjection
+    // net.haesleinhuepf.clij2.plugins.ExtendedDepthOfFocusSobelProjection
     //----------------------------------------------------
     /**
      * Extended depth of focus projection maximizing local pixel intensity variance.
@@ -8177,7 +8071,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ExtendedDepthOfFocusTenengradProjection
+    // net.haesleinhuepf.clij2.plugins.ExtendedDepthOfFocusTenengradProjection
     //----------------------------------------------------
     /**
      * Extended depth of focus projection maximizing intensity in the local sobel image.
@@ -8190,7 +8084,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ExtendedDepthOfFocusVarianceProjection
+    // net.haesleinhuepf.clij2.plugins.ExtendedDepthOfFocusVarianceProjection
     //----------------------------------------------------
     /**
      * Extended depth of focus projection maximizing local pixel intensity variance.
@@ -8203,20 +8097,10 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.DrawMeshBetweenNClosestLabels
+    // net.haesleinhuepf.clij2.plugins.DrawMeshBetweenNClosestLabels
     //----------------------------------------------------
-    /**
-     * Starting from a label map, draw lines between n closest labels for each label resulting in a mesh.
-     * 
-     * The end points of the lines correspond to the centroids of the labels. 
-     */
-    public static ClearCLBuffer draw_mesh_between_n_closest_labels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        DrawMeshBetweenNNearestLabels.drawMeshBetweenNClosestLabels(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return arg2;
-    }
 
-
-    // net.haesleinhuepf.clijx.plugins.DrawMeshBetweenProximalLabels
+    // net.haesleinhuepf.clij2.plugins.DrawMeshBetweenProximalLabels
     //----------------------------------------------------
     /**
      * Starting from a label map, draw lines between labels that are closer than a given distance resulting in a mesh.
@@ -8229,7 +8113,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.Cosinus
+    // net.haesleinhuepf.clij2.plugins.Cosinus
     //----------------------------------------------------
     /**
      * Computes the cosinus of all pixels value x.
@@ -8242,7 +8126,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.Sinus
+    // net.haesleinhuepf.clij2.plugins.Sinus
     //----------------------------------------------------
     /**
      * Computes the sinus of all pixels value x.
@@ -8270,7 +8154,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MaximumDistanceOfTouchingNeighbors
+    // net.haesleinhuepf.clij2.plugins.MaximumDistanceOfTouchingNeighbors
     //----------------------------------------------------
     /**
      * Takes a touch matrix and a distance matrix to determine the maximum distance of touching neighbors for every object.
@@ -8281,27 +8165,27 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MaximumNeighborDistanceMap
+    // net.haesleinhuepf.clij2.plugins.MaximumTouchingNeighborDistanceMap
     //----------------------------------------------------
     /**
      * Takes a label map, determines which labels touch and replaces every label with the maximum distance to their neighboring labels.
      * 
      * To determine the distances, the centroid of the labels is determined internally.
      */
-    public static ClearCLBuffer maximum_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
-        MaximumTouchingNeighborDistanceMap.maximumNeighborDistanceMap(getCLIJ2(), input, destination);
+    public static ClearCLBuffer maximum_touching_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
+        MaximumTouchingNeighborDistanceMap.maximumTouchingNeighborDistanceMap(getCLIJ2(), input, destination);
         return destination;
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MinimumNeighborDistanceMap
+    // net.haesleinhuepf.clij2.plugins.MinimumTouchingNeighborDistanceMap
     //----------------------------------------------------
     /**
      * Takes a label map, determines which labels touch and replaces every label with the minimum distance to their neighboring labels.
      * 
      * To determine the distances, the centroid of the labels is determined internally.
      */
-    public static ClearCLBuffer minimum_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
+    public static ClearCLBuffer minimum_touching_neighbor_distance_map(ClearCLBuffer input, ClearCLBuffer destination) {
         MinimumTouchingNeighborDistanceMap.minimumTouchingNeighborDistanceMap(getCLIJ2(), input, destination);
         return destination;
     }
@@ -8347,23 +8231,25 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.NeighborDistanceRangeRatioMap
+    // net.haesleinhuepf.clij2.plugins.TouchingNeighborDistanceRangeRatioMap
     //----------------------------------------------------
     /**
-     * Takes a label map, determines which labels touch and replaces every label with the minimum distance to their neighboring labels.
+     * Takes a label map, determines which labels touch and replaces every label with the distance range ratio (maximum distance divided by minimum distance) to their neighboring labels.
      * 
-     * To determine the distances, the centroid of the labels is determined internally.
+     * To determine the distances, the centroids of the labels is determined internally.
      */
-    public static ClearCLBuffer neighbor_distance_range_ratio_map(ClearCLBuffer input, ClearCLBuffer destination) {
+    public static ClearCLBuffer touching_neighbor_distance_range_ratio_map(ClearCLBuffer input, ClearCLBuffer destination) {
         TouchingNeighborDistanceRangeRatioMap.touchingNeighborDistanceRangeRatioMap(getCLIJ2(), input, destination);
         return destination;
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.VoronoiOtsuLabeling
+    // net.haesleinhuepf.clij2.plugins.VoronoiOtsuLabeling
     //----------------------------------------------------
     /**
-     * Applies two Gaussian blurs, spot detection, Otsu-thresholding and Voronoi-labeling.
+     * Labeles objects directly from grey-value images.
+     * 
+     * The two sigma parameters allow tuning the segmentation result. The first sigma controls how close detected cells can be (spot_sigma) and the second controls how precise segmented objects are outlined (outline_sigma).Under the hood, this filter applies two Gaussian blurs, spot detection, Otsu-thresholding and Voronoi-labeling.
      * The thresholded binary image is flooded using the Voronoi approach starting from the found local maxima.
      * Noise-removal sigma for spot detection and thresholding can be configured separately.
      */
@@ -8398,7 +8284,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MaskedVoronoiLabeling
+    // net.haesleinhuepf.clij2.plugins.MaskedVoronoiLabeling
     //----------------------------------------------------
     /**
      * Takes a binary image, labels connected components and dilates the regions using a octagon shape until they touch and only inside another binary mask image.
@@ -8413,7 +8299,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.PullToResultsTableColumn
+    // net.haesleinhuepf.clij2.plugins.PullToResultsTableColumn
     //----------------------------------------------------
     /**
      * Copies the content of a vector image to a column in the results table.
@@ -8441,7 +8327,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ModeOfTouchingNeighbors
+    // net.haesleinhuepf.clij2.plugins.ModeOfTouchingNeighbors
     //----------------------------------------------------
     /**
      * Takes a touch matrix and a vector of values to determine the most popular integer value among touching neighbors for every object.
@@ -8453,7 +8339,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.GenerateProximalNeighborsMatrix
+    // net.haesleinhuepf.clij2.plugins.GenerateProximalNeighborsMatrix
     //----------------------------------------------------
     /**
      * Produces a touch-matrix where the neighbors within a given distance range are marked as touching neighbors.
@@ -8498,7 +8384,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MaximumOfTouchingNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.MaximumOfTouchingNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
@@ -8528,7 +8414,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MinimumOfTouchingNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.MinimumOfTouchingNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
@@ -8558,7 +8444,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MeanOfTouchingNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.MeanOfTouchingNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
@@ -8588,7 +8474,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ModeOfTouchingNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.ModeOfTouchingNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
@@ -8618,11 +8504,11 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.StandardDeviationOfTouchingNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.StandardDeviationOfTouchingNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
-     * by the standard deviation value of neighboring labels. The radius of the neighborhood can be configured:
+     * by the standard deviation value of touching neighbor labels. The radius of the neighborhood can be configured:
      * * radius 0: Nothing is replaced
      * * radius 1: direct neighbors are taken into account
      * * radius 2: neighbors and neighbors or neighbors are taken into account
@@ -8648,7 +8534,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.PointIndexListToTouchMatrix
+    // net.haesleinhuepf.clij2.plugins.PointIndexListToTouchMatrix
     //----------------------------------------------------
     /**
      * Takes a list of point indices to generate a touch matrix (a.k.a. adjacency graph matrix) out of it. 
@@ -8667,7 +8553,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.GenerateNNearestNeighborsMatrix
+    // net.haesleinhuepf.clij2.plugins.GenerateNNearestNeighborsMatrix
     //----------------------------------------------------
     /**
      * Produces a touch-matrix where the n nearest neighbors are marked as touching neighbors. 
@@ -8697,7 +8583,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MaximumOfNNearestNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.MaximumOfNNearestNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
@@ -8718,7 +8604,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MinimumOfNNearestNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.MinimumOfNNearestNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
@@ -8739,7 +8625,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MeanOfNNearestNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.MeanOfNNearestNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
@@ -8760,7 +8646,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ModeOfNNearestNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.ModeOfNNearestNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
@@ -8781,7 +8667,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.StandardDeviationOfNNearestNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.StandardDeviationOfNNearestNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
@@ -8802,7 +8688,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MaximumOfProximalNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.MaximumOfProximalNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image by the maximum value of neighboring labels.
@@ -8826,7 +8712,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MinimumOfProximalNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.MinimumOfProximalNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image by the minimum value of neighboring labels.
@@ -8850,7 +8736,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MeanOfProximalNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.MeanOfProximalNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image by the mean average value of neighboring labels.
@@ -8874,7 +8760,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ModeOfProximalNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.ModeOfProximalNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image by the most popular value of neighboring labels.
@@ -8898,7 +8784,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.StandardDeviationOfProximalNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.StandardDeviationOfProximalNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image by the standard deviation value of neighboring labels.
@@ -8922,7 +8808,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelOverlapCountMap
+    // net.haesleinhuepf.clij2.plugins.LabelOverlapCountMap
     //----------------------------------------------------
     /**
      * Takes two label maps, and counts for every label in label map 1 how many labels overlap with it in label map 2.
@@ -8935,7 +8821,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelProximalNeighborCountMap
+    // net.haesleinhuepf.clij2.plugins.LabelProximalNeighborCountMap
     //----------------------------------------------------
     /**
      * Takes two label maps, and counts for every label in label map 1 how many labels are in a given distance range to it in label map 2.
@@ -8948,7 +8834,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ReduceLabelsToLabelEdges
+    // net.haesleinhuepf.clij2.plugins.ReduceLabelsToLabelEdges
     //----------------------------------------------------
     /**
      * Takes a label map and reduces all labels to their edges. Label IDs stay the same and background will be zero.
@@ -8959,7 +8845,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.OutOfIntensityRange
+    // net.haesleinhuepf.clij2.plugins.OutOfIntensityRange
     //----------------------------------------------------
     /**
      * Sets all pixels to 1 if their intensity lies out of a given range, and 0 otherwise.
@@ -8972,7 +8858,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ShrinkLabels
+    // net.haesleinhuepf.clij2.plugins.ErodeLabels
     //----------------------------------------------------
     /**
      * Extend labels with a given radius.
@@ -8982,13 +8868,13 @@ abstract class SnakeInterface extends CommonAPI {
      * It is recommended to apply this operation to isotropic images only.
      * Warning: If labels were too small, they may be missing in the resulting label image.
      */
-    public static ClearCLBuffer shrink_labels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, boolean arg4) {
-        ErodeLabels.shrinkLabels(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), arg4);
+    public static ClearCLBuffer erode_labels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, boolean arg4) {
+        ErodeLabels.erodeLabels(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), arg4);
         return arg2;
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.Similar
+    // net.haesleinhuepf.clij2.plugins.Similar
     //----------------------------------------------------
     /**
      * Determines the absolute difference between two images and sets all pixels to 1 where it is below or equal a given tolerance, and 0 otherwise.
@@ -8999,7 +8885,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.Different
+    // net.haesleinhuepf.clij2.plugins.Different
     //----------------------------------------------------
     /**
      * Determines the absolute difference between two images and sets all pixels to 1 where it is above a given tolerance, and 0 otherwise.
@@ -9047,7 +8933,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MedianZProjectionMasked
+    // net.haesleinhuepf.clij2.plugins.MedianZProjectionMasked
     //----------------------------------------------------
     /**
      * Determines the median intensity projection of an image stack along Z where pixels in a corresponding mask image are unequal to zero.
@@ -9084,7 +8970,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.DivideScalarByImage
+    // net.haesleinhuepf.clij2.plugins.DivideScalarByImage
     //----------------------------------------------------
     /**
      * Divides a scalar s by image X pixel wise. 
@@ -9097,7 +8983,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ReadValuesFromMap
+    // net.haesleinhuepf.clij2.plugins.ReadValuesFromMap
     //----------------------------------------------------
     /**
      * Takes a label image and an parametric image and reads parametric values from the labels positions.
@@ -9118,7 +9004,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ReadValuesFromPositions
+    // net.haesleinhuepf.clij2.plugins.ReadValuesFromPositions
     //----------------------------------------------------
     /**
      * Takes a pointlist and a parametric image and reads parametric values from the positions.
@@ -9137,7 +9023,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ZPositionOfMinimumZProjection
+    // net.haesleinhuepf.clij2.plugins.ZPositionOfMinimumZProjection
     //----------------------------------------------------
     /**
      * Determines a Z-position of the minimum intensity along Z and writes it into the resulting image.
@@ -9298,7 +9184,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.GreyscaleOpeningBox
+    // net.haesleinhuepf.clij2.plugins.GreyscaleOpeningBox
     //----------------------------------------------------
     /**
      * Apply a greyscale morphological opening to the input image.
@@ -9312,7 +9198,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.GreyscaleOpeningSphere
+    // net.haesleinhuepf.clij2.plugins.GreyscaleOpeningSphere
     //----------------------------------------------------
     /**
      * Apply a greyscale morphological opening to the input image.
@@ -9326,7 +9212,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.GreyscaleClosingBox
+    // net.haesleinhuepf.clij2.plugins.GreyscaleClosingBox
     //----------------------------------------------------
     /**
      * Apply a greyscale morphological closing to the input image.
@@ -9340,7 +9226,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.GreyscaleClosingSphere
+    // net.haesleinhuepf.clij2.plugins.GreyscaleClosingSphere
     //----------------------------------------------------
     /**
      * Apply a greyscale morphological closing to the input image.
@@ -9354,7 +9240,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ProximalNeighborCountMap
+    // net.haesleinhuepf.clij2.plugins.ProximalNeighborCountMap
     //----------------------------------------------------
     /**
      * Takes a label map, determines which labels are within a given distance range and replaces every label with the number of neighboring labels.
@@ -9367,7 +9253,7 @@ abstract class SnakeInterface extends CommonAPI {
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.SubStack
+    // net.haesleinhuepf.clij2.plugins.SubStack
     //----------------------------------------------------
     /**
      * Crops multiple Z-slices of a 3D stack into a new 3D stack.
@@ -9379,5 +9265,18 @@ abstract class SnakeInterface extends CommonAPI {
         return arg2;
     }
 
+
+    // net.haesleinhuepf.clij2.plugins.DrawMeshBetweenNNearestLabels
+    //----------------------------------------------------
+    /**
+     * Starting from a label map, draw lines between n closest labels for each label resulting in a mesh.
+     * 
+     * The end points of the lines correspond to the centroids of the labels. 
+     */
+    public static ClearCLBuffer draw_mesh_between_n_nearest_labels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        DrawMeshBetweenNNearestLabels.drawMeshBetweenNNearestLabels(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
+    }
+
 }
-// 593 methods generated.
+// 581 methods generated.
