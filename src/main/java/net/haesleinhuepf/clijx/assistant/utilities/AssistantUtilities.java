@@ -1528,6 +1528,7 @@ public class AssistantUtilities {
             System.out.println("Error while checking the CLIJ2 installation:");
             System.out.println(e.getMessage());
         }
+
         return isCLIJxAssistantInstalled;
     }
 
