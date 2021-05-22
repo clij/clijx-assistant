@@ -2,7 +2,7 @@ package net.haesleinhuepf.clijx.assistant;
 
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPluginService;
 import net.haesleinhuepf.clijx.assistant.services.MenuService;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
