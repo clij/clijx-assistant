@@ -150,7 +150,9 @@ public class MenuService {
                 if (plugin instanceof IsCategorized) {
                     tags = ((IsCategorized) plugin).getCategories();
                 }
-                names_and_tags.add(name + "," + tags + "," + getCompatibilityString(name));
+                if (plugin.getClass().getPackage().toString().contains(".clij2.") || AssistantUtilities.CLIJxAssistantInstalled()) {
+                    names_and_tags.add(name + "," + tags + "," + getCompatibilityString(name));
+                }
             }
         }
 
