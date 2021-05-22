@@ -1502,6 +1502,28 @@ public class AssistantUtilities {
             frame.removeWindowListener(listener);
         }*/
     }
+
+    private static boolean CLIJxAssistantInstalled() {
+        try {
+            String dir = IJ.getDirectory("imagej");
+            if (!dir.contains("null") && dir.toLowerCase().contains("fiji")) {
+                // we're in a Fiji folder
+                File plugins_dir = new File(dir + "/plugins");
+                if (!jarExists(plugins_dir, "clijx-assistant_")) {
+                    return false;
+                }
+            }
+        }catch (Exception e) {
+            System.out.println("Error while checking the CLIJ2 installation:");
+            System.out.println(e.getMessage());
+        }
+        return true;
+    }
+
+    private static boolean jarExists(File folder, String name) {
+        return folder.list((dir, name1) -> name1.contains(name)).length > 0;
+    }
+
 /*
     class CloseListener implements WindowListener {
 
