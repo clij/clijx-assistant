@@ -12,9 +12,9 @@ import net.haesleinhuepf.clijx.CLIJx;
 import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.*;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
-import net.haesleinhuepf.clijx.gui.MemoryDisplay;
+import net.haesleinhuepf.clij2.gui.MemoryDisplay;
 import net.haesleinhuepf.clijx.assistant.AssistantGUIStartingPoint;
-import net.haesleinhuepf.clijx.plugins.VisualizeOutlinesOnOriginal;
+import net.haesleinhuepf.clij2.plugins.VisualizeOutlinesOnOriginal;
 
 import java.io.FileNotFoundException;
 

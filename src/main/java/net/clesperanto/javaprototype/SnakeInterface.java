@@ -496,7 +496,7 @@ import net.haesleinhuepf.clij2.plugins.MinimumTouchingNeighborDistanceMap;
 import net.haesleinhuepf.clijx.plugins.GenerateAngleMatrix;
 import net.haesleinhuepf.clij2.plugins.TouchingNeighborDistanceRangeRatioMap;
 import net.haesleinhuepf.clij2.plugins.VoronoiOtsuLabeling;
-import net.haesleinhuepf.clijx.plugins.VisualizeOutlinesOnOriginal;
+import net.haesleinhuepf.clij2.plugins.VisualizeOutlinesOnOriginal;
 import net.haesleinhuepf.clijx.plugins.FlagLabelsOnEdges;
 import net.haesleinhuepf.clij2.plugins.MaskedVoronoiLabeling;
 import net.haesleinhuepf.clij2.plugins.PullToResultsTableColumn;
