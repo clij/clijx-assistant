@@ -807,6 +807,10 @@ public abstract class AbstractCLIJxAssistantGUIPlugin extends AbstractAssistantG
             for (int i = 0; i < 2; i++) {
                 for (String name : favNames) {
                     CLIJMacroPlugin clijPlugin = CLIJMacroPluginService.getInstance().getService().getCLIJMacroPlugin(name);
+                    if (clijPlugin == null) {
+                        System.out.println("Warning: No plugin found for: " + name);
+                        continue;
+                    }
                     if (
                             (isSuitable(clijPlugin, this) && isReasonable(clijPlugin, this) && i == 0) ||
                             (((!isSuitable(clijPlugin, this)) || (!isReasonable(clijPlugin, this))) && i == 1)) {
