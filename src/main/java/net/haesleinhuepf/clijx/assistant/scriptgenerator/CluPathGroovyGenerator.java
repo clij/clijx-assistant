@@ -1,7 +1,8 @@
 package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 
 import ij.ImagePlus;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.scriptgenerator.GroovyGenerator;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import org.scijava.util.VersionUtils;
 

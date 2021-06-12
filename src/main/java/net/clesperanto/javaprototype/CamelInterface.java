@@ -36,7 +36,7 @@ import net.haesleinhuepf.clijx.plugins.Presign;
 import net.haesleinhuepf.clij2.plugins.JaccardIndex;
 import net.haesleinhuepf.clij2.plugins.SorensenDiceCoefficient;
 import net.haesleinhuepf.clij2.plugins.StandardDeviationZProjection;
-import net.haesleinhuepf.clijx.plugins.StackToTiles;
+import net.haesleinhuepf.clij2.plugins.StackToTiles;
 import net.haesleinhuepf.clijx.plugins.SubtractBackground2D;
 import net.haesleinhuepf.clijx.plugins.SubtractBackground3D;
 import net.haesleinhuepf.clij2.plugins.TopHatBox;
@@ -324,8 +324,8 @@ import net.haesleinhuepf.clij2.plugins.ConnectedComponentsLabelingBox;
 import net.haesleinhuepf.clij2.plugins.SetRandom;
 import net.haesleinhuepf.clij2.plugins.InvalidateKernelCache;
 import net.haesleinhuepf.clij2.plugins.EntropyBox;
-import net.haesleinhuepf.clijx.plugins.PushTile;
-import net.haesleinhuepf.clijx.plugins.PullTile;
+import net.haesleinhuepf.clij2.plugins.PushTile;
+import net.haesleinhuepf.clij2.plugins.PullTile;
 import net.haesleinhuepf.clij2.plugins.ConcatenateStacks;
 import net.haesleinhuepf.clij2.plugins.ResultsTableToImage2D;
 import net.haesleinhuepf.clij2.plugins.GetAutomaticThreshold;
@@ -405,28 +405,28 @@ import net.haesleinhuepf.clij2.plugins.ReplacePixelsIfZero;
 import net.haesleinhuepf.clij2.plugins.VoronoiLabeling;
 import net.haesleinhuepf.clij2.plugins.ExtendLabelingViaVoronoi;
 import net.haesleinhuepf.clijx.plugins.FindMaxima;
-import net.haesleinhuepf.clijx.plugins.MergeTouchingLabels;
-import net.haesleinhuepf.clijx.plugins.AverageNeighborDistanceMap;
-import net.haesleinhuepf.clijx.plugins.CylinderTransform;
+import net.haesleinhuepf.clij2.plugins.MergeTouchingLabels;
+import net.haesleinhuepf.clij2.plugins.AverageNeighborDistanceMap;
+import net.haesleinhuepf.clij2.plugins.CylinderTransform;
 import net.haesleinhuepf.clijx.plugins.DetectAndLabelMaxima;
-import net.haesleinhuepf.clijx.plugins.DrawDistanceMeshBetweenTouchingLabels;
-import net.haesleinhuepf.clijx.plugins.DrawMeshBetweenTouchingLabels;
-import net.haesleinhuepf.clijx.plugins.ExcludeLabelsOutsideSizeRange;
-import net.haesleinhuepf.clijx.plugins.ExtendLabelsWithMaximumRadius;
+import net.haesleinhuepf.clij2.plugins.DrawDistanceMeshBetweenTouchingLabels;
+import net.haesleinhuepf.clij2.plugins.DrawMeshBetweenTouchingLabels;
+import net.haesleinhuepf.clij2.plugins.ExcludeLabelsOutsideSizeRange;
+import net.haesleinhuepf.clij2.plugins.DilateLabels;
 import net.haesleinhuepf.clijx.plugins.FindAndLabelMaxima;
-import net.haesleinhuepf.clijx.plugins.MakeIsotropic;
-import net.haesleinhuepf.clijx.plugins.TouchingNeighborCountMap;
-import net.haesleinhuepf.clijx.plugins.RigidTransform;
-import net.haesleinhuepf.clijx.plugins.SphereTransform;
+import net.haesleinhuepf.clij2.plugins.MakeIsotropic;
+import net.haesleinhuepf.clij2.plugins.TouchingNeighborCountMap;
+import net.haesleinhuepf.clij2.plugins.RigidTransform;
+import net.haesleinhuepf.clij2.plugins.SphereTransform;
 import net.haesleinhuepf.clijx.plugins.SubtractGaussianBackground;
 import net.haesleinhuepf.clijx.plugins.ThresholdDoG;
 import net.haesleinhuepf.clijx.plugins.DriftCorrectionByCenterOfMassFixation;
 import net.haesleinhuepf.clijx.plugins.DriftCorrectionByCentroidFixation;
 import net.haesleinhuepf.clijx.plugins.IntensityCorrection;
 import net.haesleinhuepf.clijx.plugins.IntensityCorrectionAboveThresholdOtsu;
-import net.haesleinhuepf.clijx.plugins.LabelMeanIntensityMap;
-import net.haesleinhuepf.clijx.plugins.LabelStandardDeviationIntensityMap;
-import net.haesleinhuepf.clijx.plugins.LabelPixelCountMap;
+import net.haesleinhuepf.clij2.plugins.MeanIntensityMap;
+import net.haesleinhuepf.clij2.plugins.StandardDeviationIntensityMap;
+import net.haesleinhuepf.clij2.plugins.PixelCountMap;
 import net.haesleinhuepf.clijx.plugins.ParametricWatershed;
 import net.haesleinhuepf.clijx.plugins.MeanZProjectionAboveThreshold;
 import net.haesleinhuepf.clij2.plugins.CentroidsOfBackgroundAndLabels;
@@ -434,7 +434,7 @@ import net.haesleinhuepf.clijx.plugins.SeededWatershed;
 import net.haesleinhuepf.clijx.plugins.PushMetaData;
 import net.haesleinhuepf.clijx.plugins.PopMetaData;
 import net.haesleinhuepf.clijx.plugins.ResetMetaData;
-import net.haesleinhuepf.clijx.plugins.AverageDistanceOfNClosestNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.AverageDistanceOfNClosestNeighborsMap;
 import net.haesleinhuepf.clijx.plugins.DrawTouchCountMeshBetweenTouchingLabels;
 import net.haesleinhuepf.clijx.plugins.LocalMaximumAverageDistanceOfNClosestNeighborsMap;
 import net.haesleinhuepf.clijx.plugins.LocalMaximumAverageNeighborDistanceMap;
@@ -452,91 +452,91 @@ import net.haesleinhuepf.clijx.plugins.LocalMinimumTouchingNeighborCountMap;
 import net.haesleinhuepf.clijx.plugins.LocalStandardDeviationAverageDistanceOfNClosestNeighborsMap;
 import net.haesleinhuepf.clijx.plugins.LocalStandardDeviationAverageNeighborDistanceMap;
 import net.haesleinhuepf.clijx.plugins.LocalStandardDeviationTouchingNeighborCountMap;
-import net.haesleinhuepf.clijx.plugins.LabelMinimumIntensityMap;
-import net.haesleinhuepf.clijx.plugins.LabelMaximumIntensityMap;
-import net.haesleinhuepf.clijx.plugins.LabelMaximumExtensionRatioMap;
-import net.haesleinhuepf.clijx.plugins.LabelMaximumExtensionMap;
+import net.haesleinhuepf.clij2.plugins.MinimumIntensityMap;
+import net.haesleinhuepf.clij2.plugins.MaximumIntensityMap;
+import net.haesleinhuepf.clij2.plugins.ExtensionRatioMap;
+import net.haesleinhuepf.clij2.plugins.MaximumExtensionMap;
 import net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfBox;
 import net.haesleinhuepf.clijx.plugins.GenerateIntegerGreyValueCooccurrenceCountMatrixHalfDiamond;
 import net.haesleinhuepf.clij2.plugins.GetMeanOfMaskedPixels;
-import net.haesleinhuepf.clijx.plugins.DivideByGaussianBackground;
+import net.haesleinhuepf.clij2.plugins.DivideByGaussianBackground;
 import net.haesleinhuepf.clijx.plugins.GenerateGreyValueCooccurrenceMatrixBox;
 import net.haesleinhuepf.clijx.plugins.GreyLevelAtttributeFiltering;
 import net.haesleinhuepf.clijx.plugins.BinaryFillHolesSliceBySlice;
 import net.haesleinhuepf.clijx.weka.BinaryWekaPixelClassifier;
 import net.haesleinhuepf.clijx.weka.WekaLabelClassifier;
 import net.haesleinhuepf.clijx.weka.GenerateLabelFeatureImage;
-import net.haesleinhuepf.clijx.plugins.LabelSurface;
-import net.haesleinhuepf.clijx.plugins.ReduceLabelsToLabelledSpots;
-import net.haesleinhuepf.clijx.plugins.LabelMeanExtensionMap;
+import net.haesleinhuepf.clij2.plugins.LabelSurface;
+import net.haesleinhuepf.clij2.plugins.ReduceLabelsToCentroids;
+import net.haesleinhuepf.clij2.plugins.MeanExtensionMap;
 import net.haesleinhuepf.clijx.plugins.MeanZProjectionBelowThreshold;
-import net.haesleinhuepf.clijx.plugins.EuclideanDistanceFromLabelCentroidMap;
-import net.haesleinhuepf.clijx.plugins.GammaCorrection;
-import net.haesleinhuepf.clijx.plugins.ZPositionOfMaximumZProjection;
-import net.haesleinhuepf.clijx.plugins.ZPositionProjection;
-import net.haesleinhuepf.clijx.plugins.ZPositionRangeProjection;
-import net.haesleinhuepf.clijx.plugins.VarianceSphere;
-import net.haesleinhuepf.clijx.plugins.StandardDeviationSphere;
-import net.haesleinhuepf.clijx.plugins.VarianceBox;
-import net.haesleinhuepf.clijx.plugins.StandardDeviationBox;
-import net.haesleinhuepf.clijx.plugins.Tenengrad;
-import net.haesleinhuepf.clijx.plugins.TenengradSliceBySlice;
-import net.haesleinhuepf.clijx.plugins.SobelSliceBySlice;
-import net.haesleinhuepf.clijx.plugins.ExtendedDepthOfFocusSobelProjection;
-import net.haesleinhuepf.clijx.plugins.ExtendedDepthOfFocusTenengradProjection;
-import net.haesleinhuepf.clijx.plugins.ExtendedDepthOfFocusVarianceProjection;
-import net.haesleinhuepf.clijx.plugins.DrawMeshBetweenNClosestLabels;
-import net.haesleinhuepf.clijx.plugins.DrawMeshBetweenProximalLabels;
-import net.haesleinhuepf.clijx.plugins.Cosinus;
-import net.haesleinhuepf.clijx.plugins.Sinus;
+import net.haesleinhuepf.clij2.plugins.EuclideanDistanceFromLabelCentroidMap;
+import net.haesleinhuepf.clij2.plugins.GammaCorrection;
+import net.haesleinhuepf.clij2.plugins.ZPositionOfMaximumZProjection;
+import net.haesleinhuepf.clij2.plugins.ZPositionProjection;
+import net.haesleinhuepf.clij2.plugins.ZPositionRangeProjection;
+import net.haesleinhuepf.clij2.plugins.VarianceSphere;
+import net.haesleinhuepf.clij2.plugins.StandardDeviationSphere;
+import net.haesleinhuepf.clij2.plugins.VarianceBox;
+import net.haesleinhuepf.clij2.plugins.StandardDeviationBox;
+import net.haesleinhuepf.clij2.plugins.Tenengrad;
+import net.haesleinhuepf.clij2.plugins.TenengradSliceBySlice;
+import net.haesleinhuepf.clij2.plugins.SobelSliceBySlice;
+import net.haesleinhuepf.clij2.plugins.ExtendedDepthOfFocusSobelProjection;
+import net.haesleinhuepf.clij2.plugins.ExtendedDepthOfFocusTenengradProjection;
+import net.haesleinhuepf.clij2.plugins.ExtendedDepthOfFocusVarianceProjection;
+import net.haesleinhuepf.clij2.plugins.DrawMeshBetweenNClosestLabels;
+import net.haesleinhuepf.clij2.plugins.DrawMeshBetweenProximalLabels;
+import net.haesleinhuepf.clij2.plugins.Cosinus;
+import net.haesleinhuepf.clij2.plugins.Sinus;
 import net.haesleinhuepf.clijx.plugins.GenerateDistanceMatrixAlongAxis;
-import net.haesleinhuepf.clijx.plugins.MaximumDistanceOfTouchingNeighbors;
-import net.haesleinhuepf.clijx.plugins.MaximumNeighborDistanceMap;
-import net.haesleinhuepf.clijx.plugins.MinimumNeighborDistanceMap;
+import net.haesleinhuepf.clij2.plugins.MaximumDistanceOfTouchingNeighbors;
+import net.haesleinhuepf.clij2.plugins.MaximumTouchingNeighborDistanceMap;
+import net.haesleinhuepf.clij2.plugins.MinimumTouchingNeighborDistanceMap;
 import net.haesleinhuepf.clijx.plugins.GenerateAngleMatrix;
-import net.haesleinhuepf.clijx.plugins.NeighborDistanceRangeRatioMap;
-import net.haesleinhuepf.clijx.plugins.VoronoiOtsuLabeling;
-import net.haesleinhuepf.clijx.plugins.VisualizeOutlinesOnOriginal;
+import net.haesleinhuepf.clij2.plugins.TouchingNeighborDistanceRangeRatioMap;
+import net.haesleinhuepf.clij2.plugins.VoronoiOtsuLabeling;
+import net.haesleinhuepf.clij2.plugins.VisualizeOutlinesOnOriginal;
 import net.haesleinhuepf.clijx.plugins.FlagLabelsOnEdges;
-import net.haesleinhuepf.clijx.plugins.MaskedVoronoiLabeling;
-import net.haesleinhuepf.clijx.plugins.PullToResultsTableColumn;
+import net.haesleinhuepf.clij2.plugins.MaskedVoronoiLabeling;
+import net.haesleinhuepf.clij2.plugins.PullToResultsTableColumn;
 import net.haesleinhuepf.clijx.plugins.KMeansLabelClusterer;
-import net.haesleinhuepf.clijx.plugins.ModeOfTouchingNeighbors;
-import net.haesleinhuepf.clijx.plugins.GenerateProximalNeighborsMatrix;
+import net.haesleinhuepf.clij2.plugins.ModeOfTouchingNeighbors;
+import net.haesleinhuepf.clij2.plugins.GenerateProximalNeighborsMatrix;
 import net.haesleinhuepf.clijx.plugins.ReadIntensitiesFromMap;
-import net.haesleinhuepf.clijx.plugins.MaximumOfTouchingNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.MinimumOfTouchingNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.MeanOfTouchingNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.ModeOfTouchingNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.StandardDeviationOfTouchingNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.PointIndexListToTouchMatrix;
-import net.haesleinhuepf.clijx.plugins.GenerateNNearestNeighborsMatrix;
-import net.haesleinhuepf.clijx.plugins.MaximumOfNNearestNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.MinimumOfNNearestNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.MeanOfNNearestNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.ModeOfNNearestNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.StandardDeviationOfNNearestNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.MaximumOfProximalNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.MinimumOfProximalNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.MeanOfProximalNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.ModeOfProximalNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.StandardDeviationOfProximalNeighborsMap;
-import net.haesleinhuepf.clijx.plugins.LabelOverlapCountMap;
-import net.haesleinhuepf.clijx.plugins.LabelProximalNeighborCountMap;
-import net.haesleinhuepf.clijx.plugins.ReduceLabelsToLabelEdges;
-import net.haesleinhuepf.clijx.plugins.OutOfIntensityRange;
-import net.haesleinhuepf.clijx.plugins.ShrinkLabels;
-import net.haesleinhuepf.clijx.plugins.Similar;
-import net.haesleinhuepf.clijx.plugins.Different;
+import net.haesleinhuepf.clij2.plugins.MaximumOfTouchingNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.MinimumOfTouchingNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.MeanOfTouchingNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.ModeOfTouchingNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.StandardDeviationOfTouchingNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.PointIndexListToTouchMatrix;
+import net.haesleinhuepf.clij2.plugins.GenerateNNearestNeighborsMatrix;
+import net.haesleinhuepf.clij2.plugins.MaximumOfNNearestNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.MinimumOfNNearestNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.MeanOfNNearestNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.ModeOfNNearestNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.StandardDeviationOfNNearestNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.MaximumOfProximalNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.MinimumOfProximalNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.MeanOfProximalNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.ModeOfProximalNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.StandardDeviationOfProximalNeighborsMap;
+import net.haesleinhuepf.clij2.plugins.LabelOverlapCountMap;
+import net.haesleinhuepf.clij2.plugins.LabelProximalNeighborCountMap;
+import net.haesleinhuepf.clij2.plugins.ReduceLabelsToLabelEdges;
+import net.haesleinhuepf.clij2.plugins.OutOfIntensityRange;
+import net.haesleinhuepf.clij2.plugins.ErodeLabels;
+import net.haesleinhuepf.clij2.plugins.Similar;
+import net.haesleinhuepf.clij2.plugins.Different;
 import net.haesleinhuepf.clijx.weka.WekaRegionalLabelClassifier;
 import net.haesleinhuepf.clijx.plugins.LabelMeanOfLaplacianMap;
-import net.haesleinhuepf.clijx.plugins.MedianZProjectionMasked;
+import net.haesleinhuepf.clij2.plugins.MedianZProjectionMasked;
 import net.haesleinhuepf.clijx.plugins.MedianTouchPortionMap;
 import net.haesleinhuepf.clijx.plugins.NeighborCountWithTouchPortionAboveThresholdMap;
-import net.haesleinhuepf.clijx.plugins.DivideScalarByImage;
-import net.haesleinhuepf.clijx.plugins.ReadValuesFromMap;
-import net.haesleinhuepf.clijx.plugins.ReadValuesFromPositions;
-import net.haesleinhuepf.clijx.plugins.ZPositionOfMinimumZProjection;
+import net.haesleinhuepf.clij2.plugins.DivideScalarByImage;
+import net.haesleinhuepf.clij2.plugins.ReadValuesFromMap;
+import net.haesleinhuepf.clij2.plugins.ReadValuesFromPositions;
+import net.haesleinhuepf.clij2.plugins.ZPositionOfMinimumZProjection;
 import net.haesleinhuepf.clijx.plugins.LocalThresholdPhansalkar;
 import net.haesleinhuepf.clijx.plugins.LocalThresholdBernsen;
 import net.haesleinhuepf.clijx.plugins.LocalThresholdContrast;
@@ -546,12 +546,13 @@ import net.haesleinhuepf.clijx.plugins.LocalThresholdMidGrey;
 import net.haesleinhuepf.clijx.plugins.LocalThresholdNiblack;
 import net.haesleinhuepf.clijx.plugins.LocalThresholdSauvola;
 import net.haesleinhuepf.clijx.plugins.ColorDeconvolution;
-import net.haesleinhuepf.clijx.plugins.GreyscaleOpeningBox;
-import net.haesleinhuepf.clijx.plugins.GreyscaleOpeningSphere;
-import net.haesleinhuepf.clijx.plugins.GreyscaleClosingBox;
-import net.haesleinhuepf.clijx.plugins.GreyscaleClosingSphere;
-import net.haesleinhuepf.clijx.plugins.ProximalNeighborCountMap;
-import net.haesleinhuepf.clijx.plugins.SubStack;
+import net.haesleinhuepf.clij2.plugins.GreyscaleOpeningBox;
+import net.haesleinhuepf.clij2.plugins.GreyscaleOpeningSphere;
+import net.haesleinhuepf.clij2.plugins.GreyscaleClosingBox;
+import net.haesleinhuepf.clij2.plugins.GreyscaleClosingSphere;
+import net.haesleinhuepf.clij2.plugins.ProximalNeighborCountMap;
+import net.haesleinhuepf.clij2.plugins.SubStack;
+import net.haesleinhuepf.clij2.plugins.DrawMeshBetweenNNearestLabels;
 // this is generated code. See src/test/java/net/haesleinhuepf/clijx/codegenerator for details
 abstract class CamelInterface extends CommonAPI{
    static CLIJ getCLIJ() {
@@ -995,13 +996,13 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.StackToTiles
+    // net.haesleinhuepf.clij2.plugins.StackToTiles
     //----------------------------------------------------
     /**
      * Stack to tiles.
      */
     public static ClearCLImageInterface stackToTiles(ClearCLImageInterface arg1, ClearCLImageInterface arg2, double arg3, double arg4) {
-        StackToTiles.stackToTiles(getCLIJx(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
+        StackToTiles.stackToTiles(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), new Double (arg4).intValue());
         return arg2;
     }
 
@@ -1807,6 +1808,16 @@ abstract class CamelInterface extends CommonAPI{
         return arg2;
     }
 
+    /**
+     * Determine the n point indices with shortest distance for all points in a distance matrix. 
+     * 
+     * This corresponds to the n row indices with minimum values for each column of the distance matrix.
+     */
+    public static ClearCLBuffer nClosestPoints(ClearCLBuffer arg1, ClearCLBuffer arg2, boolean arg3, boolean arg4) {
+        NClosestPoints.nClosestPoints(getCLIJ2(), arg1, arg2, arg3, arg4);
+        return arg2;
+    }
+
 
     // net.haesleinhuepf.clijx.plugins.GaussJordan
     //----------------------------------------------------
@@ -2054,6 +2065,7 @@ abstract class CamelInterface extends CommonAPI{
      * 
      * Pixels with non-zero value in the binary image are set to a number representing the distance to the closest zero-value pixel.
      * 
+     * Note: This function is known to be slow. See the web for alternatives: 
      * Note: This is not a distance matrix. See generateDistanceMatrix for details.
      */
     public static ClearCLBuffer distanceMap(ClearCLBuffer source, ClearCLBuffer destination) {
@@ -2377,6 +2389,8 @@ abstract class CamelInterface extends CommonAPI{
     //----------------------------------------------------
     /**
      * Apply a binary watershed to a binary image and introduces black pixels between objects.
+     * 
+     * Note: This parallel GPU-accelerated approach delivers results of limited quality.See the web for alternatives: https://github.com/clij/clij2/issues/18
      */
     public static ClearCLBuffer watershed(ClearCLBuffer binary_source, ClearCLBuffer destination) {
         Watershed.watershed(getCLIJ2(), binary_source, destination);
@@ -5888,7 +5902,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.PushTile
+    // net.haesleinhuepf.clij2.plugins.PushTile
     //----------------------------------------------------
     /**
      * Push a tile in an image specified by its name, position and size to GPU memory in order to process it there later.
@@ -5914,7 +5928,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.PullTile
+    // net.haesleinhuepf.clij2.plugins.PullTile
     //----------------------------------------------------
     /**
      * Pushes a tile in an image specified by its name, position and size from GPU memory.
@@ -6506,7 +6520,7 @@ abstract class CamelInterface extends CommonAPI{
     // net.haesleinhuepf.clij2.plugins.PushArray
     //----------------------------------------------------
     /**
-     * Converts an array to an image.
+     * Converts an array to a 3D image stack.
      */
     public static ClearCLBuffer pushArray(ClearCLBuffer arg1, Object arg2) {
         PushArray.pushArray(getCLIJ2(), arg1, arg2);
@@ -6514,7 +6528,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
     /**
-     * Converts an array to an image.
+     * Converts an array to a 3D image stack.
      */
     public static ClearCLBuffer pushArray(float[] arg1, double arg2, double arg3, double arg4) {
         ClearCLBuffer result = PushArray.pushArray(getCLIJ2(), arg1, new Double (arg2).intValue(), new Double (arg3).intValue(), new Double (arg4).intValue());
@@ -6637,7 +6651,7 @@ abstract class CamelInterface extends CommonAPI{
     // net.haesleinhuepf.clij2.plugins.LabelVoronoiOctagon
     //----------------------------------------------------
     /**
-     * Takes a labelled image and dilates the labels using a octagon shape until they touch. 
+     * Takes a labeled image and dilates the labels using a octagon shape until they touch. 
      * 
      * The pixels where  the regions touched are afterwards returned as binary image which corresponds to the Voronoi diagram.
      */
@@ -7158,7 +7172,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MergeTouchingLabels
+    // net.haesleinhuepf.clij2.plugins.MergeTouchingLabels
     //----------------------------------------------------
     /**
      * 
@@ -7169,7 +7183,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.AverageNeighborDistanceMap
+    // net.haesleinhuepf.clij2.plugins.AverageNeighborDistanceMap
     //----------------------------------------------------
     /**
      * Takes a label map, determines which labels touch and replaces every label with the average distance to their neighboring labels.
@@ -7182,7 +7196,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.CylinderTransform
+    // net.haesleinhuepf.clij2.plugins.CylinderTransform
     //----------------------------------------------------
     /**
      * Applies a cylinder transform to an image stack assuming the center line goes in Y direction in the center of the stack.
@@ -7214,7 +7228,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.DrawDistanceMeshBetweenTouchingLabels
+    // net.haesleinhuepf.clij2.plugins.DrawDistanceMeshBetweenTouchingLabels
     //----------------------------------------------------
     /**
      * Starting from a label map, draw lines between touching neighbors resulting in a mesh.
@@ -7228,7 +7242,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.DrawMeshBetweenTouchingLabels
+    // net.haesleinhuepf.clij2.plugins.DrawMeshBetweenTouchingLabels
     //----------------------------------------------------
     /**
      * Starting from a label map, draw lines between touching neighbors resulting in a mesh.
@@ -7241,7 +7255,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ExcludeLabelsOutsideSizeRange
+    // net.haesleinhuepf.clij2.plugins.ExcludeLabelsOutsideSizeRange
     //----------------------------------------------------
     /**
      * Removes labels from a label map which are not within a certain size range.
@@ -7254,7 +7268,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ExtendLabelsWithMaximumRadius
+    // net.haesleinhuepf.clij2.plugins.DilateLabels
     //----------------------------------------------------
     /**
      * Extend labels with a given radius.
@@ -7262,8 +7276,16 @@ abstract class CamelInterface extends CommonAPI{
      * This is actually a local maximum filter applied to a label map which does not overwrite labels.
      * It is recommended to apply this operation to isotropic images only.
      */
+    public static ClearCLBuffer dilateLabels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        DilateLabels.dilateLabels(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
+    }
+
+    /**
+     * 
+     */
     public static ClearCLBuffer extendLabelsWithMaximumRadius(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        ExtendLabelsWithMaximumRadius.extendLabelsWithMaximumRadius(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        DilateLabels.extendLabelsWithMaximumRadius(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
         return arg2;
     }
 
@@ -7279,7 +7301,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MakeIsotropic
+    // net.haesleinhuepf.clij2.plugins.MakeIsotropic
     //----------------------------------------------------
     /**
      * Applies a scaling operation using linear interpolation to generate an image stack with a given isotropic voxel size.
@@ -7290,10 +7312,10 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.TouchingNeighborCountMap
+    // net.haesleinhuepf.clij2.plugins.TouchingNeighborCountMap
     //----------------------------------------------------
     /**
-     * Takes a label map, determines which labels touch and replaces every label with the number of touching neighboring labels.
+     * Takes a label map, determines which labels touch and replaces every label with the number of touching neighbor labels.
      * 
      * 
      */
@@ -7303,7 +7325,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.RigidTransform
+    // net.haesleinhuepf.clij2.plugins.RigidTransform
     //----------------------------------------------------
     /**
      * Applies a rigid transform using linear interpolation to an image stack.
@@ -7314,7 +7336,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.SphereTransform
+    // net.haesleinhuepf.clij2.plugins.SphereTransform
     //----------------------------------------------------
     /**
      * Turns an image stack in XYZ cartesian coordinate system to an AID polar coordinate system.
@@ -7396,41 +7418,41 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelMeanIntensityMap
+    // net.haesleinhuepf.clij2.plugins.MeanIntensityMap
     //----------------------------------------------------
     /**
      * Takes an image and a corresponding label map, determines the mean intensity per label and replaces every label with the that number.
      * 
      * This results in a parametric image expressing mean object intensity.
      */
-    public static ClearCLBuffer labelMeanIntensityMap(ClearCLBuffer input, ClearCLBuffer label_map, ClearCLBuffer destination) {
-        LabelMeanIntensityMap.labelMeanIntensityMap(getCLIJ2(), input, label_map, destination);
+    public static ClearCLBuffer meanIntensityMap(ClearCLBuffer intensity_image, ClearCLBuffer label_map, ClearCLBuffer destination) {
+        MeanIntensityMap.meanIntensityMap(getCLIJ2(), intensity_image, label_map, destination);
         return destination;
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelStandardDeviationIntensityMap
+    // net.haesleinhuepf.clij2.plugins.StandardDeviationIntensityMap
     //----------------------------------------------------
     /**
      * Takes an image and a corresponding label map, determines the standard deviation of the intensity per label and replaces every label with the that number.
      * 
      * This results in a parametric image expressing standard deviation of object intensity.
      */
-    public static ClearCLBuffer labelStandardDeviationIntensityMap(ClearCLBuffer input, ClearCLBuffer label_map, ClearCLBuffer destination) {
-        LabelStandardDeviationIntensityMap.labelStandardDeviationIntensityMap(getCLIJ2(), input, label_map, destination);
+    public static ClearCLBuffer standardDeviationIntensityMap(ClearCLBuffer intensity_image, ClearCLBuffer label_map, ClearCLBuffer destination) {
+        StandardDeviationIntensityMap.standardDeviationIntensityMap(getCLIJ2(), intensity_image, label_map, destination);
         return destination;
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelPixelCountMap
+    // net.haesleinhuepf.clij2.plugins.PixelCountMap
     //----------------------------------------------------
     /**
      * Takes a label map, determines the number of pixels per label and replaces every label with the that number.
      * 
      * This results in a parametric image expressing area or volume.
      */
-    public static ClearCLBuffer labelPixelCountMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        LabelPixelCountMap.labelPixelCountMap(getCLIJ2(), input, destination);
+    public static ClearCLBuffer pixelCountMap(ClearCLBuffer input, ClearCLBuffer destination) {
+        PixelCountMap.pixelCountMap(getCLIJ2(), input, destination);
         return destination;
     }
 
@@ -7492,7 +7514,7 @@ abstract class CamelInterface extends CommonAPI{
     // net.haesleinhuepf.clijx.plugins.ResetMetaData
     //----------------------------------------------------
 
-    // net.haesleinhuepf.clijx.plugins.AverageDistanceOfNClosestNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.AverageDistanceOfNClosestNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label map, determines distances between all centroids and replaces every label with the average distance to the n closest neighboring labels.
@@ -7519,77 +7541,21 @@ abstract class CamelInterface extends CommonAPI{
 
     // net.haesleinhuepf.clijx.plugins.LocalMaximumAverageDistanceOfNClosestNeighborsMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines distances between all centroids, the mean distance of the n closest points for every point
-     *  and replaces every label with the maximum distance of touching labels.
-     */
-    public static ClearCLBuffer localMaximumAverageDistanceOfNClosestNeighborsMap(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        LocalMaximumAverageDistanceOfNClosestNeighborsMap.localMaximumAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return arg2;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMaximumAverageNeighborDistanceMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines which labels touch, the distance between their centroids and the maximum distancebetween touching neighbors. It then replaces every label with the that value.
-     */
-    public static ClearCLBuffer localMaximumAverageNeighborDistanceMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalMaximumAverageNeighborDistanceMap.localMaximumAverageNeighborDistanceMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMaximumTouchingNeighborCountMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines which labels touch, determines for every label with the number of touching 
-     * neighboring labels and replaces the label index with the local maximum of this count.
-     * 
-     * 
-     */
-    public static ClearCLBuffer localMaximumTouchingNeighborCountMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalMaximumTouchingNeighborCountMap.localMaximumTouchingNeighborCountMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMeanAverageDistanceOfNClosestNeighborsMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines distances between all centroids, the mean distance of the n closest points for every point
-     *  and replaces every label with the mean distance of touching labels.
-     */
-    public static ClearCLBuffer localMeanAverageDistanceOfNClosestNeighborsMap(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        LocalMeanAverageDistanceOfNClosestNeighborsMap.localMeanAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return arg2;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMeanAverageNeighborDistanceMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines which labels touch, the distance between their centroids and the mean distancebetween touching neighbors. It then replaces every label with the that value.
-     */
-    public static ClearCLBuffer localMeanAverageNeighborDistanceMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalMeanAverageNeighborDistanceMap.localMeanAverageNeighborDistanceMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMeanTouchingNeighborCountMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines which labels touch, determines for every label with the number of touching 
-     * neighboring labels and replaces the label index with the local mean of this count.
-     * 
-     * 
-     */
-    public static ClearCLBuffer localMeanTouchingNeighborCountMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalMeanTouchingNeighborCountMap.localMeanTouchingNeighborCountMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMeanTouchPortionMap
     //----------------------------------------------------
@@ -7608,159 +7574,79 @@ abstract class CamelInterface extends CommonAPI{
 
     // net.haesleinhuepf.clijx.plugins.LocalMedianAverageDistanceOfNClosestNeighborsMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines distances between all centroids, the mean distance of the n closest points for every point
-     *  and replaces every label with the median distance of touching labels.
-     */
-    public static ClearCLBuffer localMedianAverageDistanceOfNClosestNeighborsMap(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        LocalMedianAverageDistanceOfNClosestNeighborsMap.localMedianAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return arg2;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMedianAverageNeighborDistanceMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines which labels touch, the distance between their centroids and the median distancebetween touching neighbors. It then replaces every label with the that value.
-     */
-    public static ClearCLBuffer localMedianAverageNeighborDistanceMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalMedianAverageNeighborDistanceMap.localMedianAverageNeighborDistanceMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMedianTouchingNeighborCountMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines which labels touch, determines for every label with the number of touching 
-     * neighboring labels and replaces the label index with the local median of this count.
-     * 
-     * 
-     */
-    public static ClearCLBuffer localMedianTouchingNeighborCountMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalMedianTouchingNeighborCountMap.localMedianTouchingNeighborCountMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMinimumAverageDistanceOfNClosestNeighborsMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines distances between all centroids, the mean distance of the n closest points for every point
-     *  and replaces every label with the minimum distance of touching labels.
-     */
-    public static ClearCLBuffer localMinimumAverageDistanceOfNClosestNeighborsMap(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        LocalMinimumAverageDistanceOfNClosestNeighborsMap.localMinimumAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return arg2;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMinimumAverageNeighborDistanceMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines which labels touch, the distance between their centroids and the minimum distancebetween touching neighbors. It then replaces every label with the that value.
-     */
-    public static ClearCLBuffer localMinimumAverageNeighborDistanceMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalMinimumAverageNeighborDistanceMap.localMinimumAverageNeighborDistanceMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalMinimumTouchingNeighborCountMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines which labels touch, determines for every label with the number of touching 
-     * neighboring labels and replaces the label index with the local minimum of this count.
-     * 
-     * 
-     */
-    public static ClearCLBuffer localMinimumTouchingNeighborCountMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalMinimumTouchingNeighborCountMap.localMinimumTouchingNeighborCountMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalStandardDeviationAverageDistanceOfNClosestNeighborsMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines distances between all centroids, the mean distance of the n closest points for every point
-     *  and replaces every label with the standard deviation distance of touching labels.
-     */
-    public static ClearCLBuffer localStandardDeviationAverageDistanceOfNClosestNeighborsMap(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        LocalStandardDeviationAverageDistanceOfNClosestNeighborsMap.localStandardDeviationAverageDistanceOfNClosestNeighborsMap(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return arg2;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalStandardDeviationAverageNeighborDistanceMap
     //----------------------------------------------------
-    /**
-     * Takes a label map, determines which labels touch, the distance between their centroids and the standard deviation distancebetween touching neighbors. It then replaces every label with the that value.
-     */
-    public static ClearCLBuffer localStandardDeviationAverageNeighborDistanceMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalStandardDeviationAverageNeighborDistanceMap.localStandardDeviationAverageNeighborDistanceMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
 
     // net.haesleinhuepf.clijx.plugins.LocalStandardDeviationTouchingNeighborCountMap
     //----------------------------------------------------
+
+    // net.haesleinhuepf.clij2.plugins.MinimumIntensityMap
+    //----------------------------------------------------
     /**
-     * Takes a label map, determines which labels touch, determines for every label with the number of touching 
-     * neighboring labels and replaces the label index with the local standard deviation of this count.
+     * Takes an image and a corresponding label map, determines the minimum intensity per label and replaces every label with the that number.
      * 
-     * 
+     * This results in a parametric image expressing mean object intensity.
      */
-    public static ClearCLBuffer localStandardDeviationTouchingNeighborCountMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        LocalStandardDeviationTouchingNeighborCountMap.localStandardDeviationTouchingNeighborCountMap(getCLIJ2(), input, destination);
+    public static ClearCLBuffer minimumIntensityMap(ClearCLBuffer intensity_image, ClearCLBuffer label_map, ClearCLBuffer destination) {
+        MinimumIntensityMap.minimumIntensityMap(getCLIJ2(), intensity_image, label_map, destination);
         return destination;
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelMinimumIntensityMap
+    // net.haesleinhuepf.clij2.plugins.MaximumIntensityMap
     //----------------------------------------------------
     /**
+     * Takes an image and a corresponding label map, determines the maximum intensity per label and replaces every label with the that number.
      * 
+     * This results in a parametric image expressing mean object intensity.
      */
-    public static ClearCLBuffer labelMinimumIntensityMap(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3) {
-        LabelMinimumIntensityMap.labelMinimumIntensityMap(getCLIJ2(), arg1, arg2, arg3);
-        return arg3;
+    public static ClearCLBuffer maximumIntensityMap(ClearCLBuffer intensity_image, ClearCLBuffer label_map, ClearCLBuffer destination) {
+        MaximumIntensityMap.maximumIntensityMap(getCLIJ2(), intensity_image, label_map, destination);
+        return destination;
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelMaximumIntensityMap
+    // net.haesleinhuepf.clij2.plugins.ExtensionRatioMap
     //----------------------------------------------------
     /**
+     * Takes a label map, determines for every label the extension ratio and replaces every label with the that number.
      * 
+     * The extension ratio is the maximum distance of any pixel in the label to the label centroid divided by the average distance of all pixels in the label to the centroid.
      */
-    public static ClearCLBuffer labelMaximumIntensityMap(ClearCLBuffer arg1, ClearCLBuffer arg2, ClearCLBuffer arg3) {
-        LabelMaximumIntensityMap.labelMaximumIntensityMap(getCLIJ2(), arg1, arg2, arg3);
-        return arg3;
+    public static ClearCLBuffer extensionRatioMap(ClearCLBuffer input, ClearCLBuffer destination) {
+        ExtensionRatioMap.extensionRatioMap(getCLIJ2(), input, destination);
+        return destination;
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelMaximumExtensionRatioMap
+    // net.haesleinhuepf.clij2.plugins.MaximumExtensionMap
     //----------------------------------------------------
     /**
      * Takes a label map, determines for every label the maximum distance of any pixel to the centroid and replaces every label with the that number.
      * 
      * 
      */
-    public static ClearCLBuffer labelMaximumExtensionRatioMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        LabelMaximumExtensionRatioMap.labelMaximumExtensionRatioMap(getCLIJ2(), input, destination);
-        return destination;
-    }
-
-
-    // net.haesleinhuepf.clijx.plugins.LabelMaximumExtensionMap
-    //----------------------------------------------------
-    /**
-     * Takes a label map, determines for every label the maximum distance of any pixel to the centroid and replaces every label with the that number.
-     * 
-     * 
-     */
-    public static ClearCLBuffer labelMaximumExtensionMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        LabelMaximumExtensionMap.labelMaximumExtensionMap(getCLIJ2(), input, destination);
+    public static ClearCLBuffer maximumExtensionMap(ClearCLBuffer input, ClearCLBuffer destination) {
+        MaximumExtensionMap.maximumExtensionMap(getCLIJ2(), input, destination);
         return destination;
     }
 
@@ -7804,7 +7690,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.DivideByGaussianBackground
+    // net.haesleinhuepf.clij2.plugins.DivideByGaussianBackground
     //----------------------------------------------------
     /**
      * Applies Gaussian blur to the input image and divides the original by the result.
@@ -7963,7 +7849,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelSurface
+    // net.haesleinhuepf.clij2.plugins.LabelSurface
     //----------------------------------------------------
     /**
      * Takes a label map and excludes all labels which are not on the surface.
@@ -7976,26 +7862,34 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ReduceLabelsToLabelledSpots
+    // net.haesleinhuepf.clij2.plugins.ReduceLabelsToCentroids
     //----------------------------------------------------
     /**
      * Takes a label map and reduces all labels to their center spots. Label IDs stay and background will be zero.
      */
+    public static ClearCLBuffer reduceLabelsToCentroids(ClearCLBuffer input_labels, ClearCLBuffer destination_labels) {
+        ReduceLabelsToCentroids.reduceLabelsToCentroids(getCLIJ2(), input_labels, destination_labels);
+        return destination_labels;
+    }
+
+    /**
+     * Takes a label map and reduces all labels to their center spots. Label IDs stay and background will be zero.
+     */
     public static ClearCLBuffer reduceLabelsToLabelledSpots(ClearCLBuffer input_labels, ClearCLBuffer destination_labels) {
-        ReduceLabelsToLabelledSpots.reduceLabelsToLabelledSpots(getCLIJ2(), input_labels, destination_labels);
+        ReduceLabelsToCentroids.reduceLabelsToLabelledSpots(getCLIJ2(), input_labels, destination_labels);
         return destination_labels;
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelMeanExtensionMap
+    // net.haesleinhuepf.clij2.plugins.MeanExtensionMap
     //----------------------------------------------------
     /**
      * Takes a label map, determines for every label the mean distance of any pixel to the centroid and replaces every label with the that number.
      * 
      * 
      */
-    public static ClearCLBuffer labelMeanExtensionMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        LabelMeanExtensionMap.labelMeanExtensionMap(getCLIJ2(), input, destination);
+    public static ClearCLBuffer meanExtensionMap(ClearCLBuffer input, ClearCLBuffer destination) {
+        MeanExtensionMap.meanExtensionMap(getCLIJ2(), input, destination);
         return destination;
     }
 
@@ -8011,7 +7905,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.EuclideanDistanceFromLabelCentroidMap
+    // net.haesleinhuepf.clij2.plugins.EuclideanDistanceFromLabelCentroidMap
     //----------------------------------------------------
     /**
      * Takes a label map, determines the centroids of all labels and writes the distance of all labelled pixels to their centroid in the result image.
@@ -8023,7 +7917,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.GammaCorrection
+    // net.haesleinhuepf.clij2.plugins.GammaCorrection
     //----------------------------------------------------
     /**
      * Applies a gamma correction to an image.
@@ -8036,7 +7930,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ZPositionOfMaximumZProjection
+    // net.haesleinhuepf.clij2.plugins.ZPositionOfMaximumZProjection
     //----------------------------------------------------
     /**
      * Determines a Z-position of the maximum intensity along Z and writes it into the resulting image.
@@ -8049,12 +7943,12 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ZPositionProjection
+    // net.haesleinhuepf.clij2.plugins.ZPositionProjection
     //----------------------------------------------------
     /**
      * Project a defined Z-slice of a 3D stack into a 2D image.
      * 
-     * The slice is determined using a separate 2D image.
+     * Which Z-slice is defined as the z_position image, which represents an altitude map.
      */
     public static ClearCLImageInterface zPositionProjection(ClearCLImageInterface source_stack, ClearCLImageInterface z_position, ClearCLImageInterface destination) {
         ZPositionProjection.zPositionProjection(getCLIJ2(), source_stack, z_position, destination);
@@ -8062,12 +7956,12 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ZPositionRangeProjection
+    // net.haesleinhuepf.clij2.plugins.ZPositionRangeProjection
     //----------------------------------------------------
     /**
      * Project multiple Z-slices of a 3D stack into a new 3D stack.
      * 
-     * The slices are defined using a separate 2D image containing z-positions and two numbers defining the range.
+     * Which Z-slice is defined as the z_position image, which represents an altitude map. The two additional numbers define the range relative to the given z-position.
      */
     public static ClearCLImageInterface zPositionRangeProjection(ClearCLImageInterface arg1, ClearCLImageInterface arg2, ClearCLImageInterface arg3, int arg4, int arg5) {
         ZPositionRangeProjection.zPositionRangeProjection(getCLIJ2(), arg1, arg2, arg3, arg4, arg5);
@@ -8075,7 +7969,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.VarianceSphere
+    // net.haesleinhuepf.clij2.plugins.VarianceSphere
     //----------------------------------------------------
     /**
      * Computes the local variance of a pixels spherical neighborhood. 
@@ -8089,7 +7983,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.StandardDeviationSphere
+    // net.haesleinhuepf.clij2.plugins.StandardDeviationSphere
     //----------------------------------------------------
     /**
      * Computes the local standard deviation of a pixels spherical neighborhood. 
@@ -8103,7 +7997,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.VarianceBox
+    // net.haesleinhuepf.clij2.plugins.VarianceBox
     //----------------------------------------------------
     /**
      * Computes the local variance of a pixels box neighborhood. 
@@ -8117,7 +8011,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.StandardDeviationBox
+    // net.haesleinhuepf.clij2.plugins.StandardDeviationBox
     //----------------------------------------------------
     /**
      * Computes the local standard deviation of a pixels box neighborhood. 
@@ -8131,7 +8025,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.Tenengrad
+    // net.haesleinhuepf.clij2.plugins.Tenengrad
     //----------------------------------------------------
     /**
      * Convolve the image with the Tenengrad kernel slice by slice.
@@ -8142,7 +8036,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.TenengradSliceBySlice
+    // net.haesleinhuepf.clij2.plugins.TenengradSliceBySlice
     //----------------------------------------------------
     /**
      * Convolve the image with the Tenengrad kernel slice by slice.
@@ -8153,7 +8047,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.SobelSliceBySlice
+    // net.haesleinhuepf.clij2.plugins.SobelSliceBySlice
     //----------------------------------------------------
     /**
      * Convolve the image with the Sobel kernel slice by slice.
@@ -8164,7 +8058,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ExtendedDepthOfFocusSobelProjection
+    // net.haesleinhuepf.clij2.plugins.ExtendedDepthOfFocusSobelProjection
     //----------------------------------------------------
     /**
      * Extended depth of focus projection maximizing local pixel intensity variance.
@@ -8177,7 +8071,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ExtendedDepthOfFocusTenengradProjection
+    // net.haesleinhuepf.clij2.plugins.ExtendedDepthOfFocusTenengradProjection
     //----------------------------------------------------
     /**
      * Extended depth of focus projection maximizing intensity in the local sobel image.
@@ -8190,7 +8084,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ExtendedDepthOfFocusVarianceProjection
+    // net.haesleinhuepf.clij2.plugins.ExtendedDepthOfFocusVarianceProjection
     //----------------------------------------------------
     /**
      * Extended depth of focus projection maximizing local pixel intensity variance.
@@ -8203,20 +8097,10 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.DrawMeshBetweenNClosestLabels
+    // net.haesleinhuepf.clij2.plugins.DrawMeshBetweenNClosestLabels
     //----------------------------------------------------
-    /**
-     * Starting from a label map, draw lines between n closest labels for each label resulting in a mesh.
-     * 
-     * The end points of the lines correspond to the centroids of the labels. 
-     */
-    public static ClearCLBuffer drawMeshBetweenNClosestLabels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
-        DrawMeshBetweenNClosestLabels.drawMeshBetweenNClosestLabels(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
-        return arg2;
-    }
 
-
-    // net.haesleinhuepf.clijx.plugins.DrawMeshBetweenProximalLabels
+    // net.haesleinhuepf.clij2.plugins.DrawMeshBetweenProximalLabels
     //----------------------------------------------------
     /**
      * Starting from a label map, draw lines between labels that are closer than a given distance resulting in a mesh.
@@ -8229,7 +8113,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.Cosinus
+    // net.haesleinhuepf.clij2.plugins.Cosinus
     //----------------------------------------------------
     /**
      * Computes the cosinus of all pixels value x.
@@ -8242,7 +8126,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.Sinus
+    // net.haesleinhuepf.clij2.plugins.Sinus
     //----------------------------------------------------
     /**
      * Computes the sinus of all pixels value x.
@@ -8270,7 +8154,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MaximumDistanceOfTouchingNeighbors
+    // net.haesleinhuepf.clij2.plugins.MaximumDistanceOfTouchingNeighbors
     //----------------------------------------------------
     /**
      * Takes a touch matrix and a distance matrix to determine the maximum distance of touching neighbors for every object.
@@ -8281,28 +8165,28 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MaximumNeighborDistanceMap
+    // net.haesleinhuepf.clij2.plugins.MaximumTouchingNeighborDistanceMap
     //----------------------------------------------------
     /**
      * Takes a label map, determines which labels touch and replaces every label with the maximum distance to their neighboring labels.
      * 
      * To determine the distances, the centroid of the labels is determined internally.
      */
-    public static ClearCLBuffer maximumNeighborDistanceMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        MaximumNeighborDistanceMap.maximumNeighborDistanceMap(getCLIJ2(), input, destination);
+    public static ClearCLBuffer maximumTouchingNeighborDistanceMap(ClearCLBuffer input, ClearCLBuffer destination) {
+        MaximumTouchingNeighborDistanceMap.maximumTouchingNeighborDistanceMap(getCLIJ2(), input, destination);
         return destination;
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MinimumNeighborDistanceMap
+    // net.haesleinhuepf.clij2.plugins.MinimumTouchingNeighborDistanceMap
     //----------------------------------------------------
     /**
      * Takes a label map, determines which labels touch and replaces every label with the minimum distance to their neighboring labels.
      * 
      * To determine the distances, the centroid of the labels is determined internally.
      */
-    public static ClearCLBuffer minimumNeighborDistanceMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        MinimumNeighborDistanceMap.minimumNeighborDistanceMap(getCLIJ2(), input, destination);
+    public static ClearCLBuffer minimumTouchingNeighborDistanceMap(ClearCLBuffer input, ClearCLBuffer destination) {
+        MinimumTouchingNeighborDistanceMap.minimumTouchingNeighborDistanceMap(getCLIJ2(), input, destination);
         return destination;
     }
 
@@ -8347,23 +8231,25 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.NeighborDistanceRangeRatioMap
+    // net.haesleinhuepf.clij2.plugins.TouchingNeighborDistanceRangeRatioMap
     //----------------------------------------------------
     /**
-     * Takes a label map, determines which labels touch and replaces every label with the minimum distance to their neighboring labels.
+     * Takes a label map, determines which labels touch and replaces every label with the distance range ratio (maximum distance divided by minimum distance) to their neighboring labels.
      * 
-     * To determine the distances, the centroid of the labels is determined internally.
+     * To determine the distances, the centroids of the labels is determined internally.
      */
-    public static ClearCLBuffer neighborDistanceRangeRatioMap(ClearCLBuffer input, ClearCLBuffer destination) {
-        NeighborDistanceRangeRatioMap.neighborDistanceRangeRatioMap(getCLIJ2(), input, destination);
+    public static ClearCLBuffer touchingNeighborDistanceRangeRatioMap(ClearCLBuffer input, ClearCLBuffer destination) {
+        TouchingNeighborDistanceRangeRatioMap.touchingNeighborDistanceRangeRatioMap(getCLIJ2(), input, destination);
         return destination;
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.VoronoiOtsuLabeling
+    // net.haesleinhuepf.clij2.plugins.VoronoiOtsuLabeling
     //----------------------------------------------------
     /**
-     * Applies two Gaussian blurs, spot detection, Otsu-thresholding and Voronoi-labeling.
+     * Labeles objects directly from grey-value images.
+     * 
+     * The two sigma parameters allow tuning the segmentation result. The first sigma controls how close detected cells can be (spot_sigma) and the second controls how precise segmented objects are outlined (outline_sigma).Under the hood, this filter applies two Gaussian blurs, spot detection, Otsu-thresholding and Voronoi-labeling.
      * The thresholded binary image is flooded using the Voronoi approach starting from the found local maxima.
      * Noise-removal sigma for spot detection and thresholding can be configured separately.
      */
@@ -8398,7 +8284,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MaskedVoronoiLabeling
+    // net.haesleinhuepf.clij2.plugins.MaskedVoronoiLabeling
     //----------------------------------------------------
     /**
      * Takes a binary image, labels connected components and dilates the regions using a octagon shape until they touch and only inside another binary mask image.
@@ -8413,7 +8299,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.PullToResultsTableColumn
+    // net.haesleinhuepf.clij2.plugins.PullToResultsTableColumn
     //----------------------------------------------------
     /**
      * Copies the content of a vector image to a column in the results table.
@@ -8441,7 +8327,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ModeOfTouchingNeighbors
+    // net.haesleinhuepf.clij2.plugins.ModeOfTouchingNeighbors
     //----------------------------------------------------
     /**
      * Takes a touch matrix and a vector of values to determine the most popular integer value among touching neighbors for every object.
@@ -8453,7 +8339,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.GenerateProximalNeighborsMatrix
+    // net.haesleinhuepf.clij2.plugins.GenerateProximalNeighborsMatrix
     //----------------------------------------------------
     /**
      * Produces a touch-matrix where the neighbors within a given distance range are marked as touching neighbors.
@@ -8498,7 +8384,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MaximumOfTouchingNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.MaximumOfTouchingNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
@@ -8528,7 +8414,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MinimumOfTouchingNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.MinimumOfTouchingNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
@@ -8558,7 +8444,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MeanOfTouchingNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.MeanOfTouchingNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
@@ -8588,7 +8474,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ModeOfTouchingNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.ModeOfTouchingNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
@@ -8618,11 +8504,11 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.StandardDeviationOfTouchingNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.StandardDeviationOfTouchingNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
-     * by the standard deviation value of neighboring labels. The radius of the neighborhood can be configured:
+     * by the standard deviation value of touching neighbor labels. The radius of the neighborhood can be configured:
      * * radius 0: Nothing is replaced
      * * radius 1: direct neighbors are taken into account
      * * radius 2: neighbors and neighbors or neighbors are taken into account
@@ -8648,7 +8534,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.PointIndexListToTouchMatrix
+    // net.haesleinhuepf.clij2.plugins.PointIndexListToTouchMatrix
     //----------------------------------------------------
     /**
      * Takes a list of point indices to generate a touch matrix (a.k.a. adjacency graph matrix) out of it. 
@@ -8667,7 +8553,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.GenerateNNearestNeighborsMatrix
+    // net.haesleinhuepf.clij2.plugins.GenerateNNearestNeighborsMatrix
     //----------------------------------------------------
     /**
      * Produces a touch-matrix where the n nearest neighbors are marked as touching neighbors. 
@@ -8697,7 +8583,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MaximumOfNNearestNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.MaximumOfNNearestNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
@@ -8718,7 +8604,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MinimumOfNNearestNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.MinimumOfNNearestNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
@@ -8739,7 +8625,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MeanOfNNearestNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.MeanOfNNearestNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
@@ -8760,7 +8646,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ModeOfNNearestNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.ModeOfNNearestNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
@@ -8781,7 +8667,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.StandardDeviationOfNNearestNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.StandardDeviationOfNNearestNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image
@@ -8802,7 +8688,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MaximumOfProximalNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.MaximumOfProximalNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image by the maximum value of neighboring labels.
@@ -8826,7 +8712,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MinimumOfProximalNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.MinimumOfProximalNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image by the minimum value of neighboring labels.
@@ -8850,7 +8736,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MeanOfProximalNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.MeanOfProximalNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image by the mean average value of neighboring labels.
@@ -8874,7 +8760,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ModeOfProximalNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.ModeOfProximalNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image by the most popular value of neighboring labels.
@@ -8898,7 +8784,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.StandardDeviationOfProximalNeighborsMap
+    // net.haesleinhuepf.clij2.plugins.StandardDeviationOfProximalNeighborsMap
     //----------------------------------------------------
     /**
      * Takes a label image and a parametric intensity image and will replace each labels value in the parametric image by the standard deviation value of neighboring labels.
@@ -8922,7 +8808,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelOverlapCountMap
+    // net.haesleinhuepf.clij2.plugins.LabelOverlapCountMap
     //----------------------------------------------------
     /**
      * Takes two label maps, and counts for every label in label map 1 how many labels overlap with it in label map 2.
@@ -8935,7 +8821,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.LabelProximalNeighborCountMap
+    // net.haesleinhuepf.clij2.plugins.LabelProximalNeighborCountMap
     //----------------------------------------------------
     /**
      * Takes two label maps, and counts for every label in label map 1 how many labels are in a given distance range to it in label map 2.
@@ -8948,7 +8834,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ReduceLabelsToLabelEdges
+    // net.haesleinhuepf.clij2.plugins.ReduceLabelsToLabelEdges
     //----------------------------------------------------
     /**
      * Takes a label map and reduces all labels to their edges. Label IDs stay the same and background will be zero.
@@ -8959,7 +8845,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.OutOfIntensityRange
+    // net.haesleinhuepf.clij2.plugins.OutOfIntensityRange
     //----------------------------------------------------
     /**
      * Sets all pixels to 1 if their intensity lies out of a given range, and 0 otherwise.
@@ -8972,7 +8858,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ShrinkLabels
+    // net.haesleinhuepf.clij2.plugins.ErodeLabels
     //----------------------------------------------------
     /**
      * Extend labels with a given radius.
@@ -8982,13 +8868,13 @@ abstract class CamelInterface extends CommonAPI{
      * It is recommended to apply this operation to isotropic images only.
      * Warning: If labels were too small, they may be missing in the resulting label image.
      */
-    public static ClearCLBuffer shrinkLabels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, boolean arg4) {
-        ShrinkLabels.shrinkLabels(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), arg4);
+    public static ClearCLBuffer erodeLabels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3, boolean arg4) {
+        ErodeLabels.erodeLabels(getCLIJ2(), arg1, arg2, new Double (arg3).intValue(), arg4);
         return arg2;
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.Similar
+    // net.haesleinhuepf.clij2.plugins.Similar
     //----------------------------------------------------
     /**
      * Determines the absolute difference between two images and sets all pixels to 1 where it is below or equal a given tolerance, and 0 otherwise.
@@ -8999,7 +8885,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.Different
+    // net.haesleinhuepf.clij2.plugins.Different
     //----------------------------------------------------
     /**
      * Determines the absolute difference between two images and sets all pixels to 1 where it is above a given tolerance, and 0 otherwise.
@@ -9047,7 +8933,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.MedianZProjectionMasked
+    // net.haesleinhuepf.clij2.plugins.MedianZProjectionMasked
     //----------------------------------------------------
     /**
      * Determines the median intensity projection of an image stack along Z where pixels in a corresponding mask image are unequal to zero.
@@ -9084,7 +8970,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.DivideScalarByImage
+    // net.haesleinhuepf.clij2.plugins.DivideScalarByImage
     //----------------------------------------------------
     /**
      * Divides a scalar s by image X pixel wise. 
@@ -9097,7 +8983,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ReadValuesFromMap
+    // net.haesleinhuepf.clij2.plugins.ReadValuesFromMap
     //----------------------------------------------------
     /**
      * Takes a label image and an parametric image and reads parametric values from the labels positions.
@@ -9118,7 +9004,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ReadValuesFromPositions
+    // net.haesleinhuepf.clij2.plugins.ReadValuesFromPositions
     //----------------------------------------------------
     /**
      * Takes a pointlist and a parametric image and reads parametric values from the positions.
@@ -9137,7 +9023,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ZPositionOfMinimumZProjection
+    // net.haesleinhuepf.clij2.plugins.ZPositionOfMinimumZProjection
     //----------------------------------------------------
     /**
      * Determines a Z-position of the minimum intensity along Z and writes it into the resulting image.
@@ -9298,7 +9184,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.GreyscaleOpeningBox
+    // net.haesleinhuepf.clij2.plugins.GreyscaleOpeningBox
     //----------------------------------------------------
     /**
      * Apply a greyscale morphological opening to the input image.
@@ -9312,7 +9198,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.GreyscaleOpeningSphere
+    // net.haesleinhuepf.clij2.plugins.GreyscaleOpeningSphere
     //----------------------------------------------------
     /**
      * Apply a greyscale morphological opening to the input image.
@@ -9326,7 +9212,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.GreyscaleClosingBox
+    // net.haesleinhuepf.clij2.plugins.GreyscaleClosingBox
     //----------------------------------------------------
     /**
      * Apply a greyscale morphological closing to the input image.
@@ -9340,7 +9226,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.GreyscaleClosingSphere
+    // net.haesleinhuepf.clij2.plugins.GreyscaleClosingSphere
     //----------------------------------------------------
     /**
      * Apply a greyscale morphological closing to the input image.
@@ -9354,7 +9240,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.ProximalNeighborCountMap
+    // net.haesleinhuepf.clij2.plugins.ProximalNeighborCountMap
     //----------------------------------------------------
     /**
      * Takes a label map, determines which labels are within a given distance range and replaces every label with the number of neighboring labels.
@@ -9367,7 +9253,7 @@ abstract class CamelInterface extends CommonAPI{
     }
 
 
-    // net.haesleinhuepf.clijx.plugins.SubStack
+    // net.haesleinhuepf.clij2.plugins.SubStack
     //----------------------------------------------------
     /**
      * Crops multiple Z-slices of a 3D stack into a new 3D stack.
@@ -9379,5 +9265,18 @@ abstract class CamelInterface extends CommonAPI{
         return arg2;
     }
 
+
+    // net.haesleinhuepf.clij2.plugins.DrawMeshBetweenNNearestLabels
+    //----------------------------------------------------
+    /**
+     * Starting from a label map, draw lines between n closest labels for each label resulting in a mesh.
+     * 
+     * The end points of the lines correspond to the centroids of the labels. 
+     */
+    public static ClearCLBuffer drawMeshBetweenNNearestLabels(ClearCLBuffer arg1, ClearCLBuffer arg2, double arg3) {
+        DrawMeshBetweenNNearestLabels.drawMeshBetweenNNearestLabels(getCLIJ2(), arg1, arg2, new Double (arg3).intValue());
+        return arg2;
+    }
+
 }
-// 593 methods generated.
+// 581 methods generated.

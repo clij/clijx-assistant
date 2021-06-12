@@ -11,14 +11,22 @@ import ij.plugin.frame.RoiManager;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
 import net.haesleinhuepf.clij2.CLIJ2;
+import net.haesleinhuepf.clij2.assistant.AbstractAssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.ScriptGenerator;
+import net.haesleinhuepf.clij2.assistant.optimize.*;
+import net.haesleinhuepf.clij2.assistant.scriptgenerator.*;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.utilities.IJLogger;
+import net.haesleinhuepf.clij2.assistant.utilities.Logger;
+import net.haesleinhuepf.clij2.assistant.utilities.ParameterContainer;
 import net.haesleinhuepf.clij2.utilities.HasAuthor;
 import net.haesleinhuepf.clij2.utilities.HasLicense;
-import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
+import net.haesleinhuepf.clij2.assistant.annotation.AnnotationTool;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Crop2D;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Crop3D;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.ExtractChannel;
-import net.haesleinhuepf.clijx.assistant.optimize.*;
 import net.haesleinhuepf.clijx.assistant.scriptgenerator.*;
+import net.haesleinhuepf.clijx.assistant.scriptgenerator.AssistantGroovyGenerator;
 import net.haesleinhuepf.clijx.assistant.services.*;
 import net.haesleinhuepf.clijx.assistant.utilities.*;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
@@ -26,8 +34,8 @@ import net.haesleinhuepf.clij.macro.AbstractCLIJPlugin;
 import net.haesleinhuepf.clij.macro.CLIJOpenCLProcessor;
 import net.haesleinhuepf.clij2.AbstractCLIJ2Plugin;
 import net.haesleinhuepf.clijx.CLIJx;
-import net.haesleinhuepf.clijx.gui.MemoryDisplay;
-import net.haesleinhuepf.clijx.plugins.VisualizeOutlinesOnOriginal;
+import net.haesleinhuepf.clij2.gui.MemoryDisplay;
+import net.haesleinhuepf.clij2.plugins.VisualizeOutlinesOnOriginal;
 import net.haesleinhuepf.clijx.utilities.AbstractCLIJxPlugin;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStackRegistry;
@@ -38,13 +46,12 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URI;
 import java.util.*;
 
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.distributionName;
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.*;
 
-public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugIn, AssistantGUIPlugin {
+public abstract class AbstractCLIJxAssistantGUIPlugin extends AbstractAssistantGUIPlugin implements ImageListener, PlugIn, AssistantGUIPlugin {
 
     public final static String online_documentation_link = "https://clij.github.io/clij2-docs/reference";
     private final static String online_website_link = "https://clij.github.io/incubator";
@@ -73,7 +80,8 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     public static boolean show_compatibility = false;
     public static boolean show_advanced = false;
 
-    public AbstractAssistantGUIPlugin(CLIJMacroPlugin plugin) {
+    public AbstractCLIJxAssistantGUIPlugin(CLIJMacroPlugin plugin) {
+        super(plugin);
         CLIJxVirtualStackRegistry.getInstance();
         setCLIJMacroPlugin(plugin);
     }
@@ -705,7 +713,7 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
             int toolID = Toolbar.getToolId();
             int flags = e.getModifiers();
             if (toolID != Toolbar.MAGNIFIER && (e.isPopupTrigger() || ( (flags & Event.META_MASK) != 0))) {
-                AbstractAssistantGUIPlugin incplugin = ((AbstractAssistantGUIPlugin) AssistantGUIPluginRegistry.getInstance().getPlugin(imp));
+                AbstractCLIJxAssistantGUIPlugin incplugin = ((AbstractCLIJxAssistantGUIPlugin) AssistantGUIPluginRegistry.getInstance().getPlugin(imp));
                 if (incplugin != null) {
                     incplugin.handlePopupMenu(e, component);
                 }
@@ -1631,40 +1639,6 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
         registered_dialog.invalidate();
     }
 
-    private HashMap<String, ParameterContainer> storedParameters = new HashMap<String, ParameterContainer>();
-    private ArrayList<String> storedParameterKeys = new ArrayList<>();
-    private void storeParameters() {
-        String key = AssistantUtilities.now();
-
-        AssistantGUIPlugin[] path = AssistantGUIPluginRegistry.getInstance().getPathToRoot(this);
-        Object[][] parameters = OptimizationUtilities.getParameterArraysFromIncubatorPlugins(path);
-
-        ParameterContainer container = new ParameterContainer(parameters);
-
-        if (storedParameterKeys.size() > 0) {
-            // check if last stored entries are identical with current
-            ParameterContainer formerContainer = storedParameters.get(storedParameterKeys.get(0));
-            if (formerContainer.equals(container)) {
-                return;
-            }
-        }
-
-        storedParameters.put(key, container);
-        storedParameterKeys.add(0, key);
-    }
-
-    private void restoreParameters(ParameterContainer container) {
-        AssistantGUIPlugin[] path = AssistantGUIPluginRegistry.getInstance().getPathToRoot(this);
-        Object[][] parameters = OptimizationUtilities.getParameterArraysFromIncubatorPlugins(path);
-
-        container.copyTo(parameters);
-
-        for (AssistantGUIPlugin plugin : path ) {
-            plugin.refreshDialogFromArguments();
-        }
-        path[0].setTargetInvalid();
-    }
-
     public static AssistantGUIPlugin getPluginFromTargetImage(ImagePlus imp) {
         return AssistantGUIPluginRegistry.getInstance().getPlugin(imp);
     }
@@ -1684,6 +1658,6 @@ public abstract class AbstractAssistantGUIPlugin implements ImageListener, PlugI
     }
 
     public static void setAutoPosition(boolean auto_position) {
-        AbstractAssistantGUIPlugin.auto_position = auto_position;
+        AbstractCLIJxAssistantGUIPlugin.auto_position = auto_position;
     }
 }

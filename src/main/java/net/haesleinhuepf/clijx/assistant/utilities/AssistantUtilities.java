@@ -1,28 +1,22 @@
 package net.haesleinhuepf.clijx.assistant.utilities;
 
 import ij.IJ;
-import ij.ImageJ;
 import ij.ImagePlus;
-import ij.gui.ImageWindow;
 import ij.gui.Toolbar;
-import ij.process.LUT;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.clearcl.util.StringUtils;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
+import net.haesleinhuepf.clij2.gui.InteractiveZoom;
 import net.haesleinhuepf.clij2.plugins.*;
-import net.haesleinhuepf.clij2.plugins.AffineTransform;
-import net.haesleinhuepf.clij2.plugins.Blur3DSliceBySlice;
 import net.haesleinhuepf.clij2.utilities.HasClassifiedInputOutput;
 import net.haesleinhuepf.clij2.utilities.IsCategorized;
 import net.haesleinhuepf.clijx.CLIJx;
-import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.AssistantGUIStartingPoint;
-import net.haesleinhuepf.clijx.assistant.annotation.AnnotationTool;
-import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.AbstractCLIJxAssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.annotation.AnnotationTool;
 import net.haesleinhuepf.clijx.assistant.options.AssistantOptions;
 import net.haesleinhuepf.clijx.assistant.scriptgenerator.PyclesperantoGenerator;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.MenuService;
 import net.haesleinhuepf.clijx.assistant.services.SuggestionService;
 import net.haesleinhuepf.clijx.gui.*;
@@ -33,12 +27,8 @@ import net.haesleinhuepf.clijx.weka.autocontext.ApplyAutoContextWekaModel;
 import net.haesleinhuepf.clijx.weka.autocontext.TrainAutoContextWekaModel;
 import org.scijava.util.ProcessUtils;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -46,7 +36,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 
@@ -342,7 +331,7 @@ public class AssistantUtilities {
         if (blocklist.contains(clijMacroPlugin.getClass())) {
             return false;
         }
-        if ((!AbstractAssistantGUIPlugin.show_advanced) && isAdvancedPlugin(clijMacroPlugin)) {
+        if ((!AbstractCLIJxAssistantGUIPlugin.show_advanced) && isAdvancedPlugin(clijMacroPlugin)) {
             return false;
         }
 
@@ -492,7 +481,7 @@ public class AssistantUtilities {
         //blocklist.add(net.haesleinhuepf.clij2.plugins.Translate3D
         //blocklist.add(net.haesleinhuepf.clij2.plugins.ConnectedComponentsLabelingBox
         //blocklist.add(net.haesleinhuepf.clij2.plugins.LabelVoronoiOctagon.class);
-        blocklist.add(net.haesleinhuepf.clijx.plugins.ReslicePolar.class);
+        blocklist.add(net.haesleinhuepf.clij2.plugins.ReslicePolar.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.Translate2D.class);
         //blocklist.add(net.haesleinhuepf.clij2.plugins.MinimumImageAndScalar.class);
         //blocklist.add(net.haesleinhuepf.clijx.plugins.Bilateral
@@ -594,7 +583,7 @@ public class AssistantUtilities {
 
         blocklist.add(net.haesleinhuepf.clijx.plugins.GreyLevelAtttributeFiltering.class);
         blocklist.add(net.haesleinhuepf.clijx.plugins.FlagLabelsOnEdges.class);
-        blocklist.add(net.haesleinhuepf.clijx.plugins.PullToResultsTableColumn.class);
+        blocklist.add(net.haesleinhuepf.clij2.plugins.PullToResultsTableColumn.class);
 
         blocklist.add(CrossCorrelation.class);
         blocklist.add(TrainAutoContextWekaModel.class);
@@ -848,21 +837,21 @@ public class AssistantUtilities {
         //blocklist.add(net.haesleinhuepf.clijx.plugins.Zoom.class);
 
         advanced_list.add(net.haesleinhuepf.clijx.plugins.MeanZProjectionBelowThreshold.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.Tenengrad.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.TenengradSliceBySlice.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.SobelSliceBySlice.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.Tenengrad.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.TenengradSliceBySlice.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.SobelSliceBySlice.class);
 
         advanced_list.add(net.haesleinhuepf.clijx.plugins.GenerateDistanceMatrixAlongAxis.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.MaximumDistanceOfTouchingNeighbors.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.MaximumDistanceOfTouchingNeighbors.class);
         advanced_list.add(net.haesleinhuepf.clijx.plugins.GenerateAngleMatrix.class);
         advanced_list.add(net.haesleinhuepf.clijx.plugins.FlagLabelsOnEdges.class);
-        blocklist.add(net.haesleinhuepf.clijx.plugins.PullToResultsTableColumn.class);
+        blocklist.add(net.haesleinhuepf.clij2.plugins.PullToResultsTableColumn.class);
         advanced_list.add(net.haesleinhuepf.clijx.plugins.KMeansLabelClusterer.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.ModeOfTouchingNeighbors.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.GenerateProximalNeighborsMatrix.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.ModeOfTouchingNeighbors.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.GenerateProximalNeighborsMatrix.class);
         advanced_list.add(net.haesleinhuepf.clijx.plugins.ReadIntensitiesFromMap.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.PointIndexListToTouchMatrix.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.GenerateNNearestNeighborsMatrix.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.PointIndexListToTouchMatrix.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.GenerateNNearestNeighborsMatrix.class);
 
         advanced_list.add(net.haesleinhuepf.clijx.plugins.GenerateDistanceMatrixAlongAxis.class);
         advanced_list.add(net.haesleinhuepf.clijx.plugins.GenerateAngleMatrix.class);
@@ -884,7 +873,7 @@ public class AssistantUtilities {
         advanced_list.add(net.haesleinhuepf.clij2.plugins.TouchMatrixToMesh.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.AdjacencyMatrixToTouchMatrix.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.NClosestDistances.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.StackToTiles.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.StackToTiles.class);
         advanced_list.add(net.haesleinhuepf.clijx.plugins.FindMaximaPlateaus.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.StatisticsOfBackgroundAndLabelledPixels.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.GenerateJaccardIndexMatrix.class);
@@ -894,7 +883,7 @@ public class AssistantUtilities {
         advanced_list.add(net.haesleinhuepf.clij2.plugins.DistanceMatrixToMesh.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.PointlistToLabelledSpots.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.DistanceMap.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.ModeOfTouchingNeighbors.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.ModeOfTouchingNeighbors.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.ReplaceIntensities.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.SumImageSliceBySlice.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.GenerateBinaryOverlapMatrix.class);
@@ -906,8 +895,8 @@ public class AssistantUtilities {
         advanced_list.add(net.haesleinhuepf.clij2.plugins.WriteValuesToPositions.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.FloodFillDiamond.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.LabelVoronoiOctagon.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.Sinus.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.Cosinus.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.Sinus.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.Cosinus.class);
         blocklist.add(net.haesleinhuepf.clijx.plugins.Bilateral.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.StatisticsOfLabelledPixels.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.MedianOfTouchingNeighbors.class);
@@ -923,10 +912,10 @@ public class AssistantUtilities {
         advanced_list.add(net.haesleinhuepf.clijx.plugins.tenengradfusion.TenengradFusionOf2.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.PointIndexListToMesh.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.MultiplyMatrix.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.MaximumDistanceOfTouchingNeighbors.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.MaximumDistanceOfTouchingNeighbors.class);
         blocklist.add(net.haesleinhuepf.clijx.plugins.SeededWatershed.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.GenerateNNearestNeighborsMatrix.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.PointIndexListToTouchMatrix.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.GenerateNNearestNeighborsMatrix.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.PointIndexListToTouchMatrix.class);
         advanced_list.add(net.haesleinhuepf.clijx.plugins.tenengradfusion.TenengradFusion.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.CentroidsOfLabels.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.MaximumOfTouchingNeighbors.class);
@@ -934,7 +923,7 @@ public class AssistantUtilities {
         advanced_list.add(net.haesleinhuepf.clij2.plugins.StandardDeviationOfTouchingNeighbors.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.MinimumDistanceOfTouchingNeighbors.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.OnlyzeroOverwriteMaximumDiamond.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.GenerateProximalNeighborsMatrix.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.GenerateProximalNeighborsMatrix.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.MeanZProjectionBounded.class);
         advanced_list.add(net.haesleinhuepf.clijx.plugins.Presign.class);
         advanced_list.add(net.haesleinhuepf.clijx.plugins.MeanZProjectionAboveThreshold.class);
@@ -944,7 +933,7 @@ public class AssistantUtilities {
         advanced_list.add(net.haesleinhuepf.clij2.plugins.AverageDistanceOfNClosestPoints.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.AverageDistanceOfNFarOffPoints.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.AverageDistanceOfTouchingNeighbors.class);
-        advanced_list.add(net.haesleinhuepf.clijx.plugins.AverageNeighborDistanceMap.class);
+        advanced_list.add(net.haesleinhuepf.clij2.plugins.AverageNeighborDistanceMap.class);
         blocklist.add(net.haesleinhuepf.clijx.plugins.Bilateral.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.CentroidsOfBackgroundAndLabels.class);
         advanced_list.add(net.haesleinhuepf.clij2.plugins.CentroidsOfLabels.class);
@@ -970,6 +959,12 @@ public class AssistantUtilities {
     }
 
     public static void installTools() {
+        if (AssistantUtilities.class.getPackage().toString().contains(".clij2.")) {
+            if (AssistantUtilities.CLIJxAssistantInstalled()) {
+                return;
+            }
+        }
+
         String tool = IJ.getToolName();
         ignoreEvent = true;
         //Toolbar.removeMacroTools();
@@ -1502,6 +1497,34 @@ public class AssistantUtilities {
             frame.removeWindowListener(listener);
         }*/
     }
+
+    static Boolean isCLIJxAssistantInstalled = null;
+    public static boolean CLIJxAssistantInstalled() {
+        if (isCLIJxAssistantInstalled != null) {
+            return isCLIJxAssistantInstalled;
+        }
+        isCLIJxAssistantInstalled = true;
+        try {
+            String dir = IJ.getDirectory("imagej");
+            if (!dir.contains("null") && dir.toLowerCase().contains("fiji")) {
+                // we're in a Fiji folder
+                File plugins_dir = new File(dir + "/plugins");
+                if (!jarExists(plugins_dir, "clijx-assistant_")) {
+                    isCLIJxAssistantInstalled = false;
+                }
+            }
+        }catch (Exception e) {
+            System.out.println("Error while checking the CLIJ2 installation:");
+            System.out.println(e.getMessage());
+        }
+
+        return isCLIJxAssistantInstalled;
+    }
+
+    private static boolean jarExists(File folder, String name) {
+        return folder.list((dir, name1) -> name1.contains(name)).length > 0;
+    }
+
 /*
     class CloseListener implements WindowListener {
 

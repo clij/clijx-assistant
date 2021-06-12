@@ -2,7 +2,7 @@ package net.haesleinhuepf.clijx.assistant;
 
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij.macro.documentation.OffersDocumentation;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPluginService;
 import net.haesleinhuepf.clijx.assistant.services.MenuService;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import static net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin.online_documentation_link;
+import static net.haesleinhuepf.clijx.assistant.AbstractCLIJxAssistantGUIPlugin.online_documentation_link;
 import static net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities.niceNameWithoutDimShape;
 
 public class GeneratePluginsConfig {

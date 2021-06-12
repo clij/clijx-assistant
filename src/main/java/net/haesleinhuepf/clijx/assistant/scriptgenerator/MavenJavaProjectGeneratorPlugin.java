@@ -13,8 +13,8 @@ import net.haesleinhuepf.clij2.plugins.Mean3DBox;
 import net.haesleinhuepf.clijx.assistant.AssistantGUIStartingPoint;
 import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.interactive.handcrafted.Zoom;
-import net.haesleinhuepf.clijx.assistant.optimize.Workflow;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.optimize.Workflow;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
 import org.apache.commons.math3.fitting.leastsquares.GaussNewtonOptimizer;
 
 import java.io.File;

@@ -4,7 +4,9 @@ import ij.ImagePlus;
 import net.clesperanto.macro.api.ClEsperantoMacroAPIGenerator;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.scriptgenerator.AbstractScriptGenerator;
+
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import org.scijava.util.VersionUtils;
 

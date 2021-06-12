@@ -1,8 +1,8 @@
 package net.haesleinhuepf.clijx.assistant.interactive.handcrafted;
 
 import ij.gui.GenericDialog;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.AbstractCLIJxAssistantGUIPlugin;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
@@ -11,7 +11,7 @@ import java.awt.*;
 import java.util.Arrays;
 
 @Plugin(type = AssistantGUIPlugin.class)
-public class SphereTransform extends AbstractAssistantGUIPlugin {
+public class SphereTransform extends AbstractCLIJxAssistantGUIPlugin {
 
     int number_of_angles = 360;
 
@@ -29,7 +29,7 @@ public class SphereTransform extends AbstractAssistantGUIPlugin {
     private TextField center_z_slider;
 
     public SphereTransform() {
-        super(new net.haesleinhuepf.clijx.plugins.SphereTransform());
+        super(new net.haesleinhuepf.clij2.plugins.SphereTransform());
     }
 
     @Override
@@ -76,7 +76,7 @@ public class SphereTransform extends AbstractAssistantGUIPlugin {
         }
 
         args = new Object[]{pushed[0], null, number_of_angles, delta_angle_in_degrees, relative_center_x * pushed[0][0].getWidth(), relative_center_y * pushed[0][0].getHeight(), relative_center_z * pushed[0][0].getDepth()};
-        net.haesleinhuepf.clijx.plugins.SphereTransform plugin = (net.haesleinhuepf.clijx.plugins.SphereTransform) getCLIJMacroPlugin();
+        net.haesleinhuepf.clij2.plugins.SphereTransform plugin = (net.haesleinhuepf.clij2.plugins.SphereTransform) getCLIJMacroPlugin();
         plugin.setArgs(args);
 
 

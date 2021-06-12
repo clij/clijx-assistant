@@ -3,9 +3,10 @@ package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.WindowManager;
-import net.haesleinhuepf.clijx.assistant.ScriptGenerator;
 import net.haesleinhuepf.clijx.assistant.interactive.generic.GenericAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.scriptgenerator.AbstractScriptGenerator;
+import net.haesleinhuepf.clij2.assistant.ScriptGenerator;
 import org.scijava.util.VersionUtils;
 
 public class AssistantGroovyGenerator extends AbstractScriptGenerator {

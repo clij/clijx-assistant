@@ -3,15 +3,15 @@ package net.haesleinhuepf.clijx.assistant.interactive.generic;
 import net.haesleinhuepf.clij.macro.AbstractCLIJPlugin;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
 import net.haesleinhuepf.clij2.plugins.Copy;
-import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.AbstractCLIJxAssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.services.CLIJMacroPluginService;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import org.scijava.plugin.Plugin;
 
 
 @Plugin(type = AssistantGUIPlugin.class, priority = -1)
-public class GenericAssistantGUIPlugin extends AbstractAssistantGUIPlugin {
+public class GenericAssistantGUIPlugin extends AbstractCLIJxAssistantGUIPlugin {
 
 
     @Override

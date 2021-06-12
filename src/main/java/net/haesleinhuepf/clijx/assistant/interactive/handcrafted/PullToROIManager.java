@@ -7,8 +7,8 @@ import ij.gui.GenericDialog;
 import ij.plugin.frame.RoiManager;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clijx.CLIJx;
-import net.haesleinhuepf.clijx.assistant.AbstractAssistantGUIPlugin;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clijx.assistant.AbstractCLIJxAssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import net.haesleinhuepf.spimcat.io.CLIJxVirtualStack;
 import org.scijava.plugin.Plugin;
@@ -16,7 +16,7 @@ import org.scijava.plugin.Plugin;
 import java.awt.*;
 
 @Plugin(type = AssistantGUIPlugin.class)
-public class PullToROIManager extends AbstractAssistantGUIPlugin {
+public class PullToROIManager extends AbstractCLIJxAssistantGUIPlugin {
 
     Choice choice = null;
     String[] titles = null;

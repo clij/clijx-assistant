@@ -3,7 +3,8 @@ package net.haesleinhuepf.clijx.assistant.scriptgenerator;
 import ij.IJ;
 import ij.ImagePlus;
 import net.haesleinhuepf.clij.macro.CLIJMacroPlugin;
-import net.haesleinhuepf.clijx.assistant.services.AssistantGUIPlugin;
+import net.haesleinhuepf.clij2.assistant.scriptgenerator.JythonGenerator;
+import net.haesleinhuepf.clij2.assistant.services.AssistantGUIPlugin;
 import net.haesleinhuepf.clijx.assistant.utilities.AssistantUtilities;
 import org.scijava.util.VersionUtils;
 
