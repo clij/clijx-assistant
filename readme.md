@@ -23,7 +23,7 @@ CLIJx-Assistant is under development and is subject to change. In case of any is
 
 * Extensions (in development) 
   * [Imglib2 extensions](https://github.com/clij/clijx-assistant-imglib2)
-  * [mageJ extensions](https://github.com/clij/clijx-assistant-imagej)
+  * [ImageJ extensions](https://github.com/clij/clijx-assistant-imagej)
   * [ImageJ2 extensions](https://github.com/clij/clijx-assistant-imagej2)
   * [BoneJ extensions](https://github.com/clij/clijx-assistant-bonej)
   * [MorphoLibJ extensions](https://github.com/clij/clijx-assistant-morpholibj)
