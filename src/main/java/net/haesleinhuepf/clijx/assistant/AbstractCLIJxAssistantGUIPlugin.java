@@ -668,7 +668,7 @@ public abstract class AbstractCLIJxAssistantGUIPlugin extends AbstractAssistantG
             String name_to_consider = (my_sources[0].getTitle() + " " + my_target.getTitle()).toLowerCase() + this.getName();
             if (name_to_consider.contains("map") || name_to_consider.contains("mesh") ) {
                 AssistantUtilities.fire(my_target);
-            } else if (name_to_consider.contains("label") && !name_to_consider.contains("ROI")) {
+            } else if (net.haesleinhuepf.clij2.assistant.utilities.AssistantUtilities.resultIsLabelImage(this) || (name_to_consider.contains("label") && !name_to_consider.contains("ROI"))) {
                 AssistantUtilities.glasbey(my_target);
             } else {
                 //my_target.setLut(my_source.getProcessor().getLut());
