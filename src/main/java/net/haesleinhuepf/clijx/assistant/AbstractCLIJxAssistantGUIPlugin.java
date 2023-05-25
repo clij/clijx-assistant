@@ -3,6 +3,7 @@ package net.haesleinhuepf.clijx.assistant;
 import fiji.util.gui.GenericDialogPlus;
 import ij.*;
 import ij.gui.*;
+import ij.io.SaveDialog;
 import ij.measure.Calibration;
 import ij.measure.ResultsTable;
 import ij.plugin.Duplicator;
@@ -1214,7 +1215,16 @@ public abstract class AbstractCLIJxAssistantGUIPlugin extends AbstractAssistantG
         String script = generateScript(generator);
 
         script_count++;
-        File outputTarget = new File(AssistantUtilities.getNewSelfDeletingTempDir() + "/new" + script_count + generator.fileEnding());
+        File outputTarget;
+        if (generator.fileEnding() == ".ipynb") {
+            String filename = SaveDialog.getPath(new ImagePlus(), generator.fileEnding());
+            if (filename == null || filename.length() < 3) {
+                return;
+            }
+            outputTarget = new File(filename);
+        } else {
+            outputTarget = new File(AssistantUtilities.getNewSelfDeletingTempDir() + "/new" + script_count + generator.fileEnding());
+        }
 
         try {
             FileWriter writer = new FileWriter(outputTarget);
