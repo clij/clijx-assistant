@@ -181,17 +181,16 @@ public class PyclesperantoGenerator extends AbstractScriptGenerator {
     @Override
     public String header() {
         String header = "# This is an experimentally generated python script. Not all commands are supposed to be executable yet.\n" +
-                "# If you want to give it a try, create conda environment named te_oki:\n" +
-                "#   `conda create --name te_oki` \n" +
+                "# If you want to give it a try, create mamba/conda environment named te_oki:\n" +
+                "#   `mamba create --name te_oki devbio-napari python=3.9 -c conda-forge` \n" +
                 "# activate the environment: \n" +
-                "#   `conda activate te_oki` \n" +
-                "# install dependencies: \n" +
-                "#   `pip install pyopencl napari ipython matplotlib numpy pyclesperanto_prototype scikit-image` \n" +
-                "# Also make sure conda is part of the PATH variable.\n" +
+                "#   `mamba activate te_oki` \n" +
+                "# Also make sure mamba and conda are part of the PATH variable.\n" +
+                "# Read more about why we use mamba here: https://focalplane.biologists.com/2022/12/08/managing-scientific-python-environments-using-conda-mamba-and-friends/\n" +
                 "# \n" +
                 "# If you want to run it from Fiji and you're using a different conda environment, you can configure it in Fijis main menu \n" +
-                "# Plugins > ImageJ on GPU (CLIJx-Assistant) > Options >Conda configuration (Te Oki) \n" +
-                "# Furthermore, activate the scripting language Te Oki in Fijis script editor to run this script.\n\n" +
+                "# Plugins > ImageJ on GPU (CLIJx) > Options > Build and run options \n" +
+                "# Furthermore, activate the scripting language Te Oki in Fijis script editor to run this script from there.\n\n" +
                 "# Stay tuned and check out http://clesperanto.net to learn more.\n\n" +
                 "# Generator version: " + VersionUtils.getVersion(this.getClass()) + "\n\n" +
                 "import pyclesperanto_prototype as cle\n" +
