@@ -23,8 +23,15 @@ public class PyclesperantoJupyterNotebookGenerator extends PyclesperantoGenerato
 
     @Override
     public String execute(AssistantGUIPlugin plugin) {
-        return "," + markdownCell("## " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName())) +
+        String result = "," + markdownCell("## " + AssistantUtilities.niceNameWithoutDimShape(plugin.getName())) +
                 "," + codeCell(super.execute(plugin));
+
+        // modify how results are shown
+        result = result.replace(", labels=True", "");
+        for (int i = 0; i < 1000; i++) {
+            result = result.replace("cle.imshow(image_" + i + ")", "image_" + i);
+        }
+        return result;
     }
 
     @Override

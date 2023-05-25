@@ -36,7 +36,7 @@ public class PyclesperantoGenerator extends AbstractScriptGenerator {
                 "image = imread(\"" + filename.replace("\\", "/") + "\")\n\n" +
 
                 "# Push " + source.getTitle() + " to GPU memory\n" +
-                makeImageID(source) + " = cle.push_zyx(image" + timepoint + ")\n";
+                makeImageID(source) + " = cle.push(image" + timepoint + ")\n";
 
         program = program.replace("\n", "\n" + line_start );
         return program;
@@ -148,20 +148,17 @@ public class PyclesperantoGenerator extends AbstractScriptGenerator {
             String lut = "";
             if (clijMacroPlugin instanceof HasClassifiedInputOutput) {
                 if (((HasClassifiedInputOutput) clijMacroPlugin).getOutputType().contains("Label Image")) {
-                    program = program + "cmap = matplotlib.colors.ListedColormap ( np.random.rand ( 256,3))\n";
-                    lut = ", cmap = cmap";
+                    lut = ", labels=True";
                 }
             }
 
             if (plugin.getTarget().getNSlices() > 1) {
                 program = program +
-                        "plt.imshow(" + image2 + "[" + (plugin.getTarget().getZ()-1) + "]" + lut + ")\n";
+                        "cle.imshow(" + image2 + "[" + (plugin.getTarget().getZ()-1) + "]" + lut + ")\n";
             } else {
                 program = program +
-                        "plt.imshow(" + image2 + lut + ")\n";
+                        "cle.imshow(" + image2 + lut + ")\n";
             }
-            program = program +
-                "plt.show()\n\n";
         }
 
         program = line_start + program.replace("\n", "\n" + line_start);
